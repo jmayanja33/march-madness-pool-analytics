@@ -15,6 +15,7 @@ This repository will hold all code for a website which utilizes AI/ML to analyze
 performance for the 2026 season. See each section below for details about the site's implementation.
 
 **IMPORTANT**: A uv environment should be properly setup to run all python code.
+**IMPORTANT**: All code IS REQUIRED to be fully commented. This includes full docstrings for functions (with type hints), and full comments at the top of each block of code.
 
 ## Frontend
 
@@ -43,6 +44,9 @@ complex code HARMS this project as it makes maintainability much harder.
 
 Github actions will be used to deploy this site. In each commit pipeline, a unit test step, a secret detection step,
 and a linting step all must pass.
+
+All source code should be dockerized. The vector database should be dockerized as well. A docker compose file should 
+include both, and should be executable for local development.
 
 ## Data
 

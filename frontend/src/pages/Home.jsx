@@ -13,7 +13,7 @@ export default function Home() {
       <main className="home-main">
         <div className="home-header fade-in">
           <h1>2026 NCAA Tournament</h1>
-          <p>Click any team to see their analytics profile.</p>
+          <p>Click on any team</p>
         </div>
         <Bracket onTeamClick={setSelectedTeam} />
       </main>

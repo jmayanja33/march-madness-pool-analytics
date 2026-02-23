@@ -8,8 +8,8 @@ export default function NavBar() {
     <nav className="navbar">
       <div className="navbar-brand">
         <Link to="/">
+          <img src="/march-madness-logo.svg" alt="March Madness" className="navbar-logo" />
           <span className="navbar-title">The Pool</span>
-          <span className="navbar-subtitle">Analyzing Team Performance Through March Madness</span>
         </Link>
       </div>
       <div className="navbar-links">

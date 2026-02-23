@@ -1,61 +1,78 @@
+/* ── Bracket grid ──────────────────────────────────────────
+   Columns: [left regions] [center] [right regions]
+   Rows:    [upper]        [band]   [lower]
+   The band only occupies the center column — left/right
+   region columns skip it with no extra vertical space.
+─────────────────────────────────────────────────────────── */
 .bracket-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 16px;
+  display: grid;
+  grid-template-areas:
+    "east  champion  south"
+    ".     band      ."
+    "west  spacer    midwest";
+  grid-template-columns: max-content 1fr max-content;
+  grid-template-rows: auto auto auto;
+  column-gap: 16px;
+  row-gap: 0;
   padding: 24px;
   overflow-x: auto;
-  min-height: 600px;
 }
 
-.bracket-half {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  flex-shrink: 0;
-}
+.region-east    { grid-area: east; }
+.region-south   { grid-area: south; }
+.region-west    { grid-area: west; }
+.region-midwest { grid-area: midwest; }
+.center-spacer  { grid-area: spacer; }
 
-/* ── Center column ── */
-.bracket-center {
+/* ── Champion box ── */
+.champion-box {
+  grid-area: champion;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  flex-shrink: 0;
-  min-width: 160px;
-  padding: 16px 8px;
+  gap: 10px;
+  padding: 16px;
 }
 
-.center-label {
-  font-size: 0.72rem;
+.trophy { font-size: 2rem; }
+
+/* ── Championship band ── */
+.championship-band {
+  grid-area: band;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 10px 20px;
+  border-top: 2px solid var(--light-blue);
+  border-bottom: 2px solid var(--light-blue);
+  background: #f0f7ff;
+}
+
+.band-label {
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--dark-blue);
   background: #e8f0fe;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: var(--radius);
+  white-space: nowrap;
 }
 
-.ff-slots {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-}
-
-.championship-area {
+.ff-pairing {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 16px 0;
-  border-top: 2px solid var(--light-blue);
-  border-bottom: 2px solid var(--light-blue);
-  width: 100%;
+  gap: 6px;
 }
 
-.trophy {
-  font-size: 1.6rem;
+.championship-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }

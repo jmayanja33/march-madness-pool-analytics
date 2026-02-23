@@ -12,16 +12,26 @@ IN.home {
 
 .home-header {
   padding: 28px 32px 0;
+  text-align: center;
 }
 
 .home-header h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-family: 'Anton', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 400;
   color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-shadow:
+    1px 1px 0 #00194d,
+    2px 2px 0 #00194d,
+    3px 3px 4px rgba(0, 0, 0, 0.25);
 }
 
 .home-header p {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--silver);
-  margin-top: 4px;
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }

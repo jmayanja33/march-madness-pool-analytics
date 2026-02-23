@@ -51,7 +51,6 @@
 .bracket-round:nth-child(2) .slot-wrapper { margin: 18px 0; }
 .bracket-round:nth-child(3) .slot-wrapper { margin: 50px 0; }
 .bracket-round:nth-child(4) .slot-wrapper { margin: 114px 0; }
-.bracket-round:nth-child(5) .slot-wrapper { margin: 242px 0; }
 
 /* Right-direction regions — same spacing but rounds are reversed */
 .region-right .region-rounds { flex-direction: row-reverse; }

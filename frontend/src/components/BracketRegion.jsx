@@ -4,23 +4,19 @@ import './BracketRegion.css';
 // Seeds in first-round bracket order: 1v16, 8v9, 5v12, 4v13, 6v11, 3v14, 7v10, 2v15
 const FIRST_ROUND_SEEDS = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15];
 
-// Number of teams per round for a single region
-const ROUND_SIZES = [16, 8, 4, 2, 1];
-const ROUND_LABELS = ['Round 1', 'Round 2', 'Sweet 16', 'Elite 8', 'Final Four'];
+// Each region runs through 4 rounds; Final Four is shown in the bracket center column
+const ROUND_LABELS = ['Round 1', 'Round 2', 'Sweet 16', 'Elite 8'];
 
 function buildRounds(teams) {
-  // Round 1: seeded teams from the bracket template
   const r1 = FIRST_ROUND_SEEDS.map(seed => {
     const match = teams.find(t => t.seed === seed);
     return match || { seed, name: '' };
   });
-  // Rounds 2–5: empty TBD slots (winners determined during the tournament)
   return [
     r1,
     Array.from({ length: 8 }, (_, i) => ({ seed: null, name: '', id: `r2-${i}` })),
     Array.from({ length: 4 }, (_, i) => ({ seed: null, name: '', id: `s16-${i}` })),
     Array.from({ length: 2 }, (_, i) => ({ seed: null, name: '', id: `e8-${i}` })),
-    Array.from({ length: 1 }, (_, i) => ({ seed: null, name: '', id: `ff-${i}` })),
   ];
 }
 
