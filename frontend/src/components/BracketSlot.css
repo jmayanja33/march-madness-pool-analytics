@@ -1,0 +1,43 @@
+.bracket-slot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  font-size: 0.72rem;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 120px;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.bracket-slot.filled {
+  cursor: pointer;
+  border-color: var(--light-blue);
+}
+
+.bracket-slot.filled:hover {
+  background: #eff6ff;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+.bracket-slot.empty {
+  background: #f1f5f9;
+  color: var(--silver);
+}
+
+.slot-seed {
+  font-weight: 700;
+  color: var(--dark-blue);
+  min-width: 16px;
+  font-size: 0.68rem;
+}
+
+.slot-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}

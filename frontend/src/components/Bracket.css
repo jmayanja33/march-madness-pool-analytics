@@ -1,0 +1,61 @@
+.bracket-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  overflow-x: auto;
+  min-height: 600px;
+}
+
+.bracket-half {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+/* ── Center column ── */
+.bracket-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-shrink: 0;
+  min-width: 160px;
+  padding: 16px 8px;
+}
+
+.center-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dark-blue);
+  background: #e8f0fe;
+  padding: 4px 12px;
+  border-radius: var(--radius);
+}
+
+.ff-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.championship-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0;
+  border-top: 2px solid var(--light-blue);
+  border-bottom: 2px solid var(--light-blue);
+  width: 100%;
+}
+
+.trophy {
+  font-size: 1.6rem;
+}

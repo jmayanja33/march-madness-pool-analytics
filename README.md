@@ -71,3 +71,30 @@ march-madness-pool-analytics/
 ├── pyproject.toml                    # uv Python project configuration
 └── uv.lock
 ```
+
+## Useful Commands
+
+**Run the frontend dev server**
+```bash
+cd frontend && npm run dev
+```
+
+**Run the backend dev server**
+```bash
+uv run uvicorn app.main:app --reload
+```
+
+**Install Python dependencies**
+```bash
+uv sync --dev
+```
+
+**Run tests**
+```bash
+uv run pytest
+```
+
+**Run linter**
+```bash
+uv run ruff check .
+```

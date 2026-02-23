@@ -1,0 +1,57 @@
+.bracket-region {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.region-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dark-blue);
+  padding: 4px 8px;
+  background: #e8f0fe;
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+.region-rounds {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.bracket-round {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.round-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--silver);
+  text-align: center;
+  letter-spacing: 0.04em;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.round-slots {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Slot wrappers: spacing doubles each round to create bracket alignment */
+.bracket-round:nth-child(1) .slot-wrapper { margin: 2px 0; }
+.bracket-round:nth-child(2) .slot-wrapper { margin: 18px 0; }
+.bracket-round:nth-child(3) .slot-wrapper { margin: 50px 0; }
+.bracket-round:nth-child(4) .slot-wrapper { margin: 114px 0; }
+.bracket-round:nth-child(5) .slot-wrapper { margin: 242px 0; }
+
+/* Right-direction regions — same spacing but rounds are reversed */
+.region-right .region-rounds { flex-direction: row-reverse; }
