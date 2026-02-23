@@ -39,6 +39,7 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, onTeamClick }) {
         <div className="championship-game">
           <div className="band-label">Championship</div>
           <BracketSlot seed={null} name="" />
+          <BracketSlot seed={null} name="" />
         </div>
         <div className="ff-pairing">
           <div className="band-label">Final Four</div>
