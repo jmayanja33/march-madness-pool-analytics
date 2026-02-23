@@ -1,12 +1,17 @@
+// Modal popup displayed when a user clicks a team slot in the bracket.
+// Fetches team data from the backend and renders four sections:
+//   Win Probability, Top Players, Similar Teams, and a text Summary.
+// Clicking the overlay or the ✕ button closes the popup.
 import { useEffect, useState } from 'react';
 import { fetchTeamData } from '../api/teamApi';
 import './TeamPopup.css';
 
 export default function TeamPopup({ teamName, onClose }) {
-  const [data, setData]     = useState(null);
-  const [error, setError]   = useState(null);
+  const [data, setData]       = useState(null);
+  const [error, setError]     = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Fetch team data whenever the selected team changes
   useEffect(() => {
     fetchTeamData(teamName)
       .then(setData)
@@ -15,10 +20,13 @@ export default function TeamPopup({ teamName, onClose }) {
   }, [teamName]);
 
   return (
+    // Clicking the overlay (outside the popup card) closes the popup
     <div className="popup-overlay" onClick={onClose}>
+      {/* stopPropagation prevents clicks inside the card from closing it */}
       <div className="popup pop-in" onClick={e => e.stopPropagation()}>
         <button className="popup-close" onClick={onClose}>✕</button>
 
+        {/* Loading and error states */}
         {loading && <div className="popup-loading"><span className="spinner" />Loading…</div>}
         {error   && <div className="popup-error">{error}</div>}
 
@@ -27,13 +35,16 @@ export default function TeamPopup({ teamName, onClose }) {
             <h2 className="popup-team-name">{data.name}</h2>
             <p className="popup-record">{data.wins}–{data.losses}</p>
 
+            {/* ── Win Probability ── */}
             <section>
               <h3>Win Probability</h3>
               <div className="prob-bars">
+                {/* win_distribution keys are labels like "0 wins", "1 win", "2+ wins" */}
                 {Object.entries(data.win_distribution).map(([label, pct]) => (
                   <div key={label} className="prob-row">
                     <span className="prob-label">{label}</span>
                     <div className="prob-track">
+                      {/* Bar width driven by probability value (0–1) */}
                       <div className="prob-fill" style={{ width: `${pct * 100}%` }} />
                     </div>
                     <span className="prob-pct">{(pct * 100).toFixed(1)}%</span>
@@ -42,6 +53,7 @@ export default function TeamPopup({ teamName, onClose }) {
               </div>
             </section>
 
+            {/* ── Top 5 Players (by minutes) ── */}
             <section>
               <h3>Top Players</h3>
               <table className="players-table">
@@ -63,6 +75,7 @@ export default function TeamPopup({ teamName, onClose }) {
               </table>
             </section>
 
+            {/* ── 3 Most Similar Historical Teams (from ChromaDB vector search) ── */}
             <section>
               <h3>Similar Teams</h3>
               <ul className="similar-list">
@@ -75,6 +88,7 @@ export default function TeamPopup({ teamName, onClose }) {
               </ul>
             </section>
 
+            {/* ── AI-generated team summary (optional field) ── */}
             {data.summary && (
               <section>
                 <h3>Summary</h3>

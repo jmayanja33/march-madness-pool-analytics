@@ -1,30 +1,32 @@
-/* ── Bracket grid ──────────────────────────────────────────
-   Columns: [left regions] [center] [right regions]
-   Rows:    [upper]        [band]   [lower]
-   The band only occupies the center column — left/right
-   region columns skip it with no extra vertical space.
-─────────────────────────────────────────────────────────── */
+/* Full bracket layout using CSS Grid.
+   Three columns: left regions | center | right regions
+   Three rows:    upper        | band   | lower
+   The championship band occupies only the center column of the band row,
+   so left/right region columns have no unnecessary vertical gap. */
+
+/* ── Grid container ── */
 .bracket-wrapper {
   display: grid;
   grid-template-areas:
     "east  champion  south"
     ".     band      ."
     "west  spacer    midwest";
-  grid-template-columns: max-content 1fr max-content;
-  grid-template-rows: auto auto auto;
+  grid-template-columns: max-content 1fr max-content; /* side columns shrink-wrap to content */
+  grid-template-rows: auto auto auto;                 /* all rows sized to their content */
   column-gap: 16px;
-  row-gap: 0;
+  row-gap: 0; /* no extra vertical space — band row provides the only separation */
   padding: 24px;
   overflow-x: auto;
 }
 
+/* ── Grid area assignments ── */
 .region-east    { grid-area: east; }
 .region-south   { grid-area: south; }
 .region-west    { grid-area: west; }
 .region-midwest { grid-area: midwest; }
-.center-spacer  { grid-area: spacer; }
+.center-spacer  { grid-area: spacer; } /* mirrors champion-box width in lower row */
 
-/* ── Champion box ── */
+/* ── Champion box (upper center) ── */
 .champion-box {
   grid-area: champion;
   display: flex;
@@ -37,7 +39,7 @@
 
 .trophy { font-size: 2rem; }
 
-/* ── Championship band ── */
+/* ── Championship band (center row only) ── */
 .championship-band {
   grid-area: band;
   display: flex;
@@ -46,11 +48,12 @@
   justify-content: center;
   gap: 24px;
   padding: 10px 20px;
-  border-top: 2px solid var(--light-blue);
-  border-bottom: 2px solid var(--light-blue);
+  border-top: 2px solid var(--light-blue);    /* upper bounding line */
+  border-bottom: 2px solid var(--light-blue); /* lower bounding line */
   background: #f0f7ff;
 }
 
+/* Small label chip used inside the band */
 .band-label {
   font-size: 0.7rem;
   font-weight: 700;
@@ -63,6 +66,7 @@
   white-space: nowrap;
 }
 
+/* Final Four pairing column (East+West or South+Midwest) */
 .ff-pairing {
   display: flex;
   flex-direction: column;
@@ -70,6 +74,7 @@
   gap: 6px;
 }
 
+/* Championship game column (two semifinal winners) */
 .championship-game {
   display: flex;
   flex-direction: column;

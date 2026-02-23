@@ -1,9 +1,12 @@
+/* Styles for a single tournament region (East / West / South / Midwest). */
+
 .bracket-region {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
+/* Region name badge above the rounds */
 .region-label {
   font-size: 0.78rem;
   font-weight: 700;
@@ -16,6 +19,7 @@
   text-align: center;
 }
 
+/* Rounds rendered as a horizontal row of columns */
 .region-rounds {
   display: flex;
   flex-direction: row;
@@ -29,6 +33,7 @@
   gap: 4px;
 }
 
+/* Small round label above each column */
 .round-label {
   font-size: 0.65rem;
   font-weight: 600;
@@ -46,11 +51,15 @@
   flex-direction: column;
 }
 
-/* Slot wrappers: spacing doubles each round to create bracket alignment */
+/* ── Bracket alignment spacing ──────────────────────────────
+   Slot margin doubles each round so that each slot centers on
+   the midpoint between its two source slots from the prior round.
+   All columns share the same total height (~512px).
+────────────────────────────────────────────────────────────── */
 .bracket-round:nth-child(1) .slot-wrapper { margin: 2px 0; }
 .bracket-round:nth-child(2) .slot-wrapper { margin: 18px 0; }
 .bracket-round:nth-child(3) .slot-wrapper { margin: 50px 0; }
 .bracket-round:nth-child(4) .slot-wrapper { margin: 114px 0; }
 
-/* Right-direction regions — same spacing but rounds are reversed */
+/* Right-direction regions (South, Midwest) — visually mirror the column order */
 .region-right .region-rounds { flex-direction: row-reverse; }

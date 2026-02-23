@@ -1,12 +1,15 @@
+/* Global styles — design tokens, reset, and shared animation utilities.
+   All component stylesheets inherit from these CSS variables. */
+
 /* ── Design tokens ── */
 :root {
-  --dark-blue:  #0d2b5e;
-  --light-blue: #3b82f6;
-  --silver:     #94a3b8;
-  --black:      #1a1a1a;
+  --dark-blue:  #0d2b5e;  /* primary brand color — nav, headings */
+  --light-blue: #3b82f6;  /* accent — links, borders, highlights */
+  --silver:     #94a3b8;  /* secondary text, labels */
+  --black:      #1a1a1a;  /* body text */
   --white:      #ffffff;
-  --bg:         #f8fafc;
-  --border:     #cbd5e1;
+  --bg:         #f8fafc;  /* page background */
+  --border:     #cbd5e1;  /* subtle borders */
   --shadow:     0 2px 8px rgba(0, 0, 0, 0.12);
   --radius:     6px;
   --font:       'Segoe UI', system-ui, sans-serif;
@@ -32,7 +35,8 @@ a {
   color: inherit;
 }
 
-/* ── Animations ── */
+/* ── Shared animations ──
+   Applied via utility classes: .fade-in, .pop-in */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }

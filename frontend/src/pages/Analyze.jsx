@@ -1,3 +1,5 @@
+// Analyze page — side-by-side team comparison (up to 4 teams).
+// Currently a stub; full implementation coming once backend is ready.
 import NavBar from '../components/NavBar';
 
 export default function Analyze() {

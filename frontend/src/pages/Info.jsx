@@ -1,3 +1,5 @@
+// Info page — project overview, model details, data sources, and accuracy metrics.
+// Currently a stub; full implementation coming once model details are finalized.
 import NavBar from '../components/NavBar';
 
 export default function Info() {

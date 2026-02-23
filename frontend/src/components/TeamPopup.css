@@ -1,3 +1,6 @@
+/* Styles for the team detail popup overlay and card. */
+
+/* ── Overlay — dims the background and centers the card ── */
 .popup-overlay {
   position: fixed;
   inset: 0;
@@ -8,17 +11,19 @@
   z-index: 200;
 }
 
+/* ── Popup card ── */
 .popup {
   background: var(--white);
   border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  width: min(480px, 92vw);
+  width: min(480px, 92vw); /* responsive max width */
   max-height: 80vh;
-  overflow-y: auto;
+  overflow-y: auto;        /* scrollable if content overflows */
   padding: 28px 28px 24px;
   position: relative;
 }
 
+/* ── Close button ── */
 .popup-close {
   position: absolute;
   top: 14px;
@@ -33,6 +38,7 @@
 }
 .popup-close:hover { color: var(--black); }
 
+/* ── Loading and error states ── */
 .popup-loading,
 .popup-error {
   display: flex;
@@ -45,6 +51,7 @@
 
 .popup-error { color: #e74c3c; }
 
+/* Spinner animation for loading state */
 .spinner {
   display: inline-block;
   width: 18px;
@@ -57,6 +64,7 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── Team header ── */
 .popup-team-name {
   font-size: 1.5rem;
   font-weight: 700;
@@ -70,10 +78,12 @@
   margin-bottom: 20px;
 }
 
+/* ── Section layout ── */
 .popup-content section {
   margin-bottom: 20px;
 }
 
+/* Section header — small uppercase label with a divider line */
 .popup-content h3 {
   font-size: 0.8rem;
   font-weight: 600;
@@ -85,15 +95,23 @@
   padding-bottom: 4px;
 }
 
-/* Probability bars */
+/* ── Win probability bars ── */
 .prob-bars { display: flex; flex-direction: column; gap: 8px; }
-.prob-row { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+.prob-row  { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
 .prob-label { width: 60px; color: var(--black); }
-.prob-track { flex: 1; height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; border: 1px solid var(--border); }
+.prob-track {
+  flex: 1;
+  height: 10px;
+  background: var(--bg);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+/* Width is set inline from the probability value */
 .prob-fill  { height: 100%; background: var(--light-blue); border-radius: 5px; transition: width 0.4s ease; }
 .prob-pct   { width: 44px; text-align: right; color: var(--silver); }
 
-/* Players table */
+/* ── Top players table ── */
 .players-table {
   width: 100%;
   border-collapse: collapse;
@@ -105,17 +123,15 @@
   text-align: left;
   border-bottom: 1px solid var(--border);
 }
-.players-table th {
-  color: var(--silver);
-  font-weight: 600;
-}
+.players-table th { color: var(--silver); font-weight: 600; }
 
-/* Similar teams */
+/* ── Similar teams list ── */
 .similar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .similar-list li { display: flex; justify-content: space-between; font-size: 0.85rem; }
 .sim-name { font-weight: 600; color: var(--dark-blue); }
 .sim-meta { color: var(--silver); }
 
+/* ── Summary text ── */
 .popup-summary {
   font-size: 0.88rem;
   line-height: 1.6;
