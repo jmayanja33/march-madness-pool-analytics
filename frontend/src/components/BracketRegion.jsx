@@ -7,7 +7,7 @@ import './BracketRegion.css';
 // Seeds in first-round bracket order: 1v16, 8v9, 5v12, 4v13, 6v11, 3v14, 7v10, 2v15
 const FIRST_ROUND_SEEDS = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15];
 
-const ROUND_LABELS = ['Round 1', 'Round 2', 'Sweet 16', 'Elite 8'];
+const ROUND_LABELS = ['Round of 64', 'Round of 32', 'Sweet 16', 'Elite 8'];
 
 // Builds the 4-round slot array for a region.
 // Round 1 is populated from the provided teams list; later rounds are blank (TBD).

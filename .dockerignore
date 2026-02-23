@@ -1,0 +1,18 @@
+# Files excluded from the backend Docker build context.
+
+.git
+.venv
+.env
+.idea
+
+# Frontend — not needed in the backend image
+frontend/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Test artifacts
+.pytest_cache/
+htmlcov/

@@ -1,0 +1,55 @@
+# Docker Compose for local development.
+# Starts three services: the FastAPI backend, the Vite frontend, and ChromaDB.
+#
+# Usage:
+#   docker compose up --build
+#
+# Access:
+#   Frontend  → http://localhost:5173
+#   Backend   → http://localhost:8000
+#   ChromaDB  → http://localhost:8001
+
+services:
+
+  # ── ChromaDB vector database ──────────────────────────────────────────────
+  # Started first so the backend can connect to it on startup.
+  chromadb:
+    image: chromadb/chroma:latest
+    ports:
+      - "8001:8000"   # ChromaDB listens on 8000 internally; expose as 8001
+    volumes:
+      - ./data/vector_db:/chroma/chroma   # persist the vector store on the host
+
+  # ── FastAPI backend ────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app      # mount source for --reload hot-reloading
+      - ./data:/app/data    # mount data so prediction JSON files are live
+    environment:
+      - CHROMA_HOST=chromadb  # service name resolves inside the Docker network
+      - CHROMA_PORT=8000
+    depends_on:
+      - chromadb
+
+  # ── Vite frontend ─────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src         # mount source for Vite HMR
+      - ./frontend/public:/app/public
+      - /app/node_modules               # anonymous volume keeps container's node_modules intact
+    environment:
+      # Used by vite.config.js to proxy API requests to the backend service.
+      # Inside the Docker network the backend is reachable by its service name.
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend

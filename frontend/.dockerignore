@@ -1,0 +1,5 @@
+# Files excluded from the frontend Docker build context.
+
+node_modules/
+dist/
+.env
