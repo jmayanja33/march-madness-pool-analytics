@@ -13,7 +13,7 @@ Usage
     uv run scripts/import_vectors.py \
         --host localhost --port 8001 \
         --collection ncaa_teams \
-        --file data/vector_db/BAAI_bge-large-en-v1.5_33a831fccc944742a8f8ca811cf6db23_chroma_vectors.json
+        --file data/vector_db/chroma_vectors.json
 
 The script is idempotent: re-running it will upsert records that already exist
 rather than duplicating them.
@@ -39,7 +39,7 @@ DEFAULT_COLLECTION = "ncaa_teams"
 # Default path to the exported vectors JSON file (relative to project root).
 DEFAULT_JSON_FILE = (
     "data/vector_db/"
-    "BAAI_bge-large-en-v1.5_33a831fccc944742a8f8ca811cf6db23_chroma_vectors.json"
+    "chroma_vectors.json"
 )
 
 
