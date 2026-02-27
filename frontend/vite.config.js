@@ -1,7 +1,11 @@
 // Vite configuration.
-// Uses loadEnv to read BACKEND_URL from the .env file (see .env.example).
-// Docker Compose overrides BACKEND_URL via its environment section so the
-// proxy points at the backend service name instead of localhost.
+// BACKEND_URL resolution priority:
+//   1. process.env.BACKEND_URL  — set by Docker Compose as a real env var
+//   2. env.BACKEND_URL          — read from a local .env file by loadEnv()
+//   3. fallback 'http://localhost:8000' — bare local dev without a .env file
+//
+// loadEnv() only reads .env files on disk; it does NOT see Docker Compose env
+// vars, so process.env is checked first to handle the Docker case correctly.
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -9,14 +13,18 @@ export default defineConfig(({ mode }) => {
   // Load all .env variables (empty prefix = load everything, not just VITE_*)
   const env = loadEnv(mode, process.cwd(), '');
 
+  // Prefer the real process env (Docker Compose) over the .env file value.
+  const backendUrl =
+    process.env.BACKEND_URL ?? env.BACKEND_URL ?? 'http://localhost:8000';
+
   return {
     plugins: [react()],
     server: {
       // Proxy /analyze and /info to the FastAPI backend, keeping the frontend
       // and backend on the same origin in development to avoid CORS issues.
       proxy: {
-        '/analyze': env.BACKEND_URL,
-        '/info':    env.BACKEND_URL,
+        '/analyze': backendUrl,
+        '/info':    backendUrl,
       },
     },
   };
