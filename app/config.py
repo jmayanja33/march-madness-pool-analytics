@@ -33,4 +33,5 @@ CHROMA_HOST: str = os.getenv("CHROMA_HOST", "localhost")
 CHROMA_PORT: int = int(os.getenv("CHROMA_PORT", "8001"))
 
 # Name of the ChromaDB collection that stores the PCA-reduced team vectors.
-CHROMA_COLLECTION: str = os.getenv("CHROMA_COLLECTION", "teams")
+# Must match the --collection argument used when running scripts/import_vectors.py.
+CHROMA_COLLECTION: str = os.getenv("CHROMA_COLLECTION", "ncaa_teams")

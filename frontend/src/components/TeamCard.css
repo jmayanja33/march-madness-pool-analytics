@@ -1,0 +1,120 @@
+/* TeamCard — full analysis profile card used in the Analyze page.
+   Each card scrolls independently, allowing long summaries without
+   growing the overall column layout. */
+
+/* ── Card container ── */
+.team-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;   /* card itself scrolls when content overflows */
+  height: 100%;       /* fills the flex column in the Analyze layout */
+}
+
+/* ── Header ── */
+.tc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 20px 0;
+  gap: 12px;
+}
+
+.tc-title {
+  min-width: 0; /* allow text truncation inside flex */
+}
+
+.tc-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.tc-record {
+  font-size: 0.88rem;
+  color: var(--silver);
+  margin-top: 3px;
+}
+
+/* Remove (✕) button — top-right of each card */
+.tc-remove {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--silver);
+  line-height: 1;
+  padding: 2px 4px;
+  transition: color 0.15s;
+}
+.tc-remove:hover { color: var(--black); }
+
+/* ── Section wrapper ── */
+.tc-section {
+  padding: 16px 20px 0;
+}
+
+.tc-section:last-child {
+  padding-bottom: 20px;
+}
+
+/* Section header — small uppercase label with a divider line */
+.tc-section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--silver);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+/* ── Win probability bars ── */
+.tc-prob-bars  { display: flex; flex-direction: column; gap: 8px; }
+.tc-prob-row   { display: flex; align-items: center; gap: 8px; font-size: 0.83rem; }
+.tc-prob-label { width: 56px; color: var(--black); flex-shrink: 0; }
+.tc-prob-track {
+  flex: 1;
+  height: 10px;
+  background: var(--bg);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+/* Width set inline; transition creates a smooth grow animation on mount. */
+.tc-prob-fill  { height: 100%; background: var(--light-blue); border-radius: 5px; transition: width 0.45s ease; }
+.tc-prob-pct   { width: 44px; text-align: right; color: var(--silver); flex-shrink: 0; }
+
+/* ── Top players table ── */
+.tc-players-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+.tc-players-table th,
+.tc-players-table td {
+  padding: 5px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.tc-players-table th { color: var(--silver); font-weight: 600; }
+.tc-players-table tr:last-child td { border-bottom: none; }
+
+/* ── Similar teams list ── */
+.tc-similar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.tc-similar-list li { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.83rem; gap: 8px; }
+.tc-sim-name { font-weight: 600; color: var(--dark-blue); }
+.tc-sim-meta { color: var(--silver); white-space: nowrap; }
+
+/* ── Profile summary text ── */
+.tc-summary {
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: #444;
+}

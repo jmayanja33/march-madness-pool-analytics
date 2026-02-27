@@ -11,18 +11,30 @@ export default function TeamPopup({ teamName, onClose }) {
   const [error, setError]     = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch team data whenever the selected team changes
+  // Fetch team data whenever the selected team changes.
   useEffect(() => {
+    setData(null);
+    setError(null);
+    setLoading(true);
     fetchTeamData(teamName)
       .then(setData)
-      .catch(() => setError('Could not load team data.'))
+      .catch(() => setError('Team data is not yet available.'))
       .finally(() => setLoading(false));
   }, [teamName]);
 
+  // Win probability rows built from the structured API response fields.
+  const winRows = data
+    ? [
+        { label: '0 wins',  value: data.win_probability_distribution.zero_wins },
+        { label: '1 win',   value: data.win_probability_distribution.one_win },
+        { label: '2+ wins', value: data.win_probability_distribution.two_plus_wins },
+      ]
+    : [];
+
   return (
-    // Clicking the overlay (outside the popup card) closes the popup
+    // Clicking the overlay (outside the popup card) closes the popup.
     <div className="popup-overlay" onClick={onClose}>
-      {/* stopPropagation prevents clicks inside the card from closing it */}
+      {/* stopPropagation prevents clicks inside the card from closing it. */}
       <div className="popup pop-in" onClick={e => e.stopPropagation()}>
         <button className="popup-close" onClick={onClose}>✕</button>
 
@@ -39,15 +51,14 @@ export default function TeamPopup({ teamName, onClose }) {
             <section>
               <h3>Win Probability</h3>
               <div className="prob-bars">
-                {/* win_distribution keys are labels like "0 wins", "1 win", "2+ wins" */}
-                {Object.entries(data.win_distribution).map(([label, pct]) => (
+                {winRows.map(({ label, value }) => (
                   <div key={label} className="prob-row">
                     <span className="prob-label">{label}</span>
                     <div className="prob-track">
-                      {/* Bar width driven by probability value (0–1) */}
-                      <div className="prob-fill" style={{ width: `${pct * 100}%` }} />
+                      {/* Bar width driven by the probability value (0–1). */}
+                      <div className="prob-fill" style={{ width: `${value * 100}%` }} />
                     </div>
-                    <span className="prob-pct">{(pct * 100).toFixed(1)}%</span>
+                    <span className="prob-pct">{(value * 100).toFixed(1)}%</span>
                   </div>
                 ))}
               </div>
@@ -68,7 +79,7 @@ export default function TeamPopup({ teamName, onClose }) {
                       <td>{p.height}</td>
                       <td>{p.minutes}</td>
                       <td>{p.points}</td>
-                      <td>{p.ft_pct}%</td>
+                      <td>{p.free_throw_pct}%</td>
                     </tr>
                   ))}
                 </tbody>
@@ -76,23 +87,27 @@ export default function TeamPopup({ teamName, onClose }) {
             </section>
 
             {/* ── 3 Most Similar Historical Teams (from ChromaDB vector search) ── */}
-            <section>
-              <h3>Similar Teams</h3>
-              <ul className="similar-list">
-                {data.similar_teams.map(t => (
-                  <li key={t.name}>
-                    <span className="sim-name">{t.name}</span>
-                    <span className="sim-meta">{t.wins} tournament wins · {(t.similarity * 100).toFixed(0)}% similar</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            {data.similar_teams.length > 0 && (
+              <section>
+                <h3>Similar Teams</h3>
+                <ul className="similar-list">
+                  {data.similar_teams.map(t => (
+                    <li key={`${t.name}-${t.year}`}>
+                      <span className="sim-name">{t.name} ({t.year})</span>
+                      <span className="sim-meta">
+                        {t.tournament_wins} tourney {t.tournament_wins === 1 ? 'win' : 'wins'} · {(t.similarity * 100).toFixed(0)}% similar
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
-            {/* ── AI-generated team summary (optional field) ── */}
-            {data.summary && (
+            {/* ── AI-generated team summary ── */}
+            {data.profile_summary && (
               <section>
                 <h3>Summary</h3>
-                <p className="popup-summary">{data.summary}</p>
+                <p className="popup-summary">{data.profile_summary}</p>
               </section>
             )}
           </div>

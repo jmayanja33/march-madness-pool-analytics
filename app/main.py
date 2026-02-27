@@ -13,8 +13,9 @@ The app is started by uvicorn as specified in the project Dockerfile:
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.models import HealthResponse
+from app.models import HealthResponse, TeamListItem
 from app.routers import analyze
+from app.services import get_all_teams
 
 # ---------------------------------------------------------------------------
 # Application instance
@@ -74,6 +75,22 @@ async def root() -> HealthResponse:
 # ---------------------------------------------------------------------------
 # Info
 # ---------------------------------------------------------------------------
+
+
+@app.get(
+    "/teams",
+    response_model=list[TeamListItem],
+    tags=["teams"],
+    summary="List all tournament teams",
+)
+async def teams() -> list[TeamListItem]:
+    """
+    Return every team in the current tournament field, sorted by seed then name.
+
+    Used by the frontend to populate the Analyze-page dropdown.
+    Only teams with a tournament seed set in the predictions data are included.
+    """
+    return [TeamListItem(**t) for t in get_all_teams()]
 
 
 @app.get("/info", tags=["info"], summary="Project information")

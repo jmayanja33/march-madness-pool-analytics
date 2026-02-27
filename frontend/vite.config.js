@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
       // and backend on the same origin in development to avoid CORS issues.
       proxy: {
         '/analyze': backendUrl,
+        '/teams':   backendUrl,
         '/info':    backendUrl,
       },
     },

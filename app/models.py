@@ -89,6 +89,18 @@ class SimilarTeamsResponse(BaseModel):
     similar_teams: list[SimilarTeam]
 
 
+class TeamListItem(BaseModel):
+    """
+    Lightweight team descriptor returned by GET /teams.
+
+    Used to populate the Analyze-page team dropdown.
+    Teams are sorted by seed then alphabetically by name.
+    """
+
+    name: str  # Display name, e.g. "North Carolina"
+    seed: int  # Tournament seed (1–16)
+
+
 class HealthResponse(BaseModel):
     """Simple health-check response returned by GET /."""
 

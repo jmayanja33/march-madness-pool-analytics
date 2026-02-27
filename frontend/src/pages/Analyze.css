@@ -1,0 +1,191 @@
+/* Analyze page — multi-team comparison layout. */
+
+/* ── Page wrapper ── */
+.analyze-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ── Top bar (visible once ≥1 team is loaded) ── */
+.analyze-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.analyze-topbar-label {
+  font-size: 0.85rem;
+  color: var(--silver);
+  font-weight: 500;
+}
+
+/* "Add Team" button in the top bar */
+.btn-add-team {
+  background: var(--dark-blue);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  padding: 7px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-add-team:hover  { background: #1a3d7a; }
+.btn-add-team:active { transform: scale(0.97); }
+
+/* ── Empty state — centered team picker ── */
+.analyze-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.analyze-empty-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+}
+
+.analyze-empty-sub {
+  font-size: 0.95rem;
+  color: var(--silver);
+  max-width: 380px;
+}
+
+/* ── Team columns ── */
+.teams-container {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 0;                   /* columns share borders; no gap */
+  overflow: hidden;
+  min-height: 0;            /* allows inner scroll without growing the page */
+}
+
+.team-column {
+  flex: 1;
+  min-width: 0;             /* prevent flex blowout on long content */
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.team-column:last-child {
+  border-right: none;
+}
+
+/* ── Team picker form (shared between empty state and modal) ── */
+.team-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+}
+
+.picker-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  font-family: var(--font);
+  background: var(--white);
+  color: var(--black);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  transition: border-color 0.15s;
+  cursor: pointer;
+}
+.picker-select:focus {
+  outline: none;
+  border-color: var(--light-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+.picker-select:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Primary "Analyze" submit button */
+.btn-primary {
+  width: 100%;
+  padding: 10px;
+  background: var(--light-blue);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-primary:hover:not(:disabled)  { background: #2563eb; }
+.btn-primary:active:not(:disabled) { transform: scale(0.98); }
+.btn-primary:disabled              { opacity: 0.5; cursor: not-allowed; }
+
+/* Error message below the picker */
+.picker-error {
+  font-size: 0.83rem;
+  color: #e74c3c;
+  text-align: center;
+}
+
+/* ── Add-team modal overlay ── */
+.picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.picker-modal {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  width: min(360px, 90vw);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.picker-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.picker-modal-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+}
+
+/* ✕ button inside the modal header */
+.picker-close {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--silver);
+  padding: 2px 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.picker-close:hover { color: var(--black); }

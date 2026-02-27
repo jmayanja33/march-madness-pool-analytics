@@ -1,0 +1,299 @@
+"""
+Business-logic services for the March Madness Pool Analytics API.
+
+Provides helpers for:
+  - Loading and caching the predictions JSON from disk.
+  - Building Pydantic response models from raw JSON data.
+  - Querying ChromaDB for the most similar historical teams.
+  - Returning a flat sorted team list for the frontend dropdown.
+"""
+
+import json
+from functools import lru_cache
+from typing import Optional
+
+import chromadb
+
+from app.config import CHROMA_COLLECTION, CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
+from app.models import PlayerProfile, SimilarTeam, TeamAnalysis, WinProbabilityDistribution
+
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+# Mapping from numeric position code (stored in the predictions JSON) to the
+# human-readable abbreviation displayed in the UI.
+POSITION_LABELS: dict[int, str] = {
+    0: "G",
+    1: "G/F",
+    2: "F",
+    3: "F/C",
+    4: "C",
+}
+
+# Year of the current-season predictions file (update each year).
+CURRENT_YEAR: int = 2025
+
+# ---------------------------------------------------------------------------
+# Predictions data loading
+# ---------------------------------------------------------------------------
+
+
+@lru_cache(maxsize=1)
+def load_predictions() -> list[dict]:
+    """Load and cache the current season's predictions JSON.
+
+    Picks the lexicographically last ``*.json`` file inside PREDICTIONS_DIR
+    so that a new season's file is used without any code changes.
+    The result is cached in-process for the lifetime of the server.
+
+    Returns:
+        List of raw team dicts from the predictions JSON.
+
+    Raises:
+        FileNotFoundError: If PREDICTIONS_DIR contains no ``*.json`` files.
+    """
+    files = sorted(PREDICTIONS_DIR.glob("*.json"))
+    if not files:
+        raise FileNotFoundError(f"No predictions JSON found in {PREDICTIONS_DIR}")
+    return json.loads(files[-1].read_text(encoding="utf-8"))
+
+
+def find_team(name: str) -> Optional[dict]:
+    """Find a team by display name in the predictions data (case-insensitive).
+
+    Args:
+        name: Team display name to search for (e.g. ``"Duke"``).
+
+    Returns:
+        The raw team dict, or ``None`` if no matching team is found.
+    """
+    needle = name.casefold()
+    for team in load_predictions():
+        if team["name"].casefold() == needle:
+            return team
+    return None
+
+
+def get_all_teams() -> list[dict]:
+    """Return all tournament teams as a flat list sorted by seed then name.
+
+    Only includes teams that have a ``tournament_seed`` value set.
+
+    Returns:
+        List of dicts with keys ``name`` and ``seed``.
+    """
+    teams = [
+        {"name": t["name"], "seed": t["tournament_seed"]}
+        for t in load_predictions()
+        if t.get("tournament_seed") is not None
+    ]
+    return sorted(teams, key=lambda t: (t["seed"], t["name"]))
+
+
+# ---------------------------------------------------------------------------
+# Formatting helpers
+# ---------------------------------------------------------------------------
+
+
+def format_height(total_inches: int) -> str:
+    """Convert a height given as total inches to a feet-and-inches string.
+
+    Args:
+        total_inches: Height in inches (e.g. ``79``).
+
+    Returns:
+        Formatted string (e.g. ``"6'7\""``).
+    """
+    feet, remaining = divmod(total_inches, 12)
+    return f"{feet}'{remaining}\""
+
+
+def format_position(code: int) -> str:
+    """Convert a numeric position code to a human-readable abbreviation.
+
+    Args:
+        code: Position code 0–4 (0 = G, 1 = G/F, 2 = F, 3 = F/C, 4 = C).
+
+    Returns:
+        Human-readable label, or ``"?"`` for unrecognised codes.
+    """
+    return POSITION_LABELS.get(code, "?")
+
+
+def calc_ft_pct(player: dict) -> float:
+    """Calculate a player's free-throw percentage from season totals.
+
+    Args:
+        player: Raw player dict from the predictions JSON.
+
+    Returns:
+        Free-throw percentage (0–100) rounded to one decimal.
+        Returns ``0.0`` when the player attempted zero free throws.
+    """
+    attempted = player.get("free_throws_attempted", 0)
+    made = player.get("free_throws_made", 0)
+    if attempted == 0:
+        return 0.0
+    return round(made / attempted * 100, 1)
+
+
+# ---------------------------------------------------------------------------
+# Pydantic model builders
+# ---------------------------------------------------------------------------
+
+
+def build_player_profile(player: dict) -> PlayerProfile:
+    """Build a PlayerProfile Pydantic model from a raw player dict.
+
+    Args:
+        player: Raw player dict with the schema from the predictions JSON.
+
+    Returns:
+        Populated :class:`~app.models.PlayerProfile` instance.
+    """
+    return PlayerProfile(
+        name=player["name"],
+        position=format_position(player["position"]),
+        height=format_height(player["height"]),
+        minutes=player["minutes"],
+        points=player["points"],
+        free_throw_pct=calc_ft_pct(player),
+    )
+
+
+def build_win_distribution(raw: dict) -> WinProbabilityDistribution:
+    """Build a WinProbabilityDistribution from the raw predictions dict.
+
+    The JSON uses string keys ``'0'``, ``'1'``, and ``'2+'`` for the three
+    win-probability buckets.
+
+    Args:
+        raw: Dict with keys ``'0'``, ``'1'``, ``'2+'`` mapping to floats.
+
+    Returns:
+        Populated :class:`~app.models.WinProbabilityDistribution` instance.
+    """
+    return WinProbabilityDistribution(
+        zero_wins=raw.get("0", 0.0),
+        one_win=raw.get("1", 0.0),
+        two_plus_wins=raw.get("2+", 0.0),
+    )
+
+
+def build_team_analysis(team: dict, similar: list[SimilarTeam]) -> TeamAnalysis:
+    """Assemble a full TeamAnalysis Pydantic model from a raw team dict.
+
+    Args:
+        team: Raw team dict from the predictions JSON.
+        similar: Pre-fetched list of similar historical teams.
+
+    Returns:
+        Fully populated :class:`~app.models.TeamAnalysis` instance.
+    """
+    # Sort players by minutes played (descending) and keep the top 5.
+    top5_raw = sorted(team["players"], key=lambda p: p["minutes"], reverse=True)[:5]
+
+    return TeamAnalysis(
+        name=team["name"],
+        wins=team["wins"],
+        losses=team["losses"],
+        profile_summary=team.get("profile_summary", ""),
+        top_players=[build_player_profile(p) for p in top5_raw],
+        win_probability_distribution=build_win_distribution(
+            team.get("win_probability_distribution", {})
+        ),
+        similar_teams=similar,
+    )
+
+
+# ---------------------------------------------------------------------------
+# ChromaDB — similar team lookup
+# ---------------------------------------------------------------------------
+
+
+def team_name_to_chroma_id(name: str, year: int = CURRENT_YEAR) -> str:
+    """Convert a team display name to its ChromaDB document ID.
+
+    ChromaDB IDs follow the pattern ``{slug}_{year}``, where the slug is
+    the team name lowercased with spaces replaced by underscores.
+
+    Args:
+        name: Team display name (e.g. ``"North Carolina"``).
+        year: Season year (default: :data:`CURRENT_YEAR`).
+
+    Returns:
+        ChromaDB ID string (e.g. ``"north_carolina_2025"``).
+    """
+    slug = name.lower().replace(" ", "_")
+    return f"{slug}_{year}"
+
+
+def get_similar_teams(team_name: str) -> list[SimilarTeam]:
+    """Find the 3 most similar historical teams via ChromaDB.
+
+    Retrieves the current team's PCA-reduced vector from ChromaDB using its
+    2025 document ID, then queries for the nearest neighbours.  Any 2025
+    teams in the results are filtered out so that only historical seasons
+    (pre-2025) are returned.
+
+    Distance metric is L2 (ChromaDB default).  Similarity is converted via
+    ``1 / (1 + d)`` so that distance 0 → similarity 1.0, and larger
+    distances yield progressively lower similarity scores.
+
+    Args:
+        team_name: Display name of the team to query for.
+
+    Returns:
+        List of up to 3 :class:`~app.models.SimilarTeam` objects ordered by
+        similarity descending.  Returns an empty list when ChromaDB is
+        unreachable or the team is absent from the vector store.
+    """
+    try:
+        client = chromadb.HttpClient(host=CHROMA_HOST, port=CHROMA_PORT)
+        collection = client.get_collection(name=CHROMA_COLLECTION)
+
+        # Retrieve the current team's stored embedding by its 2025 document ID.
+        chroma_id = team_name_to_chroma_id(team_name, CURRENT_YEAR)
+        result = collection.get(ids=[chroma_id], include=["embeddings"])
+
+        if not result["embeddings"]:
+            return []
+
+        query_vector = result["embeddings"][0]
+
+        # Fetch 10 candidates so we have enough after filtering 2025 teams.
+        neighbors = collection.query(
+            query_embeddings=[query_vector],
+            n_results=10,
+            include=["metadatas", "distances"],
+        )
+
+        similar: list[SimilarTeam] = []
+        for meta, dist in zip(
+            neighbors["metadatas"][0], neighbors["distances"][0]
+        ):
+            # Skip any team from the current season.
+            if meta.get("year") == CURRENT_YEAR:
+                continue
+
+            # Convert L2 distance to a bounded 0–1 similarity score.
+            similarity = round(1.0 / (1.0 + dist), 4)
+
+            similar.append(
+                SimilarTeam(
+                    name=meta["name"],
+                    year=int(meta["year"]),
+                    tournament_wins=int(meta["tournament_wins"]),
+                    similarity=similarity,
+                )
+            )
+
+            if len(similar) == 3:
+                break
+
+        return similar
+
+    except Exception:
+        # ChromaDB unavailable or team not indexed — degrade gracefully.
+        return []
