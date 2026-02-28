@@ -124,10 +124,18 @@ export default function TeamCard({ team, onRemove }) {
               const barColor = pct >= 75 ? 'var(--sim-green)' : pct >= 50 ? 'var(--sim-yellow)' : 'var(--sim-red)';
               return (
                 <li key={`${t.name}-${t.year}`} className="tc-sim-row">
-                  {/* Name and year */}
+                  {/* Logo — hidden via onError if no file exists for this team */}
+                  <img
+                    src={`/logos/${t.name}.png`}
+                    alt={`${t.name} logo`}
+                    className="tc-sim-logo"
+                    onError={e => { e.currentTarget.style.visibility = 'hidden'; }}
+                  />
+
+                  {/* Name and year — auto-width column, sized to the widest name across all rows */}
                   <span className="tc-sim-name">{t.name} ({t.year})</span>
 
-                  {/* Similarity bar with percentage label */}
+                  {/* Similarity bar — 1fr column, identical width for every row */}
                   <div className="tc-sim-bar-wrap">
                     <div className="tc-sim-bar-track">
                       <div className="tc-sim-bar-fill" style={{ width: `${pct}%`, background: barColor }} />

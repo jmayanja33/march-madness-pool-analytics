@@ -192,19 +192,29 @@
 
 .tc-similar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 
-/* Single-line row: name | bar+% | Seed | Wins — four evenly-spaced columns */
+/* Single-line row: logo | name (fixed) | bar (1fr) | Seed | Wins
+   A fixed pixel width for the name column ensures every row uses identical
+   column widths, so all three bars start and end at exactly the same position. */
 .tc-sim-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 52px 52px;
+  grid-template-columns: 22px 160px 1fr 52px 52px;
   align-items: center;
   gap: 8px;
   font-size: 0.82rem;
 }
 
-.tc-sim-name { font-weight: 600; color: var(--dark-blue); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Similar team logo — small, proportional to the row height */
+.tc-sim-logo {
+  height: 22px;
+  width: 22px;
+  object-fit: contain;
+}
 
-/* Bar + percentage label inline */
-.tc-sim-bar-wrap { display: flex; align-items: center; gap: 5px; }
+.tc-sim-name { font-weight: 600; color: var(--dark-blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Bar + percentage label inline — equal horizontal margin insets the gauge
+   the same distance from the name column and the seed column. */
+.tc-sim-bar-wrap { display: flex; align-items: center; gap: 5px; margin: 0 16px; }
 
 .tc-sim-bar-track {
   flex: 1;
