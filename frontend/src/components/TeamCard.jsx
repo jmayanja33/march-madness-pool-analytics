@@ -18,10 +18,13 @@ export default function TeamCard({ team, onRemove }) {
       {/* ── Header: team name (with seed badge), record, remove button ── */}
       <div className="tc-header">
         <div className="tc-title">
-          <h2 className="tc-name">
-            <span className="tc-seed">#{team.seed}</span>
-            {team.name}
-          </h2>
+          <div className="tc-name-row">
+            <h2 className="tc-name">
+              <span className="tc-seed">#{team.seed}</span>
+              {team.name}
+            </h2>
+            <span className="tc-conference">{team.conference}</span>
+          </div>
           <p className="tc-record">{team.wins}–{team.losses}</p>
         </div>
         <button className="tc-remove" onClick={onRemove} title="Remove team">✕</button>

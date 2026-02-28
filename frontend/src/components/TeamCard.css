@@ -27,6 +27,22 @@
   min-width: 0; /* allow text truncation inside flex */
 }
 
+/* Row that places team name on the left and conference on the right */
+.tc-name-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Conference label — same size and color as the record */
+.tc-conference {
+  font-size: 0.88rem;
+  color: var(--silver);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .tc-name {
   font-size: 1.35rem;
   font-weight: 700;

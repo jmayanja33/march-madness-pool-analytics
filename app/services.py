@@ -265,6 +265,7 @@ def build_team_analysis(team: dict, similar: list[SimilarTeam]) -> TeamAnalysis:
     return TeamAnalysis(
         name=team["name"],
         seed=team.get("tournament_seed", 0),
+        conference=team.get("conference", ""),
         wins=team["wins"],
         losses=team["losses"],
         profile_summary=team.get("profile_summary", ""),

@@ -89,6 +89,7 @@ class TeamAnalysis(BaseModel):
 
     name: str
     seed: int                                                # Tournament seed (1–16)
+    conference: str                                          # Conference name, e.g. "ACC"
     wins: int
     losses: int
     profile_summary: str

@@ -34,6 +34,7 @@ async def client() -> AsyncClient:
 _MOCK_TEAM = {
     "name": "Duke",
     "tournament_seed": 3,
+    "conference": "ACC",
     "wins": 35,
     "losses": 4,
     "avg_height": 79.0,
@@ -138,6 +139,7 @@ async def test_analyze_team_response_shape(client: AsyncClient) -> None:
     body = response.json()
     assert body["name"] == "Duke"
     assert body["seed"] == 3
+    assert body["conference"] == "ACC"
     assert body["wins"] == 35
     assert body["losses"] == 4
     assert "top_players" in body
