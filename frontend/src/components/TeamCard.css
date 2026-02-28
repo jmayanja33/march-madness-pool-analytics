@@ -37,14 +37,14 @@
 
 /* Conference label — same size and color as the record */
 .tc-conference {
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   color: var(--silver);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .tc-name {
-  font-size: 1.35rem;
+  font-size: 1.65rem;
   font-weight: 700;
   color: var(--dark-blue);
   line-height: 1.2;
@@ -57,19 +57,37 @@
 
 /* Seed badge displayed before the team name */
 .tc-seed {
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--dark-blue);
   background: #e8f0fe;
   border-radius: 4px;
-  padding: 1px 5px;
+  padding: 2px 6px;
   flex-shrink: 0;
 }
 
 .tc-record {
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   color: var(--silver);
-  margin-top: 3px;
+  margin-top: 4px;
+}
+
+/* Right-side header group: logo and remove button side-by-side in the top-right */
+.tc-header-right {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+/* Team logo — shown in the top-right of the header when the file exists.
+   onError in JSX hides the element if the PNG is not found for that team. */
+.tc-logo {
+  height: 80px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
 }
 
 /* Remove (✕) button — top-right of each card */

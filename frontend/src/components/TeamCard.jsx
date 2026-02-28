@@ -15,7 +15,7 @@ export default function TeamCard({ team, onRemove }) {
   return (
     <div className="team-card">
 
-      {/* ── Header: team name (with seed badge), record, remove button ── */}
+      {/* ── Header: team name (with seed badge), record, logo, remove button ── */}
       <div className="tc-header">
         <div className="tc-title">
           <div className="tc-name-row">
@@ -27,7 +27,18 @@ export default function TeamCard({ team, onRemove }) {
           </div>
           <p className="tc-record">{team.wins}–{team.losses}</p>
         </div>
-        <button className="tc-remove" onClick={onRemove} title="Remove team">✕</button>
+
+        {/* Right-side group: logo in top-right corner, remove button above it */}
+        <div className="tc-header-right">
+          {/* Logo — hidden via onError if the file does not exist for this team */}
+          <img
+            src={`/logos/${team.name}.png`}
+            alt={`${team.name} logo`}
+            className="tc-logo"
+            onError={e => { e.currentTarget.style.display = 'none'; }}
+          />
+          <button className="tc-remove" onClick={onRemove} title="Remove team">✕</button>
+        </div>
       </div>
 
       {/* ── Win Probability ── */}
