@@ -50,46 +50,54 @@ export default function TeamCard({ team, onRemove }) {
       {/* ── Team Stats ── */}
       <section className="tc-section">
         <h3 className="tc-section-label">Team Stats</h3>
-        <div className="tc-stats-grid">
-          <div className="tc-stat"><span className="tc-stat-label">Avg Height</span><span className="tc-stat-value">{team.team_stats.avg_height}</span></div>
-          <div className="tc-stat"><span className="tc-stat-label">2PT%</span><span className="tc-stat-value">{team.team_stats.two_point_pct}%</span></div>
-          <div className="tc-stat"><span className="tc-stat-label">3PT%</span><span className="tc-stat-value">{team.team_stats.three_point_pct}%</span></div>
-          <div className="tc-stat"><span className="tc-stat-label">Blocks</span><span className="tc-stat-value">{team.team_stats.blocks}</span></div>
-          <div className="tc-stat"><span className="tc-stat-label">Off Reb</span><span className="tc-stat-value">{team.team_stats.offensive_rebounds}</span></div>
-          <div className="tc-stat"><span className="tc-stat-label">Def Reb</span><span className="tc-stat-value">{team.team_stats.defensive_rebounds}</span></div>
-          <div className="tc-stat"><span className="tc-stat-label">Turnovers</span><span className="tc-stat-value">{team.team_stats.turnovers}</span></div>
-          <div className="tc-stat"><span className="tc-stat-label">Steals</span><span className="tc-stat-value">{team.team_stats.steals}</span></div>
-          <div className="tc-stat"><span className="tc-stat-label">Fouls</span><span className="tc-stat-value">{team.team_stats.fouls}</span></div>
-        </div>
+        {team.top_players.length === 0 ? (
+          <p className="tc-unavailable">Team data not available.</p>
+        ) : (
+          <div className="tc-stats-grid">
+            <div className="tc-stat"><span className="tc-stat-label">Avg Height</span><span className="tc-stat-value">{team.team_stats.avg_height}</span></div>
+            <div className="tc-stat"><span className="tc-stat-label">2PT%</span><span className="tc-stat-value">{team.team_stats.two_point_pct}%</span></div>
+            <div className="tc-stat"><span className="tc-stat-label">3PT%</span><span className="tc-stat-value">{team.team_stats.three_point_pct}%</span></div>
+            <div className="tc-stat"><span className="tc-stat-label">Blocks</span><span className="tc-stat-value">{team.team_stats.blocks}</span></div>
+            <div className="tc-stat"><span className="tc-stat-label">Off Reb</span><span className="tc-stat-value">{team.team_stats.offensive_rebounds}</span></div>
+            <div className="tc-stat"><span className="tc-stat-label">Def Reb</span><span className="tc-stat-value">{team.team_stats.defensive_rebounds}</span></div>
+            <div className="tc-stat"><span className="tc-stat-label">Turnovers</span><span className="tc-stat-value">{team.team_stats.turnovers}</span></div>
+            <div className="tc-stat"><span className="tc-stat-label">Steals</span><span className="tc-stat-value">{team.team_stats.steals}</span></div>
+            <div className="tc-stat"><span className="tc-stat-label">Fouls</span><span className="tc-stat-value">{team.team_stats.fouls}</span></div>
+          </div>
+        )}
       </section>
 
       {/* ── Top 5 Players by minutes ── */}
       <section className="tc-section">
         <h3 className="tc-section-label">Top Players</h3>
-        <table className="tc-players-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Pos</th>
-              <th>Ht</th>
-              <th>Avg Min</th>
-              <th>Avg Pts</th>
-              <th>FT%</th>
-            </tr>
-          </thead>
-          <tbody>
-            {team.top_players.map(p => (
-              <tr key={p.name}>
-                <td>{p.name}</td>
-                <td>{p.position}</td>
-                <td>{p.height}</td>
-                <td>{p.avg_minutes}</td>
-                <td>{p.avg_points}</td>
-                <td>{p.free_throw_pct}%</td>
+        {team.top_players.length === 0 ? (
+          <p className="tc-unavailable">Player data not available.</p>
+        ) : (
+          <table className="tc-players-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Pos</th>
+                <th>Ht</th>
+                <th>Avg Min</th>
+                <th>Avg Pts</th>
+                <th>FT%</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {team.top_players.map(p => (
+                <tr key={p.name}>
+                  <td>{p.name}</td>
+                  <td>{p.position}</td>
+                  <td>{p.height}</td>
+                  <td>{p.avg_minutes}</td>
+                  <td>{p.avg_points}</td>
+                  <td>{p.free_throw_pct}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </section>
 
       {/* ── 3 Most Similar Historical Teams (from ChromaDB) ── */}

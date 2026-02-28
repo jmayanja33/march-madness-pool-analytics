@@ -170,6 +170,13 @@
 .tc-sim-name { font-weight: 600; color: var(--dark-blue); }
 .tc-sim-meta { color: var(--silver); white-space: nowrap; }
 
+/* Fallback message shown when a data section has no content */
+.tc-unavailable {
+  font-size: 0.83rem;
+  color: var(--silver);
+  font-style: italic;
+}
+
 /* ── Profile summary text ── */
 .tc-summary {
   font-size: 0.85rem;

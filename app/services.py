@@ -213,7 +213,8 @@ def build_team_stats(team: dict) -> TeamStats:
     Returns:
         Populated :class:`~app.models.TeamStats` instance.
     """
-    players = team["players"]
+    # Default to empty list when player data is not available for this team.
+    players = team.get("players") or []
     games = team["wins"] + team["losses"]
 
     # Sum counting stats across the full roster.
@@ -260,7 +261,9 @@ def build_team_analysis(team: dict, similar: list[SimilarTeam]) -> TeamAnalysis:
         Fully populated :class:`~app.models.TeamAnalysis` instance.
     """
     # Sort players by minutes played (descending) and keep the top 5.
-    top5_raw = sorted(team["players"], key=lambda p: p["minutes"], reverse=True)[:5]
+    # Default to empty list when player data is not available for this team.
+    players = team.get("players") or []
+    top5_raw = sorted(players, key=lambda p: p["minutes"], reverse=True)[:5]
 
     return TeamAnalysis(
         name=team["name"],
