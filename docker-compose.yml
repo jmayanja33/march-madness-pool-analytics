@@ -35,6 +35,14 @@ services:
       - CHROMA_PORT=8000
     depends_on:
       - chromadb
+    # Poll the health-check endpoint until uvicorn is accepting requests.
+    # Other services use condition: service_healthy so they wait for this.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
 
   # ── Vite frontend ─────────────────────────────────────────────────────────
   frontend:
@@ -53,4 +61,5 @@ services:
       # Inside the Docker network the backend is reachable by its service name.
       - BACKEND_URL=http://backend:8000
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy

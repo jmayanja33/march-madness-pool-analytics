@@ -4,12 +4,11 @@ Analyze router — handles all /analyze endpoints.
 Routes defined in this module (prefix "/analyze" is applied in main.py):
 
     GET /analyze/most-similar/{team}
-        Reserved for a future ChromaDB similarity query.  Returns 501 until
-        the vector-database integration is implemented.
+        Query ChromaDB for the 3 most similar historical teams to the given team.
 
     GET /analyze/{team}
-        Load team data from the predictions JSON and return a full TeamAnalysis.
-        similar_teams is always an empty list until /most-similar is wired up.
+        Load team data from the predictions JSON and return a full TeamAnalysis,
+        including similar_teams populated from ChromaDB.
 
 NOTE: The most-specific route (/most-similar/{team}) is registered BEFORE the
 wildcard route (/{team}) so that FastAPI does not accidentally swallow
@@ -19,7 +18,7 @@ wildcard route (/{team}) so that FastAPI does not accidentally swallow
 from fastapi import APIRouter, HTTPException
 
 from app.models import SimilarTeamsResponse, TeamAnalysis
-from app.services import build_team_analysis, find_team
+from app.services import build_team_analysis, find_team, get_similar_teams
 
 # ---------------------------------------------------------------------------
 # Router
@@ -53,9 +52,16 @@ async def get_most_similar(team: str) -> SimilarTeamsResponse:
         tournament win totals.
 
     Raises:
-        HTTPException 501: ChromaDB integration not yet implemented.
+        HTTPException 404: If the team is not found in the predictions data.
     """
-    raise HTTPException(status_code=501, detail="Not yet implemented")
+    # Look up the team in the predictions JSON (case-insensitive).
+    team_data = find_team(team)
+    if team_data is None:
+        raise HTTPException(status_code=404, detail=f"Team '{team}' not found.")
+
+    # Query ChromaDB for the 3 most similar historical teams.
+    similar = get_similar_teams(team)
+    return SimilarTeamsResponse(team=team_data["name"], similar_teams=similar)
 
 
 # ---------------------------------------------------------------------------
@@ -77,7 +83,7 @@ async def get_team_analysis(team: str) -> TeamAnalysis:
       - Top 5 players by minutes (position, height, minutes, points, FT%)
       - Plain-text profile summary
       - Pre-calculated win-probability distribution (0 / 1 / 2+ wins)
-      - similar_teams is an empty list until /most-similar is implemented.
+      - The 3 most similar historical teams from ChromaDB (empty if unavailable).
 
     Args:
         team: URL-decoded team name (e.g. "Duke" or "North Carolina").
@@ -93,5 +99,6 @@ async def get_team_analysis(team: str) -> TeamAnalysis:
     if team_data is None:
         raise HTTPException(status_code=404, detail=f"Team '{team}' not found.")
 
-    # similar_teams is empty until the ChromaDB integration is complete.
-    return build_team_analysis(team_data, similar=[])
+    # Query ChromaDB for the 3 most similar historical teams.
+    similar = get_similar_teams(team)
+    return build_team_analysis(team_data, similar=similar)

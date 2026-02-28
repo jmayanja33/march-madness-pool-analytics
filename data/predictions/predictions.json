@@ -2,7 +2,7 @@
   {
     "name": "Alabama State",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "alabama_state_2025",
     "conference": "SWAC",
     "wins": 20,
     "losses": 16,
@@ -430,7 +430,7 @@
   {
     "name": "St. Francis (PA)",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "st._francis_(pa)_2025",
     "conference": "NEC",
     "wins": 16,
     "losses": 18,
@@ -992,7 +992,7 @@
   {
     "name": "San Diego State",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "san_diego_state_2025",
     "conference": "Mountain West",
     "wins": 21,
     "losses": 10,
@@ -1443,7 +1443,7 @@
   {
     "name": "North Carolina",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "north_carolina_2025",
     "conference": "ACC",
     "wins": 23,
     "losses": 14,
@@ -1899,7 +1899,7 @@
   {
     "name": "American University",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "american_university_2025",
     "conference": "Patriot",
     "wins": 22,
     "losses": 13,
@@ -1975,7 +1975,7 @@
   {
     "name": "Mount St. Mary's",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "mount_st._mary's_2025",
     "conference": "MAAC",
     "wins": 23,
     "losses": 13,
@@ -2430,7 +2430,7 @@
   {
     "name": "Texas",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "texas_2025",
     "conference": "SEC",
     "wins": 19,
     "losses": 16,
@@ -2884,7 +2884,7 @@
   {
     "name": "Xavier",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "xavier_2025",
     "conference": "Big East",
     "wins": 22,
     "losses": 12,
@@ -3363,7 +3363,7 @@
   {
     "name": "Louisville",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "louisville_2025",
     "conference": "ACC",
     "wins": 27,
     "losses": 8,
@@ -3844,7 +3844,7 @@
   {
     "name": "Creighton",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "creighton_2025",
     "conference": "Big East",
     "wins": 25,
     "losses": 11,
@@ -4325,7 +4325,7 @@
   {
     "name": "Purdue",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "purdue_2025",
     "conference": "Big Ten",
     "wins": 24,
     "losses": 12,
@@ -4832,7 +4832,7 @@
   {
     "name": "High Point",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "high_point_2025",
     "conference": "Big South",
     "wins": 29,
     "losses": 6,
@@ -5394,7 +5394,7 @@
   {
     "name": "Wisconsin",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "wisconsin_2025",
     "conference": "Big Ten",
     "wins": 27,
     "losses": 10,
@@ -5930,7 +5930,7 @@
   {
     "name": "Montana",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "montana_2025",
     "conference": "Big Sky",
     "wins": 25,
     "losses": 10,
@@ -6357,7 +6357,7 @@
   {
     "name": "Houston",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "houston_2025",
     "conference": "Big 12",
     "wins": 35,
     "losses": 5,
@@ -6757,7 +6757,7 @@
   {
     "name": "SIU Edwardsville",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "siu_edwardsville_2025",
     "conference": "OVC",
     "wins": 22,
     "losses": 12,
@@ -7237,7 +7237,7 @@
   {
     "name": "Auburn",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "auburn_2025",
     "conference": "SEC",
     "wins": 32,
     "losses": 6,
@@ -7717,7 +7717,7 @@
   {
     "name": "Clemson",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "clemson_2025",
     "conference": "ACC",
     "wins": 27,
     "losses": 7,
@@ -8197,7 +8197,7 @@
   {
     "name": "McNeese",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "mcneese_2025",
     "conference": "Southland",
     "wins": 28,
     "losses": 7,
@@ -8623,7 +8623,7 @@
   {
     "name": "BYU",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "byu_2025",
     "conference": "Big 12",
     "wins": 26,
     "losses": 10,
@@ -8697,7 +8697,7 @@
   {
     "name": "VCU",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "vcu_2025",
     "conference": "A-10",
     "wins": 28,
     "losses": 7,
@@ -9097,7 +9097,7 @@
   {
     "name": "Gonzaga",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "gonzaga_2025",
     "conference": "WCC",
     "wins": 26,
     "losses": 9,
@@ -9550,7 +9550,7 @@
   {
     "name": "Georgia",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "georgia_2025",
     "conference": "SEC",
     "wins": 20,
     "losses": 13,
@@ -9975,7 +9975,7 @@
   {
     "name": "Tennessee",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "tennessee_2025",
     "conference": "SEC",
     "wins": 30,
     "losses": 8,
@@ -10429,7 +10429,7 @@
   {
     "name": "Wofford",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "wofford_2025",
     "conference": "SoCon",
     "wins": 19,
     "losses": 16,
@@ -10829,7 +10829,7 @@
   {
     "name": "Kansas",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "kansas_2025",
     "conference": "Big 12",
     "wins": 21,
     "losses": 13,
@@ -11336,7 +11336,7 @@
   {
     "name": "Arkansas",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "arkansas_2025",
     "conference": "SEC",
     "wins": 22,
     "losses": 14,
@@ -11789,7 +11789,7 @@
   {
     "name": "Texas A&M",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "texas_a&m_2025",
     "conference": "SEC",
     "wins": 23,
     "losses": 11,
@@ -12241,7 +12241,7 @@
   {
     "name": "Yale",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "yale_2025",
     "conference": "Ivy",
     "wins": 22,
     "losses": 8,
@@ -12717,7 +12717,7 @@
   {
     "name": "Missouri",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "missouri_2025",
     "conference": "SEC",
     "wins": 22,
     "losses": 12,
@@ -13224,7 +13224,7 @@
   {
     "name": "Drake",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "drake_2025",
     "conference": "MVC",
     "wins": 31,
     "losses": 4,
@@ -13569,7 +13569,7 @@
   {
     "name": "UCLA",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "ucla_2025",
     "conference": "Big Ten",
     "wins": 23,
     "losses": 11,
@@ -13967,7 +13967,7 @@
   {
     "name": "Utah State",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "utah_state_2025",
     "conference": "Mountain West",
     "wins": 26,
     "losses": 8,
@@ -14393,7 +14393,7 @@
   {
     "name": "St. John's",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "st._john's_2025",
     "conference": "Big East",
     "wins": 31,
     "losses": 5,
@@ -14820,7 +14820,7 @@
   {
     "name": "Omaha",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "omaha_2025",
     "conference": "Summit",
     "wins": 22,
     "losses": 13,
@@ -15247,7 +15247,7 @@
   {
     "name": "Michigan",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "michigan_2025",
     "conference": "Big Ten",
     "wins": 27,
     "losses": 10,
@@ -15755,7 +15755,7 @@
   {
     "name": "UC San Diego",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "uc_san_diego_2025",
     "conference": "Big West",
     "wins": 30,
     "losses": 5,
@@ -16182,7 +16182,7 @@
   {
     "name": "Texas Tech",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "texas_tech_2025",
     "conference": "Big 12",
     "wins": 28,
     "losses": 9,
@@ -16608,7 +16608,7 @@
   {
     "name": "UNC Wilmington",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "unc_wilmington_2025",
     "conference": "CAA",
     "wins": 27,
     "losses": 8,
@@ -17089,7 +17089,7 @@
   {
     "name": "Mississippi State",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "mississippi_state_2025",
     "conference": "SEC",
     "wins": 21,
     "losses": 13,
@@ -17569,7 +17569,7 @@
   {
     "name": "Baylor",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "baylor_2025",
     "conference": "Big 12",
     "wins": 20,
     "losses": 15,
@@ -17968,7 +17968,7 @@
   {
     "name": "Alabama",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "alabama_2025",
     "conference": "SEC",
     "wins": 28,
     "losses": 9,
@@ -18394,7 +18394,7 @@
   {
     "name": "Robert Morris",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "robert_morris_2025",
     "conference": "Horizon",
     "wins": 26,
     "losses": 9,
@@ -18794,7 +18794,7 @@
   {
     "name": "Iowa State",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "iowa_state_2025",
     "conference": "Big 12",
     "wins": 25,
     "losses": 10,
@@ -19247,7 +19247,7 @@
   {
     "name": "Lipscomb",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "lipscomb_2025",
     "conference": "ASUN",
     "wins": 25,
     "losses": 10,
@@ -19728,7 +19728,7 @@
   {
     "name": "Memphis",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "memphis_2025",
     "conference": "American",
     "wins": 29,
     "losses": 6,
@@ -20101,7 +20101,7 @@
   {
     "name": "Colorado State",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "colorado_state_2025",
     "conference": "Mountain West",
     "wins": 26,
     "losses": 10,
@@ -20501,7 +20501,7 @@
   {
     "name": "Duke",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "duke_2025",
     "conference": "ACC",
     "wins": 35,
     "losses": 4,
@@ -20982,7 +20982,7 @@
   {
     "name": "Saint Mary's",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "saint_mary's_2025",
     "conference": "WCC",
     "wins": 29,
     "losses": 6,
@@ -21381,7 +21381,7 @@
   {
     "name": "Vanderbilt",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "vanderbilt_2025",
     "conference": "SEC",
     "wins": 20,
     "losses": 13,
@@ -21860,7 +21860,7 @@
   {
     "name": "Ole Miss",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "ole_miss_2025",
     "conference": "SEC",
     "wins": 24,
     "losses": 12,
@@ -22286,7 +22286,7 @@
   {
     "name": "Maryland",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "maryland_2025",
     "conference": "Big Ten",
     "wins": 27,
     "losses": 9,
@@ -22739,7 +22739,7 @@
   {
     "name": "Grand Canyon",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "grand_canyon_2025",
     "conference": "WAC",
     "wins": 26,
     "losses": 8,
@@ -23165,7 +23165,7 @@
   {
     "name": "Florida",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "florida_2025",
     "conference": "SEC",
     "wins": 36,
     "losses": 4,
@@ -23673,7 +23673,7 @@
   {
     "name": "Norfolk State",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "norfolk_state_2025",
     "conference": "MEAC",
     "wins": 24,
     "losses": 11,
@@ -24073,7 +24073,7 @@
   {
     "name": "Kentucky",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "kentucky_2025",
     "conference": "SEC",
     "wins": 24,
     "losses": 12,
@@ -24553,7 +24553,7 @@
   {
     "name": "Troy",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "troy_2025",
     "conference": "Sun Belt",
     "wins": 23,
     "losses": 11,
@@ -25006,7 +25006,7 @@
   {
     "name": "Marquette",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "marquette_2025",
     "conference": "Big East",
     "wins": 23,
     "losses": 11,
@@ -25486,7 +25486,7 @@
   {
     "name": "New Mexico",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "new_mexico_2025",
     "conference": "Mountain West",
     "wins": 27,
     "losses": 8,
@@ -25885,7 +25885,7 @@
   {
     "name": "Arizona",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "arizona_2025",
     "conference": "Big 12",
     "wins": 24,
     "losses": 13,
@@ -26501,7 +26501,7 @@
   {
     "name": "Akron",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "akron_2025",
     "conference": "MAC",
     "wins": 28,
     "losses": 7,
@@ -26901,7 +26901,7 @@
   {
     "name": "UConn",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "uconn_2025",
     "conference": "Big East",
     "wins": 24,
     "losses": 11,
@@ -27300,7 +27300,7 @@
   {
     "name": "Oklahoma",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "oklahoma_2025",
     "conference": "SEC",
     "wins": 20,
     "losses": 14,
@@ -27726,7 +27726,7 @@
   {
     "name": "Illinois",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "illinois_2025",
     "conference": "Big Ten",
     "wins": 22,
     "losses": 13,
@@ -28125,7 +28125,7 @@
   {
     "name": "Michigan State",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "michigan_state_2025",
     "conference": "Big Ten",
     "wins": 30,
     "losses": 7,
@@ -28551,7 +28551,7 @@
   {
     "name": "Bryant",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "bryant_2025",
     "conference": "Am. East",
     "wins": 23,
     "losses": 12,
@@ -29005,7 +29005,7 @@
   {
     "name": "Oregon",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "oregon_2025",
     "conference": "Big Ten",
     "wins": 25,
     "losses": 10,
@@ -29079,7 +29079,7 @@
   {
     "name": "Liberty",
     "year": 2025,
-    "team_id": "502130aa-4e2c-4877-88d7-e08120a285ea",
+    "team_id": "liberty_2025",
     "conference": "CUSA",
     "wins": 28,
     "losses": 7,

@@ -101,9 +101,11 @@ export default function TeamCard({ team, onRemove }) {
       </section>
 
       {/* ── 3 Most Similar Historical Teams (from ChromaDB) ── */}
-      {team.similar_teams.length > 0 && (
-        <section className="tc-section">
-          <h3 className="tc-section-label">Similar Teams</h3>
+      <section className="tc-section">
+        <h3 className="tc-section-label">Similar Teams</h3>
+        {team.similar_teams.length === 0 ? (
+          <p className="tc-unavailable">Similar team data not available.</p>
+        ) : (
           <ul className="tc-similar-list">
             {team.similar_teams.map(t => (
               <li key={`${t.name}-${t.year}`}>
@@ -114,8 +116,8 @@ export default function TeamCard({ team, onRemove }) {
               </li>
             ))}
           </ul>
-        </section>
-      )}
+        )}
+      </section>
 
       {/* ── AI-generated profile summary ── */}
       {team.profile_summary && (
