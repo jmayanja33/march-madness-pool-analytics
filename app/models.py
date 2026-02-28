@@ -23,10 +23,10 @@ class PlayerProfile(BaseModel):
     """
 
     name: str
-    position: str       # Human-readable position label, e.g. "G", "F", "C", "G/F"
-    height: str         # Height formatted as feet + inches, e.g. '6\'11"'
-    minutes: int        # Total minutes played during the season
-    points: int         # Total points scored during the season
+    position: str         # Human-readable position label, e.g. "G", "F", "C", "G/F"
+    height: str           # Height formatted as feet + inches, e.g. '6\'11"'
+    avg_minutes: float    # Average minutes played per game, rounded to one decimal
+    avg_points: float     # Average points scored per game, rounded to one decimal
     free_throw_pct: float  # Free-throw percentage (0–100), rounded to one decimal
 
 
@@ -40,6 +40,25 @@ class WinProbabilityDistribution(BaseModel):
     zero_wins: float     # Probability the team wins 0 tournament games
     one_win: float       # Probability the team wins exactly 1 tournament game
     two_plus_wins: float  # Probability the team wins 2 or more tournament games
+
+
+class TeamStats(BaseModel):
+    """
+    Per-game team averages derived from summing all player season totals.
+
+    Shooting percentages are computed from total makes / total attempts.
+    All counting stats (blocks, rebounds, etc.) are per-game averages.
+    """
+
+    avg_height: str          # Roster average height formatted as feet + inches
+    two_point_pct: float     # 2-point field-goal percentage (0–100), 2 decimals
+    three_point_pct: float   # 3-point field-goal percentage (0–100), 2 decimals
+    blocks: float            # Blocks per game, rounded to 2 decimals
+    offensive_rebounds: float  # Offensive rebounds per game, rounded to 2 decimals
+    defensive_rebounds: float  # Defensive rebounds per game, rounded to 2 decimals
+    turnovers: float         # Turnovers per game, rounded to 2 decimals
+    steals: float            # Steals per game, rounded to 2 decimals
+    fouls: float             # Personal fouls per game, rounded to 2 decimals
 
 
 class SimilarTeam(BaseModel):
@@ -69,10 +88,12 @@ class TeamAnalysis(BaseModel):
     """
 
     name: str
+    seed: int                                                # Tournament seed (1–16)
     wins: int
     losses: int
     profile_summary: str
     top_players: list[PlayerProfile]                     # Top 5 players by minutes
+    team_stats: TeamStats                                # Per-game team averages
     win_probability_distribution: WinProbabilityDistribution
     similar_teams: list[SimilarTeam]                     # 3 most similar historical teams
 

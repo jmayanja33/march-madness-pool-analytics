@@ -15,7 +15,7 @@ from typing import Optional
 import chromadb
 
 from app.config import CHROMA_COLLECTION, CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
-from app.models import PlayerProfile, SimilarTeam, TeamAnalysis, WinProbabilityDistribution
+from app.models import PlayerProfile, SimilarTeam, TeamAnalysis, TeamStats, WinProbabilityDistribution
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -121,6 +121,22 @@ def format_position(code: int) -> str:
     return POSITION_LABELS.get(code, "?")
 
 
+def calc_avg_per_game(total: int, games: int) -> float:
+    """Calculate a per-game average from a season total.
+
+    Args:
+        total: Season total value (e.g. total minutes or total points).
+        games: Number of games played during the season.
+
+    Returns:
+        Per-game average rounded to one decimal.
+        Returns ``0.0`` when ``games`` is 0.
+    """
+    if games == 0:
+        return 0.0
+    return round(total / games, 1)
+
+
 def calc_ft_pct(player: dict) -> float:
     """Calculate a player's free-throw percentage from season totals.
 
@@ -152,12 +168,13 @@ def build_player_profile(player: dict) -> PlayerProfile:
     Returns:
         Populated :class:`~app.models.PlayerProfile` instance.
     """
+    games = player.get("games", 0)
     return PlayerProfile(
         name=player["name"],
         position=format_position(player["position"]),
         height=format_height(player["height"]),
-        minutes=player["minutes"],
-        points=player["points"],
+        avg_minutes=calc_avg_per_game(player["minutes"], games),
+        avg_points=calc_avg_per_game(player["points"], games),
         free_throw_pct=calc_ft_pct(player),
     )
 
@@ -181,6 +198,57 @@ def build_win_distribution(raw: dict) -> WinProbabilityDistribution:
     )
 
 
+def build_team_stats(team: dict) -> TeamStats:
+    """Build a TeamStats Pydantic model from a raw team dict.
+
+    Counts are summed across all player records then divided by total games
+    played (wins + losses) to produce per-game averages.  Shooting
+    percentages are computed from aggregated makes and attempts.
+    Average height uses the pre-computed ``avg_height`` field (total inches)
+    formatted via :func:`format_height`.
+
+    Args:
+        team: Raw team dict from the predictions JSON.
+
+    Returns:
+        Populated :class:`~app.models.TeamStats` instance.
+    """
+    players = team["players"]
+    games = team["wins"] + team["losses"]
+
+    # Sum counting stats across the full roster.
+    total_2pa = sum(p["two_point_field_goals_attempted"] for p in players)
+    total_2pm = sum(p["two_point_field_goals_made"] for p in players)
+    total_3pa = sum(p["three_point_field_goals_attempted"] for p in players)
+    total_3pm = sum(p["three_point_field_goals_made"] for p in players)
+    total_blocks = sum(p["blocks"] for p in players)
+    total_oreb   = sum(p["offensive_rebounds"] for p in players)
+    total_dreb   = sum(p["defensive_rebounds"] for p in players)
+    total_to     = sum(p["turnovers"] for p in players)
+    total_steals = sum(p["steals"] for p in players)
+    total_fouls  = sum(p["fouls"] for p in players)
+
+    def per_game(total: int) -> float:
+        """Divide a season total by games played, round to 2 decimals."""
+        return round(total / games, 2) if games > 0 else 0.0
+
+    def shot_pct(made: int, attempted: int) -> float:
+        """Compute field-goal percentage (0–100), round to 2 decimals."""
+        return round(made / attempted * 100, 2) if attempted > 0 else 0.0
+
+    return TeamStats(
+        avg_height=format_height(round(team["avg_height"])),
+        two_point_pct=shot_pct(total_2pm, total_2pa),
+        three_point_pct=shot_pct(total_3pm, total_3pa),
+        blocks=per_game(total_blocks),
+        offensive_rebounds=per_game(total_oreb),
+        defensive_rebounds=per_game(total_dreb),
+        turnovers=per_game(total_to),
+        steals=per_game(total_steals),
+        fouls=per_game(total_fouls),
+    )
+
+
 def build_team_analysis(team: dict, similar: list[SimilarTeam]) -> TeamAnalysis:
     """Assemble a full TeamAnalysis Pydantic model from a raw team dict.
 
@@ -196,10 +264,12 @@ def build_team_analysis(team: dict, similar: list[SimilarTeam]) -> TeamAnalysis:
 
     return TeamAnalysis(
         name=team["name"],
+        seed=team.get("tournament_seed", 0),
         wins=team["wins"],
         losses=team["losses"],
         profile_summary=team.get("profile_summary", ""),
         top_players=[build_player_profile(p) for p in top5_raw],
+        team_stats=build_team_stats(team),
         win_probability_distribution=build_win_distribution(
             team.get("win_probability_distribution", {})
         ),

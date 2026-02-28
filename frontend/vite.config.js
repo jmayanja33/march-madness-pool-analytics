@@ -23,9 +23,12 @@ export default defineConfig(({ mode }) => {
       // Proxy /analyze and /info to the FastAPI backend, keeping the frontend
       // and backend on the same origin in development to avoid CORS issues.
       proxy: {
-        '/analyze': backendUrl,
-        '/teams':   backendUrl,
-        '/info':    backendUrl,
+        // Use explicit option objects so changeOrigin rewrites the Host header
+        // to match the target — required when the backend runs on a different
+        // host (e.g., the "backend" Docker service name vs. "localhost").
+        '/analyze': { target: backendUrl, changeOrigin: true },
+        '/teams':   { target: backendUrl, changeOrigin: true },
+        '/info':    { target: backendUrl, changeOrigin: true },
       },
     },
   };

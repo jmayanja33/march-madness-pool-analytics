@@ -15,6 +15,7 @@ export default function Analyze() {
   // Sorted list of { name, seed } for the team picker dropdown.
   const [teamList, setTeamList]           = useState([]);
   const [listLoading, setListLoading]     = useState(true);
+  const [listError, setListError]         = useState(null);
 
   // Array of fully loaded TeamAnalysis objects, one per column (max 4).
   const [teams, setTeams]                 = useState([]);
@@ -30,7 +31,7 @@ export default function Analyze() {
   useEffect(() => {
     fetchTeams()
       .then(setTeamList)
-      .catch(() => setTeamList([]))
+      .catch(() => setListError('Could not load team list. Make sure the backend is running.'))
       .finally(() => setListLoading(false));
   }, []);
 
@@ -89,7 +90,7 @@ export default function Analyze() {
           <TeamPicker
             teamList={teamList}
             loading={listLoading || fetchLoading}
-            error={fetchError}
+            error={listError || fetchError}
             addedNames={addedNames}
             onSelect={addTeam}
           />

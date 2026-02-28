@@ -12,12 +12,14 @@ from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 from app.services import (
+    calc_avg_per_game,
     calc_ft_pct,
     format_height,
     format_position,
     team_name_to_chroma_id,
     build_win_distribution,
     build_player_profile,
+    build_team_stats,
 )
 
 
@@ -78,6 +80,26 @@ def test_format_position_forward_center() -> None:
 def test_format_position_unknown() -> None:
     """An unrecognised code returns '?'."""
     assert format_position(99) == "?"
+
+
+# ---------------------------------------------------------------------------
+# calc_avg_per_game
+# ---------------------------------------------------------------------------
+
+
+def test_calc_avg_per_game_normal() -> None:
+    """900 minutes across 30 games = 30.0 per game."""
+    assert calc_avg_per_game(900, 30) == 30.0
+
+
+def test_calc_avg_per_game_zero_games() -> None:
+    """Zero games returns 0.0, avoiding division by zero."""
+    assert calc_avg_per_game(900, 0) == 0.0
+
+
+def test_calc_avg_per_game_rounds_to_one_decimal() -> None:
+    """Result is rounded to one decimal place."""
+    assert calc_avg_per_game(100, 3) == 33.3
 
 
 # ---------------------------------------------------------------------------
@@ -154,6 +176,7 @@ _MOCK_PLAYER = {
     "name": "Test Player",
     "position": 0,
     "height": 75,
+    "games": 30,
     "minutes": 900,
     "points": 300,
     "free_throws_made": 50,
@@ -177,6 +200,74 @@ def test_build_player_profile_ft_pct() -> None:
     """Free-throw percentage is correctly calculated."""
     p = build_player_profile(_MOCK_PLAYER)
     assert p.free_throw_pct == 83.3
+
+
+def test_build_player_profile_avg_minutes() -> None:
+    """avg_minutes is total minutes divided by games, rounded to one decimal."""
+    p = build_player_profile(_MOCK_PLAYER)
+    assert p.avg_minutes == 30.0  # 900 / 30
+
+
+def test_build_player_profile_avg_points() -> None:
+    """avg_points is total points divided by games, rounded to one decimal."""
+    p = build_player_profile(_MOCK_PLAYER)
+    assert p.avg_points == 10.0  # 300 / 30
+
+
+# ---------------------------------------------------------------------------
+# build_team_stats
+# ---------------------------------------------------------------------------
+
+# Single-player team dict with all required counting fields.
+_MOCK_TEAM_STATS = {
+    "wins": 20,
+    "losses": 10,
+    "avg_height": 79.0,  # 6'7"
+    "players": [
+        {
+            "two_point_field_goals_attempted": 300,
+            "two_point_field_goals_made": 150,
+            "three_point_field_goals_attempted": 120,
+            "three_point_field_goals_made": 40,
+            "blocks": 30,
+            "offensive_rebounds": 60,
+            "defensive_rebounds": 120,
+            "turnovers": 90,
+            "steals": 45,
+            "fouls": 150,
+        }
+    ],
+}
+
+
+def test_build_team_stats_avg_height() -> None:
+    """avg_height is formatted as feet/inches from the team's avg_height field."""
+    stats = build_team_stats(_MOCK_TEAM_STATS)
+    assert stats.avg_height == "6'7\""
+
+
+def test_build_team_stats_two_point_pct() -> None:
+    """2pt FG% is 150/300 * 100 = 50.00."""
+    stats = build_team_stats(_MOCK_TEAM_STATS)
+    assert stats.two_point_pct == 50.0
+
+
+def test_build_team_stats_three_point_pct() -> None:
+    """3pt FG% is 40/120 * 100 = 33.33."""
+    stats = build_team_stats(_MOCK_TEAM_STATS)
+    assert stats.three_point_pct == 33.33
+
+
+def test_build_team_stats_blocks_per_game() -> None:
+    """Blocks per game is 30 / 30 games = 1.0."""
+    stats = build_team_stats(_MOCK_TEAM_STATS)
+    assert stats.blocks == 1.0
+
+
+def test_build_team_stats_offensive_rebounds_per_game() -> None:
+    """Offensive rebounds per game is 60 / 30 games = 2.0."""
+    stats = build_team_stats(_MOCK_TEAM_STATS)
+    assert stats.offensive_rebounds == 2.0
 
 
 # ---------------------------------------------------------------------------

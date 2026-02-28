@@ -44,9 +44,10 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend/src:/app/src         # mount source for Vite HMR
+      - ./frontend/src:/app/src               # mount source for Vite HMR
       - ./frontend/public:/app/public
-      - /app/node_modules               # anonymous volume keeps container's node_modules intact
+      - ./frontend/vite.config.js:/app/vite.config.js   # live-mount config so proxy changes don't need a rebuild
+      - /app/node_modules                     # anonymous volume keeps container's node_modules intact
     environment:
       # Used by vite.config.js to proxy API requests to the backend service.
       # Inside the Docker network the backend is reachable by its service name.

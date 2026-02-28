@@ -33,6 +33,21 @@
   color: var(--dark-blue);
   line-height: 1.2;
   word-break: break-word;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Seed badge displayed before the team name */
+.tc-seed {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  background: #e8f0fe;
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex-shrink: 0;
 }
 
 .tc-record {
@@ -90,6 +105,33 @@
 /* Width set inline; transition creates a smooth grow animation on mount. */
 .tc-prob-fill  { height: 100%; background: var(--light-blue); border-radius: 5px; transition: width 0.45s ease; }
 .tc-prob-pct   { width: 44px; text-align: right; color: var(--silver); flex-shrink: 0; }
+
+/* ── Team stats grid ── */
+/* 2-column grid; each cell shows a label above a value. */
+.tc-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+}
+
+.tc-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.82rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+}
+
+.tc-stat-label {
+  color: var(--silver);
+  font-weight: 500;
+}
+
+.tc-stat-value {
+  font-weight: 600;
+  color: var(--black);
+}
 
 /* ── Top players table ── */
 .tc-players-table {

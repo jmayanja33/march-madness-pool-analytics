@@ -4,12 +4,12 @@ Analyze router — handles all /analyze endpoints.
 Routes defined in this module (prefix "/analyze" is applied in main.py):
 
     GET /analyze/most-similar/{team}
-        Query ChromaDB with cosine similarity to find the 3 most similar
-        historical teams to the given team.
+        Reserved for a future ChromaDB similarity query.  Returns 501 until
+        the vector-database integration is implemented.
 
     GET /analyze/{team}
-        Load team data from the predictions JSON, build a full TeamAnalysis
-        (including a call to the most-similar logic), and return it.
+        Load team data from the predictions JSON and return a full TeamAnalysis.
+        similar_teams is always an empty list until /most-similar is wired up.
 
 NOTE: The most-specific route (/most-similar/{team}) is registered BEFORE the
 wildcard route (/{team}) so that FastAPI does not accidentally swallow
@@ -19,9 +19,10 @@ wildcard route (/{team}) so that FastAPI does not accidentally swallow
 from fastapi import APIRouter, HTTPException
 
 from app.models import SimilarTeamsResponse, TeamAnalysis
+from app.services import build_team_analysis, find_team
 
 # ---------------------------------------------------------------------------
-# Router — prefix and tag are applied when this router is included in main.py
+# Router
 # ---------------------------------------------------------------------------
 
 router = APIRouter(prefix="/analyze", tags=["analyze"])
@@ -42,8 +43,6 @@ async def get_most_similar(team: str) -> SimilarTeamsResponse:
     Return the 3 most similar historical teams to the given team.
 
     Uses cosine similarity on PCA-reduced team vectors stored in ChromaDB.
-    The team must exist in the current season's predictions JSON so that its
-    vector can be looked up before querying the database.
 
     Args:
         team: URL-decoded team name (e.g. "Duke" or "North Carolina").
@@ -54,11 +53,8 @@ async def get_most_similar(team: str) -> SimilarTeamsResponse:
         tournament win totals.
 
     Raises:
-        HTTPException 404: If the team is not found in the predictions data.
-        HTTPException 503: If the ChromaDB vector database is unreachable.
+        HTTPException 501: ChromaDB integration not yet implemented.
     """
-    # TODO: look up the team's vector from the predictions JSON,
-    #       then run a ChromaDB cosine-similarity query and return results.
     raise HTTPException(status_code=501, detail="Not yet implemented")
 
 
@@ -81,18 +77,21 @@ async def get_team_analysis(team: str) -> TeamAnalysis:
       - Top 5 players by minutes (position, height, minutes, points, FT%)
       - Plain-text profile summary
       - Pre-calculated win-probability distribution (0 / 1 / 2+ wins)
-      - The 3 most similar historical teams (via ChromaDB)
+      - similar_teams is an empty list until /most-similar is implemented.
 
     Args:
         team: URL-decoded team name (e.g. "Duke" or "North Carolina").
 
     Returns:
-        TeamAnalysis with all data needed to render the team-profile card
-        in the frontend.
+        TeamAnalysis with all data needed to render the team-profile card.
 
     Raises:
         HTTPException 404: If the team is not found in the predictions data.
     """
-    # TODO: load predictions JSON, filter by team name, build TeamAnalysis,
-    #       call get_most_similar() to populate similar_teams.
-    raise HTTPException(status_code=501, detail="Not yet implemented")
+    # Look up the team in the predictions JSON (case-insensitive).
+    team_data = find_team(team)
+    if team_data is None:
+        raise HTTPException(status_code=404, detail=f"Team '{team}' not found.")
+
+    # similar_teams is empty until the ChromaDB integration is complete.
+    return build_team_analysis(team_data, similar=[])

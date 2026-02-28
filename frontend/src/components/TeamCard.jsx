@@ -15,10 +15,13 @@ export default function TeamCard({ team, onRemove }) {
   return (
     <div className="team-card">
 
-      {/* ── Header: team name, record, remove button ── */}
+      {/* ── Header: team name (with seed badge), record, remove button ── */}
       <div className="tc-header">
         <div className="tc-title">
-          <h2 className="tc-name">{team.name}</h2>
+          <h2 className="tc-name">
+            <span className="tc-seed">#{team.seed}</span>
+            {team.name}
+          </h2>
           <p className="tc-record">{team.wins}–{team.losses}</p>
         </div>
         <button className="tc-remove" onClick={onRemove} title="Remove team">✕</button>
@@ -41,6 +44,22 @@ export default function TeamCard({ team, onRemove }) {
         </div>
       </section>
 
+      {/* ── Team Stats ── */}
+      <section className="tc-section">
+        <h3 className="tc-section-label">Team Stats</h3>
+        <div className="tc-stats-grid">
+          <div className="tc-stat"><span className="tc-stat-label">Avg Height</span><span className="tc-stat-value">{team.team_stats.avg_height}</span></div>
+          <div className="tc-stat"><span className="tc-stat-label">2PT%</span><span className="tc-stat-value">{team.team_stats.two_point_pct}%</span></div>
+          <div className="tc-stat"><span className="tc-stat-label">3PT%</span><span className="tc-stat-value">{team.team_stats.three_point_pct}%</span></div>
+          <div className="tc-stat"><span className="tc-stat-label">Blocks</span><span className="tc-stat-value">{team.team_stats.blocks}</span></div>
+          <div className="tc-stat"><span className="tc-stat-label">Off Reb</span><span className="tc-stat-value">{team.team_stats.offensive_rebounds}</span></div>
+          <div className="tc-stat"><span className="tc-stat-label">Def Reb</span><span className="tc-stat-value">{team.team_stats.defensive_rebounds}</span></div>
+          <div className="tc-stat"><span className="tc-stat-label">Turnovers</span><span className="tc-stat-value">{team.team_stats.turnovers}</span></div>
+          <div className="tc-stat"><span className="tc-stat-label">Steals</span><span className="tc-stat-value">{team.team_stats.steals}</span></div>
+          <div className="tc-stat"><span className="tc-stat-label">Fouls</span><span className="tc-stat-value">{team.team_stats.fouls}</span></div>
+        </div>
+      </section>
+
       {/* ── Top 5 Players by minutes ── */}
       <section className="tc-section">
         <h3 className="tc-section-label">Top Players</h3>
@@ -50,8 +69,8 @@ export default function TeamCard({ team, onRemove }) {
               <th>Name</th>
               <th>Pos</th>
               <th>Ht</th>
-              <th>Min</th>
-              <th>Pts</th>
+              <th>Avg Min</th>
+              <th>Avg Pts</th>
               <th>FT%</th>
             </tr>
           </thead>
@@ -61,8 +80,8 @@ export default function TeamCard({ team, onRemove }) {
                 <td>{p.name}</td>
                 <td>{p.position}</td>
                 <td>{p.height}</td>
-                <td>{p.minutes}</td>
-                <td>{p.points}</td>
+                <td>{p.avg_minutes}</td>
+                <td>{p.avg_points}</td>
                 <td>{p.free_throw_pct}%</td>
               </tr>
             ))}
