@@ -1,12 +1,14 @@
 // Home page — displays the interactive 2026 NCAA Tournament bracket.
 // Clicking a filled team slot opens a TeamPopup with that team's analytics.
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import Bracket from '../components/Bracket';
 import TeamPopup from '../components/TeamPopup';
 import './Home.css';
 
 export default function Home() {
+  useEffect(() => { document.title = 'The Pool | Home'; }, []);
+
   // Tracks which team the user has clicked; null means no popup is open
   const [selectedTeam, setSelectedTeam] = useState(null);
 

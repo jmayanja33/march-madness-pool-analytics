@@ -27,6 +27,8 @@ export default function Analyze() {
   const [fetchLoading, setFetchLoading]   = useState(false);
   const [fetchError, setFetchError]       = useState(null);
 
+  useEffect(() => { document.title = 'The Pool | Analyze'; }, []);
+
   // Load the team dropdown list once on mount.
   useEffect(() => {
     fetchTeams()
