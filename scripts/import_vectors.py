@@ -131,10 +131,13 @@ def import_vectors(
         metadatas:       Metadata dicts (one per record).
         documents:       Raw document strings (one per record).
     """
-    # Get or create the collection; embedding_function=None because we are
-    # supplying pre-computed vectors directly.
-    collection = client.get_or_create_collection(name=collection_name)
-    print(f"[INFO] Using collection '{collection_name}'")
+    # Get or create the collection with cosine distance so that the returned
+    # distances are in [0, 1] and similarity = 1 - distance.
+    collection = client.get_or_create_collection(
+        name=collection_name,
+        metadata={"hnsw:space": "cosine"},
+    )
+    print(f"[INFO] Using collection '{collection_name}' (cosine distance)")
 
     total = len(ids)
     imported = 0

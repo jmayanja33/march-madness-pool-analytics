@@ -165,10 +165,46 @@
 .tc-players-table tr:last-child td { border-bottom: none; }
 
 /* ── Similar teams list ── */
+/* Similarity bar color tokens */
+:root {
+  --sim-red:    #e05252;
+  --sim-yellow: #d4a017;
+  --sim-green:  #3a9e5f;
+}
+
 .tc-similar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.tc-similar-list li { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.83rem; gap: 8px; }
-.tc-sim-name { font-weight: 600; color: var(--dark-blue); }
-.tc-sim-meta { color: var(--silver); white-space: nowrap; }
+
+/* Single-line row: name | bar+% | Seed | Wins — four evenly-spaced columns */
+.tc-sim-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 52px 52px;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+}
+
+.tc-sim-name { font-weight: 600; color: var(--dark-blue); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Bar + percentage label inline */
+.tc-sim-bar-wrap { display: flex; align-items: center; gap: 5px; }
+
+.tc-sim-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+/* Color set inline from JSX based on similarity threshold */
+.tc-sim-bar-fill { height: 100%; border-radius: 4px; transition: width 0.45s ease; }
+
+.tc-sim-pct { font-size: 0.75rem; color: var(--silver); white-space: nowrap; flex-shrink: 0; }
+
+/* Seed / Wins cells */
+.tc-sim-stat { color: var(--silver); font-size: 0.78rem; white-space: nowrap; text-align: right; }
+.tc-sim-stat strong { color: var(--black); }
 
 /* Fallback message shown when a data section has no content */
 .tc-unavailable {

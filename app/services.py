@@ -315,9 +315,9 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
     teams in the results are filtered out so that only historical seasons
     (pre-2025) are returned.
 
-    Distance metric is L2 (ChromaDB default).  Similarity is converted via
-    ``1 / (1 + d)`` so that distance 0 → similarity 1.0, and larger
-    distances yield progressively lower similarity scores.
+    Distance metric is cosine (collection created with ``hnsw:space=cosine``).
+    ChromaDB returns cosine distance in [0, 1] where 0 = identical, so
+    cosine similarity = ``1 - distance``.
 
     Args:
         team_name: Display name of the team to query for.
@@ -339,7 +339,7 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
         logger.info("Looking up embedding for chroma_id='%s'", chroma_id)
         result = collection.get(ids=[chroma_id], include=["embeddings"])
 
-        if not result["embeddings"]:
+        if len(result["embeddings"]) == 0:
             logger.warning("No embedding found for chroma_id='%s'", chroma_id)
             return []
 
@@ -361,13 +361,14 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
             if meta.get("year") == CURRENT_YEAR:
                 continue
 
-            # Convert L2 distance to a bounded 0–1 similarity score.
-            similarity = round(1.0 / (1.0 + dist), 4)
+            # Cosine distance is in [0, 1]; convert to similarity score.
+            similarity = round(max(0.0, 1.0 - dist), 4)
 
             similar.append(
                 SimilarTeam(
                     name=meta["name"],
                     year=int(meta["year"]),
+                    seed=int(meta["tournament_seed"]),
                     tournament_wins=int(meta["tournament_wins"]),
                     similarity=similarity,
                 )

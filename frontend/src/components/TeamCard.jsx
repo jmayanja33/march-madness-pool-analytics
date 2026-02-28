@@ -107,14 +107,31 @@ export default function TeamCard({ team, onRemove }) {
           <p className="tc-unavailable">Similar team data not available.</p>
         ) : (
           <ul className="tc-similar-list">
-            {team.similar_teams.map(t => (
-              <li key={`${t.name}-${t.year}`}>
-                <span className="tc-sim-name">{t.name} ({t.year})</span>
-                <span className="tc-sim-meta">
-                  {t.tournament_wins} tourney {t.tournament_wins === 1 ? 'win' : 'wins'} · {(t.similarity * 100).toFixed(0)}% similar
-                </span>
-              </li>
-            ))}
+            {team.similar_teams.map(t => {
+              // Determine bar color based on similarity threshold.
+              const pct = t.similarity * 100;
+              const barColor = pct >= 75 ? 'var(--sim-green)' : pct >= 50 ? 'var(--sim-yellow)' : 'var(--sim-red)';
+              return (
+                <li key={`${t.name}-${t.year}`} className="tc-sim-row">
+                  {/* Name and year */}
+                  <span className="tc-sim-name">{t.name} ({t.year})</span>
+
+                  {/* Similarity bar with percentage label */}
+                  <div className="tc-sim-bar-wrap">
+                    <div className="tc-sim-bar-track">
+                      <div className="tc-sim-bar-fill" style={{ width: `${pct}%`, background: barColor }} />
+                    </div>
+                    <span className="tc-sim-pct">{pct.toFixed(2)}%</span>
+                  </div>
+
+                  {/* Seed */}
+                  <span className="tc-sim-stat">Seed: <strong>{t.seed}</strong></span>
+
+                  {/* Tournament wins */}
+                  <span className="tc-sim-stat">Wins: <strong>{t.tournament_wins}</strong></span>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>

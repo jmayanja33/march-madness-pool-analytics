@@ -70,6 +70,7 @@ class SimilarTeam(BaseModel):
 
     name: str             # Team name
     year: int             # Season year (e.g. 2023 for the 2022-23 season)
+    seed: int             # Tournament seed (1–16)
     tournament_wins: int  # Number of tournament games that team won
     similarity: float     # Cosine similarity score (0–1); higher is more similar
 

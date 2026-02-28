@@ -18,7 +18,7 @@ services:
     ports:
       - "8001:8000"   # ChromaDB listens on 8000 internally; expose as 8001
     volumes:
-      - ./data/vector_db:/chroma/chroma   # persist the vector store on the host
+      - ./data/vector_db:/data   # ChromaDB 0.6+ (Rust backend) persists to /data
 
   # ── FastAPI backend ────────────────────────────────────────────────────────
   backend:
