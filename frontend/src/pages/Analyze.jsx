@@ -5,7 +5,7 @@
 //   2. "Add Team" button appears in the top bar.  Clicking it opens a modal picker.
 //   3. Additional teams split the page into equal-width columns (max 4).
 //   4. Each column has a ✕ remove button to drop a team from the comparison.
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import NavBar from '../components/NavBar';
 import TeamCard from '../components/TeamCard';
 import { fetchTeams, fetchTeamData } from '../api/teamApi';
@@ -135,46 +135,102 @@ export default function Analyze() {
 }
 
 // ── Internal team picker ──────────────────────────────────────────────────────
-// A controlled select + submit button used in both the empty state and the
-// add-team modal.  Teams already in the comparison are excluded from the list.
+// Searchable combobox used in both the empty state and the add-team modal.
+// Typing in the text input filters the list in real time; clicking a row
+// selects that team and immediately triggers onSelect.
+// Teams already in the comparison are excluded from the list.
 
 function TeamPicker({ teamList, loading, error, addedNames, onSelect }) {
-  const [selected, setSelected] = useState('');
+  const [query, setQuery]       = useState('');
+  const [isOpen, setIsOpen]     = useState(false);
+  const [selected, setSelected] = useState(''); // display name of the chosen team
+  const containerRef            = useRef(null);
 
-  // Filter out teams already added to the comparison.
+  // Filter out already-added teams, then apply the search query.
   const available = teamList.filter(t => !addedNames.has(t.name));
+  const filtered  = query.trim()
+    ? available.filter(t => t.name.toLowerCase().includes(query.toLowerCase()))
+    : available;
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (selected) onSelect(selected);
+  // Close the dropdown when the user clicks outside the combobox.
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Choose a team from the dropdown list.
+  function choose(team) {
+    setSelected(team.name);
+    setQuery(team.name);
+    setIsOpen(false);
+    // Immediately trigger the analyze action — no extra button press needed.
+    onSelect(team.name);
+  }
+
+  // Reset the picker when the input is cleared.
+  function handleInputChange(e) {
+    setQuery(e.target.value);
+    setSelected('');
+    setIsOpen(true);
   }
 
   return (
-    <form className="team-picker" onSubmit={handleSubmit}>
-      <select
-        className="picker-select"
-        value={selected}
-        onChange={e => setSelected(e.target.value)}
-        disabled={loading}
-      >
-        <option value="">Select a team…</option>
-        {/* Options grouped by seed for easier browsing. */}
-        {available.map(t => (
-          <option key={t.name} value={t.name}>
-            ({t.seed}) {t.name}
-          </option>
-        ))}
-      </select>
+    <div className="team-picker">
+      {/* Combobox: text input + chevron toggle */}
+      <div className="picker-combobox" ref={containerRef}>
+        <input
+          type="text"
+          className="picker-input"
+          placeholder={loading ? 'Loading teams…' : 'Select or search a team…'}
+          value={query}
+          disabled={loading}
+          onChange={handleInputChange}
+          onFocus={() => setIsOpen(true)}
+          autoComplete="off"
+        />
+        {/* Chevron button toggles the full list open/closed */}
+        <button
+          type="button"
+          className={`picker-chevron ${isOpen ? 'open' : ''}`}
+          onMouseDown={e => {
+            e.preventDefault();             // prevent input blur
+            setIsOpen(prev => !prev);
+          }}
+          tabIndex={-1}
+          aria-label="Toggle team list"
+          disabled={loading}
+        >
+          ▾
+        </button>
 
-      <button
-        type="submit"
-        className="btn-primary"
-        disabled={!selected || loading}
-      >
-        {loading ? 'Loading…' : 'Analyze'}
-      </button>
+        {/* Filtered dropdown list */}
+        {isOpen && !loading && filtered.length > 0 && (
+          <ul className="picker-dropdown">
+            {filtered.map(t => (
+              <li
+                key={t.name}
+                className="picker-option"
+                onMouseDown={() => choose(t)}   // mousedown fires before blur
+              >
+                <span className="picker-seed">#{t.seed}</span>
+                {t.name}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* No-results message */}
+        {isOpen && !loading && query.trim() && filtered.length === 0 && (
+          <div className="picker-no-results">No teams match "{query}"</div>
+        )}
+      </div>
 
       {error && <p className="picker-error">{error}</p>}
-    </form>
+    </div>
   );
 }

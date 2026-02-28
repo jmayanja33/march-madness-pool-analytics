@@ -88,54 +88,114 @@
   border-right: none;
 }
 
-/* ── Team picker form (shared between empty state and modal) ── */
+/* ── Team picker (searchable combobox) ── */
 .team-picker {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   max-width: 340px;
 }
 
-.picker-select {
+/* Wrapper that positions the dropdown relative to the input */
+.picker-combobox {
+  position: relative;
   width: 100%;
-  padding: 10px 12px;
+}
+
+/* Search text input — takes full width minus the chevron button */
+.picker-input {
+  width: 100%;
+  padding: 10px 36px 10px 12px; /* right padding leaves room for the chevron */
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-size: 0.92rem;
   font-family: var(--font);
   background: var(--white);
   color: var(--black);
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 32px;
-  transition: border-color 0.15s;
-  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-.picker-select:focus {
+.picker-input:focus {
   outline: none;
   border-color: var(--light-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
-.picker-select:disabled { opacity: 0.6; cursor: not-allowed; }
+.picker-input:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* Primary "Analyze" submit button */
-.btn-primary {
-  width: 100%;
-  padding: 10px;
-  background: var(--light-blue);
-  color: var(--white);
+/* Chevron toggle button — overlaid on the right edge of the input */
+.picker-chevron {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
   border: none;
-  border-radius: var(--radius);
-  font-size: 0.95rem;
-  font-weight: 600;
-  transition: background 0.15s, transform 0.1s;
+  color: var(--silver);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: color 0.15s, transform 0.2s;
+  transform-origin: center 60%;
 }
-.btn-primary:hover:not(:disabled)  { background: #2563eb; }
-.btn-primary:active:not(:disabled) { transform: scale(0.98); }
-.btn-primary:disabled              { opacity: 0.5; cursor: not-allowed; }
+.picker-chevron:hover { color: var(--dark-blue); }
+/* Rotate the chevron when the list is open */
+.picker-chevron.open {
+  transform: translateY(-50%) rotate(180deg);
+  color: var(--light-blue);
+}
+
+/* Floating dropdown list */
+.picker-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  max-height: 220px;
+  overflow-y: auto;
+  list-style: none;
+  z-index: 300;
+  padding: 4px 0;
+}
+
+/* Individual option row */
+.picker-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.picker-option:hover { background: #eff6ff; }
+
+/* Seed badge inside each row */
+.picker-seed {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  background: #e8f0fe;
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+}
+
+/* "No results" message when the query matches nothing */
+.picker-no-results {
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  color: var(--silver);
+  text-align: center;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--white);
+}
 
 /* Error message below the picker */
 .picker-error {
