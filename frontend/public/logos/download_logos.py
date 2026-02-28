@@ -11,7 +11,7 @@ import shutil
 from typing import Optional
 
 # Output directory for logos
-OUTPUT_DIR = "/Users/Josh/Desktop/Projects/march-madness-pool-analytics/frontend/dist/logos"
+OUTPUT_DIR = "/Users/Josh/Desktop/Projects/march-madness-pool-analytics/frontend/public/logos"
 
 # Headers to mimic a browser request
 HEADERS = {
@@ -45,6 +45,51 @@ TEAMS = {
     "Army": (30, 609, "Army-Black-Knights-Logos"),
     "Auburn": (30, 610, "Auburn-Tigers-Logos"),
     "Austin Peay": (30, 611, "Austin-Peay-Governors-Logos"),
+    "Ball State": (30, 612, "Ball-State-Cardinals-Logos"),
+    "Baylor": (30, 613, "Baylor-Bears-Logos"),
+    "Bellarmine": (30, 6811, "Bellarmine-Knights-Logos"),
+    "Belmont": (30, 614, "Belmont-Bruins-Logos"),
+    "Bethune-Cookman": (30, 615, "Bethune-Cookman-Wildcats-Logos"),
+    "Binghamton": (30, 855, "Binghamton-Bearcats-Logos"),
+    "Boise State": (30, 617, "Boise-State-Broncos-Logos"),
+    "Boston College": (30, 618, "Boston-College-Eagles-Logos"),
+    "Boston University": (30, 619, "Boston-University-Terriers-Logos"),
+    "Bowling Green": (30, 620, "Bowling-Green-Falcons-Logos"),
+    "Bradley": (30, 621, "Bradley-Braves-Logos"),
+    "Brown": (30, 623, "Brown-Bears-Logos"),
+    "Bryant": (30, 5021, "Bryant-Bulldogs-Logos"),
+    "Bucknell": (30, 624, "Bucknell-Bison-Logos"),
+    "Buffalo": (30, 819, "Buffalo-Bulls-Logos"),
+    "Butler": (30, 625, "Butler-Bulldogs-Logos"),
+    "BYU": (30, 622, "Brigham-Young-Cougars-Logos"),
+    "Cal Poly": (30, 626, "Cal-Poly-Mustangs-Logos"),
+    "Cal State Bakersfield": (30, 5046, "CSU-Bakersfield-Roadrunners-Logos"),
+    "Cal State Fullerton": (30, 627, "Cal-State-Fullerton-Titans-Logos"),
+    "Cal State Northridge": (30, 628, "Cal-State-Northridge-Matadors-Logos"),
+    "California": (30, 630, "California-Golden-Bears-Logos"),
+    "California Baptist": (30, 6812, "California-Baptist-Lancers-Logos"),
+    "Campbell": (30, 631, "Campbell-Fighting-Camels-Logos"),
+    "Canisius": (30, 632, "Canisius-Golden-Griffins-Logos"),
+    "Central Arkansas": (30, 5028, "Central-Arkansas-Bears-Logos"),
+    "Central Connecticut": (30, 634, "Central-Connecticut-Blue-Devils-Logos"),
+    "Central Florida": (30, 635, "Central-Florida-Knights-Logos"),
+    "Central Michigan": (30, 636, "Central-Michigan-Chippewas-Logos"),
+    "Charleston": (30, 637, "College-of-Charleston-Cougars-Logos"),
+    "Charleston Southern": (30, 638, "CSU-Buccaneers-Logos"),
+    "Charlotte": (30, 639, "Charlotte-49ers-Logos"),
+    "Chattanooga": (30, 640, "Chattanooga-Mocs-Logos"),
+    "Chicago State": (30, 641, "Chicago-State-Cougars-Logos"),
+    "Cincinnati": (30, 642, "Cincinnati-Bearcats-Logos"),
+    "Clemson": (30, 643, "Clemson-Tigers-Logos"),
+    "Cleveland State": (30, 644, "Cleveland-State-Vikings-Logos"),
+    "Coastal Carolina": (30, 645, "Coastal-Carolina-Chanticleers-Logos"),
+    "Colgate": (30, 646, "Colgate-Raiders-Logos"),
+    "Colorado": (30, 647, "Colorado-Buffaloes-Logos"),
+    "Colorado State": (30, 648, "Colorado-State-Rams-Logos"),
+    "Columbia": (30, 649, "Columbia-Lions-Logos"),
+    "Coppin State": (30, 650, "Coppin-State-Eagles-Logos"),
+    "Cornell": (30, 651, "Cornell-Big-Red-Logos"),
+    "Creighton": (30, 652, "Creighton-Bluejays-Logos"),
 }
 
 # Alias mappings (additional filenames that point to the same logo)
