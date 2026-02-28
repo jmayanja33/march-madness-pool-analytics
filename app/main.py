@@ -10,12 +10,34 @@ The app is started by uvicorn as specified in the project Dockerfile:
     uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 """
 
+import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.config import CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
 from app.models import HealthResponse, TeamListItem
 from app.routers import analyze
 from app.services import get_all_teams
+
+logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Lifespan — startup / shutdown logging
+# ---------------------------------------------------------------------------
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Log key configuration on startup and confirm clean shutdown."""
+    logger.info(
+        "API starting — ChromaDB: %s:%s | Predictions: %s",
+        CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR,
+    )
+    yield
+    logger.info("API shutting down.")
+
 
 # ---------------------------------------------------------------------------
 # Application instance
@@ -23,6 +45,7 @@ from app.services import get_all_teams
 
 app = FastAPI(
     title="March Madness Pool Analytics",
+    lifespan=lifespan,
     description=(
         "AI/ML-powered NCAA tournament team-performance predictions. "
         "Provides win-probability distributions and similar-team lookups "

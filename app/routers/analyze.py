@@ -15,10 +15,14 @@ wildcard route (/{team}) so that FastAPI does not accidentally swallow
 "most-similar" as a team name.
 """
 
+import logging
+
 from fastapi import APIRouter, HTTPException
 
 from app.models import SimilarTeamsResponse, TeamAnalysis
 from app.services import build_team_analysis, find_team, get_similar_teams
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Router
@@ -57,6 +61,7 @@ async def get_most_similar(team: str) -> SimilarTeamsResponse:
     # Look up the team in the predictions JSON (case-insensitive).
     team_data = find_team(team)
     if team_data is None:
+        logger.warning("most-similar: team not found — '%s'", team)
         raise HTTPException(status_code=404, detail=f"Team '{team}' not found.")
 
     # Query ChromaDB for the 3 most similar historical teams.
@@ -97,6 +102,7 @@ async def get_team_analysis(team: str) -> TeamAnalysis:
     # Look up the team in the predictions JSON (case-insensitive).
     team_data = find_team(team)
     if team_data is None:
+        logger.warning("analyze: team not found — '%s'", team)
         raise HTTPException(status_code=404, detail=f"Team '{team}' not found.")
 
     # Query ChromaDB for the 3 most similar historical teams.

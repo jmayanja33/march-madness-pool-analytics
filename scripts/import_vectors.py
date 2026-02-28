@@ -201,7 +201,9 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     """Entry point: parse args, load data, connect to ChromaDB, and import."""
     args = parse_args()
-    file_path = f"../{Path(args.file)}"
+    # Resolve relative to the project root (parent of the scripts/ directory)
+    # so the script works correctly regardless of the working directory.
+    file_path = Path(__file__).parent.parent / args.file
 
     print(f"[INFO] Loading vectors from: {file_path}")
     ids, embeddings, metadatas, documents = load_json(file_path)

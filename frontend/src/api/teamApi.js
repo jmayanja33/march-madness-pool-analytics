@@ -9,8 +9,13 @@ const ANALYZE_BASE = '/analyze';
 // Throws an error if the request fails (e.g. team not found or server down).
 export async function fetchTeamData(teamName) {
   const res = await fetch(`${ANALYZE_BASE}/${encodeURIComponent(teamName)}`);
-  if (!res.ok) throw new Error(`Failed to fetch data for ${teamName}: ${res.status}`);
-  return res.json();
+  if (!res.ok) {
+    console.error(`[API] fetchTeamData failed — ${teamName}: HTTP ${res.status}`);
+    throw new Error(`Failed to fetch data for ${teamName}: ${res.status}`);
+  }
+  const data = await res.json();
+  console.log(`[API] fetchTeamData — ${teamName}: ${data.similar_teams?.length ?? 0} similar team(s)`);
+  return data;
 }
 
 // Fetches the full tournament team list, sorted by seed then alphabetically.
@@ -18,6 +23,9 @@ export async function fetchTeamData(teamName) {
 // Throws an error if the request fails.
 export async function fetchTeams() {
   const res = await fetch('/teams');
-  if (!res.ok) throw new Error(`Failed to fetch team list: ${res.status}`);
+  if (!res.ok) {
+    console.error(`[API] fetchTeams failed: HTTP ${res.status}`);
+    throw new Error(`Failed to fetch team list: ${res.status}`);
+  }
   return res.json();
 }

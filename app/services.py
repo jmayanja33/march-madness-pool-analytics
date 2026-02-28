@@ -9,10 +9,14 @@ Provides helpers for:
 """
 
 import json
+import logging
 from functools import lru_cache
 from typing import Optional
 
 import chromadb
+
+# Module-level logger — output is captured by uvicorn and visible in docker logs.
+logger = logging.getLogger(__name__)
 
 from app.config import CHROMA_COLLECTION, CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
 from app.models import PlayerProfile, SimilarTeam, TeamAnalysis, TeamStats, WinProbabilityDistribution
@@ -325,16 +329,22 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
     """
     try:
         client = chromadb.HttpClient(host=CHROMA_HOST, port=CHROMA_PORT)
+        logger.info("ChromaDB connected at %s:%s", CHROMA_HOST, CHROMA_PORT)
+
         collection = client.get_collection(name=CHROMA_COLLECTION)
+        logger.info("Collection '%s' opened — count: %s", CHROMA_COLLECTION, collection.count())
 
         # Retrieve the current team's stored embedding by its 2025 document ID.
         chroma_id = team_name_to_chroma_id(team_name, CURRENT_YEAR)
+        logger.info("Looking up embedding for chroma_id='%s'", chroma_id)
         result = collection.get(ids=[chroma_id], include=["embeddings"])
 
         if not result["embeddings"]:
+            logger.warning("No embedding found for chroma_id='%s'", chroma_id)
             return []
 
         query_vector = result["embeddings"][0]
+        logger.info("Embedding retrieved (%d dimensions) — querying neighbours", len(query_vector))
 
         # Fetch 10 candidates so we have enough after filtering 2025 teams.
         neighbors = collection.query(
@@ -366,8 +376,10 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
             if len(similar) == 3:
                 break
 
+        logger.info("Returning %d similar teams for '%s'", len(similar), team_name)
         return similar
 
     except Exception:
-        # ChromaDB unavailable or team not indexed — degrade gracefully.
+        # ChromaDB unavailable or team not indexed — log and degrade gracefully.
+        logger.exception("get_similar_teams failed for '%s'", team_name)
         return []
