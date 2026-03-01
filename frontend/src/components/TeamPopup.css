@@ -1,4 +1,5 @@
-/* Styles for the team detail popup overlay and card. */
+/* Styles for the team detail popup overlay and shell.
+   All card content styles come from TeamCard.css. */
 
 /* ── Overlay — dims the background and centers the card ── */
 .popup-overlay {
@@ -11,32 +12,22 @@
   z-index: 200;
 }
 
-/* ── Popup card ── */
+/* ── Popup shell ── */
 .popup {
-  background: var(--white);
+  width: min(600px, 92vw);  /* wide enough for the TeamCard layout */
+  max-height: 80vh;
+  overflow-y: auto;         /* popup scrolls; the inner card does not */
   border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  width: min(480px, 92vw); /* responsive max width */
-  max-height: 80vh;
-  overflow-y: auto;        /* scrollable if content overflows */
-  padding: 28px 28px 24px;
   position: relative;
 }
 
-/* ── Close button ── */
-.popup-close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  background: none;
-  border: none;
-  font-size: 1.1rem;
-  color: var(--silver);
-  line-height: 1;
-  padding: 4px;
-  transition: color 0.15s;
+/* The TeamCard inside the popup should not scroll independently —
+   let the popup shell handle all scrolling. */
+.popup .team-card {
+  height: auto;
+  overflow-y: visible;
 }
-.popup-close:hover { color: var(--black); }
 
 /* ── Loading and error states ── */
 .popup-loading,
@@ -44,9 +35,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 24px 0;
+  padding: 32px;
   color: var(--silver);
   justify-content: center;
+  background: var(--white);
+  border-radius: 10px;
 }
 
 .popup-error { color: #e74c3c; }
@@ -63,77 +56,3 @@
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Team header ── */
-.popup-team-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--dark-blue);
-  margin-bottom: 2px;
-}
-
-.popup-record {
-  color: var(--silver);
-  font-size: 0.9rem;
-  margin-bottom: 20px;
-}
-
-/* ── Section layout ── */
-.popup-content section {
-  margin-bottom: 20px;
-}
-
-/* Section header — small uppercase label with a divider line */
-.popup-content h3 {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--silver);
-  margin-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 4px;
-}
-
-/* ── Win probability bars ── */
-.prob-bars { display: flex; flex-direction: column; gap: 8px; }
-.prob-row  { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
-.prob-label { width: 60px; color: var(--black); }
-.prob-track {
-  flex: 1;
-  height: 10px;
-  background: var(--bg);
-  border-radius: 5px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-/* Width is set inline from the probability value */
-.prob-fill  { height: 100%; background: var(--light-blue); border-radius: 5px; transition: width 0.4s ease; }
-.prob-pct   { width: 44px; text-align: right; color: var(--silver); }
-
-/* ── Top players table ── */
-.players-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.82rem;
-}
-.players-table th,
-.players-table td {
-  padding: 5px 8px;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-.players-table th { color: var(--silver); font-weight: 600; }
-
-/* ── Similar teams list ── */
-.similar-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-.similar-list li { display: flex; justify-content: space-between; font-size: 0.85rem; }
-.sim-name { font-weight: 600; color: var(--dark-blue); }
-.sim-meta { color: var(--silver); }
-
-/* ── Summary text ── */
-.popup-summary {
-  font-size: 0.88rem;
-  line-height: 1.6;
-  color: #444;
-}

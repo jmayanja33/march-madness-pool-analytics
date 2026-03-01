@@ -63,3 +63,78 @@
 
 /* Right-direction regions (South, Midwest) — visually mirror the column order */
 .region-right .region-rounds { flex-direction: row-reverse; }
+
+/* ── Bracket connector lines ────────────────────────────────────────────────
+   slot-wrapper::before → vertical line connecting the two teams of a matchup
+   slot-wrapper::after  → horizontal line bridging to the next round column
+
+   The vertical connector height must be set per-round in pixels because the
+   slot-wrapper margins live outside the CSS containing block and cannot be
+   expressed as a percentage.  Total wrapper height = slot (28px) + 2 × margin:
+       R1: 28 +   4 =  32px  (margin  2px each side)
+       R2: 28 +  36 =  64px  (margin 18px each side)
+       R3: 28 + 100 = 128px  (margin 50px each side)
+       R4: 28 + 228 = 256px  (margin 114px each side)
+────────────────────────────────────────────────────────────────────────────── */
+
+/* Positioning context needed for absolute pseudo-elements */
+.slot-wrapper { position: relative; }
+
+/* Shared properties for both connector pseudo-elements */
+.slot-wrapper::before,
+.slot-wrapper::after {
+  content: '';
+  position: absolute;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+}
+
+/* ── Horizontal connector ── */
+/* A 1px-tall line spanning the 4px gap to the next round column. */
+.slot-wrapper::after {
+  top: calc(50% - 0.5px); /* centered on the slot's visual midpoint */
+  left: 100%;              /* starts at the right edge of the slot-wrapper */
+  width: 4px;              /* equals the column gap */
+  height: 1px;
+}
+
+/* ── Vertical connector — top slot of each pair ── */
+/* Runs downward from this slot's midpoint to the next slot's midpoint. */
+.slot-wrapper:nth-child(odd)::before {
+  top: 50%;
+  left: calc(100% + 4px); /* aligns with the far end of the horizontal connector */
+  width: 1px;
+  /* height set per-round below */
+}
+
+/* ── Vertical connector — bottom slot of each pair ── */
+/* Runs upward from this slot's midpoint to the previous slot's midpoint.
+   bottom: 50% anchors the element's bottom edge on this slot's midpoint;
+   the element then extends upward by the per-round height value. */
+.slot-wrapper:nth-child(even)::before {
+  bottom: 50%;
+  top: auto;
+  left: calc(100% + 4px);
+  width: 1px;
+  /* height set per-round below */
+}
+
+/* Per-round vertical connector heights */
+.bracket-round:nth-child(1) .slot-wrapper::before { height:  32px; }
+.bracket-round:nth-child(2) .slot-wrapper::before { height:  64px; }
+.bracket-round:nth-child(3) .slot-wrapper::before { height: 128px; }
+.bracket-round:nth-child(4) .slot-wrapper::before { height: 256px; }
+
+/* ── Right-facing regions (South, Midwest): mirror all connectors leftward ── */
+.region-right .slot-wrapper::after {
+  left: auto;
+  right: 100%; /* extends 4px into the gap to the left */
+}
+.region-right .slot-wrapper::before {
+  left: auto;
+  right: calc(100% + 4px); /* aligns with the far (left) end of the horizontal connector */
+}
+
+/* ── E8 (round 4): suppress the outward horizontal connector ── */
+/* The matchup vertical connector (::before) is kept to show the two-team pairing. */
+.bracket-round:nth-child(4) .slot-wrapper::after { display: none; }

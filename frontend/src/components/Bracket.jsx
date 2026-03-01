@@ -25,7 +25,9 @@ const DEFAULT_BRACKET = {
   Midwest: EMPTY_TEAMS,
 };
 
-export default function Bracket({ bracket = DEFAULT_BRACKET, onTeamClick }) {
+// firstFour: array of { id, teamA: {seed, name}, teamB: {seed, name}, destination }
+// Each entry represents one First Four play-in game.
+export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], onTeamClick }) {
   return (
     <div className="bracket-wrapper fade-in">
 
@@ -40,27 +42,37 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, onTeamClick }) {
       <div className="champion-box">
 
         {/* ── First Four band ──
-            One label for the whole section; individual games have no titles.
-            The four games are the play-in matchups before the Round of 64. */}
+            One label for the whole section; individual games each show a
+            destination chip indicating which bracket slot the winner earns. */}
         <div className="first-four-band">
           <div className="band-label">First Four</div>
           <div className="ff-games">
-            <div className="ff-pairing">
-              <BracketSlot seed={null} name="" /> {/* First Four game 1 — team A */}
-              <BracketSlot seed={null} name="" /> {/* First Four game 1 — team B */}
-            </div>
-            <div className="ff-pairing">
-              <BracketSlot seed={null} name="" /> {/* First Four game 2 — team A */}
-              <BracketSlot seed={null} name="" /> {/* First Four game 2 — team B */}
-            </div>
-            <div className="ff-pairing">
-              <BracketSlot seed={null} name="" /> {/* First Four game 3 — team A */}
-              <BracketSlot seed={null} name="" /> {/* First Four game 3 — team B */}
-            </div>
-            <div className="ff-pairing">
-              <BracketSlot seed={null} name="" /> {/* First Four game 4 — team A */}
-              <BracketSlot seed={null} name="" /> {/* First Four game 4 — team B */}
-            </div>
+            {firstFour.length > 0
+              // Render populated First Four games when data is provided
+              ? firstFour.map(game => (
+                  <div key={game.id} className="ff-pairing">
+                    {/* Small chip showing where the winner advances */}
+                    <span className="ff-destination">→ {game.destination}</span>
+                    <BracketSlot
+                      seed={game.teamA.seed}
+                      name={game.teamA.name}
+                      onClick={() => onTeamClick(game.teamA.name)}
+                    />
+                    <BracketSlot
+                      seed={game.teamB.seed}
+                      name={game.teamB.name}
+                      onClick={() => onTeamClick(game.teamB.name)}
+                    />
+                  </div>
+                ))
+              // Fallback: four empty pairings when no data is supplied
+              : Array.from({ length: 4 }, (_, i) => (
+                  <div key={i} className="ff-pairing">
+                    <BracketSlot seed={null} name="" />
+                    <BracketSlot seed={null} name="" />
+                  </div>
+                ))
+            }
           </div>
         </div>
 

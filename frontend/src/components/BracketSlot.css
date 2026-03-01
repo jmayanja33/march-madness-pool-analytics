@@ -33,6 +33,14 @@
   color: var(--silver);
 }
 
+/* ── Team logo — small, left of the seed badge ── */
+.slot-logo {
+  height: 18px;
+  width: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 /* ── Seed badge ── */
 .slot-seed {
   font-weight: 700;
