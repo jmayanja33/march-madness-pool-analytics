@@ -33,14 +33,24 @@ function getTeamRegion(teamName) {
 // ---------------------------------------------------------------------------
 
 // Determine the most likely win outcome for a team's probability distribution.
-// Returns the label, the integer value used in sums (2+ → 2), and the probability.
+// Returns the numeric value used in sums (2+ → 2), the probability, and a
+// pre-formatted wins string with correct singular/plural and no "+" below 2.
 function getExpectedWins(dist) {
   const { zero_wins, one_win, two_plus_wins } = dist;
   const maxProb = Math.max(zero_wins, one_win, two_plus_wins);
 
-  if (maxProb === two_plus_wins) return { label: '2+', numeric: 2, prob: two_plus_wins };
-  if (maxProb === one_win)       return { label: '1',  numeric: 1, prob: one_win };
-  return                                { label: '0',  numeric: 0, prob: zero_wins };
+  if (maxProb === two_plus_wins) return { numeric: 2, prob: two_plus_wins, winsText: '2+ wins' };
+  if (maxProb === one_win)       return { numeric: 1, prob: one_win,       winsText: '1 win'   };
+  return                                { numeric: 0, prob: zero_wins,     winsText: '0 wins'  };
+}
+
+// Format a summed wins total for group/pool totals.
+// Only appends "+" when there are 2 or more wins (since 2+ is the open-ended bucket).
+// Uses correct singular for exactly 1 win.
+function formatTotalWins(n) {
+  if (n >= 2) return `${n}+ wins`;
+  if (n === 1) return '1 win';
+  return '0 wins';
 }
 
 // Return the CSS color token for a probability value (0–1).
@@ -67,6 +77,29 @@ function computePoolStats(filledTeams) {
   }
 
   return { totalWins, avgProb: totalProb / filledTeams.length };
+}
+
+// Seed tier groupings used by the Team Breakdown section.
+// Ranges are non-overlapping; label matches what the user sees.
+const SEED_GROUPS = [
+  { label: 'Top 5 Seeds',  test: seed => seed <= 5 },
+  { label: 'Seeds 6-9',   test: seed => seed >= 6 && seed <= 9 },
+  { label: 'Seeds 10-12', test: seed => seed >= 10 && seed <= 12 },
+  { label: 'Seeds 13+',   test: seed => seed >= 13 },
+];
+
+// Compute total wins and average probability for a subset of teams.
+// Returns { totalWins, avgProb } or null for an empty array.
+function computeGroupStats(teams) {
+  if (teams.length === 0) return null;
+  let totalWins = 0;
+  let totalProb = 0;
+  for (const team of teams) {
+    const { numeric, prob } = getExpectedWins(team.win_probability_distribution);
+    totalWins += numeric;
+    totalProb += prob;
+  }
+  return { totalWins, avgProb: totalProb / teams.length };
 }
 
 // ---------------------------------------------------------------------------
@@ -195,49 +228,71 @@ export default function CreateTeam() {
             <p className="ct-perf-empty">Add teams on the left to see expected performance.</p>
           ) : (
             <>
-              {/* Ranked list of teams by expected wins */}
-              <ul className="ct-perf-list">
-                {sortedTeams.map(team => {
-                  const { label, prob } = getExpectedWins(team.win_probability_distribution);
-                  const color = probColor(prob);
-                  return (
-                    <li key={team.name} className="ct-perf-row fade-in">
-                      <div className="ct-perf-name">
-                        <span className="ct-perf-seed">#{team.seed}</span>
-                        {team.name}
-                        <img
-                          src={`/logos/${team.name}.png`}
-                          alt={`${team.name} logo`}
-                          className="ct-perf-logo"
-                          onError={e => { e.currentTarget.style.display = 'none'; }}
-                        />
-                      </div>
-                      <span className="ct-perf-wins" style={{ color }}>
-                        {label} wins
-                        <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              {/* Black divider */}
-              <div className="ct-perf-divider" />
-
-              {/* Total expected wins — aligned like a summation under the wins column */}
+              {/* Total expected wins — standalone box */}
               {poolStats && (() => {
-                const totalLabel = `${poolStats.totalWins}+`;
                 const color = probColor(poolStats.avgProb);
                 return (
-                  <div className="ct-perf-total-row">
-                    <span className="ct-perf-total-label">Expected Team Wins</span>
+                  <div className="ct-total-box">
+                    <span className="ct-total-box-label">Expected Team Wins</span>
                     <span className="ct-perf-wins" style={{ color }}>
-                      {totalLabel} wins
+                      {formatTotalWins(poolStats.totalWins)}
                       <span className="ct-perf-pct"> ({(poolStats.avgProb * 100).toFixed(1)}%)</span>
                     </span>
                   </div>
                 );
               })()}
+
+              {/* ── Team Breakdown by seed tier ── */}
+              <div className="ct-breakdown">
+                <h3 className="ct-breakdown-title">Team Breakdown</h3>
+                {SEED_GROUPS.map(group => {
+                  // Only render groups that have at least one selected team.
+                  const groupTeams = sortedTeams.filter(t => group.test(t.seed));
+                  if (groupTeams.length === 0) return null;
+                  const stats = computeGroupStats(groupTeams);
+                  const groupColor = probColor(stats.avgProb);
+                  return (
+                    <div key={group.label} className="ct-bd-group">
+                      {/* Group header: label on left, summed wins on right */}
+                      <div className="ct-bd-header">
+                        <span className="ct-bd-group-label">
+                          {group.label}
+                          <span className="ct-bd-group-count"> ({groupTeams.length} {groupTeams.length === 1 ? 'Team' : 'Teams'})</span>
+                        </span>
+                        <span className="ct-perf-wins" style={{ color: groupColor }}>
+                          {formatTotalWins(stats.totalWins)}
+                          <span className="ct-perf-pct"> ({(stats.avgProb * 100).toFixed(1)}%)</span>
+                        </span>
+                      </div>
+                      {/* Individual teams within the group */}
+                      <ul className="ct-bd-list">
+                        {groupTeams.map(team => {
+                          const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
+                          const color = probColor(prob);
+                          return (
+                            <li key={team.name} className="ct-bd-row">
+                              <div className="ct-perf-name">
+                                <span className="ct-perf-seed">#{team.seed}</span>
+                                {team.name}
+                                <img
+                                  src={`/logos/${team.name}.png`}
+                                  alt={`${team.name} logo`}
+                                  className="ct-perf-logo"
+                                  onError={e => { e.currentTarget.style.display = 'none'; }}
+                                />
+                              </div>
+                              <span className="ct-perf-wins" style={{ color }}>
+                                {winsText}
+                                <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
             </>
           )}
         </section>
@@ -272,7 +327,7 @@ export default function CreateTeam() {
 
 function TeamSlotCard({ team, onRemove }) {
   const region = getTeamRegion(team.name);
-  const { label, prob } = getExpectedWins(team.win_probability_distribution);
+  const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
   const color = probColor(prob);
 
   return (
@@ -303,7 +358,7 @@ function TeamSlotCard({ team, onRemove }) {
         <div className="ct-slot-stat">
           <span className="ct-slot-stat-label">Expected Wins</span>
           <span className="ct-slot-stat-value" style={{ color }}>
-            {label}
+            {winsText}
             <span className="ct-slot-prob"> ({(prob * 100).toFixed(2)}% likely)</span>
           </span>
         </div>

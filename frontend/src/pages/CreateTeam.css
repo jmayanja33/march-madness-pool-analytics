@@ -274,29 +274,95 @@
   opacity: 0.85;
 }
 
-/* Black divider bar separating the team list from the total */
-.ct-perf-divider {
-  height: 3px;
-  background: var(--black);
-  border-radius: 2px;
-  margin: 4px 0 16px;
-}
-
-/* Total row — mirrors the team row layout so wins aligns under the column above */
-.ct-perf-total-row {
+/* Expected Team Wins — standalone card box */
+.ct-total-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 4px 12px 0;
+  padding: 10px 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 4px;
 }
 
-/* "Expected Team Wins" label — large and bold */
-.ct-perf-total-label {
+/* Label inside the box — normal weight */
+.ct-total-box-label {
+  font-size: 0.95rem;
+  color: var(--black);
+}
+
+/* ── Team Breakdown section ── */
+.ct-breakdown {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* "Team Breakdown" heading — matches Expected Team Wins label style */
+.ct-breakdown-title {
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--black);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
 }
+
+/* One seed-tier group */
+.ct-bd-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Group header row: label + summed wins (mirrors ct-perf-total-row) */
+.ct-bd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 12px;
+  background: #f1f5f9;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+/* Seed-tier label (e.g. "Top 5 Seeds") */
+.ct-bd-group-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+}
+
+/* Team count in parentheses next to the group label */
+.ct-bd-group-count {
+  font-weight: 400;
+  color: var(--silver);
+}
+
+/* Team list within the group — no extra card chrome, just rows */
+.ct-bd-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 8px;
+}
+
+/* Individual team row inside a breakdown group */
+.ct-bd-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--border);
+}
+.ct-bd-row:last-child { border-bottom: none; }
 
 /* ── Modal overlay and picker ── */
 .ct-overlay {
