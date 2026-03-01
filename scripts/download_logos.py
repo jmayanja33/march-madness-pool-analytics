@@ -11,7 +11,7 @@ import shutil
 from typing import Optional
 
 # Output directory for logos
-OUTPUT_DIR = "/Users/Josh/Desktop/Projects/march-madness-pool-analytics/frontend/public/logos"
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "../frontend/public/logos")
 
 # Headers to mimic a browser request
 HEADERS = {
