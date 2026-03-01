@@ -11,12 +11,16 @@
     "east  champion  south"    /* upper row: left region, center, right region */
     ".     band      ."        /* championship band: center column only */
     "west  spacer    midwest"; /* lower row */
-  grid-template-columns: max-content 1fr max-content; /* side columns shrink-wrap to content */
-  grid-template-rows: auto auto auto;                 /* all rows sized to their content */
+  /* All three columns shrink-wrap to content so the grid is exactly as wide
+     as its content — prevents the center column from expanding and off-centering. */
+  grid-template-columns: max-content auto max-content;
+  grid-template-rows: auto auto auto; /* all rows sized to their content */
   column-gap: 16px;
   row-gap: 0; /* no extra vertical space — band row provides the only separation */
   padding: 24px;
-  overflow-x: auto;
+  /* Size to content and center horizontally on the page */
+  width: fit-content;
+  margin: 0 auto;
 }
 
 /* ── Grid area assignments ── */

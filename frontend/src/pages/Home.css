@@ -11,6 +11,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow-x: auto; /* horizontal scroll when bracket is wider than viewport */
 }
 
 /* ── Page header ── */

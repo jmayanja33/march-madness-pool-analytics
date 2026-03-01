@@ -15,7 +15,12 @@ const ROUND_LABELS = ['Round of 64', 'Round of 32', 'Sweet 16', 'Elite 8'];
 // Builds the 4-round slot array for a region.
 // When results are supplied, later rounds are populated from results data and
 // each slot carries a `winner` flag indicating the team advanced to the next round.
+// Seeds are preserved across rounds by looking up each advancing team's seed
+// from the original teams array.
 function buildRounds(teams, results) {
+  // Helper: find a team's seed from the original region teams list
+  const getSeed = name => teams.find(t => t.name === name)?.seed ?? null;
+
   // Round 1: slot order follows FIRST_ROUND_SEEDS; winner = team is in r32
   const r1 = FIRST_ROUND_SEEDS.map(seed => {
     const match = teams.find(t => t.seed === seed);
@@ -26,26 +31,26 @@ function buildRounds(teams, results) {
     };
   });
 
-  // Round of 32: populated from r32 winners; winner = team is in s16
+  // Round of 32: populated from r32 winners; seed looked up from original teams
   const r2 = results
     ? results.r32.map((name, i) => ({
-        id: `r2-${i}`, seed: null, name,
+        id: `r2-${i}`, seed: getSeed(name), name,
         winner: results.s16.includes(name),
       }))
     : Array.from({ length: 8 }, (_, i) => ({ id: `r2-${i}`, seed: null, name: '', winner: false }));
 
-  // Sweet 16: populated from s16 winners; winner = team is in e8
+  // Sweet 16: populated from s16 winners; seed looked up from original teams
   const s16 = results
     ? results.s16.map((name, i) => ({
-        id: `s16-${i}`, seed: null, name,
+        id: `s16-${i}`, seed: getSeed(name), name,
         winner: results.e8.includes(name),
       }))
     : Array.from({ length: 4 }, (_, i) => ({ id: `s16-${i}`, seed: null, name: '', winner: false }));
 
-  // Elite 8: populated from e8 participants; winner = team is the regional champion (f4)
+  // Elite 8: populated from e8 participants; seed looked up from original teams
   const e8 = results
     ? results.e8.map((name, i) => ({
-        id: `e8-${i}`, seed: null, name,
+        id: `e8-${i}`, seed: getSeed(name), name,
         winner: name === results.f4,
       }))
     : Array.from({ length: 2 }, (_, i) => ({ id: `e8-${i}`, seed: null, name: '', winner: false }));

@@ -35,6 +35,17 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
   const ff     = results?.finalFour ?? null;
   const ffWins = results?.firstFour ?? {};
 
+  // Build a name→seed lookup from all four regions and First Four teams so that
+  // seeds can be shown on every slot, including Final Four and Championship.
+  const seedLookup = {};
+  Object.values(bracket).forEach(region =>
+    region.forEach(t => { if (t.name) seedLookup[t.name] = t.seed; })
+  );
+  firstFour.forEach(game => {
+    seedLookup[game.teamA.name] = game.teamA.seed;
+    seedLookup[game.teamB.name] = game.teamB.seed;
+  });
+
   return (
     <div className="bracket-wrapper fade-in">
 
@@ -100,7 +111,7 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
           <div className="trophy">🏆</div>
           {/* Show champion name and give it a permanent winner outline */}
           <BracketSlot
-            seed={null}
+            seed={ff?.champion ? seedLookup[ff.champion] ?? null : null}
             name={ff?.champion ?? ''}
             winner={Boolean(ff?.champion)}
             onClick={() => ff?.champion && onTeamClick(ff.champion)}
@@ -128,13 +139,13 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
         <div className="ff-pairing">
           <div className="band-label">Final Four</div>
           <BracketSlot
-            seed={null}
+            seed={ff?.semi1.teamA ? seedLookup[ff.semi1.teamA] ?? null : null}
             name={ff?.semi1.teamA ?? ''}
             winner={ff?.semi1.winner === ff?.semi1.teamA}
             onClick={() => ff?.semi1.teamA && onTeamClick(ff.semi1.teamA)}
           />
           <BracketSlot
-            seed={null}
+            seed={ff?.semi1.teamB ? seedLookup[ff.semi1.teamB] ?? null : null}
             name={ff?.semi1.teamB ?? ''}
             winner={ff?.semi1.winner === ff?.semi1.teamB}
             onClick={() => ff?.semi1.teamB && onTeamClick(ff.semi1.teamB)}
@@ -144,13 +155,13 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
         <div className="championship-game">
           <div className="band-label">Championship</div>
           <BracketSlot
-            seed={null}
+            seed={ff?.semi1.winner ? seedLookup[ff.semi1.winner] ?? null : null}
             name={ff?.semi1.winner ?? ''}
             winner={ff?.champion === ff?.semi1.winner}
             onClick={() => ff?.semi1.winner && onTeamClick(ff.semi1.winner)}
           />
           <BracketSlot
-            seed={null}
+            seed={ff?.semi2.winner ? seedLookup[ff.semi2.winner] ?? null : null}
             name={ff?.semi2.winner ?? ''}
             winner={ff?.champion === ff?.semi2.winner}
             onClick={() => ff?.semi2.winner && onTeamClick(ff.semi2.winner)}
@@ -160,13 +171,13 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
         <div className="ff-pairing">
           <div className="band-label">Final Four</div>
           <BracketSlot
-            seed={null}
+            seed={ff?.semi2.teamA ? seedLookup[ff.semi2.teamA] ?? null : null}
             name={ff?.semi2.teamA ?? ''}
             winner={ff?.semi2.winner === ff?.semi2.teamA}
             onClick={() => ff?.semi2.teamA && onTeamClick(ff.semi2.teamA)}
           />
           <BracketSlot
-            seed={null}
+            seed={ff?.semi2.teamB ? seedLookup[ff.semi2.teamB] ?? null : null}
             name={ff?.semi2.teamB ?? ''}
             winner={ff?.semi2.winner === ff?.semi2.teamB}
             onClick={() => ff?.semi2.teamB && onTeamClick(ff.semi2.teamB)}
