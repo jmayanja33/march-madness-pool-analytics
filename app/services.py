@@ -19,7 +19,7 @@ import chromadb
 logger = logging.getLogger(__name__)
 
 from app.config import CHROMA_COLLECTION, CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
-from app.models import PlayerProfile, SimilarTeam, TeamAnalysis, TeamStats, WinProbabilityDistribution
+from app.models import PlayerProfile, PoolTeamSummary, SimilarTeam, TeamAnalysis, TeamStats, WinProbabilityDistribution
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -282,6 +282,35 @@ def build_team_analysis(team: dict, similar: list[SimilarTeam]) -> TeamAnalysis:
             team.get("win_probability_distribution", {})
         ),
         similar_teams=similar,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pool team builder
+# ---------------------------------------------------------------------------
+
+
+def build_pool_team_summary(team: dict) -> PoolTeamSummary:
+    """Build a lightweight PoolTeamSummary from a raw team dict.
+
+    Extracts only the fields required by the Create a Team page (seed,
+    conference, and win-probability distribution).  Player-level detail and
+    similar-team data are intentionally excluded to keep the pool response
+    small.
+
+    Args:
+        team: Raw team dict from the predictions JSON.
+
+    Returns:
+        Populated :class:`~app.models.PoolTeamSummary` instance.
+    """
+    return PoolTeamSummary(
+        name=team["name"],
+        seed=team.get("tournament_seed", 0),
+        conference=team.get("conference", ""),
+        win_probability_distribution=build_win_distribution(
+            team.get("win_probability_distribution", {})
+        ),
     )
 
 

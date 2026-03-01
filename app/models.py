@@ -129,3 +129,47 @@ class HealthResponse(BaseModel):
 
     status: str   # "ok" when the service is healthy
     message: str  # Human-readable status message
+
+
+# ---------------------------------------------------------------------------
+# Pool models
+# ---------------------------------------------------------------------------
+
+
+class PoolTeamSummary(BaseModel):
+    """
+    Lightweight team data returned by POST /pool.
+
+    Contains only the fields needed to render a team slot in the Create a Team
+    page: identification fields (name, seed, conference) and the win-probability
+    distribution used to compute expected wins.
+    """
+
+    name: str
+    seed: int           # Tournament seed (1–16)
+    conference: str     # Conference name, e.g. "ACC"
+    win_probability_distribution: WinProbabilityDistribution
+
+
+class PoolRequest(BaseModel):
+    """
+    Request body for POST /pool.
+
+    Accepts up to 8 team names (the maximum pool size).  Names must match the
+    display names stored in the predictions JSON exactly (case-insensitive on
+    the server side).
+    """
+
+    teams: list[str]  # Up to 8 team display names
+
+
+class PoolResponse(BaseModel):
+    """
+    Response returned by POST /pool.
+
+    Contains one PoolTeamSummary per successfully resolved team, in the same
+    order as the request list.  Teams not found in the predictions data are
+    omitted rather than raising an error, so a partial pool is still useful.
+    """
+
+    teams: list[PoolTeamSummary]

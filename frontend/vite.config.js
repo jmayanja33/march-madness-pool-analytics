@@ -26,9 +26,10 @@ export default defineConfig(({ mode }) => {
         // Use explicit option objects so changeOrigin rewrites the Host header
         // to match the target — required when the backend runs on a different
         // host (e.g., the "backend" Docker service name vs. "localhost").
-        '/analyze': { target: backendUrl, changeOrigin: true },
-        '/teams':   { target: backendUrl, changeOrigin: true },
-        '/info':    { target: backendUrl, changeOrigin: true },
+        '/analyze':        { target: backendUrl, changeOrigin: true },
+        '/teams':          { target: backendUrl, changeOrigin: true },
+        '/info':           { target: backendUrl, changeOrigin: true },
+        '/create-a-team':  { target: backendUrl, changeOrigin: true },
       },
     },
   };

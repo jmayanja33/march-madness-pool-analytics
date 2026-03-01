@@ -29,3 +29,23 @@ export async function fetchTeams() {
   }
   return res.json();
 }
+
+// Fetches lightweight pool summaries for a list of team names from the backend.
+// Accepts an array of team display names (up to 8) and returns the resolved
+// PoolTeamSummary objects.  Teams not found in the predictions data are
+// omitted from the response rather than causing an error.
+// Throws if the network request itself fails.
+export async function fetchPoolTeams(teamNames) {
+  const res = await fetch('/create-a-team', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ teams: teamNames }),
+  });
+  if (!res.ok) {
+    console.error(`[API] fetchPoolTeams failed: HTTP ${res.status}`);
+    throw new Error(`Failed to fetch pool data: ${res.status}`);
+  }
+  const data = await res.json();
+  console.log(`[API] fetchPoolTeams — resolved ${data.teams.length} / ${teamNames.length} teams`);
+  return data.teams;
+}

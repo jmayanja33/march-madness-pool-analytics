@@ -27,9 +27,10 @@ export default function Home() {
 
         {/* Three navigation buttons, one per page */}
         <div className="home-nav-buttons">
-          <Link to="/bracket" className="home-btn">Bracket</Link>
-          <Link to="/analyze" className="home-btn">Analyze</Link>
-          <Link to="/info"    className="home-btn">Info</Link>
+          <Link to="/bracket"     className="home-btn">Bracket</Link>
+          <Link to="/analyze"     className="home-btn">Analyze</Link>
+          <Link to="/create-team" className="home-btn">Create Team</Link>
+          <Link to="/info"        className="home-btn">Info</Link>
         </div>
       </main>
     </div>

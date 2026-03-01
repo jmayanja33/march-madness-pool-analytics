@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import BracketPage from './pages/BracketPage';
 import Analyze from './pages/Analyze';
+import CreateTeam from './pages/CreateTeam';
 import Info from './pages/Info';
 
 export default function App() {
@@ -12,8 +13,9 @@ export default function App() {
       <Routes>
         <Route path="/"         element={<Home />} />        {/* Landing page */}
         <Route path="/bracket"  element={<BracketPage />} /> {/* Interactive bracket */}
-        <Route path="/analyze"  element={<Analyze />} />     {/* Team comparison */}
-        <Route path="/info"     element={<Info />} />        {/* Project info */}
+        <Route path="/analyze"      element={<Analyze />} />     {/* Team comparison */}
+        <Route path="/create-team"  element={<CreateTeam />} /> {/* Pool builder */}
+        <Route path="/info"         element={<Info />} />        {/* Project info */}
       </Routes>
     </BrowserRouter>
   );

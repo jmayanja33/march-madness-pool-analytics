@@ -19,9 +19,10 @@ export default function NavBar() {
 
       {/* Navigation links — active class applied to the current route */}
       <div className="navbar-links">
-        <Link to="/bracket"  className={pathname === '/bracket'  ? 'active' : ''}>Bracket</Link>
-        <Link to="/analyze"  className={pathname === '/analyze'  ? 'active' : ''}>Analyze</Link>
-        <Link to="/info"     className={pathname === '/info'     ? 'active' : ''}>Info</Link>
+        <Link to="/bracket"      className={pathname === '/bracket'      ? 'active' : ''}>Bracket</Link>
+        <Link to="/analyze"      className={pathname === '/analyze'      ? 'active' : ''}>Analyze</Link>
+        <Link to="/create-team"  className={pathname === '/create-team'  ? 'active' : ''}>Create Team</Link>
+        <Link to="/info"         className={pathname === '/info'         ? 'active' : ''}>Info</Link>
       </div>
     </nav>
   );

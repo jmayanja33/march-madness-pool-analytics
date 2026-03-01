@@ -1,0 +1,330 @@
+/* CreateTeam page — pool builder with two-panel layout. */
+
+/* ── Color tokens for expected-wins probability labels ── */
+:root {
+  --exp-red:    #e05252;
+  --exp-yellow: #d4a017;
+  --exp-green:  #3a9e5f;
+}
+
+/* ── Page wrapper ── */
+.ct-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ── Two-panel body ── */
+.ct-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Shared panel base ── */
+.ct-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Left panel — wider to accommodate the 8-slot grid */
+.ct-left {
+  flex: 0 0 60%;
+  border-right: 1px solid var(--border);
+}
+
+/* Right panel — expected performance summary */
+.ct-right {
+  flex: 1;
+}
+
+/* Section title (shared by both panels) */
+.ct-panel-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+/* ── Error banner shown when a team fetch fails ── */
+.ct-fetch-error {
+  font-size: 0.83rem;
+  color: var(--exp-red);
+  background: #fff0f0;
+  border: 1px solid #f5c6c6;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+
+/* ── Slots grid — 2 columns × 4 rows ── */
+.ct-slots-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Empty slot — blue "Add Team" button ── */
+.ct-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  background: var(--dark-blue);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 0.15s, transform 0.1s;
+}
+.ct-add-btn:hover  { background: #1a3d7a; }
+.ct-add-btn:active { transform: scale(0.97); }
+.ct-add-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Filled slot — compact team card ── */
+.ct-slot-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 10px 10px 10px 12px;
+  position: relative;
+  min-height: 72px;
+}
+
+/* Team logo — left side of the card */
+.ct-slot-logo {
+  height: 48px;
+  width: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* Team info column — seed/name/conference + stats */
+.ct-slot-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* First row: seed badge + team name + conference */
+.ct-slot-name {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.ct-slot-seed {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  background: #e8f0fe;
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+}
+
+.ct-slot-teamname {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+}
+
+.ct-slot-conf {
+  font-size: 0.78rem;
+  color: var(--silver);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Stat rows (Region, Expected Wins) */
+.ct-slot-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: 0.78rem;
+}
+
+.ct-slot-stat-label {
+  color: var(--silver);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.ct-slot-stat-value {
+  font-weight: 600;
+  color: var(--black);
+}
+
+/* Probability sub-label following the wins value */
+.ct-slot-prob {
+  font-weight: 400;
+  color: var(--silver);
+  font-size: 0.75rem;
+}
+
+/* Remove (✕) button — top-right of the card */
+.ct-slot-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: var(--silver);
+  line-height: 1;
+  padding: 2px 4px;
+  transition: color 0.15s;
+}
+.ct-slot-remove:hover { color: var(--black); }
+
+/* ── Right panel — Expected Performance ── */
+
+/* Placeholder text when no teams are selected */
+.ct-perf-empty {
+  font-size: 0.9rem;
+  color: var(--silver);
+  font-style: italic;
+}
+
+/* Ranked list of teams */
+.ct-perf-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* Single team row: name on the left, wins on the right */
+.ct-perf-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: 0.88rem;
+}
+
+/* Seed badge + team name on the left */
+.ct-perf-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--dark-blue);
+  min-width: 0;
+}
+
+.ct-perf-seed {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  background: #e8f0fe;
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+}
+
+/* Expected wins value — color applied inline */
+.ct-perf-wins {
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Probability in parentheses — slightly lighter */
+.ct-perf-pct {
+  font-weight: 400;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+/* Black divider bar separating the team list from the total */
+.ct-perf-divider {
+  height: 3px;
+  background: var(--black);
+  border-radius: 2px;
+  margin: 4px 0 16px;
+}
+
+/* Total expected wins line */
+.ct-perf-total {
+  font-size: 1rem;
+  color: var(--black);
+}
+
+.ct-perf-total-pct {
+  font-size: 0.9rem;
+}
+
+/* ── Modal overlay and picker ── */
+.ct-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.ct-modal {
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  width: min(380px, 90vw);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ct-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ct-modal-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+}
+
+.ct-modal-close {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--silver);
+  padding: 2px 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.ct-modal-close:hover { color: var(--black); }
