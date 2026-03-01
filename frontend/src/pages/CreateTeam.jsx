@@ -205,6 +205,12 @@ export default function CreateTeam() {
                       <div className="ct-perf-name">
                         <span className="ct-perf-seed">#{team.seed}</span>
                         {team.name}
+                        <img
+                          src={`/logos/${team.name}.png`}
+                          alt={`${team.name} logo`}
+                          className="ct-perf-logo"
+                          onError={e => { e.currentTarget.style.display = 'none'; }}
+                        />
                       </div>
                       <span className="ct-perf-wins" style={{ color }}>
                         {label} wins
@@ -218,18 +224,18 @@ export default function CreateTeam() {
               {/* Black divider */}
               <div className="ct-perf-divider" />
 
-              {/* Total expected wins */}
+              {/* Total expected wins — aligned like a summation under the wins column */}
               {poolStats && (() => {
                 const totalLabel = `${poolStats.totalWins}+`;
                 const color = probColor(poolStats.avgProb);
                 return (
-                  <p className="ct-perf-total">
-                    Expected Team Wins:{' '}
-                    <strong style={{ color }}>{totalLabel}</strong>
-                    <strong className="ct-perf-total-pct" style={{ color }}>
-                      {' '}({(poolStats.avgProb * 100).toFixed(1)}%)
-                    </strong>
-                  </p>
+                  <div className="ct-perf-total-row">
+                    <span className="ct-perf-total-label">Expected Team Wins</span>
+                    <span className="ct-perf-wins" style={{ color }}>
+                      {totalLabel} wins
+                      <span className="ct-perf-pct"> ({(poolStats.avgProb * 100).toFixed(1)}%)</span>
+                    </span>
+                  </div>
                 );
               })()}
             </>

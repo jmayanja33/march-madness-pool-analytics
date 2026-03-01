@@ -242,6 +242,14 @@
   min-width: 0;
 }
 
+/* Team logo in the performance row */
+.ct-perf-logo {
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .ct-perf-seed {
   font-size: 0.72rem;
   font-weight: 700;
@@ -274,14 +282,20 @@
   margin: 4px 0 16px;
 }
 
-/* Total expected wins line */
-.ct-perf-total {
-  font-size: 1rem;
-  color: var(--black);
+/* Total row — mirrors the team row layout so wins aligns under the column above */
+.ct-perf-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 12px 0;
 }
 
-.ct-perf-total-pct {
-  font-size: 0.9rem;
+/* "Expected Team Wins" label — large and bold */
+.ct-perf-total-label {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--black);
 }
 
 /* ── Modal overlay and picker ── */
