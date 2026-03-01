@@ -1,6 +1,9 @@
 // Renders one of the four tournament regions (East, West, South, Midwest).
 // Each region displays 4 rounds (R1 → R2 → Sweet 16 → Elite 8) as columns.
 // The Final Four is shown separately in the center of the full bracket.
+//
+// results (optional): { r32, s16, e8, f4 } arrays/value used to populate later rounds
+//   and determine which slots should be highlighted as winners (green outline).
 import BracketSlot from './BracketSlot';
 import './BracketRegion.css';
 
@@ -10,18 +13,44 @@ const FIRST_ROUND_SEEDS = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15
 const ROUND_LABELS = ['Round of 64', 'Round of 32', 'Sweet 16', 'Elite 8'];
 
 // Builds the 4-round slot array for a region.
-// Round 1 is populated from the provided teams list; later rounds are blank (TBD).
-function buildRounds(teams) {
+// When results are supplied, later rounds are populated from results data and
+// each slot carries a `winner` flag indicating the team advanced to the next round.
+function buildRounds(teams, results) {
+  // Round 1: slot order follows FIRST_ROUND_SEEDS; winner = team is in r32
   const r1 = FIRST_ROUND_SEEDS.map(seed => {
     const match = teams.find(t => t.seed === seed);
-    return match || { seed, name: '' };
+    const team = match || { seed, name: '' };
+    return {
+      ...team,
+      winner: results ? results.r32.includes(team.name) : false,
+    };
   });
-  return [
-    r1,
-    Array.from({ length: 8 }, (_, i) => ({ seed: null, name: '', id: `r2-${i}` })),
-    Array.from({ length: 4 }, (_, i) => ({ seed: null, name: '', id: `s16-${i}` })),
-    Array.from({ length: 2 }, (_, i) => ({ seed: null, name: '', id: `e8-${i}` })),
-  ];
+
+  // Round of 32: populated from r32 winners; winner = team is in s16
+  const r2 = results
+    ? results.r32.map((name, i) => ({
+        id: `r2-${i}`, seed: null, name,
+        winner: results.s16.includes(name),
+      }))
+    : Array.from({ length: 8 }, (_, i) => ({ id: `r2-${i}`, seed: null, name: '', winner: false }));
+
+  // Sweet 16: populated from s16 winners; winner = team is in e8
+  const s16 = results
+    ? results.s16.map((name, i) => ({
+        id: `s16-${i}`, seed: null, name,
+        winner: results.e8.includes(name),
+      }))
+    : Array.from({ length: 4 }, (_, i) => ({ id: `s16-${i}`, seed: null, name: '', winner: false }));
+
+  // Elite 8: populated from e8 participants; winner = team is the regional champion (f4)
+  const e8 = results
+    ? results.e8.map((name, i) => ({
+        id: `e8-${i}`, seed: null, name,
+        winner: name === results.f4,
+      }))
+    : Array.from({ length: 2 }, (_, i) => ({ id: `e8-${i}`, seed: null, name: '', winner: false }));
+
+  return [r1, r2, s16, e8];
 }
 
 // direction: 'left'  → R1 on the far left, E8 closest to center (East, West)
@@ -30,8 +59,8 @@ function buildRounds(teams) {
 // DOM order is always R1→R2→S16→E8 regardless of direction, so the CSS
 // nth-child spacing rules apply correctly on both sides. Right-direction
 // regions are visually flipped via CSS flex-direction: row-reverse.
-export default function BracketRegion({ name, teams, direction, onTeamClick }) {
-  const rounds = buildRounds(teams);
+export default function BracketRegion({ name, teams, direction, results, onTeamClick }) {
+  const rounds = buildRounds(teams, results);
 
   return (
     <div className={`bracket-region region-${direction}`}>
@@ -48,6 +77,7 @@ export default function BracketRegion({ name, teams, direction, onTeamClick }) {
                   <BracketSlot
                     seed={team.seed}
                     name={team.name}
+                    winner={team.winner}
                     onClick={() => onTeamClick(team.name)}
                   />
                 </div>

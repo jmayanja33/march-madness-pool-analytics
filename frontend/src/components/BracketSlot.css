@@ -27,6 +27,12 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
 }
 
+/* ── Winner slot — green outline to indicate this team advanced ── */
+.bracket-slot.slot-winner {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 1px #22c55e;
+}
+
 /* ── Empty slot (TBD) — not interactive ── */
 .bracket-slot.empty {
   background: #f1f5f9;

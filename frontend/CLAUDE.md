@@ -11,8 +11,13 @@ users interact with the site.
 complex code HARMS this project as it makes maintainability much harder.
 
 ## Home Page
+The home page will feature a large march madness logo in the middle of the page. Below that, The Pool - Analytics will 
+be printed as a subtitle in navy (the font should be the same as The Pool in the header). Below that will be three buttons,
+One to each of the three pages (Bracket, Analyze, Info). These buttons should link to each of the pages.
 
-The home page will have a large bracket of the 20226 NCAA men's basketball tournament. The bracket will be interactive, with each team placed
+
+## Bracket Page
+The bracket page will have a large bracket of the 20226 NCAA men's basketball tournament. The bracket will be interactive, with each team placed
 in the correct region/seed. When the team is clicked on, a small window will pop up. This will call the analyze/${team} endpoint,
 and the appropriate data will be populated in that window. If too much data is provided, the window can be scrollable.
 

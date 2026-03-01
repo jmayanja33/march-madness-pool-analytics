@@ -30,6 +30,57 @@ export const FIRST_FOUR_2025 = [
   },
 ];
 
+// 2025 tournament results — used to populate later rounds and highlight winners.
+//
+// For each region:
+//   r32[i] = name of the team that won game i of the Round of 64 (ordered by bracket position)
+//            Bracket game order follows FIRST_ROUND_SEEDS: 1v16, 8v9, 5v12, 4v13, 6v11, 3v14, 7v10, 2v15
+//   s16[i] = winner of game i in the Round of 32
+//   e8[i]  = winner of game i in the Sweet 16
+//   f4     = Elite 8 winner (regional champion advancing to Final Four)
+//
+// finalFour describes the two national semifinals and the champion.
+// firstFour maps each First Four game ID to the name of the winner.
+export const RESULTS_2025 = {
+  East: {
+    r32: ['Duke', 'Baylor', 'Oregon', 'Arizona', 'BYU', 'Wisconsin', "Saint Mary's", 'Alabama'],
+    s16: ['Duke', 'Arizona', 'BYU', 'Alabama'],
+    e8:  ['Duke', 'BYU'],
+    f4:  'Duke',
+  },
+  West: {
+    r32: ['Florida', 'UConn', 'Colorado State', 'Maryland', 'Drake', 'Texas Tech', 'Arkansas', "St. John's"],
+    s16: ['Florida', 'Maryland', 'Texas Tech', 'Arkansas'],
+    e8:  ['Florida', 'Texas Tech'],
+    f4:  'Florida',
+  },
+  South: {
+    r32: ['Auburn', 'Creighton', 'Michigan', 'Texas A&M', 'Ole Miss', 'Iowa State', 'New Mexico', 'Michigan State'],
+    s16: ['Auburn', 'Michigan', 'Ole Miss', 'Michigan State'],
+    e8:  ['Auburn', 'Ole Miss'],
+    f4:  'Auburn',
+  },
+  Midwest: {
+    r32: ['Houston', 'Gonzaga', 'McNeese', 'Purdue', 'Illinois', 'Kentucky', 'UCLA', 'Tennessee'],
+    s16: ['Houston', 'Purdue', 'Kentucky', 'Tennessee'],
+    e8:  ['Houston', 'Tennessee'],
+    f4:  'Houston',
+  },
+  // National semifinals pairings: East vs Midwest (semi1), West vs South (semi2)
+  finalFour: {
+    semi1: { teamA: 'Duke',    teamB: 'Houston', winner: 'Houston' },
+    semi2: { teamA: 'Florida', teamB: 'Auburn',  winner: 'Florida' },
+    champion: 'Florida',
+  },
+  // Maps each First Four game ID to the name of the winning team
+  firstFour: {
+    'ff-south-16':  'Alabama State',
+    'ff-east-16':   "Mount St. Mary's",
+    'ff-south-11':  'North Carolina',
+    'ff-midwest-11': 'Xavier',
+  },
+};
+
 // Main bracket — 16 teams per region, seeded 1–16.
 // East 16 and Midwest 11 slots are filled by First Four winners; the First Four
 // losers (American University, Mount St. Mary's, Texas, Xavier) still appear
