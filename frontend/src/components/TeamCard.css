@@ -197,7 +197,9 @@
    column widths, so all three bars start and end at exactly the same position. */
 .tc-sim-row {
   display: grid;
-  grid-template-columns: 22px 160px 1fr 52px 52px;
+  /* 2fr for the team name, 3fr for the similarity bar — both scale with card
+     width so the bar remains visible even when 4 teams are shown side-by-side. */
+  grid-template-columns: 22px 2fr 3fr 52px 52px;
   align-items: center;
   gap: 8px;
   font-size: 0.82rem;
@@ -212,9 +214,9 @@
 
 .tc-sim-name { font-weight: 600; color: var(--dark-blue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Bar + percentage label inline — equal horizontal margin insets the gauge
-   the same distance from the name column and the seed column. */
-.tc-sim-bar-wrap { display: flex; align-items: center; gap: 5px; margin: 0 16px; }
+/* Bar + percentage label inline — small horizontal margin keeps a gap between
+   the name and seed columns without starving the bar of space at narrow widths. */
+.tc-sim-bar-wrap { display: flex; align-items: center; gap: 5px; margin: 0 4px; }
 
 .tc-sim-bar-track {
   flex: 1;
