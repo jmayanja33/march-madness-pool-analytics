@@ -9,6 +9,7 @@
 //                 a black divider, then the combined expected-wins total.
 import { useState, useEffect, useRef } from 'react';
 import NavBar from '../components/NavBar';
+import TeamPopup from '../components/TeamPopup';
 import { fetchTeams, fetchPoolTeams } from '../api/teamApi';
 import { BRACKET_2025 } from '../data/bracketData';
 import './CreateTeam.css';
@@ -126,6 +127,9 @@ export default function CreateTeam() {
   const [fetching, setFetching] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
+  // Name of the team whose full TeamCard popup is currently open, or null.
+  const [popupTeam, setPopupTeam] = useState(null);
+
   // Load the dropdown list once on mount.
   useEffect(() => {
     fetchTeams()
@@ -206,6 +210,7 @@ export default function CreateTeam() {
                     key={i}
                     team={team}
                     onRemove={() => removeTeam(i)}
+                    onInfo={() => setPopupTeam(team.name)}
                   />
                 : /* Empty slot — add-team button */
                   <button
@@ -298,6 +303,11 @@ export default function CreateTeam() {
         </section>
       </div>
 
+      {/* ── Team detail popup (info button on slot cards) ── */}
+      {popupTeam && (
+        <TeamPopup teamName={popupTeam} onClose={() => setPopupTeam(null)} />
+      )}
+
       {/* ── Team picker modal ── */}
       {activeSlot !== null && (
         <div className="ct-overlay" onClick={() => setActiveSlot(null)}>
@@ -325,7 +335,7 @@ export default function CreateTeam() {
 // ---------------------------------------------------------------------------
 // Shows the logo (left), seed / name / conference, region, and expected wins.
 
-function TeamSlotCard({ team, onRemove }) {
+function TeamSlotCard({ team, onRemove, onInfo }) {
   const region = getTeamRegion(team.name);
   const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
   const color = probColor(prob);
@@ -354,17 +364,18 @@ function TeamSlotCard({ team, onRemove }) {
           <span className="ct-slot-stat-value">{region}</span>
         </div>
 
-        {/* Expected wins */}
+        {/* Expected wins + info button on the same row */}
         <div className="ct-slot-stat">
           <span className="ct-slot-stat-label">Expected Wins</span>
           <span className="ct-slot-stat-value" style={{ color }}>
             {winsText}
             <span className="ct-slot-prob"> ({(prob * 100).toFixed(2)}% likely)</span>
           </span>
+          <button className="ct-slot-info-btn" onClick={onInfo} title="View team details">ⓘ</button>
         </div>
       </div>
 
-      {/* Remove button */}
+      {/* Remove button — top-right */}
       <button className="ct-slot-remove" onClick={onRemove} title="Remove team">✕</button>
     </div>
   );

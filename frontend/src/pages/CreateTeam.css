@@ -200,6 +200,20 @@
 }
 .ct-slot-remove:hover { color: var(--black); }
 
+/* Info (ⓘ) button — inline at the right end of the Expected Wins row */
+.ct-slot-info-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--silver);
+  line-height: 1;
+  padding: 0 0 0 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.ct-slot-info-btn:hover { color: var(--light-blue); }
+
 /* ── Right panel — Expected Performance ── */
 
 /* Placeholder text when no teams are selected */
