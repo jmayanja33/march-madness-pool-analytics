@@ -34,6 +34,36 @@ window, so that comparisons can be made. When the next team is added, the page w
 If a third team is added, the page will be split into thirds. If a fourth team is added, then the page will be split into
 quarters. The maximum is four teams.
 
+
+## Create a Team Page
+
+The create a team page is a page where a user can create a pool team and evaluate their potential performance. The page
+will be setup into to 2 sides. The left side of the page will be titled 'Teams' and will have 8 slots (listed horizontally)
+for teams. Initially, no teams have been added, so each team slot (1-8) will be populated by a blue button that says (Add team).
+
+When the add team button is selected, the same searchable dropdown as the analyze page appears where a user can select a team to add.
+Once the team is selected, the team slot is filled with a box for the team. This box has the team's seed, name, conference, and logo. 
+The card will have the logo on the left side, followed by seed - team name - conference. Outside of this difference, all other formatting should
+match the analyze page team card formatting.
+
+At the bottom of the card will be the following stats:
+
+- Region (Can be pulled from the bracket)
+- Expected Wins 
+  - This is the number of wins that is most likely in the team's distribution
+  - This number will be followed with the distribution percentage (ex. Expected Wins: 2+ (53.72% likely))
+  - The expected wins percentage will be red (>50%), yellow (50-70%), or green (70%+)
+
+Opposite of the team creation, on the right side of the page, will be the Expected Performance section. This section will
+list each team selected from most expected wins to least. Each team will have the expected wins listed with them (with the percentage and coloring as well).
+Below all of the listed teams will be a black bar, which separates the teams from the expected wins calculation. Beneath
+this bar will be Expected Team Wins: $Number of Wins$ $(Percentage with Coloring)$ in bold. 
+
+The expected team wins can be calculated as the sum of the expected wins for each team. For teams that have 2+ wins, 
+use 2 in the calculations. Then present the final expected wins as X+ wins. The probability for expected wins should
+be calculated based off of the maximimum win probabilities for each individual team selected.
+
+
 ## Info Page
 
 The info page will have a description about the project. It will include minor details about the model used, where

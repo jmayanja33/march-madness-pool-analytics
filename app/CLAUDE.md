@@ -2,7 +2,7 @@
 
 The backend of this platform will be based on FastAPI. It will have the endpoints listed below.
 
-### Endpoints
+## Endpoints
 
 The following endpoints will be open to be called.
 
@@ -27,6 +27,9 @@ This endpoint fetches all data collected for a specified team in march madness. 
 ### /analyze/most-similar/${team}
 This endpoint runs a query on the vector database. Using cosine similarity, it finds the three most similar teams to 
 the provided team, in the database. It returns the list of team objects, as well as the corresponding cosine similarity.
+
+### /create-a-team
+This endpoint routes a user to the create a team page.
 
 ### /info
 This endpoint routes a user to the info page.
