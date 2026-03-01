@@ -1,5 +1,4 @@
-/* Home page layout — full-height flex column containing the navbar,
-   page header, and the bracket. */
+/* Home landing page — full-height layout with centered hero content. */
 
 .home {
   min-height: 100vh;
@@ -7,38 +6,70 @@
   flex-direction: column;
 }
 
-.home-main {
+/* ── Hero section — fills remaining space and centers content vertically ── */
+.home-hero {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-x: auto; /* horizontal scroll when bracket is wider than viewport */
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 48px 24px;
 }
 
-/* ── Page header ── */
-.home-header {
-  padding: 28px 32px 0;
-  text-align: center;
+/* ── March Madness logo — large, centered ── */
+.home-logo {
+  width: min(420px, 80vw);
+  height: auto;
+  object-fit: contain;
+  /* subtle drop shadow to lift the logo off the background */
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.18));
 }
 
-/* Anton font with 3D shadow — matches the navbar title style */
-.home-header h1 {
+/* ── Subtitle — "The Pool — Analytics" in Anton, navy ── */
+.home-subtitle {
   font-family: 'Anton', sans-serif;
-  font-size: 2.2rem;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
   font-weight: 400; /* Anton is a single-weight display font */
   color: var(--dark-blue);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  text-shadow:
-    1px 1px 0 #00194d,
-    2px 2px 0 #00194d,
-    3px 3px 4px rgba(0, 0, 0, 0.25);
+  text-align: center;
 }
 
-/* Subdued instruction text beneath the title */
-.home-header p {
-  font-size: 0.85rem;
-  color: var(--silver);
-  margin-top: 6px;
-  letter-spacing: 0.05em;
+/* ── Navigation button row ── */
+.home-nav-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Individual nav button — dark-blue base, light-blue accent on hover */
+.home-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  background: var(--dark-blue);
+  color: var(--white);
+  font-family: 'Anton', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  border-radius: var(--radius);
+  border: 2px solid transparent;
+  transition: background 0.18s, border-color 0.18s, transform 0.12s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.home-btn:hover {
+  background: var(--light-blue);
+  border-color: var(--light-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+.home-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow);
 }

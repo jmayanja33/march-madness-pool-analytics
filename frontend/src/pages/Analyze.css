@@ -53,9 +53,12 @@
 }
 
 .analyze-empty-title {
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  font-weight: 400; /* Anton is a single-weight display font */
   color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .analyze-empty-sub {

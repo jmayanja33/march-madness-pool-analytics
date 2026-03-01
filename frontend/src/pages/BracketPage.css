@@ -1,0 +1,40 @@
+/* BracketPage layout — full-height flex column containing the navbar,
+   page header, and the bracket. */
+
+.bracket-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bracket-page-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto; /* horizontal scroll when bracket is wider than viewport */
+}
+
+/* ── Page header ── */
+.bracket-page-header {
+  padding: 28px 32px 0;
+  text-align: center;
+}
+
+/* Anton font with 3D shadow — matches the navbar title style */
+.bracket-page-header h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 400; /* Anton is a single-weight display font */
+  color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Subdued instruction text beneath the title */
+.bracket-page-header p {
+  font-size: 0.85rem;
+  color: var(--silver);
+  margin-top: 6px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}

@@ -1,42 +1,37 @@
-// Home page — displays the interactive 2025 NCAA Tournament bracket.
-// Clicking any filled team slot opens a TeamPopup with that team's analytics.
-import { useState, useEffect } from 'react';
+// Home — landing page for The Pool.
+// Displays the March Madness logo, a branded subtitle, and three navigation
+// buttons linking to the Bracket, Analyze, and Info pages.
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import Bracket from '../components/Bracket';
-import TeamPopup from '../components/TeamPopup';
-import { BRACKET_2025, FIRST_FOUR_2025, RESULTS_2025 } from '../data/bracketData';
 import './Home.css';
 
 export default function Home() {
-  useEffect(() => { document.title = 'The Pool | Home'; }, []);
-
-  // Tracks which team the user has clicked; null means no popup is open
-  const [selectedTeam, setSelectedTeam] = useState(null);
+  useEffect(() => { document.title = 'The Pool'; }, []);
 
   return (
     <div className="home">
       <NavBar />
-      <main className="home-main">
-        <div className="home-header fade-in">
-          <h1>2025 NCAA Tournament</h1>
-          <p>Click on any team to view analytics</p>
-        </div>
-        {/* Pass 2025 bracket, First Four data, and full results; onTeamClick opens the analytics popup */}
-        <Bracket
-          bracket={BRACKET_2025}
-          firstFour={FIRST_FOUR_2025}
-          results={RESULTS_2025}
-          onTeamClick={setSelectedTeam}
-        />
-      </main>
 
-      {/* Popup is rendered only when a team is selected */}
-      {selectedTeam && (
-        <TeamPopup
-          teamName={selectedTeam}
-          onClose={() => setSelectedTeam(null)}
+      {/* Centered hero section — logo, subtitle, navigation buttons */}
+      <main className="home-hero fade-in">
+        {/* Large March Madness logo */}
+        <img
+          src="/march-madness-logo.svg"
+          alt="March Madness"
+          className="home-logo"
         />
-      )}
+
+        {/* Branded subtitle in navy Anton font */}
+        <h1 className="home-subtitle">The Pool — Analytics</h1>
+
+        {/* Three navigation buttons, one per page */}
+        <div className="home-nav-buttons">
+          <Link to="/bracket" className="home-btn">Bracket</Link>
+          <Link to="/analyze" className="home-btn">Analyze</Link>
+          <Link to="/info"    className="home-btn">Info</Link>
+        </div>
+      </main>
     </div>
   );
 }
