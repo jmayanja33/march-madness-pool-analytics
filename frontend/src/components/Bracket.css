@@ -8,9 +8,9 @@
 .bracket-wrapper {
   display: grid;
   grid-template-areas:
-    "east  champion  south"
-    ".     band      ."
-    "west  spacer    midwest";
+    "east  champion  south"    /* upper row: left region, center, right region */
+    ".     band      ."        /* championship band: center column only */
+    "west  spacer    midwest"; /* lower row */
   grid-template-columns: max-content 1fr max-content; /* side columns shrink-wrap to content */
   grid-template-rows: auto auto auto;                 /* all rows sized to their content */
   column-gap: 16px;
@@ -26,13 +26,47 @@
 .region-midwest { grid-area: midwest; }
 .center-spacer  { grid-area: spacer; } /* mirrors champion-box width in lower row */
 
-/* ── Champion box (upper center) ── */
+/* ── First Four band ──
+   Lives at the top of the champion-box, so its top edge is flush with the
+   tops of the East and South regions (all in the same grid row). */
+.first-four-band {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-top: 2px solid var(--light-blue);
+  border-bottom: 2px solid var(--light-blue);
+  background: #f0f7ff;
+}
+
+/* Horizontal row of the four individual First Four game pairings */
+.ff-games {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+/* ── Champion box (upper center) ──
+   Stretches vertically alongside East/South; First Four band sits at the top,
+   champion label/trophy/slot are centered in the remaining space below. */
 .champion-box {
   grid-area: champion;
   display: flex;
   flex-direction: column;
+  align-items: stretch; /* children fill the full center-column width */
+  justify-content: flex-start;
+}
+
+/* Champion label + trophy + slot, centered below the First Four band */
+.champion-inner {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex: 1;
   gap: 10px;
   padding: 16px;
 }

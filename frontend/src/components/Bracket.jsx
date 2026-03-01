@@ -5,8 +5,12 @@
 //   ".       band       ."        ← band row: championship strip (center only)
 //   "west    spacer     midwest"  ← lower row: bottom-left, center, bottom-right
 //
-// The championship band only occupies the center column, so the left/right region
-// columns run edge-to-edge with no extra vertical space between upper and lower rows.
+// The champion-box (center of the upper row) contains two stacked sections:
+//   1. First Four band — flush with the tops of the East/South regions
+//   2. Champion label/trophy/slot — centered in the remaining space below
+//
+// The championship band only occupies the center column, so the left/right
+// region columns run edge-to-edge with no unnecessary vertical gaps.
 import BracketRegion from './BracketRegion';
 import BracketSlot from './BracketSlot';
 import './Bracket.css';
@@ -30,11 +34,43 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, onTeamClick }) {
         <BracketRegion name="East" teams={bracket.East} direction="left" onTeamClick={onTeamClick} />
       </div>
 
-      {/* Champion box — center of upper row, sits between East and South */}
+      {/* Champion box — center of upper row, between East and South.
+          First Four band sits at the very top so its top edge aligns with the
+          tops of the East and South regions. Champion content is centered below. */}
       <div className="champion-box">
-        <div className="band-label">Champion</div>
-        <div className="trophy">🏆</div>
-        <BracketSlot seed={null} name="" />
+
+        {/* ── First Four band ──
+            One label for the whole section; individual games have no titles.
+            The four games are the play-in matchups before the Round of 64. */}
+        <div className="first-four-band">
+          <div className="band-label">First Four</div>
+          <div className="ff-games">
+            <div className="ff-pairing">
+              <BracketSlot seed={null} name="" /> {/* First Four game 1 — team A */}
+              <BracketSlot seed={null} name="" /> {/* First Four game 1 — team B */}
+            </div>
+            <div className="ff-pairing">
+              <BracketSlot seed={null} name="" /> {/* First Four game 2 — team A */}
+              <BracketSlot seed={null} name="" /> {/* First Four game 2 — team B */}
+            </div>
+            <div className="ff-pairing">
+              <BracketSlot seed={null} name="" /> {/* First Four game 3 — team A */}
+              <BracketSlot seed={null} name="" /> {/* First Four game 3 — team B */}
+            </div>
+            <div className="ff-pairing">
+              <BracketSlot seed={null} name="" /> {/* First Four game 4 — team A */}
+              <BracketSlot seed={null} name="" /> {/* First Four game 4 — team B */}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Champion section — centered in the remaining space below ── */}
+        <div className="champion-inner">
+          <div className="band-label">Champion</div>
+          <div className="trophy">🏆</div>
+          <BracketSlot seed={null} name="" />
+        </div>
+
       </div>
 
       <div className="region-south">
