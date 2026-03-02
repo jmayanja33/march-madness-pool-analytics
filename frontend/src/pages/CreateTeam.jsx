@@ -80,7 +80,10 @@ function computePoolStats(filledTeams) {
   return { totalWins, avgProb: totalProb / filledTeams.length };
 }
 
-// Seed tier groupings used by the Team Breakdown section.
+// Standard region display order for the Region Breakdown section.
+const REGION_ORDER = ['East', 'West', 'South', 'Midwest'];
+
+// Seed tier groupings used by the Seed Breakdown section.
 // Ranges are non-overlapping; label matches what the user sees.
 const SEED_GROUPS = [
   { label: 'Top 5 Seeds',  test: seed => seed <= 5 },
@@ -247,9 +250,9 @@ export default function CreateTeam() {
                 );
               })()}
 
-              {/* ── Team Breakdown by seed tier ── */}
+              {/* ── Seed Breakdown by seed tier ── */}
               <div className="ct-breakdown">
-                <h3 className="ct-breakdown-title">Team Breakdown</h3>
+                <h3 className="ct-breakdown-title">Seed Breakdown</h3>
                 {SEED_GROUPS.map(group => {
                   // Only render groups that have at least one selected team.
                   const groupTeams = sortedTeams.filter(t => group.test(t.seed));
@@ -272,6 +275,58 @@ export default function CreateTeam() {
                       {/* Individual teams within the group */}
                       <ul className="ct-bd-list">
                         {groupTeams.map(team => {
+                          const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
+                          const color = probColor(prob);
+                          return (
+                            <li key={team.name} className="ct-bd-row">
+                              <div className="ct-perf-name">
+                                <span className="ct-perf-seed">#{team.seed}</span>
+                                {team.name}
+                                <img
+                                  src={`/logos/${team.name}.png`}
+                                  alt={`${team.name} logo`}
+                                  className="ct-perf-logo"
+                                  onError={e => { e.currentTarget.style.display = 'none'; }}
+                                />
+                              </div>
+                              <span className="ct-perf-wins" style={{ color }}>
+                                {winsText}
+                                <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* ── Region Breakdown ── */}
+              <div className="ct-breakdown">
+                <h3 className="ct-breakdown-title">Region Breakdown</h3>
+                {REGION_ORDER.map(region => {
+                  // Only render regions that have at least one selected team.
+                  const regionTeams = sortedTeams.filter(t => getTeamRegion(t.name) === region);
+                  if (regionTeams.length === 0) return null;
+                  const stats = computeGroupStats(regionTeams);
+                  const groupColor = probColor(stats.avgProb);
+                  return (
+                    <div key={region} className="ct-bd-group">
+                      {/* Region header: name + team count on left, summed wins on right */}
+                      <div className="ct-bd-header">
+                        <span className="ct-bd-group-label">
+                          {region}
+                          <span className="ct-bd-group-count"> ({regionTeams.length} {regionTeams.length === 1 ? 'Team' : 'Teams'})</span>
+                        </span>
+                        <span className="ct-perf-wins" style={{ color: groupColor }}>
+                          {formatTotalWins(stats.totalWins)}
+                          <span className="ct-perf-pct"> ({(stats.avgProb * 100).toFixed(1)}%)</span>
+                        </span>
+                      </div>
+                      {/* Individual teams within the region */}
+                      <ul className="ct-bd-list">
+                        {regionTeams.map(team => {
                           const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
                           const color = probColor(prob);
                           return (
