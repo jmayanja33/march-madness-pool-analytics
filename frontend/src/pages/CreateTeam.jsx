@@ -260,53 +260,58 @@ export default function CreateTeam() {
                   <span className={`ct-bd-chevron ${seedOpen ? 'open' : ''}`}>▶</span>
                   Seed Breakdown
                 </button>
-                {seedOpen && SEED_GROUPS.map(group => {
-                  // Only render groups that have at least one selected team.
-                  const groupTeams = sortedTeams.filter(t => group.test(t.seed));
-                  if (groupTeams.length === 0) return null;
-                  const stats = computeGroupStats(groupTeams);
-                  const groupColor = probColor(stats.avgProb);
-                  return (
-                    <div key={group.label} className="ct-bd-group">
-                      {/* Group header: label on left, summed wins on right */}
-                      <div className="ct-bd-header">
-                        <span className="ct-bd-group-label">
-                          {group.label}
-                          <span className="ct-bd-group-count"> ({groupTeams.length} {groupTeams.length === 1 ? 'Team' : 'Teams'})</span>
-                        </span>
-                        <span className="ct-perf-wins" style={{ color: groupColor }}>
-                          {formatTotalWins(stats.totalWins)}
-                          <span className="ct-perf-pct"> ({(stats.avgProb * 100).toFixed(1)}%)</span>
-                        </span>
-                      </div>
-                      {/* Individual teams within the group */}
-                      <ul className="ct-bd-list">
-                        {groupTeams.map(team => {
-                          const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
-                          const color = probColor(prob);
-                          return (
-                            <li key={team.name} className="ct-bd-row">
-                              <div className="ct-perf-name">
-                                <span className="ct-perf-seed">#{team.seed}</span>
-                                {team.name}
-                                <img
-                                  src={`/logos/${team.name}.png`}
-                                  alt={`${team.name} logo`}
-                                  className="ct-perf-logo"
-                                  onError={e => { e.currentTarget.style.display = 'none'; }}
-                                />
-                              </div>
-                              <span className="ct-perf-wins" style={{ color }}>
-                                {winsText}
-                                <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
-                              </span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  );
-                })}
+                {/* Animated slide wrapper — content stays in DOM for smooth transition */}
+                <div className={`ct-bd-slide ${seedOpen ? 'open' : ''}`}>
+                  <div className="ct-bd-slide-inner">
+                    {SEED_GROUPS.map(group => {
+                      // Only render groups that have at least one selected team.
+                      const groupTeams = sortedTeams.filter(t => group.test(t.seed));
+                      if (groupTeams.length === 0) return null;
+                      const stats = computeGroupStats(groupTeams);
+                      const groupColor = probColor(stats.avgProb);
+                      return (
+                        <div key={group.label} className="ct-bd-group">
+                          {/* Group header: label on left, summed wins on right */}
+                          <div className="ct-bd-header">
+                            <span className="ct-bd-group-label">
+                              {group.label}
+                              <span className="ct-bd-group-count"> ({groupTeams.length} {groupTeams.length === 1 ? 'Team' : 'Teams'})</span>
+                            </span>
+                            <span className="ct-perf-wins" style={{ color: groupColor }}>
+                              {formatTotalWins(stats.totalWins)}
+                              <span className="ct-perf-pct"> ({(stats.avgProb * 100).toFixed(1)}%)</span>
+                            </span>
+                          </div>
+                          {/* Individual teams within the group */}
+                          <ul className="ct-bd-list">
+                            {groupTeams.map(team => {
+                              const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
+                              const color = probColor(prob);
+                              return (
+                                <li key={team.name} className="ct-bd-row">
+                                  <div className="ct-perf-name">
+                                    <span className="ct-perf-seed">#{team.seed}</span>
+                                    {team.name}
+                                    <img
+                                      src={`/logos/${team.name}.png`}
+                                      alt={`${team.name} logo`}
+                                      className="ct-perf-logo"
+                                      onError={e => { e.currentTarget.style.display = 'none'; }}
+                                    />
+                                  </div>
+                                  <span className="ct-perf-wins" style={{ color }}>
+                                    {winsText}
+                                    <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
+                                  </span>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
 
               {/* ── Region Breakdown ── */}
@@ -315,53 +320,58 @@ export default function CreateTeam() {
                   <span className={`ct-bd-chevron ${regionOpen ? 'open' : ''}`}>▶</span>
                   Region Breakdown
                 </button>
-                {regionOpen && REGION_ORDER.map(region => {
-                  // Only render regions that have at least one selected team.
-                  const regionTeams = sortedTeams.filter(t => getTeamRegion(t.name) === region);
-                  if (regionTeams.length === 0) return null;
-                  const stats = computeGroupStats(regionTeams);
-                  const groupColor = probColor(stats.avgProb);
-                  return (
-                    <div key={region} className="ct-bd-group">
-                      {/* Region header: name + team count on left, summed wins on right */}
-                      <div className="ct-bd-header">
-                        <span className="ct-bd-group-label">
-                          {region}
-                          <span className="ct-bd-group-count"> ({regionTeams.length} {regionTeams.length === 1 ? 'Team' : 'Teams'})</span>
-                        </span>
-                        <span className="ct-perf-wins" style={{ color: groupColor }}>
-                          {formatTotalWins(stats.totalWins)}
-                          <span className="ct-perf-pct"> ({(stats.avgProb * 100).toFixed(1)}%)</span>
-                        </span>
-                      </div>
-                      {/* Individual teams within the region */}
-                      <ul className="ct-bd-list">
-                        {regionTeams.map(team => {
-                          const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
-                          const color = probColor(prob);
-                          return (
-                            <li key={team.name} className="ct-bd-row">
-                              <div className="ct-perf-name">
-                                <span className="ct-perf-seed">#{team.seed}</span>
-                                {team.name}
-                                <img
-                                  src={`/logos/${team.name}.png`}
-                                  alt={`${team.name} logo`}
-                                  className="ct-perf-logo"
-                                  onError={e => { e.currentTarget.style.display = 'none'; }}
-                                />
-                              </div>
-                              <span className="ct-perf-wins" style={{ color }}>
-                                {winsText}
-                                <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
-                              </span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  );
-                })}
+                {/* Animated slide wrapper — content stays in DOM for smooth transition */}
+                <div className={`ct-bd-slide ${regionOpen ? 'open' : ''}`}>
+                  <div className="ct-bd-slide-inner">
+                    {REGION_ORDER.map(region => {
+                      // Only render regions that have at least one selected team.
+                      const regionTeams = sortedTeams.filter(t => getTeamRegion(t.name) === region);
+                      if (regionTeams.length === 0) return null;
+                      const stats = computeGroupStats(regionTeams);
+                      const groupColor = probColor(stats.avgProb);
+                      return (
+                        <div key={region} className="ct-bd-group">
+                          {/* Region header: name + team count on left, summed wins on right */}
+                          <div className="ct-bd-header">
+                            <span className="ct-bd-group-label">
+                              {region}
+                              <span className="ct-bd-group-count"> ({regionTeams.length} {regionTeams.length === 1 ? 'Team' : 'Teams'})</span>
+                            </span>
+                            <span className="ct-perf-wins" style={{ color: groupColor }}>
+                              {formatTotalWins(stats.totalWins)}
+                              <span className="ct-perf-pct"> ({(stats.avgProb * 100).toFixed(1)}%)</span>
+                            </span>
+                          </div>
+                          {/* Individual teams within the region */}
+                          <ul className="ct-bd-list">
+                            {regionTeams.map(team => {
+                              const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
+                              const color = probColor(prob);
+                              return (
+                                <li key={team.name} className="ct-bd-row">
+                                  <div className="ct-perf-name">
+                                    <span className="ct-perf-seed">#{team.seed}</span>
+                                    {team.name}
+                                    <img
+                                      src={`/logos/${team.name}.png`}
+                                      alt={`${team.name} logo`}
+                                      className="ct-perf-logo"
+                                      onError={e => { e.currentTarget.style.display = 'none'; }}
+                                    />
+                                  </div>
+                                  <span className="ct-perf-wins" style={{ color }}>
+                                    {winsText}
+                                    <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
+                                  </span>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </>
           )}

@@ -313,7 +313,7 @@
   margin-top: 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
 }
 
 /* Breakdown section title — clickable toggle button */
@@ -345,6 +345,26 @@
 }
 .ct-bd-chevron.open {
   transform: rotate(90deg);
+}
+
+/* ── Slide animation for collapsible breakdown content ──
+   Uses the CSS grid trick: grid-template-rows transitions from 0fr → 1fr,
+   allowing a smooth height animation without a fixed max-height. */
+.ct-bd-slide {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+.ct-bd-slide.open {
+  grid-template-rows: 1fr;
+}
+/* The inner wrapper must have overflow: hidden to clip content at height 0 */
+.ct-bd-slide-inner {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 4px; /* small breathing room below the title when open */
 }
 
 /* One seed-tier group */
