@@ -11,7 +11,24 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-x: auto; /* horizontal scroll when bracket is wider than viewport */
+  overflow: hidden; /* no horizontal scrolling — bracket is scaled to fit */
+}
+
+/* Fills the available width; height is set dynamically via JS to match the
+   visually-scaled bracket height (transform doesn't affect layout flow). */
+.bracket-scale-container {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+/* Receives the CSS scale transform; transform-origin is top center so the
+   bracket stays centered horizontally as it scales down. */
+.bracket-scale-inner {
+  flex-shrink: 0; /* prevent flex compression from distorting measurements */
+  display: flex;
+  justify-content: center;
 }
 
 /* ── Page header ── */
