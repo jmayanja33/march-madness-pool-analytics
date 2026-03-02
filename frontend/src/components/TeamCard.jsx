@@ -2,6 +2,7 @@
 // Displays seed/record, win probability bars, top-5 players table,
 // similar historical teams, and a scrollable profile summary.
 // The onRemove callback fires when the user clicks the ✕ button.
+import { probColor } from '../utils/colors';
 import './TeamCard.css';
 
 export default function TeamCard({ team, onRemove }) {
@@ -119,9 +120,9 @@ export default function TeamCard({ team, onRemove }) {
         ) : (
           <ul className="tc-similar-list">
             {team.similar_teams.map(t => {
-              // Determine bar color based on similarity threshold.
+              // Determine bar color using smooth gradient based on similarity value.
               const pct = t.similarity * 100;
-              const barColor = pct >= 75 ? 'var(--sim-green)' : pct >= 50 ? 'var(--sim-yellow)' : 'var(--sim-red)';
+              const barColor = probColor(t.similarity);
               return (
                 <li key={`${t.name}-${t.year}`} className="tc-sim-row">
                   {/* Logo — hidden via onError if no file exists for this team */}

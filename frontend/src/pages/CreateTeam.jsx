@@ -12,6 +12,7 @@ import NavBar from '../components/NavBar';
 import TeamPopup from '../components/TeamPopup';
 import { fetchTeams, fetchPoolTeams } from '../api/teamApi';
 import { BRACKET_2025 } from '../data/bracketData';
+import { probColor } from '../utils/colors';
 import './CreateTeam.css';
 
 // ---------------------------------------------------------------------------
@@ -54,14 +55,6 @@ function formatTotalWins(n) {
   return '0 wins';
 }
 
-// Return the CSS color token for a probability value (0–1).
-// Red < 50%, yellow 50–70%, green 70%+.
-function probColor(prob) {
-  const pct = prob * 100;
-  if (pct >= 70) return 'var(--exp-green)';
-  if (pct >= 50) return 'var(--exp-yellow)';
-  return 'var(--exp-red)';
-}
 
 // Compute aggregate pool stats from the array of filled team data objects.
 // Returns { totalWins, avgProb } or null when no teams are selected.
