@@ -30,6 +30,18 @@ export async function fetchTeams() {
   return res.json();
 }
 
+// Fetches static project info, model metrics, and data sources from the backend.
+// Returns an InfoResponse object used to populate the Info page.
+// Throws an error if the request fails.
+export async function fetchInfo() {
+  const res = await fetch('/info');
+  if (!res.ok) {
+    console.error(`[API] fetchInfo failed: HTTP ${res.status}`);
+    throw new Error(`Failed to fetch project info: ${res.status}`);
+  }
+  return res.json();
+}
+
 // Fetches lightweight pool summaries for a list of team names from the backend.
 // Accepts an array of team display names (up to 8) and returns the resolved
 // PoolTeamSummary objects.  Teams not found in the predictions data are

@@ -66,5 +66,56 @@ be calculated based off of the maximimum win probabilities for each individual t
 
 ## Info Page
 
-The info page will have a description about the project. It will include minor details about the model used, where
-data was collected from, and accuracy metrics on the model.
+The info page will have the following sections. Each section will have a large heading, and wil have a bottom border
+separating it from the next section.
+
+
+### Background/How to Play
+
+The Background/How to Play Section will include the following description on how the pool is setup.
+
+During March Madness, the Bracket Pool is the most common fan competition. Every year, millions of brackets of are filled out,
+with the chances of one being perfect being approximately 1 in 9.2 quintillion. One wrong pick ruins the perfect bracket,
+and a couple usually cost people an entire pool. However, there is another fun way to compete during march madness.
+
+The Pool is a different approach on the traditional Bracket Pool. To play a pool of 8 players is needed, 
+each of whom put together a collection of 8 teams in the NCAA tournament field. To put together their collection of teams,
+there is an auction where teams are auctioned off. Each player gets 1000 bid points in the auction to spend on their teams. 
+
+The goal of the pool is to pick 8 teams which will have the most wins (cumulative) out of everyone in the pool. First place
+wins the pot, while second gets their money back. Additionally, there is a payout for the team who selects the NCAA
+champion in the auction.
+
+
+### Data/Models
+
+The main goal of this platform is to help players analyze team performance when creating their 8 team collection for the
+pool. All data was collected from the following sources:
+
+- **Player and Team Statistics**: [CBBD](https://collegebasketballdata.com/)
+- **Game Summaries**: [ESPN](https://www.espn.com/)
+- **Team Logos**: [SportsLogos.Net](https://www.sportslogos.net/)
+
+One feature of the team analytics is their predicted wins in the tournament. For this, an ordinal regression model
+was used to evaluate probability that a team would win 0, 1, or 2+ games in the tournament. For this year (2026), the
+model is performing with the following metrics:
+
+- **Accuracy**: 67.89%
+- **F1 Score (Weighted)**: 69.02%
+- **Precision (Weighted)**: 70.75%
+- **Quadratic Weighted Kappa**: 0.708
+- **Ranked Probability Score**: 0.122
+
+The model was trained on 643 teams (2010–2025) and tested on 190, using 5-fold cross-validation with hyperparameter
+tuning. It classifies teams into three win buckets (0, 1, or 2+ wins) with ~68% accuracy. A Quadratic Weighted Kappa
+of 0.708 indicates strong ordinal agreement, and a Ranked Probability Score of 0.122 reflects well-calibrated
+win probability distributions.
+
+
+### More Info
+
+For more information on the model development or data collection process, reach out to Josh Mayanja:
+
+**Email**: joshmayanja30@gmail.com
+**LinkedIn**: https://www.linkedin.com/in/josh-mayanja-a3001b200/
+**GitHub**: https://github.com/jmayanja33

@@ -17,7 +17,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
-from app.models import HealthResponse, TeamListItem
+from app.models import (
+    ContactInfo,
+    DataSourceInfo,
+    HealthResponse,
+    InfoResponse,
+    ModelMetrics,
+    TeamListItem,
+)
 from app.routers import analyze, create_a_team
 from app.services import get_all_teams
 
@@ -119,20 +126,44 @@ async def teams() -> list[TeamListItem]:
     return [TeamListItem(**t) for t in get_all_teams()]
 
 
-@app.get("/info", tags=["info"], summary="Project information")
-async def info() -> dict:
+@app.get("/info", response_model=InfoResponse, tags=["info"], summary="Project information")
+async def info() -> InfoResponse:
     """
-    Return high-level information about the project, model, and data sources.
+    Return structured information about the project, model, and data sources.
 
-    This data populates the frontend Info page.
+    All values here are static — they describe the model trained for the 2026
+    tournament season and the fixed set of data sources used.  The frontend Info
+    page renders these fields directly rather than hard-coding them.
     """
-    return {
-        "project": "March Madness Pool Analytics",
-        "description": (
+    return InfoResponse(
+        project="March Madness Pool Analytics",
+        description=(
             "Predicts NCAA tournament team performance using historical data "
-            "and a machine learning model trained on seasons from 2009-10 onwards."
+            "and an ordinal regression model trained on seasons from 2010–2025."
         ),
-        "model": "Gradient Boosting classifier trained on team season statistics",
-        "data_source": "College Basketball Reference (Sports Reference)",
-        "vector_db": "ChromaDB — cosine similarity on PCA-reduced team vectors",
-    }
+        # Ordinal regression metrics for the 2026 season model.
+        model=ModelMetrics(
+            name="Ordinal Regression",
+            accuracy=67.89,
+            f1_weighted=69.02,
+            precision_weighted=70.75,
+            quadratic_weighted_kappa=0.708,
+            ranked_probability_score=0.122,
+            training_samples=643,
+            test_samples=190,
+            seasons="2010–2025",
+        ),
+        # External data sources used to build the predictions dataset.
+        data_source=DataSourceInfo(
+            player_team_stats="https://collegebasketballdata.com/",
+            game_summaries="https://www.espn.com/",
+            team_logos="https://www.sportslogos.net/",
+        ),
+        # Project author contact information.
+        contact=ContactInfo(
+            name="Josh Mayanja",
+            email="joshmayanja30@gmail.com",
+            linkedin="https://www.linkedin.com/in/josh-mayanja-a3001b200/",
+            github="https://github.com/jmayanja33",
+        ),
+    )

@@ -132,6 +132,65 @@ class HealthResponse(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Info models
+# ---------------------------------------------------------------------------
+
+
+class ModelMetrics(BaseModel):
+    """
+    Performance metrics for the ordinal regression win-prediction model.
+
+    Accuracy, F1, and precision are expressed as percentages (0–100).
+    Kappa and RPS are dimensionless scores.
+    """
+
+    name: str                         # Human-readable model name
+    accuracy: float                   # Overall accuracy (percentage, e.g. 67.89)
+    f1_weighted: float                # Weighted F1 score (percentage)
+    precision_weighted: float         # Weighted precision (percentage)
+    quadratic_weighted_kappa: float   # QWK — ordinal agreement strength (0–1)
+    ranked_probability_score: float   # RPS — calibration quality (lower is better)
+    training_samples: int             # Number of teams used for training
+    test_samples: int                 # Number of teams used for testing
+    seasons: str                      # Season range, e.g. "2010–2025"
+
+
+class DataSourceInfo(BaseModel):
+    """
+    URLs for the three external data sources used to build the predictions dataset.
+    """
+
+    player_team_stats: str   # CBBD — player and team statistics
+    game_summaries: str      # ESPN — game-level summaries
+    team_logos: str          # SportsLogos.Net — team logo images
+
+
+class ContactInfo(BaseModel):
+    """Contact details for the project author."""
+
+    name: str       # Full name
+    email: str      # Contact email address
+    linkedin: str   # LinkedIn profile URL
+    github: str     # GitHub profile URL
+
+
+class InfoResponse(BaseModel):
+    """
+    Structured response returned by GET /info.
+
+    Contains top-level project metadata, model performance metrics, data source
+    URLs, and author contact information — everything needed to populate the
+    frontend Info page.
+    """
+
+    project: str              # Short project title
+    description: str          # One-sentence project description
+    model: ModelMetrics       # ML model metrics for the current season
+    data_source: DataSourceInfo   # External data source URLs
+    contact: ContactInfo      # Author contact info
+
+
+# ---------------------------------------------------------------------------
 # Pool models
 # ---------------------------------------------------------------------------
 

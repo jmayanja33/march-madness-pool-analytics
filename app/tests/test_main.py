@@ -120,6 +120,39 @@ async def test_info_contains_data_source_key(client: AsyncClient) -> None:
     assert "data_source" in response.json()
 
 
+async def test_info_model_has_accuracy(client: AsyncClient) -> None:
+    """GET /info model object should expose an 'accuracy' field."""
+    response = await client.get("/info")
+    assert "accuracy" in response.json()["model"]
+
+
+async def test_info_model_accuracy_is_number(client: AsyncClient) -> None:
+    """GET /info model accuracy should be a numeric value."""
+    response = await client.get("/info")
+    assert isinstance(response.json()["model"]["accuracy"], (int, float))
+
+
+async def test_info_data_source_has_three_sources(client: AsyncClient) -> None:
+    """GET /info data_source should list player_team_stats, game_summaries, and team_logos."""
+    response = await client.get("/info")
+    ds = response.json()["data_source"]
+    assert "player_team_stats" in ds
+    assert "game_summaries" in ds
+    assert "team_logos" in ds
+
+
+async def test_info_contains_contact_key(client: AsyncClient) -> None:
+    """GET /info response body should include a 'contact' field."""
+    response = await client.get("/info")
+    assert "contact" in response.json()
+
+
+async def test_info_contact_has_email(client: AsyncClient) -> None:
+    """GET /info contact object should include an 'email' field."""
+    response = await client.get("/info")
+    assert "email" in response.json()["contact"]
+
+
 # ---------------------------------------------------------------------------
 # GET /analyze/{team}
 # ---------------------------------------------------------------------------

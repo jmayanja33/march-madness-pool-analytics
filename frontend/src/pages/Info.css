@@ -1,0 +1,147 @@
+/* Info page — three content sections with bottom borders separating them. */
+
+/* ── Page wrapper ── */
+.info-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ── Centered content column ── */
+.info-main {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+  width: 100%;
+}
+
+/* ── Section layout ── */
+.info-section {
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  border-bottom: 2px solid var(--border);
+}
+
+/* Last section has no bottom border or extra margin */
+.info-section--last {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Large Anton heading for each section */
+.info-section-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 400;   /* Anton is a single-weight display font */
+  color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+/* Flex column for text blocks, source list, metrics grid, etc. */
+.info-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-section-body p {
+  font-size: 0.97rem;
+  line-height: 1.75;
+  color: var(--black);
+}
+
+/* ── Data sources list ── */
+.info-sources-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 16px;
+}
+
+.info-sources-list li {
+  font-size: 0.95rem;
+  color: var(--black);
+}
+
+/* Shared link styling for sources and contact sections */
+.info-sources-list a,
+.info-contact-list a {
+  color: var(--light-blue);
+  transition: color 0.15s;
+}
+
+.info-sources-list a:hover,
+.info-contact-list a:hover {
+  color: var(--dark-blue);
+  text-decoration: underline;
+}
+
+/* ── Model metrics grid ── */
+.info-metrics-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Individual metric card — white box with shadow */
+.info-metric-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 130px;
+  flex: 1;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.info-metric-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+  transform: translateY(-2px);
+}
+
+/* Large bold number */
+.info-metric-value {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+}
+
+/* Small label beneath the value */
+.info-metric-label {
+  font-size: 0.75rem;
+  color: var(--silver);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Italic footnote describing training details */
+.info-model-detail {
+  font-size: 0.89rem !important;
+  color: var(--silver) !important;
+  font-style: italic;
+}
+
+/* ── Contact list ── */
+.info-contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 16px;
+}
+
+.info-contact-list li {
+  font-size: 0.95rem;
+  color: var(--black);
+}
