@@ -28,13 +28,15 @@ export default function BracketPage() {
     const bracket   = bracketRef.current;
     if (!container || !bracket) return;
 
-    // Reset scale to 1 before measuring so scrollWidth reflects natural size
-    bracket.style.transform = 'scale(1)';
+    // CSS transforms do not affect scrollWidth/scrollHeight — these are layout
+    // dimensions that always reflect the element's natural (unscaled) size.
+    // No need to temporarily reset the transform before measuring.
     const naturalW = bracket.scrollWidth;
     const naturalH = bracket.scrollHeight;
-    bracket.style.transform = '';
 
-    const containerW = container.clientWidth;
+    // Reserve 24 px (12 px per side) so the bracket never sits flush against
+    // the viewport edge, regardless of sub-pixel rounding or scrollbar width.
+    const containerW = container.clientWidth - 24;
     const s = Math.min(1, containerW / naturalW);
     setScale(s);
     // Pre-set container height so the page doesn't have a tall empty gap below
