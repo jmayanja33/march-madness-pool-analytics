@@ -316,13 +316,35 @@
   gap: 16px;
 }
 
-/* "Team Breakdown" heading — matches Expected Team Wins label style */
+/* Breakdown section title — clickable toggle button */
 .ct-breakdown-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0 0 6px;
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--black);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 6px;
+  font-family: var(--font);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.ct-breakdown-title:hover { color: var(--dark-blue); }
+
+/* Chevron arrow — rotates 90° when the section is open */
+.ct-bd-chevron {
+  font-size: 0.65rem;
+  color: var(--silver);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.ct-bd-chevron.open {
+  transform: rotate(90deg);
 }
 
 /* One seed-tier group */

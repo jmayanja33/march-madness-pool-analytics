@@ -133,6 +133,10 @@ export default function CreateTeam() {
   // Name of the team whose full TeamCard popup is currently open, or null.
   const [popupTeam, setPopupTeam] = useState(null);
 
+  // Collapsed state for the two breakdown sections (open by default).
+  const [seedOpen, setSeedOpen]     = useState(true);
+  const [regionOpen, setRegionOpen] = useState(true);
+
   // Load the dropdown list once on mount.
   useEffect(() => {
     fetchTeams()
@@ -252,8 +256,11 @@ export default function CreateTeam() {
 
               {/* ── Seed Breakdown by seed tier ── */}
               <div className="ct-breakdown">
-                <h3 className="ct-breakdown-title">Seed Breakdown</h3>
-                {SEED_GROUPS.map(group => {
+                <button className="ct-breakdown-title" onClick={() => setSeedOpen(o => !o)}>
+                  <span className={`ct-bd-chevron ${seedOpen ? 'open' : ''}`}>▶</span>
+                  Seed Breakdown
+                </button>
+                {seedOpen && SEED_GROUPS.map(group => {
                   // Only render groups that have at least one selected team.
                   const groupTeams = sortedTeams.filter(t => group.test(t.seed));
                   if (groupTeams.length === 0) return null;
@@ -304,8 +311,11 @@ export default function CreateTeam() {
 
               {/* ── Region Breakdown ── */}
               <div className="ct-breakdown">
-                <h3 className="ct-breakdown-title">Region Breakdown</h3>
-                {REGION_ORDER.map(region => {
+                <button className="ct-breakdown-title" onClick={() => setRegionOpen(o => !o)}>
+                  <span className={`ct-bd-chevron ${regionOpen ? 'open' : ''}`}>▶</span>
+                  Region Breakdown
+                </button>
+                {regionOpen && REGION_ORDER.map(region => {
                   // Only render regions that have at least one selected team.
                   const regionTeams = sortedTeams.filter(t => getTeamRegion(t.name) === region);
                   if (regionTeams.length === 0) return null;
