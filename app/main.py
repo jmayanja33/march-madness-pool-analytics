@@ -144,11 +144,11 @@ async def info() -> InfoResponse:
         # Ordinal regression metrics for the 2026 season model.
         model=ModelMetrics(
             name="Ordinal Regression",
-            accuracy=67.89,
-            f1_weighted=69.02,
-            precision_weighted=70.75,
-            quadratic_weighted_kappa=0.708,
-            ranked_probability_score=0.122,
+            accuracy=75.26,
+            f1_weighted=76.28,
+            precision_weighted=79.07,
+            quadratic_weighted_kappa=0.749,
+            ranked_probability_score=0.102,
             training_samples=643,
             test_samples=190,
             seasons="2010–2025",

@@ -3,4 +3,5 @@
 .idea
 frontend/node_modules
 frontend/dist
-data/vector_db
+data/vector_db/*
+!data/vector_db/chroma_vectors.json

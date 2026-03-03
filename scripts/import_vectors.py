@@ -15,8 +15,12 @@ Usage
         --collection ncaa_teams \
         --file data/vector_db/chroma_vectors.json
 
-The script is idempotent: re-running it will upsert records that already exist
-rather than duplicating them.
+    # Delete all existing vectors first, then import fresh:
+    uv run scripts/import_vectors.py --reset
+
+The script is idempotent by default: re-running it will upsert records that
+already exist rather than duplicating them.  Pass --reset to drop the entire
+collection before importing so that stale records from previous runs are removed.
 """
 
 import argparse
@@ -117,11 +121,14 @@ def import_vectors(
     embeddings: list[list[float]],
     metadatas: list[dict],
     documents: list[str],
+    reset: bool = False,
 ) -> None:
     """Upsert all vectors into a ChromaDB collection in batches.
 
     Creates the collection if it does not already exist.  Uses ``upsert`` so
     the script can be re-run safely without creating duplicate documents.
+    When ``reset`` is ``True``, the collection is deleted and recreated first
+    so that any stale vectors not present in the new JSON are removed.
 
     Args:
         client:          An authenticated ChromaDB HTTP client.
@@ -130,7 +137,17 @@ def import_vectors(
         embeddings:      Pre-computed embedding vectors (one per record).
         metadatas:       Metadata dicts (one per record).
         documents:       Raw document strings (one per record).
+        reset:           When True, drop and recreate the collection first.
     """
+    # Delete the existing collection so stale records are fully removed.
+    if reset:
+        try:
+            client.delete_collection(name=collection_name)
+            print(f"[INFO] Deleted existing collection '{collection_name}'")
+        except Exception:
+            # Collection did not exist — nothing to delete.
+            print(f"[INFO] Collection '{collection_name}' did not exist; skipping delete")
+
     # Get or create the collection with cosine distance so that the returned
     # distances are in [0, 1] and similarity = 1 - distance.
     collection = client.get_or_create_collection(
@@ -198,6 +215,12 @@ def parse_args() -> argparse.Namespace:
         default=DEFAULT_JSON_FILE,
         help=f"Path to the vectors JSON file (default: {DEFAULT_JSON_FILE})",
     )
+    parser.add_argument(
+        "--reset",
+        action="store_true",
+        default=False,
+        help="Delete the existing collection before importing (removes stale vectors)",
+    )
     return parser.parse_args()
 
 
@@ -224,7 +247,7 @@ def main() -> None:
 
     print("[INFO] Connected.")
 
-    import_vectors(client, args.collection, ids, embeddings, metadatas, documents)
+    import_vectors(client, args.collection, ids, embeddings, metadatas, documents, reset=args.reset)
 
 
 if __name__ == "__main__":

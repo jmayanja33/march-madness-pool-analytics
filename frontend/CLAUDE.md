@@ -100,15 +100,15 @@ One feature of the team analytics is their predicted wins in the tournament. For
 was used to evaluate probability that a team would win 0, 1, or 2+ games in the tournament. For this year (2026), the
 model is performing with the following metrics:
 
-- **Accuracy**: 67.89%
-- **F1 Score (Weighted)**: 69.02%
-- **Precision (Weighted)**: 70.75%
-- **Quadratic Weighted Kappa**: 0.708
-- **Ranked Probability Score**: 0.122
+- **Accuracy**: 75.26%
+- **F1 Score (Weighted)**: 76.28%
+- **Precision (Weighted)**: 79.07%
+- **Quadratic Weighted Kappa**: 0.749
+- **Ranked Probability Score**: 0.102
 
 The model was trained on 643 teams (2010–2025) and tested on 190, using 5-fold cross-validation with hyperparameter
-tuning. It classifies teams into three win buckets (0, 1, or 2+ wins) with ~68% accuracy. A Quadratic Weighted Kappa
-of 0.708 indicates strong ordinal agreement, and a Ranked Probability Score of 0.122 reflects well-calibrated
+tuning. It classifies teams into three win buckets (0, 1, or 2+ wins) with ~75% accuracy. A Quadratic Weighted Kappa
+of 0.749 indicates strong ordinal agreement, and a Ranked Probability Score of 0.102 reflects well-calibrated
 win probability distributions.
 
 

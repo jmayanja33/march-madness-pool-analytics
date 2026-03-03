@@ -20,11 +20,11 @@ export default function Info() {
 
   // Resolve metrics from API data or fall back to static values from the spec.
   const metrics = infoData?.model ?? {
-    accuracy: 67.89,
-    f1_weighted: 69.02,
-    precision_weighted: 70.75,
-    quadratic_weighted_kappa: 0.708,
-    ranked_probability_score: 0.122,
+    accuracy: 75.26,
+    f1_weighted: 76.28,
+    precision_weighted: 79.07,
+    quadratic_weighted_kappa: 0.749,
+    ranked_probability_score: 0.102,
     training_samples: 643,
     test_samples: 190,
     seasons: '2010–2025',
@@ -104,7 +104,7 @@ export default function Info() {
             <p className="info-model-detail">
               The model was trained on {metrics.training_samples} teams ({metrics.seasons}) and tested
               on {metrics.test_samples}, using 5-fold cross-validation with hyperparameter tuning. It
-              classifies teams into three win buckets (0, 1, or 2+ wins) with ~68% accuracy. A Quadratic
+              classifies teams into three win buckets (0, 1, or 2+ wins) with ~75% accuracy. A Quadratic
               Weighted Kappa of {metrics.quadratic_weighted_kappa} indicates strong ordinal agreement, and
               a Ranked Probability Score of {metrics.ranked_probability_score} reflects well-calibrated
               win probability distributions.
