@@ -182,8 +182,9 @@ async def test_analyze_team_response_shape(client: AsyncClient) -> None:
 
 
 async def test_analyze_team_similar_teams_empty(client: AsyncClient) -> None:
-    """similar_teams is an empty list until ChromaDB integration is complete."""
-    with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM):
+    """similar_teams is an empty list when ChromaDB returns no results."""
+    with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM), \
+         patch("app.routers.analyze.get_similar_teams", return_value=[]):
         response = await client.get("/analyze/Duke")
     assert response.json()["similar_teams"] == []
 
@@ -208,7 +209,16 @@ async def test_analyze_team_returns_404_for_unknown_team(client: AsyncClient) ->
 # ---------------------------------------------------------------------------
 
 
-async def test_analyze_most_similar_returns_501(client: AsyncClient) -> None:
-    """GET /analyze/most-similar/{team} should return 501 until ChromaDB is wired up."""
-    response = await client.get("/analyze/most-similar/Duke")
-    assert response.status_code == 501
+async def test_analyze_most_similar_returns_200_for_known_team(client: AsyncClient) -> None:
+    """GET /analyze/most-similar/{team} returns 200 when the team is found."""
+    with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM), \
+         patch("app.routers.analyze.get_similar_teams", return_value=[]):
+        response = await client.get("/analyze/most-similar/Duke")
+    assert response.status_code == 200
+
+
+async def test_analyze_most_similar_returns_404_for_unknown_team(client: AsyncClient) -> None:
+    """GET /analyze/most-similar/{team} returns 404 when the team is not found."""
+    with patch("app.routers.analyze.find_team", return_value=None):
+        response = await client.get("/analyze/most-similar/Nonexistent")
+    assert response.status_code == 404

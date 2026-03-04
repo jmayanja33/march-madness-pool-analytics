@@ -25,7 +25,7 @@ from app.models import (
     ModelMetrics,
     TeamListItem,
 )
-from app.routers import analyze, create_a_team
+from app.routers import analyze, pool
 from app.services import get_all_teams
 
 logger = logging.getLogger(__name__)
@@ -83,8 +83,8 @@ app.add_middleware(
 # /analyze and /analyze/most-similar routes defined in app/routers/analyze.py
 app.include_router(analyze.router)
 
-# /create-a-team route defined in app/routers/create_a_team.py
-app.include_router(create_a_team.router)
+# /create-a-team route defined in app/routers/pool.py
+app.include_router(pool.router)
 
 # ---------------------------------------------------------------------------
 # Root — health check

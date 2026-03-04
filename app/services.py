@@ -306,7 +306,8 @@ def build_pool_team_summary(team: dict) -> PoolTeamSummary:
     """
     return PoolTeamSummary(
         name=team["name"],
-        seed=team.get("tournament_seed", 0),
+        # Coerce None to 0 in case the key exists but has no value set.
+        seed=team.get("tournament_seed") or 0,
         conference=team.get("conference", ""),
         win_probability_distribution=build_win_distribution(
             team.get("win_probability_distribution", {})
