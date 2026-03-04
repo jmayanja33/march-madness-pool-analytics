@@ -90,6 +90,7 @@
 
 /* Individual metric card — white box with shadow */
 .info-metric-card {
+  position: relative;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -107,6 +108,41 @@
 .info-metric-card:hover {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
   transform: translateY(-2px);
+}
+
+/* Tooltip shown above the card on hover */
+.info-metric-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark-blue);
+  color: var(--white);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  width: 220px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+
+/* Small downward arrow pointing at the card */
+.info-metric-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--dark-blue);
+}
+
+.info-metric-card:hover .info-metric-tooltip {
+  opacity: 1;
 }
 
 /* Large bold number */

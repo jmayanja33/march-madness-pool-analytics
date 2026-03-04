@@ -101,15 +101,17 @@ was used to evaluate probability that a team would win 0, 1, or 2+ games in the 
 model is performing with the following metrics:
 
 - **Accuracy**: 75.26%
-- **F1 Score (Weighted)**: 76.33%
-- **Precision (Weighted)**: 79.05%
+- **F1 Score**: 76.33%
+- **Precision**: 79.05%
 - **Quadratic Weighted Kappa**: 0.763
 - **Ranked Probability Score**: 0.097
 
-The model was trained on 643 teams (2010–2025) and tested on 190, using 5-fold cross-validation with hyperparameter
-tuning. It classifies teams into three win buckets (0, 1, or 2+ wins) with ~75% accuracy. A Quadratic Weighted Kappa
-of 0.763 indicates strong ordinal agreement, and a Ranked Probability Score of 0.097 reflects well-calibrated
-win probability distributions.
+Accuracy measures how often the model correctly places a team in the right win bucket — at 75.26%, that's roughly
+3 in 4 teams correctly called. F1 (76.33%) and Precision (79.05%) both approach 80%, with 100% being perfect,
+reflecting consistent performance across all three outcomes. The Quadratic Weighted Kappa of 0.763 — where 1.0 is
+perfect — shows that when the model misses, it tends to miss by one bucket, not two. A Ranked Probability Score of
+0.097 (lower is better, with 0 being ideal) means the confidence behind each prediction is well-calibrated. Curious
+about the methodology or want to dig deeper? Reach out below.
 
 
 ### More Info

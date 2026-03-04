@@ -92,22 +92,45 @@ export default function Info() {
               following metrics:
             </p>
 
-            {/* Model performance metrics grid */}
+            {/* Model performance metrics grid — each card shows a tooltip on hover */}
             <div className="info-metrics-grid">
-              <MetricCard label="Accuracy"              value={`${metrics.accuracy}%`} />
-              <MetricCard label="F1 Score (Weighted)"  value={`${metrics.f1_weighted}%`} />
-              <MetricCard label="Precision (Weighted)" value={`${metrics.precision_weighted}%`} />
-              <MetricCard label="Quadratic Weighted Kappa"  value={metrics.quadratic_weighted_kappa} />
-              <MetricCard label="Ranked Probability Score"  value={metrics.ranked_probability_score} />
+              <MetricCard
+                label="Accuracy"
+                value={`${metrics.accuracy}%`}
+                tooltip="Out of every 100 teams, the model correctly predicted the right number of tournament wins for this many. Ideal: 100%"
+              />
+              <MetricCard
+                label="F1 Score"
+                value={`${metrics.f1_weighted}%`}
+                tooltip="A combined score that rewards the model for being both accurate and consistent across all three win outcomes. Ideal: 100%"
+              />
+              <MetricCard
+                label="Precision"
+                value={`${metrics.precision_weighted}%`}
+                tooltip="When the model predicted a team would win a certain number of games, how often it was right. Ideal: 100%"
+              />
+              <MetricCard
+                label="Quadratic Weighted Kappa"
+                value={metrics.quadratic_weighted_kappa}
+                tooltip="Measures how close the model's predictions are to reality — a score near 1.0 means predictions rarely miss by more than one win bucket. Ideal: 1.0"
+              />
+              <MetricCard
+                label="Ranked Probability Score"
+                value={metrics.ranked_probability_score}
+                tooltip="Measures how trustworthy the model's confidence levels are — a lower score means it's not just guessing, it knows when it's sure and when it isn't. Ideal: 0"
+              />
             </div>
 
             <p className="info-model-detail">
-              The model was trained on {metrics.training_samples} teams ({metrics.seasons}) and tested
-              on {metrics.test_samples}, using 5-fold cross-validation with hyperparameter tuning. It
-              classifies teams into three win buckets (0, 1, or 2+ wins) with ~75% accuracy. A Quadratic
-              Weighted Kappa of {metrics.quadratic_weighted_kappa} indicates strong ordinal agreement, and
-              a Ranked Probability Score of {metrics.ranked_probability_score} reflects well-calibrated
-              win probability distributions.
+              Accuracy measures how often the model correctly places a team in the right win bucket —
+              at {metrics.accuracy}%, that&apos;s roughly 3 in 4 teams correctly called. F1
+              ({metrics.f1_weighted}%) and Precision ({metrics.precision_weighted}%) both approach 80%,
+              with 100% being perfect, reflecting consistent performance across all three outcomes rather
+              than just the most common one. The Quadratic Weighted Kappa of {metrics.quadratic_weighted_kappa} —
+              where 1.0 is perfect agreement — shows that when the model misses, it tends to miss by one
+              bucket, not two. Most notably, a Ranked Probability Score of {metrics.ranked_probability_score} (lower
+              is better, with 0 being ideal) means the confidence behind each prediction is well-calibrated,
+              not just a best guess.
             </p>
           </div>
         </section>
@@ -151,10 +174,18 @@ export default function Info() {
 }
 
 // Small card displaying a single model performance metric.
-// Renders the value prominently above a smaller label.
-function MetricCard({ label, value }) {
+// Renders the value prominently above a smaller label, with an optional hover tooltip.
+// "Ideal: X" is bolded inline so it stands out within the tooltip text.
+function MetricCard({ label, value, tooltip }) {
+  const [desc, ideal] = tooltip ? tooltip.split(' Ideal:') : [null, null];
+
   return (
     <div className="info-metric-card">
+      {tooltip && (
+        <span className="info-metric-tooltip">
+          {desc}{ideal && <strong> Ideal: {ideal}</strong>}
+        </span>
+      )}
       <span className="info-metric-value">{value}</span>
       <span className="info-metric-label">{label}</span>
     </div>
