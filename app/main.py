@@ -126,7 +126,9 @@ async def teams() -> list[TeamListItem]:
     return [TeamListItem(**t) for t in get_all_teams()]
 
 
-@app.get("/info", response_model=InfoResponse, tags=["info"], summary="Project information")
+@app.get(
+    "/info", response_model=InfoResponse, tags=["info"], summary="Project information"
+)
 async def info() -> InfoResponse:
     """
     Return structured information about the project, model, and data sources.

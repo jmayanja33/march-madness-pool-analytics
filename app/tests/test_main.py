@@ -15,7 +15,6 @@ from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 
-
 # ---------------------------------------------------------------------------
 # Shared async test client fixture
 # ---------------------------------------------------------------------------
@@ -133,7 +132,9 @@ async def test_info_model_accuracy_is_number(client: AsyncClient) -> None:
 
 
 async def test_info_data_source_has_three_sources(client: AsyncClient) -> None:
-    """GET /info data_source should list player_team_stats, game_summaries, and team_logos."""
+    """
+    GET /info data_source should list player_team_stats, game_summaries, and team_logos.
+    """
     response = await client.get("/info")
     ds = response.json()["data_source"]
     assert "player_team_stats" in ds
@@ -209,7 +210,9 @@ async def test_analyze_team_returns_404_for_unknown_team(client: AsyncClient) ->
 # ---------------------------------------------------------------------------
 
 
-async def test_analyze_most_similar_returns_200_for_known_team(client: AsyncClient) -> None:
+async def test_analyze_most_similar_returns_200_for_known_team(
+    client: AsyncClient,
+) -> None:
     """GET /analyze/most-similar/{team} returns 200 when the team is found."""
     with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM), \
          patch("app.routers.analyze.get_similar_teams", return_value=[]):
@@ -217,7 +220,9 @@ async def test_analyze_most_similar_returns_200_for_known_team(client: AsyncClie
     assert response.status_code == 200
 
 
-async def test_analyze_most_similar_returns_404_for_unknown_team(client: AsyncClient) -> None:
+async def test_analyze_most_similar_returns_404_for_unknown_team(
+    client: AsyncClient,
+) -> None:
     """GET /analyze/most-similar/{team} returns 404 when the team is not found."""
     with patch("app.routers.analyze.find_team", return_value=None):
         response = await client.get("/analyze/most-similar/Nonexistent")

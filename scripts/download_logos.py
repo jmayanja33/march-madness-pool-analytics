@@ -3,20 +3,27 @@ Script to download NCAA team logos from SportsLogos.net.
 Downloads the primary logo for each specified team as a PNG file.
 """
 
-import requests
-import re
-import time
 import os
+import re
 import shutil
+import time
 from typing import Optional
+
+import requests
 
 # Output directory for logos
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "../frontend/public/logos")
 
 # Headers to mimic a browser request
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    ),
+    "Accept": (
+        "text/html,application/xhtml+xml,"
+        "application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+    ),
     "Accept-Language": "en-US,en;q=0.5",
     # Note: Do NOT set Accept-Encoding manually — requests handles decompression
     # automatically only when it sets the header itself. Manual setting causes
@@ -422,7 +429,9 @@ ALIASES = {
 }
 
 
-def fetch_with_retry(url: str, max_retries: int = 4, retry_delay: float = 3.0) -> Optional[requests.Response]:
+def fetch_with_retry(
+    url: str, max_retries: int = 4, retry_delay: float = 3.0
+) -> Optional[requests.Response]:
     """
     Fetches a URL with retry logic for 502 and other transient errors.
 
@@ -442,7 +451,10 @@ def fetch_with_retry(url: str, max_retries: int = 4, retry_delay: float = 3.0) -
             elif response.status_code in (502, 503, 429):
                 # Transient errors - retry with backoff
                 wait = retry_delay * (attempt + 1)
-                print(f"  HTTP {response.status_code} on attempt {attempt + 1}, retrying in {wait:.0f}s...")
+                print(
+                    f"  HTTP {response.status_code} on attempt {attempt + 1},"
+                    f" retrying in {wait:.0f}s..."
+                )
                 time.sleep(wait)
             else:
                 print(f"  HTTP {response.status_code} for {url}")
@@ -457,7 +469,9 @@ def fetch_with_retry(url: str, max_retries: int = 4, retry_delay: float = 3.0) -
     return None
 
 
-def fetch_primary_logo_view_url(league_id: int, team_id: int, slug: str) -> Optional[str]:
+def fetch_primary_logo_view_url(
+    league_id: int, team_id: int, slug: str
+) -> Optional[str]:
     """
     Fetches the team logo list page and returns the view URL for the primary logo.
 
@@ -493,7 +507,7 @@ def fetch_primary_logo_view_url(league_id: int, team_id: int, slug: str) -> Opti
     fallback_pattern = re.compile(r'href="(/logos/view/(\d+)/[^"]*?)"')
     fallback_matches = fallback_pattern.findall(html)
     if fallback_matches:
-        print(f"  Warning: No primary logo found, using first available logo")
+        print("  Warning: No primary logo found, using first available logo")
         return f"https://www.sportslogos.net{fallback_matches[0][0]}"
 
     print(f"  Warning: No logo view links found for team {team_id}")
@@ -541,7 +555,7 @@ def fetch_full_logo_url(view_url: str) -> Optional[str]:
         gif_matches = gif_pattern.findall(html)
         full_gif = [m for m in gif_matches if "/thumbs/" not in m]
         if full_gif:
-            print(f"  Warning: Only GIF found, using GIF format")
+            print("  Warning: Only GIF found, using GIF format")
             return full_gif[0]
 
         print(f"  Warning: No image URLs found on view page {view_url}")
@@ -605,8 +619,6 @@ def process_team(name: str, league_id: int, team_id: int, slug: str) -> bool:
         return False
     print(f"  Logo URL: {logo_url}")
 
-    # Determine file extension
-    ext = ".png" if logo_url.endswith(".png") else ".gif"
     output_path = os.path.join(OUTPUT_DIR, f"{name}.png")
 
     time.sleep(0.5)  # Be polite to the server

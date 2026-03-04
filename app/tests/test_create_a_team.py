@@ -14,7 +14,6 @@ from httpx import ASGITransport, AsyncClient
 from app.main import app
 from app.services import build_pool_team_summary
 
-
 # ---------------------------------------------------------------------------
 # Shared test fixtures
 # ---------------------------------------------------------------------------

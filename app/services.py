@@ -15,11 +15,18 @@ from typing import Optional
 
 import chromadb
 
+from app.config import CHROMA_COLLECTION, CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
+from app.models import (
+    PlayerProfile,
+    PoolTeamSummary,
+    SimilarTeam,
+    TeamAnalysis,
+    TeamStats,
+    WinProbabilityDistribution,
+)
+
 # Module-level logger — output is captured by uvicorn and visible in docker logs.
 logger = logging.getLogger(__name__)
-
-from app.config import CHROMA_COLLECTION, CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
-from app.models import PlayerProfile, PoolTeamSummary, SimilarTeam, TeamAnalysis, TeamStats, WinProbabilityDistribution
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -362,7 +369,9 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
         logger.info("ChromaDB connected at %s:%s", CHROMA_HOST, CHROMA_PORT)
 
         collection = client.get_collection(name=CHROMA_COLLECTION)
-        logger.info("Collection '%s' opened — count: %s", CHROMA_COLLECTION, collection.count())
+        logger.info(
+            "Collection '%s' opened — count: %s", CHROMA_COLLECTION, collection.count()
+        )
 
         # Retrieve the current team's stored embedding by its 2025 document ID.
         chroma_id = team_name_to_chroma_id(team_name, CURRENT_YEAR)
@@ -374,7 +383,10 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
             return []
 
         query_vector = result["embeddings"][0]
-        logger.info("Embedding retrieved (%d dimensions) — querying neighbours", len(query_vector))
+        logger.info(
+            "Embedding retrieved (%d dimensions) — querying neighbours",
+            len(query_vector),
+        )
 
         # Fetch 10 candidates so we have enough after filtering 2025 teams.
         neighbors = collection.query(

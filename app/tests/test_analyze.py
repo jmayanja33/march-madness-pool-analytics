@@ -12,16 +12,15 @@ from httpx import ASGITransport, AsyncClient
 
 from app.main import app
 from app.services import (
+    build_player_profile,
+    build_team_stats,
+    build_win_distribution,
     calc_avg_per_game,
     calc_ft_pct,
     format_height,
     format_position,
     team_name_to_chroma_id,
-    build_win_distribution,
-    build_player_profile,
-    build_team_stats,
 )
-
 
 # ---------------------------------------------------------------------------
 # Shared async test client

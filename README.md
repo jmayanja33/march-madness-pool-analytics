@@ -98,3 +98,8 @@ uv run pytest
 ```bash
 uv run ruff check .
 ```
+
+**Fix linting errors automatically**
+```bash
+uv run ruff check . --fix
+```

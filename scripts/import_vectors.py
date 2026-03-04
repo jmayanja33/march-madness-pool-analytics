@@ -30,7 +30,6 @@ from pathlib import Path
 
 import chromadb
 
-
 # ── Constants ─────────────────────────────────────────────────────────────────
 
 # Number of documents sent to ChromaDB per HTTP request.  Keeping this below
@@ -50,7 +49,9 @@ DEFAULT_JSON_FILE = (
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 
-def load_json(file_path: Path) -> tuple[list[str], list[list[float]], list[dict], list[str]]:
+def load_json(
+    file_path: Path,
+) -> tuple[list[str], list[list[float]], list[dict], list[str]]:
     """Load and validate the exported vectors JSON file.
 
     Expected JSON shape::
@@ -58,7 +59,7 @@ def load_json(file_path: Path) -> tuple[list[str], list[list[float]], list[dict]
         {
             "ids":        [...],   # unique per-record IDs matching team_id in metadata
             "embeddings": [...],   # list of float vectors
-            "metadatas":  [...],   # list of metadata dicts (each contains a team_id field)
+            "metadatas":  [...],   # list of metadata dicts (each with a team_id field)
             "documents":  [...]    # list of document strings
         }
 
@@ -99,7 +100,8 @@ def load_json(file_path: Path) -> tuple[list[str], list[list[float]], list[dict]
     lengths = {len(ids), len(embeddings), len(metadatas), len(documents)}
     if len(lengths) != 1:
         print(
-            f"[ERROR] Mismatched list lengths — ids: {len(ids)}, embeddings: {len(embeddings)}, "
+            f"[ERROR] Mismatched list lengths — "
+            f"ids: {len(ids)}, embeddings: {len(embeddings)}, "
             f"metadatas: {len(metadatas)}, documents: {len(documents)}",
             file=sys.stderr,
         )
@@ -108,7 +110,10 @@ def load_json(file_path: Path) -> tuple[list[str], list[list[float]], list[dict]
     # Confirm IDs are unique (guard against re-introduced generation bugs)
     if len(set(ids)) != len(ids):
         duplicates = len(ids) - len(set(ids))
-        print(f"[ERROR] {duplicates} duplicate IDs found in the JSON file.", file=sys.stderr)
+        print(
+            f"[ERROR] {duplicates} duplicate IDs found in the JSON file.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     return ids, embeddings, metadatas, documents
@@ -146,7 +151,9 @@ def import_vectors(
             print(f"[INFO] Deleted existing collection '{collection_name}'")
         except Exception:
             # Collection did not exist — nothing to delete.
-            print(f"[INFO] Collection '{collection_name}' did not exist; skipping delete")
+            print(
+                f"[INFO] Collection '{collection_name}' did not exist; skipping delete"
+            )
 
     # Get or create the collection with cosine distance so that the returned
     # distances are in [0, 1] and similarity = 1 - distance.
@@ -242,12 +249,17 @@ def main() -> None:
         # Trigger an actual network call to verify connectivity
         client.heartbeat()
     except Exception as exc:
-        print(f"[ERROR] Cannot reach ChromaDB at {args.host}:{args.port}: {exc}", file=sys.stderr)
+        print(
+            f"[ERROR] Cannot reach ChromaDB at {args.host}:{args.port}: {exc}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     print("[INFO] Connected.")
 
-    import_vectors(client, args.collection, ids, embeddings, metadatas, documents, reset=args.reset)
+    import_vectors(
+        client, args.collection, ids, embeddings, metadatas, documents, reset=args.reset
+    )
 
 
 if __name__ == "__main__":

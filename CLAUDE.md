@@ -45,6 +45,8 @@ complex code HARMS this project as it makes maintainability much harder.
 Github actions will be used to deploy this site. In each commit pipeline, a unit test step, a secret detection step,
 and a linting step all must pass.
 
+Linting uses `ruff`. To check: `uv run ruff check .`. To auto-fix: `uv run ruff check . --fix`.
+
 All source code should be dockerized. The vector database should be dockerized as well. A docker compose file should 
 include both, and should be executable for local development.
 

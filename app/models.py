@@ -8,7 +8,6 @@ OpenAPI documentation.
 
 from pydantic import BaseModel
 
-
 # ---------------------------------------------------------------------------
 # Shared / nested models
 # ---------------------------------------------------------------------------
@@ -90,14 +89,14 @@ class TeamAnalysis(BaseModel):
 
     name: str
     seed: int                                                # Tournament seed (1–16)
-    conference: str                                          # Conference name, e.g. "ACC"
+    conference: str                                        # Conference name, e.g. "ACC"
     wins: int
     losses: int
     profile_summary: str
     top_players: list[PlayerProfile]                     # Top 5 players by minutes
     team_stats: TeamStats                                # Per-game team averages
     win_probability_distribution: WinProbabilityDistribution
-    similar_teams: list[SimilarTeam]                     # 3 most similar historical teams
+    similar_teams: list[SimilarTeam]                   # 3 most similar historical teams
 
 
 class SimilarTeamsResponse(BaseModel):
