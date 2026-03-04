@@ -101,14 +101,14 @@ was used to evaluate probability that a team would win 0, 1, or 2+ games in the 
 model is performing with the following metrics:
 
 - **Accuracy**: 75.26%
-- **F1 Score (Weighted)**: 76.28%
-- **Precision (Weighted)**: 79.07%
-- **Quadratic Weighted Kappa**: 0.749
-- **Ranked Probability Score**: 0.102
+- **F1 Score (Weighted)**: 76.33%
+- **Precision (Weighted)**: 79.05%
+- **Quadratic Weighted Kappa**: 0.763
+- **Ranked Probability Score**: 0.097
 
 The model was trained on 643 teams (2010–2025) and tested on 190, using 5-fold cross-validation with hyperparameter
 tuning. It classifies teams into three win buckets (0, 1, or 2+ wins) with ~75% accuracy. A Quadratic Weighted Kappa
-of 0.749 indicates strong ordinal agreement, and a Ranked Probability Score of 0.102 reflects well-calibrated
+of 0.763 indicates strong ordinal agreement, and a Ranked Probability Score of 0.097 reflects well-calibrated
 win probability distributions.
 
 

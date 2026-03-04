@@ -21,10 +21,10 @@ export default function Info() {
   // Resolve metrics from API data or fall back to static values from the spec.
   const metrics = infoData?.model ?? {
     accuracy: 75.26,
-    f1_weighted: 76.28,
-    precision_weighted: 79.07,
-    quadratic_weighted_kappa: 0.749,
-    ranked_probability_score: 0.102,
+    f1_weighted: 76.33,
+    precision_weighted: 79.05,
+    quadratic_weighted_kappa: 0.763,
+    ranked_probability_score: 0.097,
     training_samples: 643,
     test_samples: 190,
     seasons: '2010–2025',

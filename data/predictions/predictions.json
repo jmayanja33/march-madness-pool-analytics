@@ -405,9 +405,9 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9473,
-      "1": 0.0504,
-      "2+": 0.0024
+      "0": 0.943,
+      "1": 0.0545,
+      "2+": 0.0025
     },
     "avg_height": 76.84615384615384,
     "avg_weight": 195.3846153846154,
@@ -968,9 +968,9 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9972,
-      "1": 0.0027,
-      "2+": 0.0001
+      "0": 0.9935,
+      "1": 0.0062,
+      "2+": 0.0003
     },
     "avg_height": 75.44444444444444,
     "avg_weight": 189.72222222222223,
@@ -1420,9 +1420,9 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9848,
-      "1": 0.0146,
-      "2+": 0.0007
+      "0": 0.9904,
+      "1": 0.0092,
+      "2+": 0.0004
     },
     "avg_height": 77.07142857142857,
     "avg_weight": 202.21428571428572,
@@ -1877,9 +1877,9 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0829,
-      "1": 0.5944,
-      "2+": 0.3227
+      "0": 0.1195,
+      "1": 0.6443,
+      "2+": 0.2363
     },
     "avg_height": 77.5,
     "avg_weight": 207.14285714285714,
@@ -1954,9 +1954,9 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.996,
-      "1": 0.0039,
-      "2+": 0.0002
+      "0": 0.9808,
+      "1": 0.0184,
+      "2+": 0.0008
     },
     "avg_height": -1.0,
     "avg_weight": -1.0,
@@ -2410,9 +2410,9 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9974,
-      "1": 0.0025,
-      "2+": 0.0001
+      "0": 0.9851,
+      "1": 0.0142,
+      "2+": 0.0006
     },
     "avg_height": 76.64285714285714,
     "avg_weight": 192.57142857142858,
@@ -2865,9 +2865,9 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.3265,
-      "1": 0.5919,
-      "2+": 0.0816
+      "0": 0.3322,
+      "1": 0.59,
+      "2+": 0.0778
     },
     "avg_height": 78.35714285714286,
     "avg_weight": 207.07142857142858,
@@ -3345,9 +3345,9 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.3123,
-      "1": 0.6011,
-      "2+": 0.0866
+      "0": 0.1882,
+      "1": 0.6585,
+      "2+": 0.1532
     },
     "avg_height": 76.93333333333334,
     "avg_weight": 211.66666666666666,
@@ -3827,9 +3827,9 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.2325,
-      "1": 0.643,
-      "2+": 0.1245
+      "0": 0.2019,
+      "1": 0.6558,
+      "2+": 0.1423
     },
     "avg_height": 77.46666666666667,
     "avg_weight": 200.33333333333334,
@@ -4309,9 +4309,9 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1336,
-      "1": 0.6481,
-      "2+": 0.2183
+      "0": 0.0626,
+      "1": 0.5514,
+      "2+": 0.3861
     },
     "avg_height": 78.53333333333333,
     "avg_weight": 213.93333333333334,
@@ -4817,9 +4817,9 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0475,
-      "1": 0.4891,
-      "2+": 0.4633
+      "0": 0.0503,
+      "1": 0.5075,
+      "2+": 0.4423
     },
     "avg_height": 78.75,
     "avg_weight": 212.625,
@@ -5380,9 +5380,9 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.7588,
-      "1": 0.2277,
-      "2+": 0.0135
+      "0": 0.7013,
+      "1": 0.2811,
+      "2+": 0.0176
     },
     "avg_height": 77.77777777777777,
     "avg_weight": 206.44444444444446,
@@ -5917,9 +5917,9 @@
     "region": "East",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0044,
-      "1": 0.0888,
-      "2+": 0.9068
+      "0": 0.0119,
+      "1": 0.2115,
+      "2+": 0.7765
     },
     "avg_height": 77.94117647058823,
     "avg_weight": 213.2941176470588,
@@ -6343,11 +6343,11 @@
     "highest_ranked_win": 99,
     "profile_summary": "Montana enters the 2025 NCAA Tournament as a 14-seed with a 25-10 record \u2014 a Big Sky Conference co-champion that earned its automatic bid the hard way, winning the conference tournament over Northern Colorado 91-83 in the championship game. The r\u00e9sum\u00e9, however, carries a significant asterisk: against power-conference opposition early in the season, the Grizzlies were routed comprehensively. Oregon dismantled them 79-48 in November, Tennessee blew them out 92-57, Utah State handled them 95-83, and Northern Iowa put up 104 points in a 28-point blowout \u2014 a stretch that makes clear Montana is a mid-major program that has not demonstrated the ability to compete with high-major athleticism and depth. Against ranked opponents, Montana went 0-3 in games with detailed summaries (Oregon, Tennessee, Northern Iowa), losing by an average of roughly 25 points. The only meaningful competitive non-conference win of note was a home victory over South Dakota State, a solid Summit League program. What saves Montana's profile is what came after: the Grizzlies rattled off a 10-game winning streak through February, captured 15-3 Big Sky Conference regular-season marks, and closed the year by beating Northern Colorado in the conference championship \u2014 avenging an earlier 81-57 home blowout loss to the Bears in January. Their last five games (wins over Eastern Washington 83-72, Northern Arizona 74-65, Idaho 78-55, and Northern Colorado 91-83, sandwiched around an overtime road loss at Portland State 79-76) show a team playing with genuine confidence and building momentum at exactly the right time, though the Portland State slip \u2014 blowing a lead and losing in overtime \u2014 is a reminder that this team can still be had on the road.\n\nMontana's identity is a balanced, multi-contributor offensive attack without a single unstoppable star, which is both a strength and a limitation. Money Williams is the emotional engine and top scorer \u2014 his career-high 36-point performance in the Portland State overtime loss was stunning, and he has strung together several big games down the stretch \u2014 but he is a bench piece who can go quiet, as evidenced by just eight points in the Idaho State blowout loss in January. Joe Pridgen is a rugged, reliable interior force who routinely contributes double-doubles \u2014 21 points and 13 rebounds against Montana Tech, 20 and 13 against CSU Northridge \u2014 but he was not dominant in the conference tournament. Malik Moore is a streaky but capable three-point shooter, and Brandon Whitney, who holds Montana's all-time assist record, is the steady hand who controlled the Northern Arizona quarterfinal almost single-handedly with 24 points on 8-of-9 shooting. Kai Johnson adds athleticism and clutch playmaking \u2014 his late heroics against Utah Tech and his 23-point conference title performance demonstrate a composed, aggressive mindset. The Grizzlies play with resilience and scrappiness; they are rarely disengaged, tend to make games close, and have shown they can win ugly on the road (Weber State, Northern Arizona, Sacramento State). However, they are not a team that blows opponents out with superior talent \u2014 they grind, shoot threes, and rely on collective effort, which is a formula that tends to run into a wall against high-major athleticism. Montana's tournament ceiling is a first-round upset win if their three-point shooting (Patterson went 5-of-10 from deep against Idaho in the conference tournament) is clicking and the opponent underestimates them, but a second-round run is highly unlikely given their 0-3 record against power-conference opponents with losses by a combined 75+ points. **Verdict: Likely first-round exit; dangerous enough to steal a game if their perimeter shooting runs hot, but not equipped to advance past the Round of 32.**",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.3494,
-      "1": 0.5764,
-      "2+": 0.0742
+      "0": 0.5498,
+      "1": 0.417,
+      "2+": 0.0332
     },
     "avg_height": 77.23076923076923,
     "avg_weight": 203.69230769230768,
@@ -6747,8 +6747,8 @@
     "predicted_wins": 2,
     "win_probability_distribution": {
       "0": 0.0002,
-      "1": 0.0049,
-      "2+": 0.9949
+      "1": 0.0036,
+      "2+": 0.9963
     },
     "avg_height": 77.25,
     "avg_weight": 212.91666666666666,
@@ -7227,9 +7227,9 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9982,
-      "1": 0.0017,
-      "2+": 0.0001
+      "0": 0.9943,
+      "1": 0.0054,
+      "2+": 0.0002
     },
     "avg_height": 77.06666666666666,
     "avg_weight": 202.66666666666666,
@@ -7708,9 +7708,9 @@
     "region": "South",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.001,
-      "1": 0.0222,
-      "2+": 0.9768
+      "0": 0.0025,
+      "1": 0.0548,
+      "2+": 0.9427
     },
     "avg_height": 77.06666666666666,
     "avg_weight": 201.06666666666666,
@@ -8189,9 +8189,9 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.2033,
-      "1": 0.6523,
-      "2+": 0.1444
+      "0": 0.1882,
+      "1": 0.6585,
+      "2+": 0.1533
     },
     "avg_height": 78.53333333333333,
     "avg_weight": 215.4,
@@ -8616,9 +8616,9 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.4024,
-      "1": 0.5375,
-      "2+": 0.0601
+      "0": 0.295,
+      "1": 0.6138,
+      "2+": 0.0912
     },
     "avg_height": 75.76923076923077,
     "avg_weight": 195.07692307692307,
@@ -8691,9 +8691,9 @@
     "region": "East",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0433,
-      "1": 0.4692,
-      "2+": 0.4875
+      "0": 0.0379,
+      "1": 0.4464,
+      "2+": 0.5156
     },
     "avg_height": -1.0,
     "avg_weight": -1.0,
@@ -9092,9 +9092,9 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9541,
-      "1": 0.0439,
-      "2+": 0.0021
+      "0": 0.9462,
+      "1": 0.0514,
+      "2+": 0.0024
     },
     "avg_height": 78.33333333333333,
     "avg_weight": 200.83333333333334,
@@ -9546,9 +9546,9 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.3287,
-      "1": 0.5905,
-      "2+": 0.0808
+      "0": 0.202,
+      "1": 0.6558,
+      "2+": 0.1423
     },
     "avg_height": 77.92857142857143,
     "avg_weight": 211.28571428571428,
@@ -9972,9 +9972,9 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8,
-      "1": 0.1894,
-      "2+": 0.0107
+      "0": 0.7077,
+      "1": 0.2753,
+      "2+": 0.017
     },
     "avg_height": 78.61538461538461,
     "avg_weight": 211.53846153846155,
@@ -10427,9 +10427,9 @@
     "region": "Midwest",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0091,
-      "1": 0.1667,
-      "2+": 0.8241
+      "0": 0.0032,
+      "1": 0.0687,
+      "2+": 0.928
     },
     "avg_height": 77.21428571428571,
     "avg_weight": 203.21428571428572,
@@ -10828,9 +10828,9 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9963,
-      "1": 0.0036,
-      "2+": 0.0002
+      "0": 0.9905,
+      "1": 0.0091,
+      "2+": 0.0004
     },
     "avg_height": 77.25,
     "avg_weight": 207.66666666666666,
@@ -11334,11 +11334,11 @@
     "highest_ranked_win": 8,
     "profile_summary": "Kansas enters the 2025 NCAA Tournament as a 7-seed with a 21-13 record \u2014 a r\u00e9sum\u00e9 that reflects a team of genuine talent that never fully put it together for a sustained stretch. Against ranked opponents, the Jayhawks went 6-9, with notable wins over #9 North Carolina, #11 Duke, #11 Michigan State, #8 Iowa State, and #24 Arizona, but damaging losses to Creighton (unranked at the time), Missouri (unranked), #2 Iowa State, #7 Houston (twice), #10 Texas Tech, and others. In the final five games of available summaries \u2014 a 96-64 demolition of Oklahoma State, a gutsy 71-64 road win at Colorado behind Hunter Dickinson's 32 points, a 73-78 home loss to Texas Tech that featured another Kansas collapse after tying the game late, a 59-65 road loss at #3 Houston in a competitive but ultimately losing effort, an 83-76 home win over #24 Arizona fueled by Dickinson's career-high-matching 33 points and five Mayo threes, and a Big 12 Tournament quarterfinal loss to Arizona 88-77 \u2014 Kansas looks like a team that is dangerous and maddening in equal measure: capable of beating anyone on a given night, yet persistently unable to impose its will consistently. The Jayhawks are defined by the Hunter Dickinson-Zeke Mayo tandem; Dickinson is posting double-doubles at will (15 on the season), with a peak that includes back-to-back elite performances of 32 and 33 points to close the regular season, while Mayo provides perimeter firepower and clutch shot-making, most recently erupting for 20 points on five threes against Arizona. KJ Adams Jr. offers a reliable third option when healthy, though his partially separated shoulder mid-season created real interior depth concerns alongside freshman Flory Bidunga's injury absences. Kansas plays an identity-shifting style \u2014 at its best, it wins with a dominant interior presence, sharp ball movement (14 assists against one first-half turnover versus Arizona), and lockdown second-half defense; at its worst, it hemorrhages turnovers (22 against Missouri, 20 forced by Houston), collapses under full-court pressure (the historic 21-point blown lead at Baylor), and disappears offensively for long stretches. The Jayhawks are a markedly better team at home \u2014 winning 42 consecutive home finales and posting dominant results in Allen Fieldhouse \u2014 but have been inconsistent and frequently outworked on the road, losing at Creighton, Missouri, Iowa State, Utah, and BYU by a combined margin that suggests genuine road fragility. In a neutral-site tournament environment, the early-season Champions Classic wins over North Carolina and Michigan State indicate this group can elevate for big moments, though the Big 12 Tournament exit to Arizona at a neutral site introduces doubt. The bottom line: Kansas is a genuinely dangerous 7-seed \u2014 Dickinson at his peak is an elite-level force, Mayo can get hot from three at any moment, and this team has the r\u00e9sum\u00e9 wins to prove it can compete with anyone \u2014 but the chronic inconsistency, turnover issues, collapse-prone tendencies, and road struggles make a run beyond the Sweet 16 a tall order. **Realistic tournament ceiling: Sweet 16**, with a credible upset threat in the first two rounds and the talent to surprise, but too prone to self-destruction to project deeper with confidence.",
     "region": "West",
-    "predicted_wins": 0,
+    "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.6029,
-      "1": 0.3695,
-      "2+": 0.0276
+      "0": 0.4574,
+      "1": 0.4952,
+      "2+": 0.0474
     },
     "avg_height": 77.5625,
     "avg_weight": 204.5625,
@@ -11790,9 +11790,9 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0686,
-      "1": 0.5624,
-      "2+": 0.369
+      "0": 0.0439,
+      "1": 0.4784,
+      "2+": 0.4777
     },
     "avg_height": 77.0,
     "avg_weight": 203.57142857142858,
@@ -12243,9 +12243,9 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0626,
-      "1": 0.5453,
-      "2+": 0.3922
+      "0": 0.0764,
+      "1": 0.5871,
+      "2+": 0.3365
     },
     "avg_height": 78.14285714285714,
     "avg_weight": 214.5,
@@ -12720,9 +12720,9 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9155,
-      "1": 0.0805,
-      "2+": 0.004
+      "0": 0.9243,
+      "1": 0.0723,
+      "2+": 0.0034
     },
     "avg_height": 77.0,
     "avg_weight": 201.53333333333333,
@@ -13228,9 +13228,9 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.4617,
-      "1": 0.4905,
-      "2+": 0.0478
+      "0": 0.3984,
+      "1": 0.542,
+      "2+": 0.0596
     },
     "avg_height": 78.1875,
     "avg_weight": 215.6875,
@@ -13574,9 +13574,9 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.2803,
-      "1": 0.6201,
-      "2+": 0.0996
+      "0": 0.2228,
+      "1": 0.6495,
+      "2+": 0.1277
     },
     "avg_height": 77.4,
     "avg_weight": 209.0,
@@ -13973,9 +13973,9 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1634,
-      "1": 0.6559,
-      "2+": 0.1807
+      "0": 0.2404,
+      "1": 0.6425,
+      "2+": 0.1171
     },
     "avg_height": 78.16666666666667,
     "avg_weight": 210.0,
@@ -14400,9 +14400,9 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.6098,
-      "1": 0.3634,
-      "2+": 0.0268
+      "0": 0.596,
+      "1": 0.3764,
+      "2+": 0.0277
     },
     "avg_height": 78.0,
     "avg_weight": 209.53846153846155,
@@ -14828,9 +14828,9 @@
     "region": "West",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0154,
-      "1": 0.2512,
-      "2+": 0.7334
+      "0": 0.0198,
+      "1": 0.3051,
+      "2+": 0.6751
     },
     "avg_height": 79.15384615384616,
     "avg_weight": 213.6153846153846,
@@ -15256,9 +15256,9 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8285,
-      "1": 0.1627,
-      "2+": 0.0088
+      "0": 0.8576,
+      "1": 0.1355,
+      "2+": 0.0069
     },
     "avg_height": 77.3076923076923,
     "avg_weight": 212.15384615384616,
@@ -15765,9 +15765,9 @@
     "region": "South",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0205,
-      "1": 0.3068,
-      "2+": 0.6727
+      "0": 0.0088,
+      "1": 0.1659,
+      "2+": 0.8253
     },
     "avg_height": 77.75,
     "avg_weight": 209.875,
@@ -16193,9 +16193,9 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.7269,
-      "1": 0.2572,
-      "2+": 0.0159
+      "0": 0.81,
+      "1": 0.1802,
+      "2+": 0.0097
     },
     "avg_height": 77.15384615384616,
     "avg_weight": 198.30769230769232,
@@ -16620,9 +16620,9 @@
     "region": "West",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0143,
-      "1": 0.2371,
-      "2+": 0.7486
+      "0": 0.0174,
+      "1": 0.2793,
+      "2+": 0.7033
     },
     "avg_height": 77.07692307692308,
     "avg_weight": 206.84615384615384,
@@ -17102,9 +17102,9 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.7734,
-      "1": 0.2142,
-      "2+": 0.0125
+      "0": 0.7442,
+      "1": 0.2415,
+      "2+": 0.0142
     },
     "avg_height": 77.46666666666667,
     "avg_weight": 204.0,
@@ -17581,11 +17581,11 @@
     "highest_ranked_win": 7,
     "profile_summary": "Mississippi State enters the 2025 NCAA Tournament as an 8-seed with a 21-13 record \u2014 a r\u00e9sum\u00e9 built on a spectacular nonconference run that gradually eroded under the weight of one of college basketball's toughest schedules. The Bulldogs went 12-1 before SEC play, notching quality nonconference wins over Memphis on the road, SMU away, and a dominant 90-57 dismantling of then-No. 18 Pittsburgh at home, and they reached as high as No. 14 in the AP Poll. Against ranked opponents this season, Mississippi State went a modest 5-9: notable wins include upsets of No. 21 Ole Miss (twice, including an overtime thriller), No. 7 Texas A&M by 16 points at home (prompting a court storm), and No. 21 Memphis on the road, while the losses include blowout defeats to No. 1 Auburn (88-66), No. 6 Alabama (111-73), No. 6 Tennessee (68-56), and No. 20 Missouri (88-61 at home) \u2014 a pattern that reveals a team that can steal a marquee win but frequently gets overwhelmed by truly elite opposition. The final five games tell a complicated story: Mississippi State beat LSU by 12 in the SEC Tournament opener, lost to Missouri 85-73 in the second round, and heading into Nashville had gone 1-3 \u2014 blowing a lead late at Arkansas in a 93-92 heartbreaker, losing at home to Texas in overtime 87-82 despite a furious second-half rally, and getting obliterated at Alabama 111-73 in a game that was never close. That stretch reflects the team's defining tension: they are scrappy, resilient comeback artists who refuse to quit (see their 12-0 run to briefly lead Arkansas late, or Kugel's buzzer-tying layup to force OT against Texas), but they are also prone to catastrophic defensive meltdowns \u2014 particularly against teams that shoot threes at volume, as Oklahoma (52.7% overall), Alabama (49% from three), and Missouri (55% from three) all torched them from deep in consecutive February-March losses.\n\nJosh Hubbard is the unquestioned engine of this offense \u2014 a preseason Wooden Award watch list honoree who erupted for a career-high 38 points against Alabama and has been virtually the only reliable creator in crunch time \u2014 but his inconsistency is a real concern: he shot just 2-for-12 in the blowout loss to Auburn and 4-for-18 (with 14 points) against SMU, showing a tendency to struggle when opponents key on him. KeShawn Murphy gives this team a legitimate interior presence, posting double-doubles regularly and providing 18 points and 11 rebounds in the Alabama loss, while Claudell Harris Jr. is a dangerous spot-up shooter off the bench who can turn a game with a flurry of threes. The bench overall is a genuine strength \u2014 Mississippi State outscored UNLV 48-13 off the bench in the Arizona Tip-Off and posted a 32-5 bench scoring edge in a road win at Georgia \u2014 but the team's identity shifts dangerously when Hubbard goes cold and no one steps into the vacuum. Locationally, the Bulldogs have been better away from Starkville than their home record suggests, going 2-4 in SEC home games while picking up road wins at Memphis, SMU, Vanderbilt, Ole Miss, and Georgia, though they also suffered their worst beatings (Auburn, Alabama) away from home; neutral-site performance is mixed \u2014 they won the Arizona Tip-Off semifinal impressively, lost the championship to Butler, and split two SEC Tournament games. As an 8-seed, Mississippi State carries real danger for a 1-seed \u2014 they play with fight, have experienced tournament-level moments, can erupt offensively on a good shooting night, and feature a player in Hubbard capable of a 30-point performance on any given night \u2014 but their three-point defense is alarmingly porous at the worst possible time, their overall record is just 21-13, and the evidence of second-half collapses and blowout losses against elite competition is hard to dismiss. The realistic ceiling for this team is the Round of 32: dangerous enough to upset a 1-seed in a shootout if Hubbard is locked in and the three-point defense holds, but too defensively inconsistent and too",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.4688,
-      "1": 0.4847,
-      "2+": 0.0465
+      "0": 0.5291,
+      "1": 0.4349,
+      "2+": 0.036
     },
     "avg_height": 77.6,
     "avg_weight": 213.06666666666666,
@@ -17983,9 +17983,9 @@
     "region": "East",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.3915,
-      "1": 0.5458,
-      "2+": 0.0627
+      "0": 0.3177,
+      "1": 0.5996,
+      "2+": 0.0827
     },
     "avg_height": 77.5,
     "avg_weight": 209.0,
@@ -18410,9 +18410,9 @@
     "region": "East",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0116,
-      "1": 0.2031,
-      "2+": 0.7853
+      "0": 0.0099,
+      "1": 0.1822,
+      "2+": 0.8079
     },
     "avg_height": 78.23076923076923,
     "avg_weight": 213.53846153846155,
@@ -18811,9 +18811,9 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8672,
-      "1": 0.1262,
-      "2+": 0.0065
+      "0": 0.7793,
+      "1": 0.2089,
+      "2+": 0.0117
     },
     "avg_height": 77.0,
     "avg_weight": 198.08333333333334,
@@ -19265,9 +19265,9 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0871,
-      "1": 0.6018,
-      "2+": 0.3111
+      "0": 0.0451,
+      "1": 0.4846,
+      "2+": 0.4703
     },
     "avg_height": 78.35714285714286,
     "avg_weight": 224.07142857142858,
@@ -19745,11 +19745,11 @@
     "highest_ranked_win": 99,
     "profile_summary": "Lipscomb enters the 2025 NCAA Tournament as a 14-seed with a 25-10 record, having claimed the Atlantic Sun Conference regular season title and punched their ticket through the conference tournament. The r\u00e9sum\u00e9, however, carries significant asterisks when viewed through a national lens. Against Power Conference opponents, the Bisons went 0-3 \u2014 losing to #9 Kentucky by 29 (97-68), to Arkansas by 16 (76-60), and to Western Kentucky by five \u2014 with only the Arkansas game featuring a competitive second half before the Razorbacks pulled away. Those performances reveal a genuine gap between Lipscomb and high-major competition, which will matter enormously against a 3-seed opponent in the first round. Within the Atlantic Sun, however, Lipscomb was dominant and legitimate, finishing 14-4 in conference play and winning the conference tournament, including a 84-66 quarterfinal rout of Central Arkansas behind Joe Anderson's 28 points and a 76-65 final over North Alabama. Their final five game summaries \u2014 wins over Austin Peay (95-78), Central Arkansas in the regular season finale (78-60), Central Arkansas in the A-Sun tournament (84-66), the A-Sun tournament semifinal (result implied), and a 76-65 win over North Alabama in the tournament final \u2014 show a team playing its best basketball at exactly the right time, riding a four-game winning streak with commanding margins and balanced scoring contributions.\n\nLipscomb's identity is built almost entirely around Jacob Ognacevic, one of the more dangerous mid-major scorers in the country. The senior forward has posted a stunning string of performances throughout the year \u2014 30 points against Duquesne, 32 against Middle Tennessee, 32 against Bellarmine, 31 against Austin Peay, 30 against Stetson, 28 against Austin Peay again, and 20-plus in the conference tournament \u2014 and enters the tournament as a genuine first-round concern for any opponent's scouting staff. Will Pruitt and Gyasi Powell provide credible secondary scoring, and Joe Anderson adds defensive activity (seven steals against Jacksonville alone) and perimeter shooting that makes the offense multidimensional. Stylistically, Lipscomb wins through offensive volume and Ognacevic's individual brilliance rather than elite defense or lockdown schemes; they are capable of high-scoring shootouts and have shown the ability to build comfortable leads, but they have also been susceptible to teams that can match their pace and exploit their defensive limitations \u2014 evidenced by losses to Eastern Kentucky (twice), North Alabama, and Middle Tennessee within conference play. Location-wise, the Bisons are functional on the road and at neutral sites, going through their conference tournament on their home floor in Nashville and generally performing well there, but their worst blowout losses (Kentucky, Arkansas) came away from home. As a 14-seed, Lipscomb is a dangerous first-round opponent \u2014 Ognacevic alone gives any 3-seed a genuine problem to solve \u2014 but the ceiling here is realistically a first-round upset followed by a second-round exit; the quality-competition losses are too lopsided and the defensive profile too soft to project this team advancing to the Sweet 16.",
     "region": "South",
-    "predicted_wins": 0,
+    "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.5367,
-      "1": 0.4275,
-      "2+": 0.0358
+      "0": 0.3638,
+      "1": 0.5678,
+      "2+": 0.0684
     },
     "avg_height": 76.73333333333333,
     "avg_weight": 197.33333333333334,
@@ -20121,9 +20121,9 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.2074,
+      "0": 0.2174,
       "1": 0.6513,
-      "2+": 0.1413
+      "2+": 0.1312
     },
     "avg_height": 76.54545454545455,
     "avg_weight": 204.27272727272728,
@@ -20522,9 +20522,9 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1388,
-      "1": 0.6503,
-      "2+": 0.2109
+      "0": 0.1445,
+      "1": 0.6565,
+      "2+": 0.199
     },
     "avg_height": 77.58333333333333,
     "avg_weight": 205.41666666666666,
@@ -21004,9 +21004,9 @@
     "region": "East",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0015,
-      "1": 0.0317,
-      "2+": 0.9668
+      "0": 0.0009,
+      "1": 0.0212,
+      "2+": 0.9779
     },
     "avg_height": 79.13333333333334,
     "avg_weight": 212.53333333333333,
@@ -21402,11 +21402,11 @@
     "highest_ranked_win": 99,
     "profile_summary": "Saint Mary's enters the 2025 NCAA Tournament as a 7-seed with a 29-6 record and the outright WCC regular-season title \u2014 a program-best 17-1 conference mark that speaks to genuine dominance within their league, even if questions linger about how they stack up against elite national competition. Against quality opponents, the Gaels went 1-2 in notable non-conference tests: a narrow 77-74 win over Nebraska in Sioux Falls and a road victory at Utah (72-63), but losses to Arizona State (64-68) and Boise State (65-67 in OT) revealed vulnerabilities against athletic, physical teams that can pressure them into mistakes. Their ranked wins are limited \u2014 Nebraska and Utah appear to be the most credible scalps \u2014 while the loss to Gonzaga in the WCC Tournament final (51-58) was damning: Saint Mary's went 0-for-16 from three, committed 18 turnovers, and went over seven minutes without a field goal in the second half, becoming the first ranked team since 2011 to combine those two statistics in a single game. Over their final five games (wins over LMU 58-55, Oregon State 74-64, and Pepperdine 74-59, followed by the Gonzaga WCC final loss), the Gaels were mostly grinding out victories rather than imposing their will \u2014 the LMU win required a Murauskas shot-clock-beating corner three with 30 seconds left, and they shot just 38% in that game \u2014 before the tournament finale exposed serious perimeter shooting fragility and turnover issues under elite defensive pressure.\n\nSaint Mary's is built around two standout players: Augustas Marciulionis, the two-time WCC Player of the Year who regularly puts up 17-25 points with elite assist and steal numbers, and Paulius Murauskas, a versatile big who can erupt for 29-30 points on nights he's dialed in from three (his 6-for-10 three-point performance at Utah was exceptional), though his shot-making is inconsistent \u2014 he is just a 31% three-point shooter on the season. Mitchell Saxen provides a reliable interior presence (double-doubles throughout conference play), and Mikey Lewis offers valuable bench scoring, including a 5-for-7 three-point performance in the win at Gonzaga during the regular season. The Gaels win by controlling the glass (they outrebounded LMU 43-26, including 12-2 on the offensive boards), playing disciplined half-court offense, and grinding opponents into low-scoring games \u2014 they held 27 of 32 opponents under 70 points. However, they are collapse-prone in the right circumstances: the WCC final showed they can completely fall apart from the perimeter, and their turnover issues (18 in the Gonzaga loss) are a legitimate concern against high-pressure defenses they'll see in March. Location-wise, Saint Mary's is dominant at home (strong throughout WCC play), solid on the road (wins at Utah, Gonzaga in the regular season, Oregon State), but their neutral-site record is mixed \u2014 the Arizona State loss in Palm Springs and the Gonzaga WCC final loss in Las Vegas suggest they haven't consistently translated their regular-season dominance to neutral courts. Saint Mary's is a dangerous, well-coached team with enough star power and rebounding toughness to beat a higher seed \u2014 but their three-point shooting volatility, turnover vulnerability against elite defenses, and limited r\u00e9sum\u00e9 against top-25 competition make a deep run unlikely. **Realistic tournament ceiling: Round of 32 to Sweet 16, with a first-round upset of a 10-seed well within reach, but a second-round matchup against a high-major athletic team likely ends their run.**",
     "region": "East",
-    "predicted_wins": 0,
+    "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.4803,
-      "1": 0.4751,
-      "2+": 0.0445
+      "0": 0.346,
+      "1": 0.5805,
+      "2+": 0.0735
     },
     "avg_height": 78.5,
     "avg_weight": 218.75,
@@ -21884,9 +21884,9 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.7752,
-      "1": 0.2125,
-      "2+": 0.0123
+      "0": 0.7049,
+      "1": 0.2778,
+      "2+": 0.0173
     },
     "avg_height": 76.06666666666666,
     "avg_weight": 210.33333333333334,
@@ -22311,9 +22311,9 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1624,
-      "1": 0.6559,
-      "2+": 0.1817
+      "0": 0.2974,
+      "1": 0.6124,
+      "2+": 0.0902
     },
     "avg_height": 76.76923076923077,
     "avg_weight": 204.07692307692307,
@@ -22763,11 +22763,11 @@
     "highest_ranked_win": 17,
     "profile_summary": "Maryland enters the 2025 NCAA Tournament as a 4-seed with a 27-9 record and one of the most balanced offensive attacks in the country, built around what the program has dubbed the \"Crab Five\" \u2014 a starting unit that has been dominant enough to outscore opponents on its own. Against ranked opponents, the Terrapins went an impressive 8-7, with statement wins over No. 17 Illinois (91-70 on the road), No. 22 UCLA (79-61), No. 17 Wisconsin (76-68), No. 18 Rutgers (90-81), and No. 15 Michigan (71-65 in Ann Arbor), plus a pair of ranked road wins late in the season that demonstrated genuine toughness. Their losses to ranked teams \u2014 No. 15 Marquette, No. 8 Purdue, No. 9 Oregon, No. 18 Ohio State (a stunning 17-point collapse), and No. 8 Michigan State twice, including a half-court buzzer-beater at home \u2014 reveal a team that can go toe-to-toe with elites but has a troubling habit of late-game meltdowns. In the Big Ten Tournament, Maryland demolished No. 24 Illinois 88-65 with just three turnovers before falling 81-80 to Michigan on a full-court layup with 0.4 seconds remaining \u2014 a brutal but emblematic ending for a team that keeps finding new and painful ways to lose close games.\n\nFreshman center Derik Queen is the engine of this offense and has been sensational of late \u2014 posting a career-high 31 points in the Big Ten semifinal loss and averaging what amounts to a double-double threat every night, with elite footwork and free-throw drawing ability (9-for-11 shooting, 6-for-6 at the line against Nebraska). Ja'Kobi Gillespie is a steady, high-IQ transfer guard averaging around 15-18 points across the final stretch, while Rodney Rice provides explosive perimeter scoring \u2014 his 23-point, five-of-seven from three performance to win at Indiana exemplifies the kind of timely shooting this team can produce. Julian Reese is a reliable double-double big and Selton Miguel is one of the more underrated shooters in the Big Ten. The concern, however, is depth: the starting five scores the overwhelming majority of Maryland's points (85 of 88 against USC, 95 of 101 against Iowa), and when Queen and Reese go cold simultaneously \u2014 as they did shooting 4-of-18 combined against Michigan State \u2014 the offense has no reliable alternative. Location matters enormously for this team: Maryland was 16-1 at home but a pedestrian 3-5 in true road games before finishing 3-6, and their neutral-site r\u00e9sum\u00e9 is mixed, though they did win the Empire Classic over Villanova on a clutch Queen free throw. The Terrapins play a high-octane, starting-five-dependent style that can blow teams out (108-37 over Canisius, 101-75 over Iowa) but is dangerously prone to second-half shooting collapses and turnover-induced breakdowns \u2014 they were held to 25% shooting in the second half at Ohio State and committed 16 turnovers in the Northwestern overtime loss. Maryland's realistic tournament ceiling is the Elite Eight: Queen's star power and the starting unit's offensive balance make them a genuine danger to any mid-seed opponent, and their ranked-win portfolio proves they can beat good teams, but their late-game fragility, bench-scoring vacuum, and history of catastrophic collapses against elite defenses make a Final Four run a long shot without significant improvement in closing out games.",
     "region": "West",
-    "predicted_wins": 1,
+    "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0557,
-      "1": 0.5223,
-      "2+": 0.422
+      "0": 0.027,
+      "1": 0.3711,
+      "2+": 0.6019
     },
     "avg_height": 77.42857142857143,
     "avg_weight": 212.71428571428572,
@@ -23192,9 +23192,9 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9593,
-      "1": 0.0389,
-      "2+": 0.0018
+      "0": 0.8046,
+      "1": 0.1853,
+      "2+": 0.0101
     },
     "avg_height": 78.07692307692308,
     "avg_weight": 214.0,
@@ -23702,8 +23702,8 @@
     "predicted_wins": 2,
     "win_probability_distribution": {
       "0": 0.0002,
-      "1": 0.0048,
-      "2+": 0.995
+      "1": 0.0044,
+      "2+": 0.9954
     },
     "avg_height": 77.875,
     "avg_weight": 215.0625,
@@ -24102,9 +24102,9 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9852,
-      "1": 0.0141,
-      "2+": 0.0006
+      "0": 0.9685,
+      "1": 0.0302,
+      "2+": 0.0014
     },
     "avg_height": 77.41666666666667,
     "avg_weight": 201.0,
@@ -24583,9 +24583,9 @@
     "region": "Midwest",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.006,
-      "1": 0.1166,
-      "2+": 0.8774
+      "0": 0.0052,
+      "1": 0.1055,
+      "2+": 0.8893
     },
     "avg_height": 77.53333333333333,
     "avg_weight": 214.26666666666668,
@@ -25037,9 +25037,9 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9532,
-      "1": 0.0447,
-      "2+": 0.0021
+      "0": 0.9434,
+      "1": 0.054,
+      "2+": 0.0025
     },
     "avg_height": 77.0,
     "avg_weight": 206.07142857142858,
@@ -25518,9 +25518,9 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.3862,
-      "1": 0.5498,
-      "2+": 0.0641
+      "0": 0.3042,
+      "1": 0.6082,
+      "2+": 0.0876
     },
     "avg_height": 77.06666666666666,
     "avg_weight": 209.33333333333334,
@@ -25918,9 +25918,9 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.2083,
-      "1": 0.651,
-      "2+": 0.1407
+      "0": 0.1666,
+      "1": 0.6599,
+      "2+": 0.1735
     },
     "avg_height": 78.41666666666667,
     "avg_weight": 214.33333333333334,
@@ -26535,9 +26535,9 @@
     "region": "East",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0039,
-      "1": 0.0789,
-      "2+": 0.9172
+      "0": 0.0127,
+      "1": 0.2221,
+      "2+": 0.7652
     },
     "avg_height": 77.95,
     "avg_weight": 207.55,
@@ -26934,11 +26934,11 @@
     "highest_ranked_win": 99,
     "profile_summary": "Akron enters the 2025 NCAA Tournament as a 13-seed with a 28-7 record that demands respect, though their r\u00e9sum\u00e9 carries an important caveat: the bulk of their dominance came within the Mid-American Conference, where they went 17-1 in the regular season and ran the table as the MAC's undisputed best team. Against genuinely elite competition, the Zips struggled \u2014 early-season losses to Saint Mary's (87-68), Milwaukee (100-81), and Yale (74-58) exposed real vulnerabilities against high-major and quality mid-major opponents, and a gut-punch 76-75 loss at Princeton, where they blew a 15-point lead on a buzzer-beating 3-pointer, raised legitimate questions about their composure in tight moments. Their only meaningful non-conference win came in a comfortable home victory over Northern Kentucky. That said, the Zips are playing their best basketball heading into March: their final five games saw wins over Ball State (87-82), Kent State (77-72), Toledo (96-87), Buffalo (88-70), and three MAC Tournament victories \u2014 capped by a grinding 76-74 win over Miami (OH) in the championship \u2014 demonstrating they can close out games when it matters most, though several of those wins came against mid-to-lower-tier MAC competition. The MAC Tournament title run, including a 100-90 semifinal win over Toledo, confirms they can win on consecutive days under pressure.\n\nAkron's style is best described as high-octane offense with a multi-headed scoring attack rather than a defensive juggernaut \u2014 they regularly crack 80, 90, and even 100 points, but they can also surrender big numbers, as Milwaukee's 100-point outburst and Toledo's 87 in the regular-season finale illustrate. The engine of this team is the Johnson duo: **Nate Johnson** and **Tavari Johnson** are both capable of explosive performances, with Nate dropping 28 on Toledo and Tavari erupting for 27 against Northern Kentucky earlier in the year, while **Shammah Scott** has emerged as a critical bench contributor averaging double-digit points in major moments, including 16 off the bench in the MAC title run. **Isaiah Gray** provides versatile two-way play and **Amani Lyles** offers a reliable interior presence with efficient shooting. Home-court has clearly been a comfort zone \u2014 Akron dominated at InfoCision Stadium all conference season \u2014 but their road and neutral-site record is mixed, with blowout losses at Saint Mary's and Milwaukee and a near-upset loss at Princeton on the road raising flags about their ability to win away from home. Their energy reads as confident and free-flowing when shots are falling, but they are susceptible to momentum swings and have shown a tendency to dig themselves early halftime deficits, needing second-half rallies to close out wins. As a 13-seed, Akron is genuinely dangerous for a bubble 4-seed \u2014 their offensive firepower and MAC championship pedigree make them a credible first-round upset threat \u2014 but their soft non-conference r\u00e9sum\u00e9 and demonstrated inability to compete with high-major opponents caps their realistic ceiling at the **second round**. A Sweet 16 run would require back-to-back upsets against competition they have shown no ability to handle this season, making it an unlikely but not impossible outcome.",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.0787,
-      "1": 0.5862,
-      "2+": 0.3351
+      "0": 0.5622,
+      "1": 0.4062,
+      "2+": 0.0317
     },
     "avg_height": 75.75,
     "avg_weight": 205.75,
@@ -27336,9 +27336,9 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0918,
-      "1": 0.6095,
-      "2+": 0.2986
+      "0": 0.1015,
+      "1": 0.6276,
+      "2+": 0.2709
     },
     "avg_height": 78.33333333333333,
     "avg_weight": 214.16666666666666,
@@ -27763,9 +27763,9 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.4957,
-      "1": 0.4624,
-      "2+": 0.042
+      "0": 0.5429,
+      "1": 0.423,
+      "2+": 0.0341
     },
     "avg_height": 77.0,
     "avg_weight": 199.92307692307693,
@@ -28163,9 +28163,9 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0957,
-      "1": 0.615,
-      "2+": 0.2893
+      "0": 0.115,
+      "1": 0.6409,
+      "2+": 0.2441
     },
     "avg_height": 78.33333333333333,
     "avg_weight": 208.75,
@@ -28590,9 +28590,9 @@
     "region": "South",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0019,
-      "1": 0.0409,
-      "2+": 0.9572
+      "0": 0.002,
+      "1": 0.0438,
+      "2+": 0.9541
     },
     "avg_height": 77.76923076923077,
     "avg_weight": 211.69230769230768,
@@ -29045,9 +29045,9 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8732,
-      "1": 0.1206,
-      "2+": 0.0062
+      "0": 0.7926,
+      "1": 0.1965,
+      "2+": 0.0109
     },
     "avg_height": 77.07142857142857,
     "avg_weight": 198.78571428571428,
@@ -29120,9 +29120,9 @@
     "region": "East",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1158,
-      "1": 0.6367,
-      "2+": 0.2475
+      "0": 0.1337,
+      "1": 0.6525,
+      "2+": 0.2138
     },
     "avg_height": -1.0,
     "avg_weight": -1.0,
@@ -29602,9 +29602,9 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.7722,
-      "1": 0.2153,
-      "2+": 0.0125
+      "0": 0.7296,
+      "1": 0.2551,
+      "2+": 0.0153
     },
     "avg_height": 77.33333333333333,
     "avg_weight": 208.0,
