@@ -1,0 +1,69 @@
+# CI pipeline — runs on every push and pull request to master.
+# Three jobs run in parallel: lint, test, and secret detection.
+# All three must pass for the pipeline to succeed.
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+
+  # ── Linting ──────────────────────────────────────────────────────────────
+  # Runs ruff on all Python source code.
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Set up uv for fast, reproducible dependency installation.
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      # Install dev dependencies (includes ruff).
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      # Run ruff linter — fails if any rule violations are found.
+      - name: Run ruff
+        run: uv run ruff check .
+
+  # ── Unit Tests ───────────────────────────────────────────────────────────
+  # Runs the full pytest suite against the FastAPI backend.
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      # Run pytest — fails if any test fails or errors.
+      - name: Run tests
+        run: uv run pytest
+
+  # ── Secret Detection ─────────────────────────────────────────────────────
+  # Scans the full git history for accidentally committed secrets.
+  secrets:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    steps:
+      # Full clone required so gitleaks can scan the entire commit history.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # gitleaks scans for secrets — fails if any are found.
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
