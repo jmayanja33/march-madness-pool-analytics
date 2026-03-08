@@ -231,3 +231,23 @@ class PoolResponse(BaseModel):
     """
 
     teams: list[PoolTeamSummary]
+
+
+# ---------------------------------------------------------------------------
+# Power rankings models
+# ---------------------------------------------------------------------------
+
+
+class PowerRankingsResponse(BaseModel):
+    """
+    Response returned by GET /power-rankings.
+
+    All tournament teams are grouped by their most likely win outcome (the
+    probability bucket with the highest value).  Within each group teams are
+    sorted by that bucket's probability descending, then alphabetically by
+    name for ties.
+    """
+
+    two_wins: list[PoolTeamSummary]   # Teams most likely to win 2+ games
+    one_win: list[PoolTeamSummary]    # Teams most likely to win exactly 1 game
+    zero_wins: list[PoolTeamSummary]  # Teams most likely to win 0 games

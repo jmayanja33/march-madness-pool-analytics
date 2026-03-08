@@ -25,7 +25,7 @@ from app.models import (
     ModelMetrics,
     TeamListItem,
 )
-from app.routers import analyze, pool
+from app.routers import analyze, pool, power_rankings
 from app.services import get_all_teams
 
 logger = logging.getLogger(__name__)
@@ -85,6 +85,9 @@ app.include_router(analyze.router)
 
 # /create-a-team route defined in app/routers/pool.py
 app.include_router(pool.router)
+
+# /power-rankings route defined in app/routers/power_rankings.py
+app.include_router(power_rankings.router)
 
 # ---------------------------------------------------------------------------
 # Root — health check

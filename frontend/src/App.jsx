@@ -5,17 +5,19 @@ import Home from './pages/Home';
 import BracketPage from './pages/BracketPage';
 import Analyze from './pages/Analyze';
 import CreateTeam from './pages/CreateTeam';
+import PowerRankings from './pages/PowerRankings';
 import Info from './pages/Info';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/"         element={<Home />} />        {/* Landing page */}
-        <Route path="/bracket"  element={<BracketPage />} /> {/* Interactive bracket */}
-        <Route path="/analyze"      element={<Analyze />} />     {/* Team comparison */}
-        <Route path="/create-team"  element={<CreateTeam />} /> {/* Pool builder */}
-        <Route path="/info"         element={<Info />} />        {/* Project info */}
+        <Route path="/"                element={<Home />} />           {/* Landing page */}
+        <Route path="/bracket"         element={<BracketPage />} />    {/* Interactive bracket */}
+        <Route path="/analyze"         element={<Analyze />} />        {/* Team comparison */}
+        <Route path="/create-team"     element={<CreateTeam />} />     {/* Pool builder */}
+        <Route path="/power-rankings"  element={<PowerRankings />} />  {/* Power rankings */}
+        <Route path="/info"            element={<Info />} />           {/* Project info */}
       </Routes>
     </BrowserRouter>
   );

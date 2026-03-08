@@ -34,3 +34,6 @@ This endpoint routes a user to the create a team page.
 ### /info
 This endpoint routes a user to the info page.
 
+### /power-rankings
+This endpoint routes a user to the power rankings page.
+

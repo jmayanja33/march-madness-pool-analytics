@@ -61,7 +61,17 @@ this bar will be Expected Team Wins: $Number of Wins$ $(Percentage with Coloring
 
 The expected team wins can be calculated as the sum of the expected wins for each team. For teams that have 2+ wins, 
 use 2 in the calculations. Then present the final expected wins as X+ wins. The probability for expected wins should
-be calculated based off of the maximimum win probabilities for each individual team selected.
+be calculated based off of the maximum win probabilities for each individual team selected.
+
+
+## Power Rankings Page
+
+The Power Rankings page will have 3 sections, stacked on top of each other from top to bottom. The top section will be
+"2 wins", the middle "1 win" and the bottom "0 wins". Each section will consist of the same slots as the create a team
+section, however these slots will already be filled with the same lightweight team cards as the create a team section.
+The slots will be numbered from 1 - n for each section, with n being the number of teams predicted to have that many
+wins. The teams should be ordered by percentage that they will win that many games, with slot 1 having the team with
+the highest percentage. Any tiebreakers in percentage should be sorted alphabetically.
 
 
 ## Info Page

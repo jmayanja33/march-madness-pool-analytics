@@ -323,6 +323,64 @@ def build_pool_team_summary(team: dict) -> PoolTeamSummary:
 
 
 # ---------------------------------------------------------------------------
+# Power rankings builder
+# ---------------------------------------------------------------------------
+
+
+def get_power_rankings() -> dict:
+    """Group and sort all tournament teams by their expected win outcome.
+
+    Each team is assigned to the win bucket (0, 1, or 2+) whose probability
+    is highest.  Within each bucket, teams are ordered by that probability
+    descending and then alphabetically by name to break ties.
+
+    Only teams with a tournament seed set in the predictions data are included.
+
+    Returns:
+        Dict with keys ``two_wins``, ``one_win``, and ``zero_wins``, each
+        containing a list of :class:`~app.models.PoolTeamSummary` objects.
+    """
+    # Accumulate (summary, probability) pairs for each win bucket.
+    two_wins: list[tuple] = []
+    one_win: list[tuple]  = []
+    zero_wins: list[tuple] = []
+
+    for team in load_predictions():
+        # Only include teams that are in the tournament.
+        if team.get("tournament_seed") is None:
+            continue
+
+        # Extract raw probabilities for each win bucket.
+        dist = team.get("win_probability_distribution", {})
+        prob_zero     = dist.get("0",  0.0)
+        prob_one      = dist.get("1",  0.0)
+        prob_two_plus = dist.get("2+", 0.0)
+
+        summary = build_pool_team_summary(team)
+        max_prob = max(prob_zero, prob_one, prob_two_plus)
+
+        # Assign the team to the bucket with the highest probability.
+        if max_prob == prob_two_plus:
+            two_wins.append((summary, prob_two_plus))
+        elif max_prob == prob_one:
+            one_win.append((summary, prob_one))
+        else:
+            zero_wins.append((summary, prob_zero))
+
+    # Sort each bucket: highest probability first, then alphabetically by name.
+    sort_key = lambda item: (-item[1], item[0].name)  # noqa: E731
+    two_wins.sort(key=sort_key)
+    one_win.sort(key=sort_key)
+    zero_wins.sort(key=sort_key)
+
+    return {
+        "two_wins":   [t[0] for t in two_wins],
+        "one_win":    [t[0] for t in one_win],
+        "zero_wins":  [t[0] for t in zero_wins],
+    }
+
+
+# ---------------------------------------------------------------------------
 # ChromaDB — similar team lookup
 # ---------------------------------------------------------------------------
 
