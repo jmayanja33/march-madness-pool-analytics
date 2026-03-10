@@ -1,4 +1,4 @@
-// Info page — three sections: Background/How to Play, Data/Models, and More Info.
+// Info page — five sections: Background/How to Play, Data, Wins Model, Head to Head Model, More Info.
 // Model metrics are fetched from the /info API endpoint; all other content is static.
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
@@ -60,9 +60,9 @@ export default function Info() {
           </div>
         </section>
 
-        {/* ── Section 2: Data / Models ── */}
+        {/* ── Section 2: Data ── */}
         <section className="info-section">
-          <h2 className="info-section-title">Data / Models</h2>
+          <h2 className="info-section-title">Data</h2>
           <div className="info-section-body">
             <p>
               The main goal of this platform is to help players analyze team performance when creating
@@ -84,7 +84,13 @@ export default function Info() {
                 <a href="https://www.sportslogos.net/" target="_blank" rel="noreferrer">SportsLogos.Net</a>
               </li>
             </ul>
+          </div>
+        </section>
 
+        {/* ── Section 3: Wins Model ── */}
+        <section className="info-section">
+          <h2 className="info-section-title">Wins Model</h2>
+          <div className="info-section-body">
             <p>
               One feature of the team analytics is their predicted wins in the tournament. For this, an
               ordinal regression model was used to evaluate the probability that a team would win 0, 1,
@@ -135,7 +141,58 @@ export default function Info() {
           </div>
         </section>
 
-        {/* ── Section 3: More Info ── */}
+        {/* ── Section 4: Head to Head Model ── */}
+        <section className="info-section">
+          <h2 className="info-section-title">Head to Head Model</h2>
+          <div className="info-section-body">
+            <p>
+              The Head to Head page predicts the winner of any individual matchup between two teams in
+              the tournament field. A logistic regression model — trained on PCA-reduced team embeddings
+              combined with team statistics — outputs a win probability for each side. For this year
+              (2026), the model is performing with the following metrics:
+            </p>
+
+            {/* Head-to-head model performance metrics — static values from the 2026 training run */}
+            <div className="info-metrics-grid">
+              <MetricCard
+                label="Accuracy"
+                value="83.43%"
+                tooltip="Out of every 100 predicted matchups, the model correctly identified the winner this many times. Ideal: 100%"
+              />
+              <MetricCard
+                label="F1 Score"
+                value="83.52%"
+                tooltip="A combined measure of precision and recall — how well the model balances finding winners without generating too many false calls. Ideal: 100%"
+              />
+              <MetricCard
+                label="Precision"
+                value="83.06%"
+                tooltip="When the model predicted a team would win a matchup, how often it was actually right. Ideal: 100%"
+              />
+              <MetricCard
+                label="Recall"
+                value="83.98%"
+                tooltip="Out of all teams that actually won their matchup, the percentage the model successfully identified as the winner. Ideal: 100%"
+              />
+              <MetricCard
+                label="ROC AUC"
+                value="0.919"
+                tooltip="Measures how well the model separates winners from losers across all possible decision thresholds — a score near 1.0 means it almost never confuses a winner for a loser. Ideal: 1.0"
+              />
+            </div>
+
+            <p className="info-model-detail">
+              An accuracy of 83.43% means the model picks the correct winner in more than 5 out of every
+              6 matchups. Precision (83.06%) and Recall (83.98%) are nearly identical — the model is just
+              as good at avoiding false calls as it is at finding real winners, with no meaningful tradeoff
+              between the two. The F1 Score (83.52%) confirms this balance. Most notably, the ROC AUC of
+              0.919 — where 1.0 is ideal — shows the model can reliably separate winners from losers
+              across every possible decision threshold, not just the default 50/50 split.
+            </p>
+          </div>
+        </section>
+
+        {/* ── Section 5: More Info ── */}
         <section className="info-section info-section--last">
           <h2 className="info-section-title">More Info</h2>
           <div className="info-section-body">

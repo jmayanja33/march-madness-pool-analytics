@@ -11,9 +11,10 @@ users interact with the site.
 complex code HARMS this project as it makes maintainability much harder.
 
 ## Home Page
-The home page will feature a large march madness logo in the middle of the page. Below that, The Pool - Analytics will 
-be printed as a subtitle in navy (the font should be the same as The Pool in the header). Below that will be three buttons,
-One to each of the three pages (Bracket, Analyze, Info). These buttons should link to each of the pages.
+The home page will feature a large march madness logo in the middle of the page. Below that, The Pool - Analytics will
+be printed as a subtitle in navy (the font should be the same as The Pool in the header). Below that will be six buttons
+arranged in a 3-column, 2-row grid: Bracket, Analyze, Create Team, Power Rankings, Head to Head, and Info.
+These buttons should link to each of their respective pages.
 
 
 ## Bracket Page
@@ -76,15 +77,20 @@ the highest percentage. Any tiebreakers in percentage should be sorted alphabeti
 
 ## Head to Head Page
 
-This Head to Head page will help users determine who would win in a game between 2 games in the field. This page will
-have 2 sections, split vertically down the middle. Each section will have a dropdown, with all the teams in the tournament
-field. This dropdown will be searchable or selectable, the same as the analytics page. The left section will be titled
-Team 1, and the right section Team 2. A team will be selected on either side. When this happens their team card will
-fill that section of the page. On top of these selections, a meter will appear, showing the percentages of who will
-win the game. These percentages will be fetched from h2h-predictions.json, where the value with team1=team 1 and team2 = team 2
-is used. The percentage will fill the meter, with each team's win probability taking up that side of the meter. Each team's section in 
-the meter will be their primary color (based on their logo). When the percentages are fetched, the meter/numbers should fill
-with an active animation.
+The Head to Head page helps users determine who would win in a matchup between any two teams in the tournament field.
+The page is split vertically into two equal halves. The left half is titled "Team 1" and the right half "Team 2".
+Each half has a searchable dropdown (same as the Analyze page) for selecting a team. Once selected, that team's full
+TeamCard fills the half.
+
+When both teams are selected, a win probability meter appears at the top of the page above the two team cards. The meter
+is titled "Win Probability" and consists of a horizontal bar flanked by each team's logo at full size (matching the
+TeamCard logo size). The bar is split into two colored fills — one per team — where each fill's width represents that
+team's win probability. Each fill is colored using the team's primary color extracted from their logo. The percentage
+label appears inside each fill near the center divider. When the probabilities load, the meter fills with an animated
+transition. Probabilities are fetched via GET /head-to-head?team1=&team2=, which looks them up from
+data/predictions/h2h-predictions.json.
+
+Clicking the ✕ on a TeamCard resets that side back to the empty dropdown state.
 
 
 ## Info Page
@@ -110,7 +116,7 @@ wins the pot, while second gets their money back. Additionally, there is a payou
 champion in the auction.
 
 
-### Data/Models
+### Data
 
 The main goal of this platform is to help players analyze team performance when creating their 8 team collection for the
 pool. All data was collected from the following sources:
@@ -120,7 +126,7 @@ pool. All data was collected from the following sources:
 - **Team Logos**: [SportsLogos.Net](https://www.sportslogos.net/)
 
 
-#### Wins Model
+### Wins Model
 
 One feature of the team analytics is their predicted wins in the tournament. For this, an ordinal regression model
 was used to evaluate probability that a team would win 0, 1, or 2+ games in the tournament. For this year (2026), the
@@ -136,10 +142,30 @@ Accuracy measures how often the model correctly places a team in the right win b
 3 in 4 teams correctly called. F1 (76.33%) and Precision (79.05%) both approach 80%, with 100% being perfect,
 reflecting consistent performance across all three outcomes. The Quadratic Weighted Kappa of 0.763 — where 1.0 is
 perfect — shows that when the model misses, it tends to miss by one bucket, not two. A Ranked Probability Score of
-0.097 (lower is better, with 0 being ideal) means the confidence behind each prediction is well-calibrated. Curious
-about the methodology or want to dig deeper? Reach out below.
+0.097 (lower is better, with 0 being ideal) means the confidence behind each prediction is well-calibrated.
 
-#### Head to Head Model
+Each metric card shows a tooltip on hover explaining what the metric measures and its ideal value.
+
+
+### Head to Head Model
+
+A secondary logistic regression model was trained on PCA-reduced team embeddings combined with team statistics to
+predict the winner of any individual matchup between two teams in the tournament field. For this year (2026), the
+model is performing with the following metrics:
+
+- **Accuracy**: 83.43%
+- **F1 Score**: 83.52%
+- **Precision**: 83.06%
+- **Recall**: 83.98%
+- **ROC AUC**: 0.919
+
+An accuracy of 83.43% means the model picks the correct winner in more than 5 out of every 6 matchups. Precision
+(83.06%) and Recall (83.98%) are nearly identical — the model is just as good at avoiding false calls as it is at
+finding real winners, with no meaningful tradeoff between the two. The F1 Score (83.52%) confirms this balance.
+Most notably, the ROC AUC of 0.919 — where 1.0 is ideal — shows the model can reliably separate winners from
+losers across every possible decision threshold, not just the default 50/50 split.
+
+Each metric card shows a tooltip on hover explaining what the metric measures and its ideal value.
 
 ### More Info
 
