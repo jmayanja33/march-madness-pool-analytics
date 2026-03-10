@@ -74,6 +74,19 @@ wins. The teams should be ordered by percentage that they will win that many gam
 the highest percentage. Any tiebreakers in percentage should be sorted alphabetically.
 
 
+## Head to Head Page
+
+This Head to Head page will help users determine who would win in a game between 2 games in the field. This page will
+have 2 sections, split vertically down the middle. Each section will have a dropdown, with all the teams in the tournament
+field. This dropdown will be searchable or selectable, the same as the analytics page. The left section will be titled
+Team 1, and the right section Team 2. A team will be selected on either side. When this happens their team card will
+fill that section of the page. On top of these selections, a meter will appear, showing the percentages of who will
+win the game. These percentages will be fetched from h2h-predictions.json, where the value with team1=team 1 and team2 = team 2
+is used. The percentage will fill the meter, with each team's win probability taking up that side of the meter. Each team's section in 
+the meter will be their primary color (based on their logo). When the percentages are fetched, the meter/numbers should fill
+with an active animation.
+
+
 ## Info Page
 
 The info page will have the following sections. Each section will have a large heading, and wil have a bottom border
@@ -106,6 +119,9 @@ pool. All data was collected from the following sources:
 - **Game Summaries**: [ESPN](https://www.espn.com/)
 - **Team Logos**: [SportsLogos.Net](https://www.sportslogos.net/)
 
+
+#### Wins Model
+
 One feature of the team analytics is their predicted wins in the tournament. For this, an ordinal regression model
 was used to evaluate probability that a team would win 0, 1, or 2+ games in the tournament. For this year (2026), the
 model is performing with the following metrics:
@@ -123,6 +139,7 @@ perfect — shows that when the model misses, it tends to miss by one bucket, no
 0.097 (lower is better, with 0 being ideal) means the confidence behind each prediction is well-calibrated. Curious
 about the methodology or want to dig deeper? Reach out below.
 
+#### Head to Head Model
 
 ### More Info
 

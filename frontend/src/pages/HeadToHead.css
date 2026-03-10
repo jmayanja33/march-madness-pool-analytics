@@ -1,0 +1,197 @@
+/* HeadToHead page — two-column team comparison with animated win-probability meter. */
+
+/* ── Page wrapper ── */
+.h2h-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ── Win probability meter ── */
+
+/* Container that holds the bar + team name labels */
+.h2h-meter-wrap {
+  padding: 20px 32px 12px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* "Win Probability" section title above the bar */
+.h2h-meter-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Row that holds [logo] [bar] [logo] side by side */
+.h2h-meter-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Team logos flanking the bar — same height as the TeamCard logos */
+.h2h-meter-logo {
+  height: 80px;
+  width: auto;
+  max-width: 100px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* The bar itself — grows to fill the space between the two logos */
+.h2h-meter-bar {
+  flex: 1;
+  display: flex;
+  height: 44px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Shared fill styles for each half of the meter */
+.h2h-meter-fill {
+  display: flex;
+  align-items: center;
+  /* Animate width change for the fill-in effect */
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Team 1: percentage label near the center divider */
+.h2h-meter-fill-left  { justify-content: flex-end;   padding-right: 10px; }
+
+/* Team 2: percentage label near the center divider */
+.h2h-meter-fill-right { justify-content: flex-start;  padding-left: 10px; }
+
+/* Percentage label rendered inside the colored fill */
+.h2h-meter-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  /* Fade in slightly after the bar animates */
+  animation: h2h-label-appear 0.5s ease 0.7s both;
+}
+
+@keyframes h2h-label-appear {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Team name labels rendered below the bar */
+.h2h-meter-names {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 0 4px;
+}
+
+.h2h-meter-team-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  /* Color is set inline from the extracted logo color */
+  flex: 1;
+}
+
+/* "Team 1" label is left-aligned; "Team 2" is right-aligned */
+.h2h-meter-names .h2h-meter-team-name:first-child { text-align: left;   }
+.h2h-meter-names .h2h-meter-team-name:last-child  { text-align: right;  }
+
+.h2h-meter-vs {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--silver);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  padding: 0 12px;
+}
+
+/* Meter status / error messages */
+.h2h-meter-status {
+  font-size: 0.82rem;
+  color: var(--silver);
+  font-style: italic;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.h2h-meter-error {
+  font-size: 0.82rem;
+  color: #e05252;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* ── Two-column body ── */
+.h2h-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Each half of the split */
+.h2h-side {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 24px 20px;
+}
+
+/* Section heading — "Team 1" / "Team 2" */
+.h2h-side-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Vertical divider between the two halves */
+.h2h-divider {
+  width: 1px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* ── Picker empty-state wrapper — centers the combobox in the half-pane ── */
+.h2h-picker-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-bottom: 40px;
+}
+
+/* Reuse .team-picker styles from Analyze.css — picker-combobox lives inside */
+.h2h-picker-wrap .team-picker {
+  max-width: 320px;
+  width: 100%;
+}
+
+/* ── Card wrapper — allows the TeamCard to fill and scroll within its half ── */
+.h2h-card-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}

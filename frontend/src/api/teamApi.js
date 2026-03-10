@@ -61,6 +61,25 @@ export async function fetchPowerRankings() {
   return data;
 }
 
+// Fetches the head-to-head win probability prediction for two tournament teams.
+// Accepts the display names of both teams and returns an H2HResponse with
+// win_probability values for team1 and team2.
+// Throws if the network request fails or the pair is not found (404).
+export async function fetchH2H(team1Name, team2Name) {
+  const params = new URLSearchParams({ team1: team1Name, team2: team2Name });
+  const res = await fetch(`/head-to-head?${params.toString()}`);
+  if (!res.ok) {
+    console.error(`[API] fetchH2H failed — ${team1Name} vs ${team2Name}: HTTP ${res.status}`);
+    throw new Error(`Failed to fetch H2H data: ${res.status}`);
+  }
+  const data = await res.json();
+  console.log(
+    `[API] fetchH2H — ${team1Name} (${data.team1.win_probability}) ` +
+    `vs ${team2Name} (${data.team2.win_probability})`
+  );
+  return data;
+}
+
 // Fetches lightweight pool summaries for a list of team names from the backend.
 // Accepts an array of team display names (up to 8) and returns the resolved
 // PoolTeamSummary objects.  Teams not found in the predictions data are

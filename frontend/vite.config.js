@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
         '/info':             { target: backendUrl, changeOrigin: true },
         '/create-a-team':    { target: backendUrl, changeOrigin: true },
         '/power-rankings':   { target: backendUrl, changeOrigin: true },
+        '/head-to-head':     { target: backendUrl, changeOrigin: true },
       },
     },
   };

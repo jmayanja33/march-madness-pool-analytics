@@ -17,6 +17,8 @@ import chromadb
 
 from app.config import CHROMA_COLLECTION, CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
 from app.models import (
+    H2HResponse,
+    H2HTeamResult,
     PlayerProfile,
     PoolTeamSummary,
     SimilarTeam,
@@ -378,6 +380,88 @@ def get_power_rankings() -> dict:
         "one_win":    [t[0] for t in one_win],
         "zero_wins":  [t[0] for t in zero_wins],
     }
+
+
+# ---------------------------------------------------------------------------
+# Head-to-head predictions
+# ---------------------------------------------------------------------------
+
+# Path to the pre-calculated head-to-head predictions JSON file.
+H2H_PREDICTIONS_FILE = PREDICTIONS_DIR / "h2h-predictions.json"
+
+
+@lru_cache(maxsize=1)
+def load_h2h_predictions() -> list[dict]:
+    """Load and cache the head-to-head predictions JSON from disk.
+
+    The file at H2H_PREDICTIONS_FILE is read once and cached for the
+    lifetime of the server process.
+
+    Returns:
+        List of raw matchup dicts, each with ``team1``, ``team2``, and
+        ``year`` keys.
+
+    Raises:
+        FileNotFoundError: If H2H_PREDICTIONS_FILE does not exist.
+    """
+    if not H2H_PREDICTIONS_FILE.exists():
+        raise FileNotFoundError(
+            f"H2H predictions file not found: {H2H_PREDICTIONS_FILE}"
+        )
+    return json.loads(H2H_PREDICTIONS_FILE.read_text(encoding="utf-8"))
+
+
+def get_h2h_prediction(team1_name: str, team2_name: str) -> Optional[H2HResponse]:
+    """Look up the head-to-head win probability for a given pair of teams.
+
+    Searches the pre-calculated h2h-predictions JSON for a matchup entry
+    where one team is ``team1_name`` and the other is ``team2_name``.
+    The lookup is case-insensitive and direction-agnostic — if the stored
+    entry has the teams in reverse order the probabilities are swapped so
+    that team1 in the response always corresponds to ``team1_name``.
+
+    Args:
+        team1_name: Display name of the first team (e.g. ``"Duke"``).
+        team2_name: Display name of the second team (e.g. ``"Kentucky"``).
+
+    Returns:
+        Populated :class:`~app.models.H2HResponse`, or ``None`` if no
+        matching matchup is found in the predictions data.
+    """
+    needle1 = team1_name.casefold()
+    needle2 = team2_name.casefold()
+
+    for entry in load_h2h_predictions():
+        stored1 = entry["team1"]["name"].casefold()
+        stored2 = entry["team2"]["name"].casefold()
+
+        # Match in stored order — team1 in entry matches team1 in request.
+        if stored1 == needle1 and stored2 == needle2:
+            return H2HResponse(
+                team1=H2HTeamResult(
+                    name=entry["team1"]["name"],
+                    win_probability=entry["team1"]["win_probability"],
+                ),
+                team2=H2HTeamResult(
+                    name=entry["team2"]["name"],
+                    win_probability=entry["team2"]["win_probability"],
+                ),
+            )
+
+        # Match in reverse order — swap so response aligns with request order.
+        if stored1 == needle2 and stored2 == needle1:
+            return H2HResponse(
+                team1=H2HTeamResult(
+                    name=entry["team2"]["name"],
+                    win_probability=entry["team2"]["win_probability"],
+                ),
+                team2=H2HTeamResult(
+                    name=entry["team1"]["name"],
+                    win_probability=entry["team1"]["win_probability"],
+                ),
+            )
+
+    return None
 
 
 # ---------------------------------------------------------------------------

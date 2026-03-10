@@ -37,18 +37,19 @@
   text-align: center;
 }
 
-/* ── Navigation button row ── */
+/* ── Navigation buttons — fixed 3-column grid, 2 rows ── */
 .home-nav-buttons {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: min(600px, 90vw);
 }
 
 /* Individual nav button — dark-blue base, light-blue accent on hover */
 .home-btn {
-  display: inline-block;
-  padding: 14px 40px;
+  display: block;
+  text-align: center;
+  padding: 14px 12px;
   background: var(--dark-blue);
   color: var(--white);
   font-family: 'Anton', sans-serif;

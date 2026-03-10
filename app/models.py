@@ -234,6 +234,30 @@ class PoolResponse(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Head-to-head models
+# ---------------------------------------------------------------------------
+
+
+class H2HTeamResult(BaseModel):
+    """Win probability for one team in a head-to-head matchup prediction."""
+
+    name: str              # Team display name
+    win_probability: float  # Predicted win probability (0–1)
+
+
+class H2HResponse(BaseModel):
+    """
+    Response returned by GET /head-to-head.
+
+    Contains the predicted win probability for each team in the requested
+    matchup, sourced from the pre-calculated h2h-predictions.json file.
+    """
+
+    team1: H2HTeamResult  # Left-side team with its win probability
+    team2: H2HTeamResult  # Right-side team with its win probability
+
+
+# ---------------------------------------------------------------------------
 # Power rankings models
 # ---------------------------------------------------------------------------
 

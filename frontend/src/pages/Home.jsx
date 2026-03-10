@@ -25,12 +25,13 @@ export default function Home() {
         {/* Branded subtitle in navy Anton font */}
         <h1 className="home-subtitle">The Pool — Analytics</h1>
 
-        {/* Navigation buttons, one per page */}
+        {/* Navigation buttons — 2 rows of 3 */}
         <div className="home-nav-buttons">
           <Link to="/bracket"        className="home-btn">Bracket</Link>
           <Link to="/analyze"        className="home-btn">Analyze</Link>
           <Link to="/create-team"    className="home-btn">Create Team</Link>
           <Link to="/power-rankings" className="home-btn">Power Rankings</Link>
+          <Link to="/head-to-head"   className="home-btn">Head to Head</Link>
           <Link to="/info"           className="home-btn">Info</Link>
         </div>
       </main>
