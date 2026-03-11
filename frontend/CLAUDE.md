@@ -74,6 +74,17 @@ The slots will be numbered from 1 - n for each section, with n being the number 
 wins. The teams should be ordered by percentage that they will win that many games, with slot 1 having the team with
 the highest percentage. Any tiebreakers in percentage should be sorted alphabetically.
 
+### Potential Upsets Section
+
+At the bottom of the power rankings page, there will be a potential upsets section. This section will list teams in order
+(in the same way as the other sections on this page), based on the probability that they will win as an underdog (using h2h-predictions.json). 
+Teams should only be listed here if they are a lower number seed in their opening round game, and the probability that
+they beat their round of 64 opponent is 40% or more. Teams will be ordered in descending order based on their win probability.
+On the lightweight team card in this section, "Expected Wins" should be replaced with "First Round Win Probability", 
+and that will list their percentage chance of winning their first round game. First round opponent data can be pulled
+from the bracket on the bracket page. For teams in the first four, each one should be evaluated on the percentage that they beat
+the team they would play in the round of 64 if they won their first four game and advanced.
+
 
 ## Head to Head Page
 
@@ -153,9 +164,9 @@ A secondary logistic regression model was trained on PCA-reduced team embeddings
 predict the winner of any individual matchup between two teams in the tournament field. For this year (2026), the
 model is performing with the following metrics:
 
-- **Accuracy**: 83.43%
-- **F1 Score**: 83.52%
-- **Precision**: 83.06%
+- **Accuracy**: 83.70%
+- **F1 Score**: 83.75%
+- **Precision**: 83.52%
 - **Recall**: 83.98%
 - **ROC AUC**: 0.919
 

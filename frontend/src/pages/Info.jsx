@@ -156,17 +156,17 @@ export default function Info() {
             <div className="info-metrics-grid">
               <MetricCard
                 label="Accuracy"
-                value="83.43%"
+                value="83.70%"
                 tooltip="Out of every 100 predicted matchups, the model correctly identified the winner this many times. Ideal: 100%"
               />
               <MetricCard
                 label="F1 Score"
-                value="83.52%"
+                value="83.75%"
                 tooltip="A combined measure of precision and recall — how well the model balances finding winners without generating too many false calls. Ideal: 100%"
               />
               <MetricCard
                 label="Precision"
-                value="83.06%"
+                value="83.52%"
                 tooltip="When the model predicted a team would win a matchup, how often it was actually right. Ideal: 100%"
               />
               <MetricCard
@@ -182,10 +182,10 @@ export default function Info() {
             </div>
 
             <p className="info-model-detail">
-              An accuracy of 83.43% means the model picks the correct winner in more than 5 out of every
-              6 matchups. Precision (83.06%) and Recall (83.98%) are nearly identical — the model is just
+              An accuracy of 83.70% means the model picks the correct winner in more than 5 out of every
+              6 matchups. Precision (83.52%) and Recall (83.98%) are nearly identical — the model is just
               as good at avoiding false calls as it is at finding real winners, with no meaningful tradeoff
-              between the two. The F1 Score (83.52%) confirms this balance. Most notably, the ROC AUC of
+              between the two. The F1 Score (83.75%) confirms this balance. Most notably, the ROC AUC of
               0.919 — where 1.0 is ideal — shows the model can reliably separate winners from losers
               across every possible decision threshold, not just the default 50/50 split.
             </p>
