@@ -35,24 +35,26 @@ function getTeamRegion(teamName) {
 // ---------------------------------------------------------------------------
 
 // Determine the most likely win outcome for a team's probability distribution.
-// Returns the numeric value used in sums (2+ → 2), the probability, and a
-// pre-formatted wins string with correct singular/plural and no "+" below 2.
+// Checks all seven buckets (0–6) and returns the bucket with the highest probability,
+// along with its numeric value (used in sums) and a display string.
 function getExpectedWins(dist) {
-  const { zero_wins, one_win, two_plus_wins } = dist;
-  const maxProb = Math.max(zero_wins, one_win, two_plus_wins);
-
-  if (maxProb === two_plus_wins) return { numeric: 2, prob: two_plus_wins, winsText: '2+ wins' };
-  if (maxProb === one_win)       return { numeric: 1, prob: one_win,       winsText: '1 win'   };
-  return                                { numeric: 0, prob: zero_wins,     winsText: '0 wins'  };
+  const entries = [
+    { numeric: 6, prob: dist.six_wins,   winsText: '6 wins' },
+    { numeric: 5, prob: dist.five_wins,  winsText: '5 wins' },
+    { numeric: 4, prob: dist.four_wins,  winsText: '4 wins' },
+    { numeric: 3, prob: dist.three_wins, winsText: '3 wins' },
+    { numeric: 2, prob: dist.two_wins,   winsText: '2 wins' },
+    { numeric: 1, prob: dist.one_win,    winsText: '1 win'  },
+    { numeric: 0, prob: dist.zero_wins,  winsText: '0 wins' },
+  ];
+  return entries.reduce((best, cur) => cur.prob > best.prob ? cur : best);
 }
 
 // Format a summed wins total for group/pool totals.
-// Only appends "+" when there are 2 or more wins (since 2+ is the open-ended bucket).
-// Uses correct singular for exactly 1 win.
+// Uses correct singular for exactly 1 win; pluralizes all other values.
 function formatTotalWins(n) {
-  if (n >= 2) return `${n}+ wins`;
   if (n === 1) return '1 win';
-  return '0 wins';
+  return `${n} wins`;
 }
 
 

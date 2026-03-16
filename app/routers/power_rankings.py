@@ -51,7 +51,12 @@ async def power_rankings() -> PowerRankingsResponse:
     """
     rankings = get_power_rankings()
     logger.info(
-        "power-rankings: %d two-win, %d one-win, %d zero-win teams",
+        "power-rankings: %d six-win, %d five-win, %d four-win, %d three-win, "
+        "%d two-win, %d one-win, %d zero-win teams",
+        len(rankings["six_wins"]),
+        len(rankings["five_wins"]),
+        len(rankings["four_wins"]),
+        len(rankings["three_wins"]),
         len(rankings["two_wins"]),
         len(rankings["one_win"]),
         len(rankings["zero_wins"]),

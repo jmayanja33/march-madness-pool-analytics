@@ -94,8 +94,8 @@ export default function Info() {
             <p>
               One feature of the team analytics is their predicted wins in the tournament. For this, an
               ordinal regression model was used to evaluate the probability that a team would win 0, 1,
-              or 2+ games in the tournament. For this year (2026), the model is performing with the
-              following metrics:
+              2, 3, 4, 5, or 6 games in the tournament. For this year (2026), the model is performing
+              with the following metrics:
             </p>
 
             {/* Model performance metrics grid — each card shows a tooltip on hover */}

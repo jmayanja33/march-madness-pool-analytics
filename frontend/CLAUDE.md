@@ -60,15 +60,14 @@ list each team selected from most expected wins to least. Each team will have th
 Below all of the listed teams will be a black bar, which separates the teams from the expected wins calculation. Beneath
 this bar will be Expected Team Wins: $Number of Wins$ $(Percentage with Coloring)$ in bold. 
 
-The expected team wins can be calculated as the sum of the expected wins for each team. For teams that have 2+ wins, 
-use 2 in the calculations. Then present the final expected wins as X+ wins. The probability for expected wins should
+The expected team wins can be calculated as the sum of the expected wins for each team. The probability for expected wins should
 be calculated based off of the maximum win probabilities for each individual team selected.
 
 
 ## Power Rankings Page
 
-The Power Rankings page will have 3 sections, stacked on top of each other from top to bottom. The top section will be
-"2 wins", the middle "1 win" and the bottom "0 wins". Each section will consist of the same slots as the create a team
+The Power Rankings page will have 8 sections, stacked on top of each other from top to bottom. The top section will be
+"6 wins", "5 wins", "4 wins", "3 wins", "2 wins", "1 win" and the bottom "0 wins". Each section will consist of the same slots as the create a team
 section, however these slots will already be filled with the same lightweight team cards as the create a team section.
 The slots will be numbered from 1 - n for each section, with n being the number of teams predicted to have that many
 wins. The teams should be ordered by percentage that they will win that many games, with slot 1 having the team with
@@ -136,28 +135,6 @@ pool. All data was collected from the following sources:
 - **Game Summaries**: [ESPN](https://www.espn.com/)
 - **Team Logos**: [SportsLogos.Net](https://www.sportslogos.net/)
 
-
-### Wins Model
-
-One feature of the team analytics is their predicted wins in the tournament. For this, an ordinal regression model
-was used to evaluate probability that a team would win 0, 1, or 2+ games in the tournament. For this year (2026), the
-model is performing with the following metrics:
-
-- **Accuracy**: 75.26%
-- **F1 Score**: 76.33%
-- **Precision**: 79.05%
-- **Quadratic Weighted Kappa**: 0.763
-- **Ranked Probability Score**: 0.097
-
-Accuracy measures how often the model correctly places a team in the right win bucket — at 75.26%, that's roughly
-3 in 4 teams correctly called. F1 (76.33%) and Precision (79.05%) both approach 80%, with 100% being perfect,
-reflecting consistent performance across all three outcomes. The Quadratic Weighted Kappa of 0.763 — where 1.0 is
-perfect — shows that when the model misses, it tends to miss by one bucket, not two. A Ranked Probability Score of
-0.097 (lower is better, with 0 being ideal) means the confidence behind each prediction is well-calibrated.
-
-Each metric card shows a tooltip on hover explaining what the metric measures and its ideal value.
-
-
 ### Head to Head Model
 
 A secondary logistic regression model was trained on PCA-reduced team embeddings combined with team statistics to
@@ -177,6 +154,12 @@ Most notably, the ROC AUC of 0.919 — where 1.0 is ideal — shows the model ca
 losers across every possible decision threshold, not just the default 50/50 split.
 
 Each metric card shows a tooltip on hover explaining what the metric measures and its ideal value.
+
+### Wins Model
+
+One feature of the team analytics is their predicted wins in the tournament. For this, a monte carlo simulation of the entire tournament 
+was performed using predictions from the head to head model for each game. 1.6 million simulations were run, and these
+results were used to evaluate the probability that a team would win 0, 1, 2, 3, 4, 5, or 6 games in the tournament. 
 
 ### More Info
 

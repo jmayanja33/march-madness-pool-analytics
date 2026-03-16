@@ -28,7 +28,9 @@ _MOCK_TEAM = {
     "avg_height": 78,
     "players": [],
     "profile_summary": "",
-    "win_probability_distribution": {"0": 0.2, "1": 0.3, "2+": 0.5},
+    "win_probability_distribution": {
+        "0": 0.1, "1": 0.2, "2": 0.5, "3": 0.1, "4": 0.05, "5": 0.03, "6": 0.02
+    },
 }
 
 # Second team used in multi-team pool tests.
@@ -41,7 +43,9 @@ _MOCK_TEAM_2 = {
     "avg_height": 79,
     "players": [],
     "profile_summary": "",
-    "win_probability_distribution": {"0": 0.3, "1": 0.4, "2+": 0.3},
+    "win_probability_distribution": {
+        "0": 0.2, "1": 0.4, "2": 0.2, "3": 0.1, "4": 0.05, "5": 0.03, "6": 0.02
+    },
 }
 
 
@@ -81,9 +85,9 @@ def test_build_pool_team_summary_win_distribution() -> None:
     """Win-probability distribution is correctly mapped from raw keys."""
     summary = build_pool_team_summary(_MOCK_TEAM)
     dist = summary.win_probability_distribution
-    assert dist.zero_wins == 0.2
-    assert dist.one_win == 0.3
-    assert dist.two_plus_wins == 0.5
+    assert dist.zero_wins == 0.1
+    assert dist.one_win == 0.2
+    assert dist.two_wins == 0.5
 
 
 def test_build_pool_team_summary_missing_seed() -> None:
@@ -107,7 +111,11 @@ def test_build_pool_team_summary_empty_distribution() -> None:
     dist = summary.win_probability_distribution
     assert dist.zero_wins == 0.0
     assert dist.one_win == 0.0
-    assert dist.two_plus_wins == 0.0
+    assert dist.two_wins == 0.0
+    assert dist.three_wins == 0.0
+    assert dist.four_wins == 0.0
+    assert dist.five_wins == 0.0
+    assert dist.six_wins == 0.0
 
 
 # ---------------------------------------------------------------------------
@@ -192,7 +200,11 @@ async def test_pool_response_includes_win_distribution(client: AsyncClient) -> N
     dist = response.json()["teams"][0]["win_probability_distribution"]
     assert "zero_wins" in dist
     assert "one_win" in dist
-    assert "two_plus_wins" in dist
+    assert "two_wins" in dist
+    assert "three_wins" in dist
+    assert "four_wins" in dist
+    assert "five_wins" in dist
+    assert "six_wins" in dist
 
 
 async def test_pool_response_includes_conference(client: AsyncClient) -> None:

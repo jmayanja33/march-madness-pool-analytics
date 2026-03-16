@@ -6,11 +6,15 @@ import { probColor } from '../utils/colors';
 import './TeamCard.css';
 
 export default function TeamCard({ team, onRemove }) {
-  // Build the three win-probability rows from the structured API fields.
+  // Build win-probability rows for each possible outcome (0–6 wins).
   const winRows = [
-    { label: '0 wins',  value: team.win_probability_distribution.zero_wins },
-    { label: '1 win',   value: team.win_probability_distribution.one_win },
-    { label: '2+ wins', value: team.win_probability_distribution.two_plus_wins },
+    { label: '0 wins', value: team.win_probability_distribution.zero_wins  },
+    { label: '1 win',  value: team.win_probability_distribution.one_win    },
+    { label: '2 wins', value: team.win_probability_distribution.two_wins   },
+    { label: '3 wins', value: team.win_probability_distribution.three_wins },
+    { label: '4 wins', value: team.win_probability_distribution.four_wins  },
+    { label: '5 wins', value: team.win_probability_distribution.five_wins  },
+    { label: '6 wins', value: team.win_probability_distribution.six_wins   },
   ];
 
   return (

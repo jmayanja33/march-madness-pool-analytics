@@ -55,7 +55,9 @@ export async function fetchPowerRankings() {
   }
   const data = await res.json();
   console.log(
-    `[API] fetchPowerRankings — ${data.two_wins.length} two-win, ` +
+    `[API] fetchPowerRankings — ${data.six_wins.length} six-win, ` +
+    `${data.five_wins.length} five-win, ${data.four_wins.length} four-win, ` +
+    `${data.three_wins.length} three-win, ${data.two_wins.length} two-win, ` +
     `${data.one_win.length} one-win, ${data.zero_wins.length} zero-win teams`
   );
   return data;

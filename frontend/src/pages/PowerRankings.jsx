@@ -33,23 +33,33 @@ function getTeamRegion(teamName) {
 // ---------------------------------------------------------------------------
 
 // Return the probability and label for the team's most likely win outcome.
+// Checks all seven buckets (0–6) and returns the one with the highest probability.
 function getExpectedWins(dist) {
-  const { zero_wins, one_win, two_plus_wins } = dist;
-  const maxProb = Math.max(zero_wins, one_win, two_plus_wins);
-
-  if (maxProb === two_plus_wins) return { prob: two_plus_wins, winsText: '2+ wins' };
-  if (maxProb === one_win)       return { prob: one_win,       winsText: '1 win'   };
-  return                                { prob: zero_wins,     winsText: '0 wins'  };
+  const entries = [
+    { winsText: '6 wins', prob: dist.six_wins   },
+    { winsText: '5 wins', prob: dist.five_wins  },
+    { winsText: '4 wins', prob: dist.four_wins  },
+    { winsText: '3 wins', prob: dist.three_wins },
+    { winsText: '2 wins', prob: dist.two_wins   },
+    { winsText: '1 win',  prob: dist.one_win    },
+    { winsText: '0 wins', prob: dist.zero_wins  },
+  ];
+  return entries.reduce((best, cur) => cur.prob > best.prob ? cur : best);
 }
 
 // ---------------------------------------------------------------------------
 // Section definitions — controls order, title, and which data key to use.
 // ---------------------------------------------------------------------------
 
+// Section definitions — one per possible win outcome, ordered from most wins to fewest.
 const SECTIONS = [
-  { key: 'two_wins',   title: '2+ Wins', bucketProb: t => t.win_probability_distribution.two_plus_wins },
-  { key: 'one_win',    title: '1 Win',   bucketProb: t => t.win_probability_distribution.one_win       },
-  { key: 'zero_wins',  title: '0 Wins',  bucketProb: t => t.win_probability_distribution.zero_wins     },
+  { key: 'six_wins',   title: '6 Wins', bucketProb: t => t.win_probability_distribution.six_wins   },
+  { key: 'five_wins',  title: '5 Wins', bucketProb: t => t.win_probability_distribution.five_wins  },
+  { key: 'four_wins',  title: '4 Wins', bucketProb: t => t.win_probability_distribution.four_wins  },
+  { key: 'three_wins', title: '3 Wins', bucketProb: t => t.win_probability_distribution.three_wins },
+  { key: 'two_wins',   title: '2 Wins', bucketProb: t => t.win_probability_distribution.two_wins   },
+  { key: 'one_win',    title: '1 Win',  bucketProb: t => t.win_probability_distribution.one_win    },
+  { key: 'zero_wins',  title: '0 Wins', bucketProb: t => t.win_probability_distribution.zero_wins  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -159,10 +169,14 @@ export default function PowerRankings() {
   // Collapsed state for each section — keyed by section key + 'upsets'.
   // All sections start expanded.
   const [collapsed, setCollapsed] = useState({
-    two_wins: false,
-    one_win:  false,
-    zero_wins: false,
-    upsets:   false,
+    six_wins:   false,
+    five_wins:  false,
+    four_wins:  false,
+    three_wins: false,
+    two_wins:   false,
+    one_win:    false,
+    zero_wins:  false,
+    upsets:     false,
   });
 
   // Toggle a single section's collapsed state by key.
@@ -182,9 +196,9 @@ export default function PowerRankings() {
   useEffect(() => {
     if (!rankings) return;
 
-    // Build a combined name → team map from all three win buckets.
+    // Build a combined name → team map from all seven win buckets.
     const teamMap = {};
-    for (const bucket of ['two_wins', 'one_win', 'zero_wins']) {
+    for (const bucket of ['six_wins', 'five_wins', 'four_wins', 'three_wins', 'two_wins', 'one_win', 'zero_wins']) {
       for (const t of rankings[bucket]) {
         teamMap[t.name] = t;
       }
@@ -244,7 +258,7 @@ export default function PowerRankings() {
                 onClick={() => toggleSection(key)}
                 aria-expanded={!isCollapsed}
               >
-                <h2 className="pr-section-title">{title}</h2>
+                <h2 className="pr-section-title">{title} <span className="pr-section-count">({teams.length} {teams.length === 1 ? 'Team' : 'Teams'})</span></h2>
                 <span className={`pr-caret${isCollapsed ? ' pr-caret--collapsed' : ''}`}>&#8964;</span>
               </button>
 

@@ -195,11 +195,11 @@ def build_player_profile(player: dict) -> PlayerProfile:
 def build_win_distribution(raw: dict) -> WinProbabilityDistribution:
     """Build a WinProbabilityDistribution from the raw predictions dict.
 
-    The JSON uses string keys ``'0'``, ``'1'``, and ``'2+'`` for the three
-    win-probability buckets.
+    The JSON uses string keys ``'0'`` through ``'6'`` for the seven
+    win-probability buckets (one per possible tournament-wins outcome).
 
     Args:
-        raw: Dict with keys ``'0'``, ``'1'``, ``'2+'`` mapping to floats.
+        raw: Dict with keys ``'0'``–``'6'`` mapping to floats.
 
     Returns:
         Populated :class:`~app.models.WinProbabilityDistribution` instance.
@@ -207,7 +207,11 @@ def build_win_distribution(raw: dict) -> WinProbabilityDistribution:
     return WinProbabilityDistribution(
         zero_wins=raw.get("0", 0.0),
         one_win=raw.get("1", 0.0),
-        two_plus_wins=raw.get("2+", 0.0),
+        two_wins=raw.get("2", 0.0),
+        three_wins=raw.get("3", 0.0),
+        four_wins=raw.get("4", 0.0),
+        five_wins=raw.get("5", 0.0),
+        six_wins=raw.get("6", 0.0),
     )
 
 
@@ -332,20 +336,25 @@ def build_pool_team_summary(team: dict) -> PoolTeamSummary:
 def get_power_rankings() -> dict:
     """Group and sort all tournament teams by their expected win outcome.
 
-    Each team is assigned to the win bucket (0, 1, or 2+) whose probability
-    is highest.  Within each bucket, teams are ordered by that probability
-    descending and then alphabetically by name to break ties.
+    Each team is assigned to the win bucket (0–6) whose probability is highest.
+    Within each bucket, teams are ordered by that probability descending and
+    then alphabetically by name to break ties.
 
     Only teams with a tournament seed set in the predictions data are included.
 
     Returns:
-        Dict with keys ``two_wins``, ``one_win``, and ``zero_wins``, each
-        containing a list of :class:`~app.models.PoolTeamSummary` objects.
+        Dict with keys ``six_wins``, ``five_wins``, ``four_wins``, ``three_wins``,
+        ``two_wins``, ``one_win``, and ``zero_wins``, each containing a list of
+        :class:`~app.models.PoolTeamSummary` objects.
     """
-    # Accumulate (summary, probability) pairs for each win bucket.
-    two_wins: list[tuple] = []
-    one_win: list[tuple]  = []
-    zero_wins: list[tuple] = []
+    # Accumulate (summary, probability) pairs for each win bucket (0–6).
+    six_wins: list[tuple]   = []
+    five_wins: list[tuple]  = []
+    four_wins: list[tuple]  = []
+    three_wins: list[tuple] = []
+    two_wins: list[tuple]   = []
+    one_win: list[tuple]    = []
+    zero_wins: list[tuple]  = []
 
     for team in load_predictions():
         # Only include teams that are in the tournament.
@@ -354,16 +363,31 @@ def get_power_rankings() -> dict:
 
         # Extract raw probabilities for each win bucket.
         dist = team.get("win_probability_distribution", {})
-        prob_zero     = dist.get("0",  0.0)
-        prob_one      = dist.get("1",  0.0)
-        prob_two_plus = dist.get("2+", 0.0)
+        prob_zero  = dist.get("0", 0.0)
+        prob_one   = dist.get("1", 0.0)
+        prob_two   = dist.get("2", 0.0)
+        prob_three = dist.get("3", 0.0)
+        prob_four  = dist.get("4", 0.0)
+        prob_five  = dist.get("5", 0.0)
+        prob_six   = dist.get("6", 0.0)
 
         summary = build_pool_team_summary(team)
-        max_prob = max(prob_zero, prob_one, prob_two_plus)
+        max_prob = max(
+            prob_zero, prob_one, prob_two, prob_three, prob_four, prob_five, prob_six
+        )
 
         # Assign the team to the bucket with the highest probability.
-        if max_prob == prob_two_plus:
-            two_wins.append((summary, prob_two_plus))
+        # Ties broken by checking from highest wins down.
+        if max_prob == prob_six:
+            six_wins.append((summary, prob_six))
+        elif max_prob == prob_five:
+            five_wins.append((summary, prob_five))
+        elif max_prob == prob_four:
+            four_wins.append((summary, prob_four))
+        elif max_prob == prob_three:
+            three_wins.append((summary, prob_three))
+        elif max_prob == prob_two:
+            two_wins.append((summary, prob_two))
         elif max_prob == prob_one:
             one_win.append((summary, prob_one))
         else:
@@ -371,11 +395,19 @@ def get_power_rankings() -> dict:
 
     # Sort each bucket: highest probability first, then alphabetically by name.
     sort_key = lambda item: (-item[1], item[0].name)  # noqa: E731
+    six_wins.sort(key=sort_key)
+    five_wins.sort(key=sort_key)
+    four_wins.sort(key=sort_key)
+    three_wins.sort(key=sort_key)
     two_wins.sort(key=sort_key)
     one_win.sort(key=sort_key)
     zero_wins.sort(key=sort_key)
 
     return {
+        "six_wins":   [t[0] for t in six_wins],
+        "five_wins":  [t[0] for t in five_wins],
+        "four_wins":  [t[0] for t in four_wins],
+        "three_wins": [t[0] for t in three_wins],
         "two_wins":   [t[0] for t in two_wins],
         "one_win":    [t[0] for t in one_win],
         "zero_wins":  [t[0] for t in zero_wins],

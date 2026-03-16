@@ -77,6 +77,14 @@
   transition: color 0.15s;
 }
 
+/* Team count badge next to section title — e.g. "[12]" */
+.pr-section-count {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--silver);
+  letter-spacing: 0;
+}
+
 /* Collapse/expand caret — rotates when collapsed */
 .pr-caret {
   font-size: 1.2rem;

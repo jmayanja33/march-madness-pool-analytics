@@ -38,7 +38,9 @@ _MOCK_TEAM = {
     "losses": 4,
     "avg_height": 79.0,
     "profile_summary": "A strong team.",
-    "win_probability_distribution": {"0": 0.1, "1": 0.3, "2+": 0.6},
+    "win_probability_distribution": {
+        "0": 0.05, "1": 0.10, "2": 0.15, "3": 0.25, "4": 0.20, "5": 0.15, "6": 0.10
+    },
     "players": [
         {
             "name": f"Player {i}",

@@ -34,11 +34,17 @@ class WinProbabilityDistribution(BaseModel):
     Pre-calculated probability distribution for tournament wins.
 
     Each value is a probability (0–1) predicted by the ML model.
+    Fields cover every possible outcome from 0 to 6 games won
+    (6 is the maximum — a team that wins the championship).
     """
 
-    zero_wins: float     # Probability the team wins 0 tournament games
-    one_win: float       # Probability the team wins exactly 1 tournament game
-    two_plus_wins: float  # Probability the team wins 2 or more tournament games
+    zero_wins: float   # Probability the team wins 0 tournament games
+    one_win: float     # Probability the team wins exactly 1 tournament game
+    two_wins: float    # Probability the team wins exactly 2 tournament games
+    three_wins: float  # Probability the team wins exactly 3 tournament games
+    four_wins: float   # Probability the team wins exactly 4 tournament games
+    five_wins: float   # Probability the team wins exactly 5 tournament games
+    six_wins: float    # Probability the team wins all 6 (championship)
 
 
 class TeamStats(BaseModel):
@@ -269,9 +275,13 @@ class PowerRankingsResponse(BaseModel):
     All tournament teams are grouped by their most likely win outcome (the
     probability bucket with the highest value).  Within each group teams are
     sorted by that bucket's probability descending, then alphabetically by
-    name for ties.
+    name for ties.  Sections are ordered from most wins (6) to fewest (0).
     """
 
-    two_wins: list[PoolTeamSummary]   # Teams most likely to win 2+ games
-    one_win: list[PoolTeamSummary]    # Teams most likely to win exactly 1 game
-    zero_wins: list[PoolTeamSummary]  # Teams most likely to win 0 games
+    six_wins: list[PoolTeamSummary]    # Teams most likely to win all 6 (championship)
+    five_wins: list[PoolTeamSummary]   # Teams most likely to win exactly 5 games
+    four_wins: list[PoolTeamSummary]   # Teams most likely to win exactly 4 games
+    three_wins: list[PoolTeamSummary]  # Teams most likely to win exactly 3 games
+    two_wins: list[PoolTeamSummary]    # Teams most likely to win exactly 2 games
+    one_win: list[PoolTeamSummary]     # Teams most likely to win exactly 1 game
+    zero_wins: list[PoolTeamSummary]   # Teams most likely to win 0 games

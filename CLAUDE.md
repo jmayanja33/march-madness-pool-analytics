@@ -8,8 +8,8 @@ The March Madness pool is a pool of players, each of whom put together a collect
 Teams are auctioned off to each player, with the end goal of having the collection of teams with the most wins in the tournament.
 
 The goal of this project is to predict how a team will perform in the tournament. A probability distribution will be 
-calculated to determine the likelihood of any team in the field winning 0 games, 1 game, or 2+ games. In addition, the 
-3 most similar teams (since 2009-10) will also be calculated.
+calculated to determine the likelihood of any team in the field winning 0 games, 1 game, 2 games, 3 games, 4 games, 5 games, or 6 games. 
+In addition, the 3 most similar teams (since 2009-10) will also be calculated.
 
 This repository will hold all code for a website which utilizes AI/ML to analyze and predict NCAA tournament team
 performance for the 2026 season. See each section below for details about the site's implementation.

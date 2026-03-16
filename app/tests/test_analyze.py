@@ -151,12 +151,16 @@ def test_chroma_id_default_year() -> None:
 
 
 def test_build_win_distribution_maps_keys() -> None:
-    """Raw '0'/'1'/'2+' keys are mapped to the named fields."""
-    raw = {"0": 0.5, "1": 0.3, "2+": 0.2}
+    """Raw '0'–'6' keys are mapped to the named fields."""
+    raw = {"0": 0.5, "1": 0.2, "2": 0.1, "3": 0.08, "4": 0.06, "5": 0.04, "6": 0.02}
     dist = build_win_distribution(raw)
     assert dist.zero_wins == 0.5
-    assert dist.one_win == 0.3
-    assert dist.two_plus_wins == 0.2
+    assert dist.one_win == 0.2
+    assert dist.two_wins == 0.1
+    assert dist.three_wins == 0.08
+    assert dist.four_wins == 0.06
+    assert dist.five_wins == 0.04
+    assert dist.six_wins == 0.02
 
 
 def test_build_win_distribution_missing_keys() -> None:
@@ -164,7 +168,11 @@ def test_build_win_distribution_missing_keys() -> None:
     dist = build_win_distribution({})
     assert dist.zero_wins == 0.0
     assert dist.one_win == 0.0
-    assert dist.two_plus_wins == 0.0
+    assert dist.two_wins == 0.0
+    assert dist.three_wins == 0.0
+    assert dist.four_wins == 0.0
+    assert dist.five_wins == 0.0
+    assert dist.six_wins == 0.0
 
 
 # ---------------------------------------------------------------------------

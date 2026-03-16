@@ -403,9 +403,13 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9878,
-      "1": 0.0117,
-      "2+": 0.0005
+      "0": 0.7533,
+      "1": 0.1858,
+      "2": 0.0472,
+      "3": 0.0117,
+      "4": 0.0016,
+      "5": 0.0003,
+      "6": 0.0
     },
     "avg_height": 77.6923076923077,
     "avg_weight": 210.3846153846154,
@@ -831,9 +835,13 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9544,
-      "1": 0.0436,
-      "2+": 0.002
+      "0": 0.9093,
+      "1": 0.0741,
+      "2": 0.0139,
+      "3": 0.0024,
+      "4": 0.0002,
+      "5": 0.0001,
+      "6": 0.0
     },
     "avg_height": 78.3076923076923,
     "avg_weight": 220.0,
@@ -906,9 +914,13 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8948,
-      "1": 0.1003,
-      "2+": 0.0049
+      "0": 0.8902,
+      "1": 0.076,
+      "2": 0.0228,
+      "3": 0.009,
+      "4": 0.0018,
+      "5": 0.0003,
+      "6": 0.0
     },
     "avg_height": -1.0,
     "avg_weight": -1.0,
@@ -983,9 +995,13 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9012,
-      "1": 0.0942,
-      "2+": 0.0046
+      "0": 0.99,
+      "1": 0.0081,
+      "2": 0.0015,
+      "3": 0.0003,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": -1.0,
     "avg_weight": -1.0,
@@ -1462,11 +1478,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Miami (OH) enters the 2026 NCAA Tournament as an 11-seed with a jaw-dropping 31-1 record \u2014 the most misleading seed line of the bracket and one of the most remarkable seasons in mid-major history. The RedHawks completed an unblemished 18-0 MAC regular season, set program and conference records for wins and winning streak, and spent the final weeks of the regular season as the **only undefeated team in Division I**, alongside or outlasting even Arizona. Their schedule is admittedly MAC-heavy, but they did post wins over ranked opponents \u2014 most notably a 107-101 overtime rally at Kent State when the Golden Flashes had nine lead changes and pushed Miami to the brink \u2014 and the r\u00e9sum\u00e9 shows a team that has beaten everyone put in front of them, including multiple road tests and the MAC-Sun Belt Challenge neutral-site win over Marshall. Against quality mid-major and fringe high-major competition, Miami has not lost, though their lone defeat (Game 33 data suggests a tournament loss to SMU is forthcoming or pending) and a series of genuinely harrowing finishes raise legitimate questions about whether their margin for error survives Power Conference athleticism at the tournament level.\n\nRecent form tells a complicated story: Miami's final five games were all decided by single digits or in overtime \u2014 a 69-67 buzzer-beater at Western Michigan on a Trey Perry layup with one second left, a 74-72 home escape over Toledo, and a 110-108 overtime thriller at Ohio where Eian Elmer dropped a career-high 32 points and 12 rebounds just to survive a 37-point explosion from Ohio's Jackson Paveletzke and a 30-point night from Javan Simmons. This team is **not blowing people out anymore** \u2014 they are grinding, surviving, and leaning on individual heroics with increasing frequency. The offensive identity remains elite on paper (they led the nation in field-goal percentage at 53.7% and ranked third in 3-point percentage at 40.9%), but recent shooting slumps \u2014 going 1-of-10 from three in the second half at Eastern Michigan, or 7-of-28 from deep against Northern Illinois \u2014 show a team that can go cold and become dangerously exploitable. The star power is real and distributed: **Brant Byers** is the engine (27-point performances, clutch first halves), **Peter Suder** is the do-everything connector (27 points, 10 rebounds, 8 assists against Kent State), **Eian Elmer** is a rising force, and **Almar Atlason** provides a dangerous bench punch \u2014 but no single closer has emerged consistently, which is both a strength (multiple threats) and a vulnerability (no alpha to trust in the final possession). The team's attitude reads as **resilient and competitive but increasingly strained**: they have won seven games by five or fewer points, including three overtime victories, and while they have never quit, the composure that defined their dominant early-season stretch has given way to survival mode. Miami is 31-0 heading into the tournament as a program that has never been here before at this level of expectation, seeded 11th despite arguably deserving a 4-through-6 line \u2014 a bracket placement that is either a massive gift or a sign that the committee sees through the MAC schedule. Their tournament ceiling, realistically, is the **Elite Eight**: they are absolutely dangerous enough to upset a 6-seed and potentially a 3-seed in the first two rounds given their offensive firepower, veteran composure in close games, and the Perry/Elmer/Byers/Suder core \u2014 but their recent inability to dominate inferior competition, combined with a schedule that has never truly stress-tested them against Power Conference athleticism for 40 minutes, makes a Final Four run a reach. **Verdict: Sweet 16 floor, Elite Eight ceiling \u2014 a genuine tournament threat that should not be taken lightly, but whose 11-seed bracket fate may catch up with them against a physically superior opponent in the round of eight.**",
     "region": "Midwest",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.2646,
-      "1": 0.631,
-      "2+": 0.1045
+      "0": 0.7453,
+      "1": 0.2392,
+      "2": 0.0117,
+      "3": 0.0034,
+      "4": 0.0005,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.33333333333333,
     "avg_weight": 205.33333333333334,
@@ -1919,9 +1939,13 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.4784,
-      "1": 0.4779,
-      "2+": 0.0438
+      "0": 0.9086,
+      "1": 0.0881,
+      "2": 0.0027,
+      "3": 0.0006,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 78.21428571428571,
     "avg_weight": 207.5,
@@ -2402,11 +2426,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Prairie View A&M enters the 2026 NCAA Tournament as an 18-17 No. 16 seed \u2014 a record that tells the story plainly. The Panthers were thoroughly outclassed against high-major competition, dropping games to Wichita State (105-62), Oklahoma State (94-67), Missouri (91-73), LSU (104-90), and Texas A&M (111-82) by an average margin of over 30 points. In those five games against power-conference opponents, Prairie View was never truly competitive; Missouri led by 33 in the second half, and Texas A&M held a 60-39 edge at halftime. Within the SWAC, the Panthers were similarly inconsistent, going 8-10 in conference play and dropping frustrating close games to Grambling, Alcorn State, and Jackson State \u2014 losses that defined a team prone to tight-game collapses rather than tight-game heroics. Their r\u00e9sum\u00e9 contains zero wins against ranked opponents, and their non-conference schedule featured cupcakes like College of Biblical Studies (95-48) and Paul Quinn (100-64) that inflated their win total without providing meaningful preparation for tournament basketball.\n\nRecent form offers some reason for optimism, but not enough to change the broader verdict. Prairie View closed the regular season winning five of their final six games \u2014 including wins over Texas Southern, Jackson State, Alcorn State, and Alabama A&M (55-74) \u2014 before advancing in the SWAC Tournament with wins over Alcorn State (65-56), Bethune-Cookman (71-67), and Alabama A&M (74-55). The engine driving this late surge is Dontae Horne, who has been sensational down the stretch \u2014 scoring 30 against Alabama State, 30 against Mississippi Valley State, and 32 against Arkansas-Pine Bluff \u2014 while Cory Wells and Lance Williams provide credible secondary scoring. However, this hot streak has come exclusively against SWAC competition, the weakest conference in Division I, and the Panthers' style \u2014 high-scoring, perimeter-dependent, defensively porous \u2014 has been shredded by every quality opponent they've faced. Their tournament first-round matchup against Lehigh will demand far more than they've been asked to deliver in weeks. Prairie View A&M is a **likely first-round exit**: a scrappy, streaking team that has found a rhythm in a weak conference at the right moment, but carries a 0-5 record against power-conference foes, no experience winning close games under real pressure, and a defensive profile that will be ruthlessly exposed on the national stage.",
     "region": "South",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.333,
-      "1": 0.5895,
-      "2+": 0.0776
+      "0": 0.5555,
+      "1": 0.2679,
+      "2": 0.0949,
+      "3": 0.0414,
+      "4": 0.032,
+      "5": 0.0053,
+      "6": 0.0031
     },
     "avg_height": 77.06666666666666,
     "avg_weight": 206.86666666666667,
@@ -2833,9 +2861,13 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.5803,
-      "1": 0.3902,
-      "2+": 0.0295
+      "0": 0.9764,
+      "1": 0.0211,
+      "2": 0.0021,
+      "3": 0.0003,
+      "4": 0.0001,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.53846153846153,
     "avg_weight": 203.23076923076923,
@@ -3259,11 +3291,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Houston enters the 2026 NCAA Tournament as a 2-seed with a 28-6 record \u2014 a r\u00e9sum\u00e9 built on elite defense, remarkable home dominance, and the kind of program-wide depth that has made the Cougars a perennial contender under Kelvin Sampson. Against ranked opponents this season, Houston went 8-8, with notable wins over #22 Auburn (73-72 on a last-second defensive stand), #14 Arkansas (94-85 behind 11 made threes), #16 BYU (77-66 on the road), #14 Texas Tech (69-65 at home), and #14 Kansas (69-47 in a dominant Big 12 semifinal demolition), while suffering losses to #17 Tennessee, #6 Iowa State, #4 Arizona (twice), and #14 Kansas in the regular season. Their final five games tell a nuanced story: a gutsy comeback win at Oklahoma State (82-75), a disciplined quarterfinal hold against BYU (73-66), a dominant 22-point dismantling of Kansas in the Big 12 semifinals, and then a 79-74 loss to #2 Arizona in the conference championship \u2014 four games that collectively show a team that is functional and dangerous but not yet fully locked in at the elite level. Houston's identity is defined by suffocating defense (routinely forcing 15-25 turnovers and converting them into 25+ points), active rebounding, and opportunistic offensive bursts, rather than a high-powered halfcourt attack; they win games by grinding opponents into uncomfortable possessions and erupting in runs, exemplified by the 22-2 stretch that buried Kansas in the Big 12 semis. Emanuel Sharp \u2014 now the program's all-time leader in three-pointers \u2014 is the alpha, capable of dropping 27-point performances (twice against Florida State and Utah) and carrying the offense through cold stretches, while freshman Kingston Flemings has been a revelation with nine 20-point games and clutch shotmaking down the stretch; Milos Uzan provides veteran playmaking, and Chris Cenac Jr. gives them a physical interior presence when it matters. The one red flag is Chase McCarty, who left the TCU game with a wrist injury in late January, though he did return to score 20 critical points at Oklahoma State in the regular-season finale, suggesting he is functional if not fully healthy. Houston is 18-0 at home this season, an imposing 15-game road winning streak was snapped at Texas Tech, and they performed reasonably well on neutral sites \u2014 going 2-2 at the Players Era and 2-1 in the Big 12 Tournament, with a narrow overtime win over Syracuse and the tight Big 12 final loss to Arizona. The Cougars showed a worrying pattern in February, dropping three straight against Iowa State, Arizona, and Kansas \u2014 a stretch in which they shot 21% from three at Kansas and committed 12 turnovers against Arizona, revealing that their offense can go genuinely dormant against elite, physical defenses. That said, they responded by hammering Colorado 102-62 and then reeling off four straight wins to close the regular season and tournament run, demonstrating the resiliency and self-correcting capability of a well-coached program. Houston is a legitimate Elite Eight threat and a plausible Final Four contender: their defense is tournament-caliber, their star power is real, and Sampson's program has proven it can beat anyone on a given night \u2014 but their cold offensive stretches, inconsistency from three (they shot 3-for-19 against UCF in a win, 5-for-24 against Kansas in a loss), and two losses to Arizona suggest they fall just short of a national title ceiling. Realistic verdict: **Elite Eight**, with a path to the Final Four if Sharp and Flemings are simultaneously locked in and their defense replicates its best version against tournament-level halfcourt offenses.",
     "region": "South",
-    "predicted_wins": 1,
+    "predicted_wins": 3,
     "win_probability_distribution": {
-      "0": 0.1263,
-      "1": 0.6487,
-      "2+": 0.225
+      "0": 0.2481,
+      "1": 0.0378,
+      "2": 0.1087,
+      "3": 0.2826,
+      "4": 0.2336,
+      "5": 0.0476,
+      "6": 0.0417
     },
     "avg_height": 78.53846153846153,
     "avg_weight": 217.30769230769232,
@@ -3663,9 +3699,13 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.576,
-      "1": 0.3941,
-      "2+": 0.03
+      "0": 0.7519,
+      "1": 0.0638,
+      "2": 0.0969,
+      "3": 0.0732,
+      "4": 0.0133,
+      "5": 0.0008,
+      "6": 0.0001
     },
     "avg_height": 76.91666666666667,
     "avg_weight": 196.66666666666666,
@@ -4089,9 +4129,13 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0569,
-      "1": 0.533,
-      "2+": 0.41
+      "0": 0.0038,
+      "1": 0.6068,
+      "2": 0.3063,
+      "3": 0.0736,
+      "4": 0.009,
+      "5": 0.0004,
+      "6": 0.0001
     },
     "avg_height": 78.61538461538461,
     "avg_weight": 205.76923076923077,
@@ -4620,9 +4664,13 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.9734,
-      "1": 0.0255,
-      "2+": 0.0011
+      "0": 0.9962,
+      "1": 0.0038,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 78.23529411764706,
     "avg_weight": 212.05882352941177,
@@ -5072,11 +5120,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Gonzaga enters the 2026 NCAA Tournament as a 3-seed with a 30-3 record and the WCC's automatic bid in hand, boasting one of the most complete r\u00e9sum\u00e9s in program history against non-conference opponents \u2014 though two puzzling losses to unranked Portland and Saint Mary's late in the year introduce real questions about ceiling. Against ranked opponents, the Bulldogs went an impressive 6-3: wins over then-No. 23 Creighton (90-63), then-No. 8 Alabama (95-85), then-No. 18 Kentucky (94-59), then-No. 25 UCLA (82-72), then-No. 21 Saint Mary's (73-65 in conference play), and Oregon (though unranked at game time, a quality road neutral win), with losses coming against then-No. 7 Michigan (101-61, a 40-point beatdown in Las Vegas), unranked Portland (87-80 on the road), and then-unranked Saint Mary's (70-59 in Moraga) \u2014 the Michigan blowout in particular serves as a cautionary data point about how this team responds when facing a genuinely elite program. Over the final five games with available detail \u2014 wins over Washington State (83-53), Santa Clara (94-86), San Francisco (80-59), Portland (89-48 revenge blowout), and a regular-season-closing loss at Saint Mary's (59-70) before winning the WCC Tournament over Oregon State (65-56) and Santa Clara (79-68) \u2014 Gonzaga's form is best described as strong but not dominant, with the WCC tournament title providing a timely confidence boost heading into March.\n\nGraham Ike is the engine driving everything, arriving at the tournament as arguably the most dominant big man in the country not named on a top-two seed: he scored 20 or more points in 10 consecutive games before being pulled early against Portland in the regular-season finale, owns 45 career double-doubles, and was named WCC Tournament Most Outstanding Player after going a perfect 7-of-7 from the floor for 15 points in the championship win over Santa Clara \u2014 the fifth-year forward is the only active Division I player with 2,000 career points and 1,000 rebounds, and when he is healthy and aggressive, Gonzaga's offense operates at a genuinely elite level through the paint, where they lead the nation at 45.2 points per game in the lane. Braden Huff, the Zags' second offensive pillar averaging 17.8 points per game, missed extended time with a knee injury in late January and remains a question mark in terms of full functionality \u2014 his availability and health will be one of the most critical variables in how far this team can advance. Supporting pieces like Mario Saint-Sup\u00e9ry (21 points in the WCC title game), Tyon Grant-Foster, Adam Miller, Emmanuel Innocenti, and Davis Fogle give Gonzaga genuine depth, and coach Mark Few's squad plays with poise and composure in neutral-site environments \u2014 their 7-1 record on neutral courts (the lone blemish being that Michigan demolition) is a meaningful indicator for tournament play. The Michigan loss, however, cannot be ignored: when pressed by a team with elite athleticism, length, and defensive pressure, Gonzaga shot 33.8% from the floor and 13.6% from three, and Huff fouled out \u2014 a blueprint any elite tournament opponent will have studied. This team is a legitimate Elite Eight threat and capable of a Final Four run if Ike remains dominant and Huff is healthy, but the ceiling appears to stop short of a national title given their demonstrated vulnerability against truly elite defensive pressure and their two late-season stumbles against inferior competition.",
     "region": "West",
-    "predicted_wins": 1,
+    "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.126,
-      "1": 0.6485,
-      "2+": 0.2254
+      "0": 0.0855,
+      "1": 0.2116,
+      "2": 0.2943,
+      "3": 0.244,
+      "4": 0.0825,
+      "5": 0.0579,
+      "6": 0.0242
     },
     "avg_height": 78.07142857142857,
     "avg_weight": 209.57142857142858,
@@ -5556,9 +5608,13 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.5651,
-      "1": 0.4036,
-      "2+": 0.0313
+      "0": 0.9145,
+      "1": 0.0583,
+      "2": 0.0223,
+      "3": 0.0043,
+      "4": 0.0005,
+      "5": 0.0001,
+      "6": 0.0
     },
     "avg_height": 76.93333333333334,
     "avg_weight": 207.86666666666667,
@@ -6007,11 +6063,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Michigan State enters the 2026 NCAA Tournament as a 3-seed with a 25-7 record \u2014 a r\u00e9sum\u00e9 built on genuine toughness against elite competition but also punctuated by frustrating inconsistency down the stretch. The Spartans went an impressive 8-7 against ranked opponents this season, with marquee wins over #14 Arkansas, #12 Kentucky, #16 North Carolina, #24 USC, #5 Illinois, and #8 Purdue, while absorbing losses to #4 Duke (66-60 at home), #13 Nebraska (58-56 on the road), #3 Michigan twice, #10 Minnesota, and #10 Wisconsin \u2014 a body of work that proves they can compete at the highest level but haven't been able to consistently close out elite programs. Their final five games tell a mixed story: a 91-87 home escape over Rutgers, a 90-80 loss at #3 Michigan in the regular season finale, and then a 88-84 Big Ten Tournament quarterfinal exit at the hands of UCLA \u2014 a team Michigan State had already beaten in the regular season \u2014 leaving them on a two-game losing skid entering March Madness. Tom Izzo's team plays a characteristically physical, rebounding-first brand of basketball \u2014 they consistently dominate the glass (outrebounding opponents by wide margins in wins over Arkansas, Kentucky, Toledo, and Maryland), generate significant second-chance points, and run an effective transition offense led by the electric Coen Carr, whose highlight-reel dunks and relentless energy set the tone. The identity of this team runs through point guard Jeremy Fears Jr., who has been sensational for stretches \u2014 dropping 29 points in overtime at Rutgers, 31 against Michigan, and 26 with 15 assists against Illinois \u2014 but his season has also been clouded by repeated sportsmanship concerns, including a technical foul in the Michigan finale for an apparent kick toward Elliot Cadeau, building on similar incidents throughout conference play that raise real questions about his composure in high-stakes moments. Senior center Jaxon Kohler has been quietly outstanding, posting 12 double-doubles and providing a reliable interior anchor, while Carson Cooper stepped up as a force in the second half of the season; the health and availability of Divine Ugochukwu, who hobbled off with an injury against Minnesota in early February, is worth monitoring as a potential depth concern in the backcourt. Michigan State is notably a better team at home (14-2 in East Lansing) and has shown it can win on neutral sites \u2014 going 3-1 in neutral-site games including wins over Arkansas, Kentucky, and North Carolina early in the season \u2014 but road performances have been shakier, with the Nebraska and Minnesota losses both coming away from home when the Spartans turned the ball over excessively. This is a resilient, battle-tested program under a Hall of Fame coach with Final Four pedigree, but the two-game losing streak, Fears' recurring discipline issues, and an inability to beat Michigan or Nebraska all season are legitimate red flags. **The realistic ceiling for this Michigan State team is the Sweet 16**: experienced and physical enough to grind through a first-round matchup and potentially pull off an upset in the second round, but too inconsistently sharp from three-point range, too prone to turnover-heavy collapses in hostile environments, and too exposed against elite, composed teams to be trusted for a deep Elite Eight or Final Four run.",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.1999,
-      "1": 0.6563,
-      "2+": 0.1438
+      "0": 0.5181,
+      "1": 0.3238,
+      "2": 0.1513,
+      "3": 0.0065,
+      "4": 0.0003,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.57142857142857,
     "avg_weight": 211.07142857142858,
@@ -6437,9 +6497,13 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.4826,
-      "1": 0.4743,
-      "2+": 0.0431
+      "0": 0.4819,
+      "1": 0.3047,
+      "2": 0.201,
+      "3": 0.0117,
+      "4": 0.0006,
+      "5": 0.0001,
+      "6": 0.0
     },
     "avg_height": 76.3076923076923,
     "avg_weight": 201.15384615384616,
@@ -6861,11 +6925,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Nebraska enters the 2026 NCAA Tournament as a 4-seed with a 26-6 record \u2014 a r\u00e9sum\u00e9 built on one of the most remarkable early-season runs in program history but clouded by a late-season swoon that raises legitimate questions about their ceiling. The Cornhuskers raced out to a 20-0 start, the best in program history and the longest active win streak in Division I at 24 games, before the wheels began to come off against elite competition. Against ranked opponents, Nebraska finished approximately 7-6: notable wins over then-No. 9 Michigan State (58-56, on a Rienk Mast tiebreaking 3-pointer), then-No. 13 Illinois on a buzzer-beater (83-80, on Jamarques Lawrence's last-second triple), and a road win at then-No. 5 Indiana after trailing by 16 \u2014 but losses to No. 3 Michigan, No. 9 Illinois (at home), No. 13 Purdue (in overtime), No. 9 Iowa, and a blowout at UCLA, plus a 74-58 thumping by Purdue in the Big Ten Tournament quarterfinals, reveal a team that can steal a marquee win but hasn't consistently handled elite opponents, especially in the second half of the season. Their style of play is built around perimeter shooting \u2014 Nebraska leads the Big Ten in 3-pointers made \u2014 and they have demonstrated a remarkable capacity for comebacks, erasing deficits of 16 points multiple times, but they are equally collapse-prone, as evidenced by blowing 10-point leads late in regulation against both Purdue and Iowa. Pryce Sandfort is their engine, a transfer from Iowa who set Nebraska's single-season 3-pointer record and posted multiple 20-plus-point games including a 32-point effort at USC; Rienk Mast (6-10, capable of seven 3-pointers in a game) is a matchup nightmare at the 5; and Jamarques Lawrence and Braden Frager provide punch off the bench and in the starting lineup. However, health is a legitimate concern \u2014 Frager missed two games with a sprained ankle, Mast sat out the Michigan loss with illness, and Nebraska's depth was noticeably strained down the stretch. The final five games (Penn State win, Maryland win, USC win, UCLA loss by 20, Iowa overtime win in the regular-season finale) paint a picture of an inconsistent team that can dominate inferior opposition but struggles to maintain focus and execution against disciplined, physical teams \u2014 and the 74-58 conference tournament loss to Purdue, where Nebraska was outrebounded by eight and outscored in the paint, is an especially worrying exit. Location matters for this group: they are dominant at Pinnacle Bank Arena but went just 7-3 on the road in Big Ten play, and their neutral-site record is thin beyond early-season tournaments. Nebraska's realistic tournament ceiling is the Sweet 16: they have the star power, shooting, and demonstrated clutch ability to knock off a 5-seed and pull a signature upset, but their late-season inconsistency, vulnerability to physical teams that crash the glass, and second-half offensive droughts make a deeper run unlikely unless Sandfort and Mast are simultaneously locked in \u2014 a combination that has been rare since January.",
     "region": "South",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.1782,
-      "1": 0.6596,
-      "2+": 0.1622
+      "0": 0.5876,
+      "1": 0.3983,
+      "2": 0.0138,
+      "3": 0.0004,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 79.0,
     "avg_weight": 214.3846153846154,
@@ -7315,11 +7383,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Troy enters the 2026 NCAA Tournament as a 13-seed with a 22-11 record, a r\u00e9sum\u00e9 that reflects a genuinely competitive mid-major program capable of beating quality opponents but one that has shown persistent vulnerability against elite competition. The Trojans went 1-5 against power-conference foes early in the season \u2014 falling to Loyola Marymount, Cal State Northridge, and Toledo \u2014 but did knock off UAB on the road and pushed USC and San Diego State to multiple overtimes in November, which speaks to their competitive toughness even in defeats. In conference play, Troy finished as the Sun Belt's top seed, winning the Sun Belt Tournament with semifinal and final victories over Southern Miss (78-70) and Georgia Southern (77-61), capping a strong late-season run that provides genuine momentum heading into March. Their final five games show a mixed but ultimately positive picture: losses to Southern Miss (65-69) and South Alabama (54-65) sandwiched around a dominant 78-59 home win over Louisiana before back-to-back Sun Belt Tournament wins, suggesting a team that stumbled in late February but has genuinely righted the ship at the right moment.\n\nStylistically, Troy is a resilient, comeback-prone team with demonstrated star power and a flair for the dramatic \u2014 qualities that can be both thrilling and alarming in tournament play. Thomas Dowd is the engine of this team, a physical double-double threat who hit a buzzer-beater at UAB, scored 24 points in a revenge win over Arkansas State, and consistently protects the rim; Victor Valdes provides secondary creation as a shot-maker and facilitator; Cooper Campbell is a dangerous perimeter scorer capable of career-high performances (32 points vs. USC in triple overtime); and Cobi Campbell and Theo Seng offer reliable depth scoring. The Trojans have repeatedly demonstrated the ability to force and win overtime games \u2014 including a triple-OT near-miss at USC and a double-OT road win at Old Dominion \u2014 showing genuine mental fortitude, but they also collapsed against West Georgia in a non-conference overtime loss and dropped games to Southern Miss twice during the regular season, revealing a troubling inconsistency that emerges without warning. Location matters for this group: Troy is notably stronger at home (where they reeled off long Sun Belt winning streaks) and has struggled in true road environments, though their neutral-site tournament performance has been sharp. As a 13-seed, Troy is a classic dangerous upset pick in the first round \u2014 battle-tested, multi-dimensional, and peaking at the right time \u2014 but their inability to consistently beat elite competition and their mid-season defensive lapses make a run beyond the second round a long shot. **Realistic ceiling: Round of 32**, with an upset win in Game 1 being a genuine possibility.",
     "region": "South",
-    "predicted_wins": 0,
+    "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.7092,
-      "1": 0.2739,
-      "2+": 0.0169
+      "0": 0.4124,
+      "1": 0.5643,
+      "2": 0.0224,
+      "3": 0.0008,
+      "4": 0.0001,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 76.42857142857143,
     "avg_weight": 205.0,
@@ -7743,11 +7815,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Arkansas enters the 2026 NCAA Tournament as a 4-seed with an impressive 26-8 record, having navigated one of college basketball's toughest schedules in the SEC. Against ranked opponents, the Razorbacks went an impressive 8-7, with quality wins over then-No. 6 Louisville (89-80 at home), then-No. 16 Texas Tech (93-86 on a neutral court), then-No. 19 Tennessee (86-75 at home), then-No. 21 Vanderbilt (93-68 at home), and, most recently, No. 22 Vanderbilt (86-75) in the SEC Tournament championship \u2014 Calipari's first conference title with the program. Their losses against ranked competition came against legitimate blue-blood programs \u2014 No. 4 Duke, No. 8 Houston, No. 5 Florida (a humbling 34-point blowout in Gainesville), and No. 25 Alabama in a heartbreaking 117-115 double-overtime road thriller \u2014 losses that reveal a ceiling when facing truly elite opponents but also demonstrate a team capable of trading punches at the highest level. Entering the tournament, Arkansas is scorching: their final five games produced wins over Texas (105-85), Missouri in overtime (88-84 without Acuff), Oklahoma (82-79), Ole Miss (93-90 in OT), and Vanderbilt (86-75), with the Razorbacks finishing as SEC Tournament champions and winners of six straight. The Missouri overtime win is particularly notable in that Arkansas gutted it out without star freshman Darius Acuff Jr., who missed the game with an undisclosed injury \u2014 the fact that Meleek Thomas (28 points), Malique Ewin (17 points), and Trevon Brazile (19 points and 9 rebounds) stepped up to seal the win speaks to legitimate depth and resilience.\n\nStylistically, Arkansas is a high-octane, fast-break-heavy offense that can erupt for 90-plus points on any given night \u2014 their 108-point demolition of South Carolina, 115-61 dismantling of Jackson State, and 105-85 blowout of Texas all underscore a team capable of taking over games in an instant. However, they can be defensively vulnerable, frequently allowing opponents to crawl back from large deficits, as seen in their near-collapse against Winthrop (84-83), a 117-115 double-OT loss to Alabama after leading by 14, and a late scare from Louisville after holding a 20-point halftime lead. The engine of this team is freshman Darius Acuff Jr., who is nothing short of spectacular \u2014 his 49-point performance in Tuscaloosa, six-game streak of 20-plus points, SEC Player and Freshman of the Year honors, and 37-point tournament quarterfinal effort against Oklahoma mark him as one of the most dynamic individual talents in the country. Acuff's undisclosed injury from the Missouri game bears monitoring as tournament play begins; if he is anything less than 100%, Arkansas's offensive ceiling drops considerably. Senior forward Trevon Brazile provides critical veteran balance \u2014 a career-high 28-point performance against Texas in his final home game and consistent double-double production confirm him as a reliable second option \u2014 while Thomas, Wagner, Richmond, and Ewin round out a rotation that has proven dangerous when everyone contributes. Location-wise, Arkansas is 8-0 at home in SEC play, with both home losses coming against Duke and Houston early in the year, and they have performed credibly on neutral courts \u2014 winning the SEC Tournament and covering in Dallas against Texas Tech. Their road record is spottier, with losses at Auburn, Georgia, and Florida suggesting they can be overwhelmed when a hostile environment compounds defensive lapses. This Arkansas team's realistic tournament ceiling is the Elite Eight: they have the star power, offensive firepower, championship-level momentum, and enough depth to beat anyone on a given night, but the pattern of surrendering large leads, inconsistency on defense, and vulnerability to truly elite programs \u2014 Florida and Duke exposed them badly \u2014 makes a Final Four run a stretch without Acuff being fully healthy and the defense tightening up when it matters most.",
     "region": "West",
-    "predicted_wins": 2,
+    "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0134,
-      "1": 0.2305,
-      "2+": 0.7561
+      "0": 0.0275,
+      "1": 0.4694,
+      "2": 0.3535,
+      "3": 0.0872,
+      "4": 0.038,
+      "5": 0.0193,
+      "6": 0.0051
     },
     "avg_height": 77.53846153846153,
     "avg_weight": 208.84615384615384,
@@ -8144,9 +8220,13 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8084,
-      "1": 0.1817,
-      "2+": 0.0098
+      "0": 0.9725,
+      "1": 0.0263,
+      "2": 0.0012,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 78.66666666666667,
     "avg_weight": 197.5,
@@ -8624,11 +8704,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Vanderbilt enters the 2026 NCAA Tournament as a 5-seed with a 26-8 record \u2014 a r\u00e9sum\u00e9 that reflects one of the more remarkable stories in college basketball this season. The Commodores opened the year on a historic 16-0 run, their best start since 2007-08, fueled by a nation-leading scoring offense that routinely cracked 100 points and featured six players averaging double figures, led by sophomore guard Tyler Tanner and dynamic guard Duke Miles. Against ranked opponents, Vanderbilt went an impressive 7-6: statement wins include a home victory over then-13th-ranked Alabama, road wins at Auburn, and \u2014 most impressively \u2014 back-to-back SEC Tournament wins over 4th-ranked Florida (91-74) and 25th-ranked Tennessee (75-68), demonstrating genuine big-game capability. Their losses to ranked opponents \u2014 Texas (80-64), Florida (98-94 at home), Arkansas (93-68), and the SEC Tournament final loss to Arkansas (86-75) \u2014 reveal a team that can get overwhelmed by elite length and physicality, particularly when their shooting goes cold in the second half. Recent form is a mixed but mostly encouraging picture: over their final five games, Vanderbilt went 3-2, with the two losses being a one-point heartbreaker at Missouri and the SEC Tournament final, sandwiched around three straight wins including the stunning upset of Florida and a regular-season win at Tennessee. Stylistically, this is a high-octane, 3-point-dependent offense that thrives in shootouts \u2014 Tanner, who closed the year with 34-point and 25-point performances and capped the SEC Tournament run with 20 against Florida, is playing at an elite level, and Miles has returned from a knee injury with back-to-back double-digit outings including a season-high 30 points against Tennessee. The concern is sustainability: Vanderbilt is capable of going cold from deep for extended stretches, as evidenced by their 26.7% second-half shooting in the Texas loss and a near-collapse against Oklahoma, and Devin McGlockton's flagrant foul issues at Missouri added unnecessary volatility. On location, Vanderbilt has been marginally stronger at home (Memorial Gym effect is real), but their neutral-site r\u00e9sum\u00e9 is genuinely impressive \u2014 they won the Battle 4 Atlantis over Saint Mary's and VCU, and their two SEC Tournament upset wins came on a neutral floor in Nashville. Entering the tournament, this team carries a confident, high-energy identity: they are not a grind-it-out squad but rather a team that imposes pace and volume, with enough clutch playmaking from Tanner and Miles to stay in close games. Their ceiling is a legitimate Elite Eight run \u2014 explosive enough offensively to knock off higher seeds in early rounds, with proven big-game wins over elite competition, but ultimately too inconsistent defensively and too susceptible to physical, length-heavy opponents to be considered a Final Four lock.",
     "region": "South",
-    "predicted_wins": 1,
+    "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0741,
-      "1": 0.5818,
-      "2+": 0.3441
+      "0": 0.1038,
+      "1": 0.0218,
+      "2": 0.3721,
+      "3": 0.1864,
+      "4": 0.2193,
+      "5": 0.0498,
+      "6": 0.0468
     },
     "avg_height": 77.6,
     "avg_weight": 216.4,
@@ -8999,9 +9083,13 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.7186,
-      "1": 0.2652,
-      "2+": 0.0162
+      "0": 0.8962,
+      "1": 0.0156,
+      "2": 0.0815,
+      "3": 0.0053,
+      "4": 0.0013,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.0,
     "avg_weight": 198.1818181818182,
@@ -9075,9 +9163,13 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1217,
-      "1": 0.6459,
-      "2+": 0.2324
+      "0": 0.3373,
+      "1": 0.4703,
+      "2": 0.1228,
+      "3": 0.0543,
+      "4": 0.0107,
+      "5": 0.0039,
+      "6": 0.0007
     },
     "avg_height": -1.0,
     "avg_weight": -1.0,
@@ -9527,11 +9619,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Louisville enters the 2026 NCAA Tournament as a 6-seed with a 23-10 record \u2014 a r\u00e9sum\u00e9 built on explosive offense, a star freshman, and enough quality wins to validate their seeding, though a rocky finish and a critical injury cloud the outlook. Against ranked opponents this season, the Cardinals went 6-9: notable wins include a home upset of No. 9 Kentucky behind Mikel Brown Jr.'s 29-point freshman debut, a road victory at No. 22 Miami to close the regular season, and a neutral-site ACC Tournament win over SMU, while losses to No. 4 Duke (twice, including an embarrassing 83-52 blowout in Durham), No. 20 Tennessee, No. 16 Virginia, No. 18 North Carolina, and No. 22 Miami in the ACC quarterfinals reveal real vulnerabilities against top-tier competition. Louisville's last five games were a mixed bag: wins over Georgia Tech (87-70), at Miami (92-89 in a wild comeback), and over SMU in the ACC Tournament (62-58), sandwiched around a three-point loss at Clemson and a five-point quarterfinal exit to Miami \u2014 hardly the trajectory of a team gathering steam. The Cardinals play a high-tempo, three-point-heavy style that can be dazzling when firing \u2014 Brown posted an ACC freshman-record 45 points against NC State, and the team has scored 100-plus points multiple times \u2014 but they are dangerously streaky from deep and prone to second-half collapses, as seen against North Carolina (surrendered a 16-point lead) and Wake Forest (blew a 15-point cushion before surviving at the free-throw line). The elephant in the room is Brown, Louisville's engine and top NBA draft prospect, who is out for the tournament with a recurring back injury that already cost him nine regular-season games; without him, the Cardinals went 5-4 and were regularly outclassed by elite defenses, leaning heavily on Ryan Conwell (who is capable of 20-plus but also went 4-of-16 and 6-of-21 in losses to Arkansas and Stanford) and the interior contributions of Sananda Fru. Louisville is demonstrably stronger at home \u2014 they are dominant in KFC Yum! Center and handled most non-conference opponents comfortably \u2014 but their road and neutral-site record is inconsistent, with the team routinely starting cold and spotting opponents early leads before scrambling back; their character shows in clutch moments (Wooley's game-winning 3 at Miami, Conwell's late heroics against SMU in Charlotte), but they cannot sustain that resilience against elite defenders. The verdict: without Mikel Brown Jr., Louisville is a dangerous but limited team \u2014 Conwell, McKneely, Fru, and Hadley can carry them past a lower seed in the first round, and their offense has enough firepower to pull off a second-round upset, but their ceiling is realistically the Round of 32 to Sweet 16. A deeper run would require their supporting cast to shoot consistently from three, eliminate second-half defensive lapses, and hope the bracket shields them from a Duke-or-Virginia-caliber opponent early \u2014 none of which are safe assumptions. This is a team that can make noise for a game or two, but is not built \u2014 at this moment, without its best player \u2014 for a Final Four run.",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.2317,
-      "1": 0.6461,
-      "2+": 0.1222
+      "0": 0.3189,
+      "1": 0.2131,
+      "2": 0.4252,
+      "3": 0.0393,
+      "4": 0.003,
+      "5": 0.0004,
+      "6": 0.0
     },
     "avg_height": 78.28571428571429,
     "avg_weight": 212.14285714285714,
@@ -9981,11 +10077,15 @@
     "highest_ranked_win": null,
     "profile_summary": "South Florida enters the 2026 NCAA Tournament as an 11-seed with a 25-8 record, a mark that reflects a genuinely impressive second half of the season after a rocky start. The Bulls opened the year struggling against quality competition \u2014 falling to Oklahoma State 103-95, VCU 78-66, and a ranked Alabama squad 104-93 \u2014 finishing November and December at just 6-5, exposing real defensive vulnerabilities against high-major opponents. However, the AAC regular season told a different story: South Florida went 14-3 in conference play, winning eight straight at one point and capturing the American Athletic Conference's top position in the loss column. The lone ranked opponent they faced was Alabama (No. 16 at the time), and the Bulls lost convincingly 104-93, as the Crimson Tide pulled away with a 17-4 second-half run \u2014 a concerning blueprint for how elite teams can handle them. Their conference tournament run produced dominant wins over Charlotte (86-64), Charlotte again (no surprise), and Wichita State (70-55), suggesting they arrive in the field with genuine momentum. The final five games across the summaries \u2014 wins over Memphis (96-89), Charlotte (83-60), Charlotte again (86-64), and Wichita State (70-55), capped by the road win at Memphis \u2014 show a team winning comfortably and with purpose, outscoring opponents by an average of roughly 25 points per game in that closing stretch.\n\nSouth Florida is a high-volume offensive team built around multiple capable scorers, and the engine of this roster is **Wes Enis**, who has been one of the conference's most prolific offensive players down the stretch \u2014 posting 29 points at Memphis, 25 points twice against Tulane, 32 points against Tulsa (with 10 threes), and 16 points with a double-double against Wichita State. **Izaiyah Nelson** is the team's most complete two-way player, a physical presence who contributed 25 points against UTSA, a 24-point, 13-rebound double-double against Tulane, seven steals against Wichita State, and five blocks in the UAB overtime loss \u2014 he is a matchup problem at multiple levels. **Joseph Pinion** is a dangerous three-point specialist who erupted for 20 points on six-of-eleven from deep against Oklahoma State and has shown the ability to carry the offense on certain nights, while **Josh Omojafo** provides a versatile inside-out threat and has posted multiple double-doubles. The Bulls' offensive identity is a fast-paced, high-scoring system capable of erupting for 100-plus points \u2014 they scored 95 or more in each of their first five games \u2014 but this same style creates defensive exposure, and elite teams have exploited it all season. In close games, South Florida has shown a troubling pattern: they lost to UAB in overtime (109-106 after blowing a halftime lead), lost to Wichita State in overtime (86-85 on a go-ahead layup with 20 seconds left), and dropped a heartbreaker at Temple (79-78 on a tip-in with six seconds remaining) \u2014 three winnable games that slipped away in the final moments. Conversely, they play with evident confidence and swagger when rolling, often building large first-half leads and sustaining them. At home in Tampa, South Florida appears especially dangerous, but on the road they have struggled: early-season losses at Oklahoma State and VCU, and conference losses in overtime scenarios on neutral energy. Their r\u00e9sum\u00e9 against ranked opponents is 0-1, with no signature wins to anchor their tournament case. **South Florida's realistic ceiling is the Round of 32**: dangerous enough as an 11-seed to knock off a 6-seed in the first round behind Enis's scoring and Nelson's two-way energy, but their late-game collapse tendencies, lack of proven performance against elite competition, and defensive vulnerabilities make a Sweet 16 run a stretch against the caliber of opponent they would face in the second weekend.",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.3655,
-      "1": 0.5666,
-      "2+": 0.0679
+      "0": 0.6811,
+      "1": 0.1584,
+      "2": 0.1498,
+      "3": 0.0101,
+      "4": 0.0005,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.21428571428571,
     "avg_weight": 193.92857142857142,
@@ -10409,9 +10509,13 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.7859,
-      "1": 0.2027,
-      "2+": 0.0113
+      "0": 0.5575,
+      "1": 0.3843,
+      "2": 0.0443,
+      "3": 0.0131,
+      "4": 0.0008,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 78.23076923076923,
     "avg_weight": 214.23076923076923,
@@ -10887,11 +10991,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Texas A&M enters the 2026 NCAA Tournament as a 10-seed with a 21-11 record \u2014 a r\u00e9sum\u00e9 built on genuine SEC depth but undermined by persistent late-season inconsistency. Against ranked opponents, the Aggies went approximately 4-7, with notable wins over Auburn (rallying from 16 down on the road), Texas, and LSU in a wild triple-overtime regular-season finale, but losses to Tennessee, Florida, Vanderbilt, Alabama, and Arkansas reveal a team that consistently fades against elite competition. Their final five games tell a complicated story: a gritty comeback win over Ole Miss erasing a 13-point deficit, a narrow road win at Oklahoma despite shooting 55% from the foul line, a 15-point blowout loss at Arkansas, a home loss to Texas, and a regular-season-closing triple-overtime thriller at LSU \u2014 a sequence that screams inconsistency rather than momentum. The Aggies then absorbed a brutal 83-63 SEC tournament blowout at the hands of an 11-seed Oklahoma squad, surrendering 19 offensive rebounds and being outscored 18-1 in second-chance points, which is a deeply troubling final image heading into March. Texas A&M plays an up-tempo, high-scoring style \u2014 scoring 100-plus points six times this season \u2014 relying on a deep rotation, relentless 3-point volume, and one of the SEC's best bench outputs (44 bench points per game), but this same approach produces volatile results: they are 10-0 when scoring 90-plus and visibly fragile when opponents impose physicality or control the glass. Rashaun Agee is the unquestioned anchor, setting the program's single-season double-double record (13) and delivering clutch performances all year, while Rylan Griffen, Ruben Dominguez, and Pop Isaacs provide genuine perimeter firepower \u2014 but no single player has shown the consistent dominance needed to carry a team through a tournament run. The Aggies are demonstrably stronger at home (where early-season blowouts over non-conference opponents padded their numbers) and noticeably vulnerable on the road and at neutral sites, where they have lost to Oklahoma State, UCF, SMU, Tennessee, Vanderbilt, and most recently, Oklahoma in Nashville. Their tournament ceiling is a second-round exit: scrappy and deep enough to pull off a first-round upset against the right matchup given their bench depth and 3-point firepower, but the glass vulnerabilities, turnover problems, and pattern of wilting against physical, elite opponents make any run deeper than the Round of 32 extremely difficult to project with confidence.",
     "region": "South",
-    "predicted_wins": 0,
+    "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.6673,
-      "1": 0.3122,
-      "2+": 0.0205
+      "0": 0.4425,
+      "1": 0.5141,
+      "2": 0.0355,
+      "3": 0.0076,
+      "4": 0.0003,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.6,
     "avg_weight": 206.53333333333333,
@@ -11342,9 +11450,13 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.6932,
-      "1": 0.2886,
-      "2+": 0.0182
+      "0": 0.8178,
+      "1": 0.1588,
+      "2": 0.0171,
+      "3": 0.0053,
+      "4": 0.0009,
+      "5": 0.0001,
+      "6": 0.0
     },
     "avg_height": 77.5,
     "avg_weight": 205.0,
@@ -11769,9 +11881,13 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1716,
-      "1": 0.6599,
-      "2+": 0.1685
+      "0": 0.1822,
+      "1": 0.6549,
+      "2": 0.1128,
+      "3": 0.0416,
+      "4": 0.007,
+      "5": 0.0013,
+      "6": 0.0002
     },
     "avg_height": 77.38461538461539,
     "avg_weight": 197.92307692307693,
@@ -12167,11 +12283,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Ohio State enters the 2026 NCAA Tournament as an 8-seed with a 21-12 record \u2014 a r\u00e9sum\u00e9 built on genuine resilience but undermined by a glaring 0-9 mark against Quadrant 1 opponents during the regular season. The Buckeyes' best wins came against ranked Purdue (82-74) and Wisconsin (86-69), though both of those came late in the season when tournament positioning was on the line. Against truly elite competition \u2014 Michigan three times (losses by 12, 21, and 4), Nebraska, Virginia, Illinois, and Michigan State \u2014 Ohio State was consistently beaten, suggesting a team that can compete with but rarely beat the best. Their conference tournament showing was telling: a gritty 72-69 survival against Iowa before falling 71-67 to top-seeded Michigan in the quarterfinals, a game they briefly led 61-60 with under six minutes left before Aday Mara took over. The final five games produced a 3-2 record \u2014 wins over Purdue, Penn State (a 94-62 blowout), and Indiana, sandwiched around a 74-57 shellacking at Iowa and the Michigan tournament loss \u2014 a mixed but slightly encouraging close to the season. Injuries are a legitimate concern entering the bracket: John Mobley Jr., the team's third scorer averaging 15.1 points, missed time with a hand injury and had only recently returned, and Christoph Tilly and Devin Royal have dealt with availability issues as well.\n\nStylistically, Ohio State is a team that lives in close games, relying on individual brilliance rather than systematic dominance \u2014 they are prone to both thrilling comebacks (the double-overtime win over West Virginia, the last-second layup by Tilly to beat Notre Dame) and puzzling collapses (blowing an 18-point lead against Penn State, surrendering a 14-2 early advantage at Iowa). The engine of everything is Bruce Thornton, who became Ohio State's all-time leading scorer this season and is playing with genuine star-level production \u2014 22 points against Michigan in the Big Ten Tournament, 32 against Michigan State, 34 against Illinois \u2014 though he sometimes carries a disproportionate offensive burden when teammates struggle. Mobley's shooting (11-game double-figure streak, six 3-pointers against UCLA) and Royal's two-way play give the Buckeyes a legitimate three-headed attack when healthy. Locationally, Ohio State was clearly more comfortable at home (15-2 at the Schottenstein Center) and noticeably inconsistent on the road and neutral sites, going just 6-10 away from Columbus. Their composure in close games is real \u2014 they have shown the ability to win ugly in tight finishes \u2014 but they are also 0-9 against the sport's best, and that ceiling has been tested repeatedly without a breakthrough. This Ohio State team is a **dangerous first-round opponent capable of pulling an upset**, but realistically projects as a **Sweet 16 ceiling at best** \u2014 likely a second-round exit, as their inability to consistently beat top-25 competition and their road/neutral-site struggles make a sustained run through a bracket stacked with superior teams very difficult to envision.",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.2444,
-      "1": 0.6408,
-      "2+": 0.1149
+      "0": 0.82,
+      "1": 0.1729,
+      "2": 0.006,
+      "3": 0.001,
+      "4": 0.0001,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 78.0,
     "avg_weight": 208.75,
@@ -12675,11 +12795,15 @@
     "highest_ranked_win": null,
     "profile_summary": "TCU enters the 2026 NCAA Tournament as a 9-seed with a 22-11 record \u2014 a r\u00e9sum\u00e9 built on a remarkable late-season surge that earned them a tournament bid they were far from guaranteed to receive. The Horned Frogs finished Big 12 play 11-7, a genuine achievement in one of college basketball's deepest conferences, and their ranked opponent record tells a compelling story of a team that grew into a legitimate threat: after opening 1-4 against Top 25 opponents with losses to Michigan, BYU, Arizona, and Kansas, TCU rattled off wins over then-No. 5 Iowa State (62-55), then-No. 10 Texas Tech (73-65 on the road), and an early-season neutral-site upset of then-No. 10 Florida. In the Big 12 Tournament, they dismantled Oklahoma State before falling to Kansas 78-73 in the quarterfinals in a competitive game that was tied at 61 with five minutes remaining \u2014 hardly an embarrassing exit. Their five-game closing stretch was nothing short of elite: wins over Arizona State (+12), Kansas State (+9), Texas Tech (+8 on the road), Cincinnati (+10), and Oklahoma State (+7) in the conference tournament represent the kind of momentum that makes dangerous 9-seeds. The engine of this team is David Punch, a relentless double-double threat who has logged 10+ consecutive double-digit scoring games at various points this season and delivered 24 points in the tournament loss to Kansas \u2014 he is their most consistent, pro-ready player and a matchup nightmare in the post. Xavier Edmonds has been equally essential down the stretch, posting eight double-doubles in nine games at one point and delivering a career-high 26 against Kansas State while drilling the go-ahead free throws with six seconds left; he is as clutch as anyone in the field. Jayden Pierre provides three-point shooting and big-shot ability \u2014 his pull-up 3 sealed the Iowa State upset \u2014 while Tanner Toolson off the bench provides instant offense and Liutauras Lelevicius has emerged as a stretch weapon capable of erupting (career-high 23 points with five 3-pointers at Kansas). Brock Harding rounds out a legitimately deep rotation, hitting clutch free throws against Florida and ranking among the team's most composed performers in pressure moments. Stylistically, TCU is a resilient comeback team rather than a wire-to-wire dominant one \u2014 they erased a 10-point second-half deficit against Florida, rallied from a double-digit deficit against Oklahoma State twice, and closed West Virginia with a 17-5 run after being down six with eight minutes left \u2014 but they are also prone to extended cold shooting stretches and second-half defensive lapses, as the Notre Dame overtime loss and the Colorado blowout (87-61) revealed. Notably, TCU is significantly stronger at home (finishing 12-5 at Schollmaier Arena) than on the road or neutral sites, though their neutral-site tournament win over Florida and Wisconsin suggests they are capable of translating energy to a neutral floor. Their attitude entering the tournament is one of earned confidence: this is not a team that stumbled into the field but one that went 9-of-10 to close the season, beat a top-10 program on the road, and nearly upset Kansas in the conference quarterfinals. The realistic ceiling for this TCU team is the Sweet 16 \u2014 they have the star power in Punch and Edmonds, the clutch-moment pedigree, and the late-season momentum to knock off their 8-seed opponent and potentially a 1-seed, but their tendency for extended offensive droughts, a 3-point shooting inconsistency that surfaced all year (including an 11% clip in their opening loss), and a 1-7 record against truly elite teams before their late-season surge suggest the Elite Eight would be a genuine overachievement for a group that is dangerous, battle-tested, and peaking \u2014 but not yet a Final Four-caliber program.",
     "region": "East",
-    "predicted_wins": 0,
+    "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.5355,
-      "1": 0.4294,
-      "2+": 0.0351
+      "0": 0.18,
+      "1": 0.7226,
+      "2": 0.0549,
+      "3": 0.0333,
+      "4": 0.0064,
+      "5": 0.002,
+      "6": 0.0007
     },
     "avg_height": 76.9375,
     "avg_weight": 205.9375,
@@ -13132,9 +13256,13 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1098,
-      "1": 0.6363,
-      "2+": 0.2539
+      "0": 0.2927,
+      "1": 0.3189,
+      "2": 0.257,
+      "3": 0.0677,
+      "4": 0.0351,
+      "5": 0.0213,
+      "6": 0.0072
     },
     "avg_height": 78.78571428571429,
     "avg_weight": 209.21428571428572,
@@ -13612,11 +13740,15 @@
     "highest_ranked_win": null,
     "profile_summary": "High Point enters the 2026 NCAA tournament as a 12-seed with an impressive 30-4 record, though that r\u00e9sum\u00e9 must be viewed with context \u2014 the Panthers dominated the Big South Conference (finishing 15-1 in conference play) but faced limited high-major competition throughout the season. Their two most notable losses against quality opponents came at UAB (91-74 in November, where Chance Westry torched them for 22 second-half points) and at Winthrop (92-75 in January, where Logan Duncomb's 28-point performance exposed High Point's defensive vulnerabilities against elite individual scorers). There are no documented wins over ranked opponents in the available summaries, meaning this team arrives in the tournament without a signature victory to validate their gaudy record against truly elite competition. That said, the Panthers are scorching hot entering March: they closed the regular season on an 11-game winning streak and swept through the Big South Tournament with wins over Gardner-Webb (91-76), UNC Asheville (75-71), and Winthrop (91-76), avenging their lone conference loss in dominant fashion and demonstrating they can win close games \u2014 the 75-71 semifinal over UNC Asheville being a particularly encouraging sign of late-game composure. High Point plays an explosive, high-scoring style that regularly produces triple-digit outputs \u2014 127 against Averett, 129 against Mary Baldwin, 123 against Pfeiffer, 112 against Gardner-Webb \u2014 though those blowouts came against non-scholarship or mid-to-lower tier programs and offer limited predictive value. The offense runs through a legitimate three-headed attack: Rob Martin is the engine, delivering consistent 20-plus-point performances with elite steals numbers (eight steals against Charleston Southern alone); Terry Anderson is the team's most complete two-way player, posting a stunning 31-point, 11-rebound, 5-assist outing at Radford and scoring 22 in back-to-back January wins; and Cam'Ron Fletcher provides interior presence, evidenced by his 20 points and 12 rebounds in the UAB loss. Conrad Martinez, Owen Aquino, and Braden Hausen round out a deep rotation that can hurt opponents from three. The Panthers do show some location inconsistency \u2014 both quality losses (UAB and Winthrop) came away from High Point, and the road/neutral-site sample against genuine competition is thin \u2014 raising legitimate questions about how they'll respond to a tournament environment against a higher-caliber opponent. They project as confident and resilient rather than flashy, capable of grinding out close wins as demonstrated by Martin's clutch free throws to seal the 84-81 win over Presbyterian. **Verdict**: High Point is a dangerous 12-seed capable of pulling off a first-round upset \u2014 their offensive firepower, multi-dimensional star power, and tournament momentum make them a genuine threat \u2014 but the complete absence of wins over ranked or high-major opponents, combined with vulnerability against elite individual scorers, makes a Sweet 16 run feel like their realistic ceiling and a Round of 32 exit the more likely outcome.",
     "region": "West",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.3061,
-      "1": 0.607,
-      "2+": 0.0869
+      "0": 0.7073,
+      "1": 0.1854,
+      "2": 0.0776,
+      "3": 0.0193,
+      "4": 0.0068,
+      "5": 0.003,
+      "6": 0.0007
     },
     "avg_height": 77.4,
     "avg_weight": 202.93333333333334,
@@ -14121,9 +14253,13 @@
     "region": "South",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.6441,
-      "1": 0.3332,
-      "2+": 0.0227
+      "0": 0.8152,
+      "1": 0.1421,
+      "2": 0.0381,
+      "3": 0.0044,
+      "4": 0.0002,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 78.625,
     "avg_weight": 210.625,
@@ -14547,11 +14683,15 @@
     "highest_ranked_win": null,
     "profile_summary": "VCU enters the 2026 NCAA Tournament as an 11-seed with a 27-7 record and genuine momentum, having won the Atlantic 10 Tournament title for the second straight year. The Rams' r\u00e9sum\u00e9 against quality competition is a mixed bag: they dropped non-conference games to Utah State, NC State (ranked #25 at the time), New Mexico, and Vanderbilt (#24), and were handled convincingly in two of those losses \u2014 Vanderbilt led 20-4 early and pulled away to win by 15, and NC State's Darrion Williams and Tre Holloman combined for 53 points in an 85-79 result. Against ranked opposition, VCU went 0-3 on the season, with their only ranked-game tests coming against legitimate Top 25 programs. That said, the Rams did defeat Virginia Tech on a neutral site in the Battle 4 Atlantis third-place game, and they closed the year by sweeping Dayton \u2014 a team fighting for an NCAA bid \u2014 twice during the regular season and once in the A-10 championship game, with dominant margins of 26, 6, and 8 points respectively. Their final five games read: a 70-65 win over George Mason, a 68-62 road win at Dayton, a 71-66 A-10 quarterfinal win over Duquesne, a 77-64 semifinal win over Saint Joseph's, and a 70-62 championship win over Dayton \u2014 consistent, composed winning without blowout margins, suggesting a team peaking at the right time rather than running away from the field.\n\nVCU is built around a deep, multi-contributor offense rather than a single transcendent star, with four players capable of leading the team on any given night. Lazar Djokovic is the most reliable scorer \u2014 posting 26 points against La Salle, 23 against both George Mason and St. Bonaventure, and double-digit efforts in nearly every game down the stretch \u2014 while shooting efficiently from the field and drawing fouls at a high rate. Terrence Hill Jr. is a dangerous spark off the bench, capable of erupting from three as he did against Virginia Tech (5-for-5 from deep) and Samford (5-for-9), and has been the team's leading scorer in multiple tournament games. Jadrian Tracey has elite shot-making upside \u2014 his 9-for-12, 6-for-9-from-three performance against Dayton (26 points) was a statement game \u2014 and Brandon Jennings provides physicality and foul-drawing ability, shooting 14-for-15 from the line against St. Bonaventure. However, VCU's biggest structural vulnerability was exposed in the Saint Louis loss on February 21: a ranked SLU team erased a 10-point second-half deficit with a 24-4 run, revealing that this team can go cold offensively for extended stretches under pressure \u2014 a February brawl incident that emptied both benches further clouds the temperament question. The Rams play stronger at home (notably wire-to-wire control in most Richmond wins) and have shown they can compete on the road and at neutral sites, but their 0-3 record against ranked opponents is a real ceiling concern. VCU is a classic dangerous 11-seed \u2014 deep, experienced, peaking, and capable of winning two games \u2014 but their inability to beat a Top 25 team all season and their tendency to go ice-cold against elite defensive pressure puts a Sweet 16 run near the outer limit of realistic expectations, with a Round of 32 exit the most probable outcome.",
     "region": "South",
-    "predicted_wins": 1,
+    "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.3013,
-      "1": 0.61,
-      "2+": 0.0887
+      "0": 0.1848,
+      "1": 0.2473,
+      "2": 0.3703,
+      "3": 0.1566,
+      "4": 0.0369,
+      "5": 0.0033,
+      "6": 0.0008
     },
     "avg_height": 78.23076923076923,
     "avg_weight": 204.6153846153846,
@@ -15002,11 +15142,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Michigan enters the 2026 NCAA Tournament as a 1-seed with a 31-3 record and the outright Big Ten regular-season title \u2014 a r\u00e9sum\u00e9 that makes them one of the most legitimate national title contenders in the field. Against ranked opponents, the Wolverines went an impressive 13-5, with marquee neutral-site blowouts of #21 Auburn (102-72) and #12 Gonzaga (101-61) at the Players Era Championship, road wins over #7 Michigan State, #5 Nebraska, and #10 Illinois, and a statement victory at #7 Purdue in February. Their three losses came to Wisconsin (91-88 at home, surrendering 54 second-half points), Duke (68-63 on a neutral court where they shot 6-of-25 from three), and Purdue (80-72 in the Big Ten Tournament final where Braden Smith and Trey Kaufman-Renn exploited the pick-and-roll against a foul-troubled Aday Mara) \u2014 all competitive, explainable losses against quality opponents with no embarrassing blowout defeat on the ledger. Over their final five games (wins over Iowa 71-68, Michigan State 90-80, Ohio State 71-67, Wisconsin 68-65 in a buzzer-beater, and the Big Ten Tournament final loss to Purdue 80-72), Michigan showed both resilience and vulnerability: they won three games by single digits, including Yaxel Lendeborg's 0.4-second game-winning three over Wisconsin, but also got outworked in the second half by Purdue's veteran execution, raising questions about whether they can sustain their level across six tournament games.\n\nMichigan's identity is built on elite scoring depth \u2014 they reached 100 points ten times this season and demolished opponents by 40-plus points eight times \u2014 anchored by Lendeborg, the Big Ten Player of the Year, who is capable of 20-plus point, double-double performances and hit the biggest shot of the conference tournament. Morez Johnson Jr. provides interior force (multiple double-doubles, including a 29-point career high), Elliot Cadeau runs the offense with composure (10 assists in the Big Ten final), and Aday Mara is a 7-foot-3 defensive anchor who can score 20 and blocks shots at an elite level \u2014 though his foul trouble against Purdue's Smith is a real tournament concern. The Wolverines play best when Lendeborg is assertive and the offense flows inside-out, but they have been susceptible to hot three-point shooting performances (Wisconsin's John Blackwell, Aleksas Bieliauskas's four straight threes, and Nick Boyd's 38-point outburst in the Big Ten semis are cautionary examples) and they went a dismal 6-of-25 from three in the Duke loss. Locationally, Michigan is exceptional \u2014 10-0 on the road, dominant at home, and capable of beating elite opponents on neutral floors, which bodes well for the tournament setting. The Wolverines carry themselves with genuine confidence and composure, rarely getting blown out, consistently finding ways to win close games, and responding well after adversity, but they are not immune to second-half collapses. **Verdict: Michigan is a legitimate national title contender and the most complete team in their region \u2014 their ceiling is the national championship, and given their depth, defensive ranking, and star power, a Final Four appearance should be considered their floor.**",
     "region": "Midwest",
-    "predicted_wins": 1,
+    "predicted_wins": 3,
     "win_probability_distribution": {
-      "0": 0.0736,
-      "1": 0.5807,
-      "2+": 0.3457
+      "0": 0.1198,
+      "1": 0.1022,
+      "2": 0.2657,
+      "3": 0.2886,
+      "4": 0.1419,
+      "5": 0.0616,
+      "6": 0.0201
     },
     "avg_height": 78.42857142857143,
     "avg_weight": 220.71428571428572,
@@ -15403,11 +15547,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Duke enters the 2026 NCAA Tournament as the consensus No. 1 overall seed with a 32-2 record and an 11-game winning streak \u2014 a r\u00e9sum\u00e9 that makes a compelling case as the nation's best team. Against ranked opponents, the Blue Devils went 11-3: quality wins include a neutral-site dismantling of then-No. 1 Michigan (68-63), road victories at No. 7 Michigan State and No. 20 Louisville, a home throttling of No. 11 Virginia (77-51), and a neutral-site ACC Tournament run that included wins over Florida State (80-79), Clemson (73-61), and No. 10 Virginia (74-70) to claim the title. The three losses \u2014 a last-second heartbreaker at North Carolina on Seth Trimble's buzzer 3, a stunning collapse against unranked Texas Tech at Madison Square Garden when Duke blew a 17-point lead, and an early-season scare against Florida that required an Isaiah Evans miracle 3 \u2014 all share a troubling theme: Duke is capable of surrendering large leads and losing control of games in the second half when opponents get hot from three. The final five games tell a more reassuring story, however: a 31-point romp over Notre Dame, a 26-point beatdown of N.C. State, a wire-to-wire rivalry win over North Carolina (76-61), and back-to-back ACC Tournament victories over Clemson and Virginia \u2014 the latter a gritty 74-70 win in which star Cameron Boozer shot just 3-of-17 but still willed his team to the championship on leadership and free throws alone \u2014 suggesting this group has matured considerably since its mid-season wobbles.\n\nDuke's identity is built around freshman phenom Cameron Boozer, who is the ACC Player of the Year and a national Player of the Year candidate averaging over 23 points and commanding double teams that open the entire offense. He has posted multiple 30-point games, recorded 14 double-doubles, and demonstrated the rare ability to impose his will in the paint, shoot from three, create for others, and make ice-cold free throws in the final seconds \u2014 as he proved in the ACC title game against Virginia. Isaiah Evans is a lethal complementary weapon, capable of exploding for 20-plus points on any given night and hitting shots in the most pressurized moments, including the go-ahead 3 with 19.7 seconds left against Florida and a 32-point ACC Tournament performance against Florida State. The most significant injury concern entering the tournament is significant: starting point guard Caleb Foster is out indefinitely with a broken right foot, and starting big man Patrick Ngongba II is nursing his own foot injury \u2014 both sat out portions of the ACC Tournament. Cayden Boozer has capably stepped into the starting lineup, posting back-to-back 16-point games in Charlotte, and the depth of Maliq Brown (ACC Defensive and Sixth Man of the Year), Dame Sarr, Darren Harris, and Nikolas Khamenia gives Duke real versatility even shorthanded. Location is a non-factor for this group: Duke is 7-0 on neutral courts \u2014 including wins over Kansas, Michigan, and Arkansas \u2014 and 29-0 at home, with road trips to Michigan State, Louisville, Virginia Tech, California, Stanford, Florida State, and Notre Dame all resulting in wins. The Blue Devils defend with purpose (ACC's best scoring defense at 64.6 ppg in conference play), rebound dominantly, and play with the composure of a team that has been in every pressure situation imaginable \u2014 yet the late-game collapse tendencies against Texas Tech and North Carolina are a real scouting vulnerability that elite tournament opponents will try to exploit. **Duke is a legitimate national championship contender.** The talent, experience, r\u00e9sum\u00e9, and winning streak all point to a team fully capable of cutting down the nets, and the Boozer-Evans pairing is as dangerous a one-two punch as any team in the country will face; the realistic ceiling here is the national title, with the primary risk being a hot-shooting opponent catching them in a second-half collapse before they can fully get clear.",
     "region": "East",
-    "predicted_wins": 2,
+    "predicted_wins": 3,
     "win_probability_distribution": {
-      "0": 0.0212,
-      "1": 0.3192,
-      "2+": 0.6596
+      "0": 0.0513,
+      "1": 0.0686,
+      "2": 0.1716,
+      "3": 0.3496,
+      "4": 0.0808,
+      "5": 0.0951,
+      "6": 0.1831
     },
     "avg_height": 79.33333333333333,
     "avg_weight": 215.0,
@@ -15914,9 +16062,13 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.6058,
-      "1": 0.3676,
-      "2+": 0.0266
+      "0": 0.9487,
+      "1": 0.0359,
+      "2": 0.0131,
+      "3": 0.0021,
+      "4": 0.0002,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 76.75,
     "avg_weight": 201.5625,
@@ -16367,11 +16519,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Arizona enters the 2026 NCAA Tournament as a 1-seed with a 32-2 record and one of the most impressive r\u00e9sum\u00e9s in recent college basketball history. The Wildcats rattled off 23 consecutive wins to open the season \u2014 the best start in school history \u2014 including ranked victories over Florida (AP #3), UConn (#3), Auburn (#20), UCLA (#15), Alabama (#12), BYU (#13), and Houston (#2), compiling a record of approximately 12-2 against ranked opponents over the course of the year. Their two losses \u2014 a 78-82 defeat at Kansas and a home loss to Texas Tech \u2014 came in back-to-back games in mid-February and represented a brief but notable stumble that dropped them from unanimous No. 1. They responded emphatically, however, winning seven straight to close the regular season and sweeping through the Big 12 Tournament with wins over UCF, Iowa State (on a buzzer-beater from Jaden Bradley), and Houston \u2014 avenging last year's conference title game loss to the Cougars \u2014 to enter March Madness on a nine-game winning streak and as Big 12 champions outright. Their style of play is defined by dominant interior physicality: Arizona consistently outrebounds opponents by wide margins (outrebounding Kansas State 55-32, Alabama 52-32), posts massive paint advantages (54-14 on points in the paint vs. Oklahoma State), and converts defensive pressure into transition offense, all orchestrated by one of the deepest rosters in the country. When teams try to slow them down \u2014 as San Diego State did in December and Cincinnati briefly did in January \u2014 Arizona leans on its defense and length to grind opponents into submission rather than panicking.\n\nThe star power on this roster is genuinely elite and multi-dimensional. Freshman Koa Peat is the engine, averaging around 16 points on efficient shooting with elite athleticism \u2014 his 30-point debut against Florida and 25-point performance in the regular-season finale at Colorado show his ceiling \u2014 though he did miss three games with a lower-leg strain in late February and battled foul trouble in multiple road games, which remains a watchable concern. Jaden Bradley is the steadiest hand at point guard, a senior capable of defining moments like his BYU walk-off block-and-free-throws and his buzzer-beater against Iowa State; he went over 1,000 career points in November and has been money in the clutch all season. Brayden Burries has emerged as arguably the team's most consistent scorer down the stretch, posting 29 points at BYU, 28 at Alabama, 31 against Colorado, and 25 in the first Kansas loss \u2014 a freshman who genuinely doesn't play like one. The 7-foot-2 Motiejus Krivas anchors the paint with elite interior finishing and rebounding, while Anthony Dell'Orso (six 3-pointers and 26 points in the Big 12 semifinal), Tobe Awaka (multiple double-doubles, including a 15-rebound performance at McKale), and Ivan Kharchenkov provide genuine depth across multiple positions. The Wildcats are 12-3 on the road and neutral sites against meaningful competition and have repeatedly shown the ability to win ugly \u2014 gutting out a 69-65 win at UCLA, surviving BYU 86-83, and beating Houston twice in its own building. Their only vulnerabilities are occasional turnover lapses, inconsistent 3-point shooting (3-of-16 vs. Kansas State, 0-of-6 in the first half at Colorado), and Peat's foul trouble in hostile road environments. **Verdict: Arizona is the clearest national title contender in this field.** The combination of historic regular-season dominance, a deep and battle-tested roster, elite interior size, clutch guard play, and a conference tournament championship \u2014 capped by wins over Iowa State and Houston \u2014 makes the Wildcats the team everyone else has to beat. A realistic ceiling here is not just the Final Four; this team has the talent, experience, and identity to cut down the nets.",
     "region": "West",
-    "predicted_wins": 2,
+    "predicted_wins": 3,
     "win_probability_distribution": {
-      "0": 0.0065,
-      "1": 0.1285,
-      "2+": 0.865
+      "0": 0.1125,
+      "1": 0.0614,
+      "2": 0.1627,
+      "3": 0.1975,
+      "4": 0.1717,
+      "5": 0.1546,
+      "6": 0.1395
     },
     "avg_height": 78.0,
     "avg_weight": 207.85714285714286,
@@ -16825,9 +16981,13 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.6024,
-      "1": 0.3706,
-      "2+": 0.0269
+      "0": 0.8875,
+      "1": 0.0918,
+      "2": 0.0162,
+      "3": 0.004,
+      "4": 0.0005,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.85714285714286,
     "avg_weight": 201.42857142857142,
@@ -17277,11 +17437,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Florida enters the 2026 NCAA Tournament as the No. 1 overall seed with a 26-7 record and the SEC regular-season title \u2014 a r\u00e9sum\u00e9 that screams national title contender, though one with a few notable blemishes that demand scrutiny. The defending champions went 10-7 against ranked opponents this season, with quality wins over No. 10 Vanderbilt (98-94 on the road), No. 21 Tennessee (91-67), No. 23 Alabama (100-77), No. 17 Texas A&M (86-67), No. 20 Arkansas (111-77), No. 25 Kentucky (92-83), and No. 18 Georgia (92-77), while suffering losses to No. 13 Arizona, No. 4 Duke (67-66 on a last-second Isaiah Evans three), No. 5 UConn (77-73), TCU, Missouri, and Auburn \u2014 a mixed bag that includes some genuinely brutal close losses and at least one head-scratching home upset. Their final five games read: a 108-74 home demolition of Mississippi State, an 84-77 road win at Kentucky, a 71-63 SEC Tournament quarterfinal win over Kentucky, and then a stunning 91-74 semifinal loss to No. 22 Vanderbilt in which they never led by more than two and trailed by 13 at halftime \u2014 a worrying note that ended a 12-game winning streak and raised legitimate questions about their readiness heading into March. Thomas Haugh sat out the Mississippi State game as a precaution, though he returned against Kentucky; no significant injuries appear to be limiting the roster heading into the bracket.\n\nFlorida's identity is unmistakable: they are an elite rebounding team \u2014 the nation's best by margin for much of the season \u2014 anchored by one of college basketball's most dominant frontcourts. Rueben Chinyelu (a double-double machine with 18 on the season, including a 21-rebound performance against Merrimack and a 20-rebound night against Georgia) is a force of nature inside, while Alex Condon provides versatile scoring, shot-blocking, and playmaking at 6-foot-11. Thomas Haugh is the most reliable offensive option, routinely delivering in big moments \u2014 his 24-point effort in the Missouri loss and 27-point game against Auburn in defeat stand out \u2014 and Boogie Fland has elevated his play down the stretch, highlighted by a 23-point, 4-steal performance against Tennessee and a career-high 8 steals against Alabama. The team's chronic weakness has been three-point shooting \u2014 they ranked 348th nationally as late as December at 28% \u2014 but a genuine improvement has emerged during the winning streak, with Florida hitting 36% from deep over their final 11 games and going 11-of-22 from three against Ole Miss and 10-of-26 against Georgia. When the perimeter shooting is clicking alongside their dominant interior play, this team is nearly impossible to guard. However, their losses share a pattern: poor shooting halves, turnover clusters, and an occasional inability to respond when physically challenged teams push them in the first half \u2014 as Auburn demonstrated with a 15-point halftime lead in Gainesville and Vanderbilt replicated in Nashville. Florida's home record of 12-1 is exceptional, their SEC road winning streak reached seven games, and they handled neutral-site competition well outside of early losses to TCU and Duke, suggesting the tournament environment should suit them \u2014 but the Vanderbilt collapse is a legitimate red flag that cannot be dismissed. This is a national title contender with the frontcourt depth, rebounding dominance, experienced coaching under Todd Golden, and a battle-tested schedule to make a deep run, but a team that can still be cracked by elite perimeter shooting, physical first-half aggression, or cold offensive nights; realistically, Florida is a **Final Four lock and legitimate national championship threat**, though any opponent capable of disrupting their paint presence and hitting threes early should be circled as a potential upset danger.",
     "region": "South",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.0878,
-      "1": 0.6085,
-      "2+": 0.3037
+      "0": 0.4681,
+      "1": 0.2259,
+      "2": 0.1811,
+      "3": 0.0597,
+      "4": 0.0444,
+      "5": 0.011,
+      "6": 0.0098
     },
     "avg_height": 79.5,
     "avg_weight": 219.64285714285714,
@@ -17707,9 +17871,13 @@
     "region": "Midwest",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0149,
-      "1": 0.2506,
-      "2+": 0.7345
+      "0": 0.0436,
+      "1": 0.316,
+      "2": 0.4513,
+      "3": 0.1166,
+      "4": 0.0577,
+      "5": 0.0129,
+      "6": 0.002
     },
     "avg_height": 77.46153846153847,
     "avg_weight": 211.23076923076923,
@@ -18160,9 +18328,13 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8827,
-      "1": 0.1118,
-      "2+": 0.0055
+      "0": 0.9564,
+      "1": 0.0392,
+      "2": 0.0042,
+      "3": 0.0001,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.71428571428571,
     "avg_weight": 203.0,
@@ -18589,9 +18761,13 @@
     "region": "West",
     "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.0269,
-      "1": 0.3704,
-      "2+": 0.6027
+      "0": 0.0513,
+      "1": 0.1566,
+      "2": 0.358,
+      "3": 0.2382,
+      "4": 0.0855,
+      "5": 0.0725,
+      "6": 0.0379
     },
     "avg_height": 77.38461538461539,
     "avg_weight": 208.84615384615384,
@@ -19044,9 +19220,13 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8183,
-      "1": 0.1725,
-      "2+": 0.0092
+      "0": 0.9487,
+      "1": 0.049,
+      "2": 0.002,
+      "3": 0.0003,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.64285714285714,
     "avg_weight": 201.14285714285714,
@@ -19497,11 +19677,15 @@
     "highest_ranked_win": null,
     "profile_summary": "UConn enters the 2026 NCAA Tournament as a 2-seed with a 29-5 record \u2014 a r\u00e9sum\u00e9 built on one of the most demanding schedules in the country, featuring wins over ranked BYU, Illinois, Kansas, Florida, and Texas in non-conference play before dominating Big East competition for much of the season. Against ranked opponents, the Huskies went an impressive 7-5, with marquee victories that include a road win at Allen Fieldhouse over then-No. 21 Kansas, a neutral-site beatdown of No. 13 Illinois at Madison Square Garden, and a dominant 72-40 home demolition of then-No. 15 St. John's \u2014 but their three losses to the Red Storm (including a 72-52 blowout in the Big East Tournament final) and a home upset by unranked Creighton expose a team that can be dismantled when its offense goes cold and turnovers pile up. Over the final five games entering the tournament, UConn went 3-2: a gritty 71-67 win at Villanova, a 32-point blowout of St. John's at home, a tight 71-67 victory over Seton Hall in the regular-season finale, a dominant Big East Tournament quarterfinal win over Xavier (93-68), and then a deflating 72-52 loss to St. John's in the conference championship \u2014 suggesting a team that is capable of brilliance but dangerously inconsistent when pressure peaks. The Huskies play an up-tempo, multi-threat offensive style anchored by the frontcourt tandem of Tarris Reed Jr. and Alex Karaban, with perimeter threats in Solo Ball, Silas Demary Jr., and breakout freshman Braylon Mullins providing secondary firepower; when all five contributors are clicking and the ball is moving \u2014 as evidenced by Demary's 23-point, 15-assist eruption at Providence and Mullins' five-3-pointer performance against Xavier \u2014 this offense can be genuinely unstoppable, but a 3-of-24 performance from three against Marquette and a 36% shooting first half in the Big East final reveal a team that can go completely flat for stretches. Reed has been their most consistent anchor all year, but a key concern heading into the tournament is Demary's left ankle injury, suffered late in the Big East championship game; Hurley described it as a mild sprain, but Demary committed nine turnovers in that final loss and any limitation to his playmaking would be a significant blow to an offense that routes nearly everything through him. Karaban, meanwhile, is a battle-tested five-year Huskies veteran with back-to-back national championship experience and 136 career starts, giving this team a composed, experienced identity in big moments \u2014 evident in his clutch second-half scoring in multiple close wins \u2014 while Mullins' emergence as a legitimate weapon from three has added a dimension this team lacked early in the season. UConn is 9-0 away from home in the regular season and has historically thrived at neutral-site venues like Madison Square Garden, posting an 11-2 mark there this season across the Jimmy V Classic and Big East Tournament, which bodes well for the neutral-site NCAA Tournament format \u2014 though the Big East final exposed that even their best environment is no guarantee against a team that physically bullies them. The Huskies are a national title contender in terms of roster depth and pedigree, but the closing stretch \u2014 three losses in their last seven games, a collapse against Creighton at home, and a humbling Big East final defeat \u2014 raises real questions about whether this group has the sustained composure of UConn's 2023 and 2024 championship teams. **Verdict**: UConn is a legitimate Elite Eight threat and plausible Final Four contender, with the talent and experience to beat anyone on a given night, but their tendency to go cold offensively for extended stretches, Demary's uncertain health, and a proven vulnerability against physical, disciplined teams puts a national title run just out of reach unless they rediscover the consistency that defined their 18-game winning streak midseason.",
     "region": "East",
-    "predicted_wins": 2,
+    "predicted_wins": 3,
     "win_probability_distribution": {
-      "0": 0.0158,
-      "1": 0.2603,
-      "2+": 0.7239
+      "0": 0.0546,
+      "1": 0.151,
+      "2": 0.0223,
+      "3": 0.2666,
+      "4": 0.1325,
+      "5": 0.1095,
+      "6": 0.2635
     },
     "avg_height": 78.57142857142857,
     "avg_weight": 212.71428571428572,
@@ -19954,9 +20138,13 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.8492,
-      "1": 0.1434,
-      "2+": 0.0074
+      "0": 0.9454,
+      "1": 0.0314,
+      "2": 0.0113,
+      "3": 0.0105,
+      "4": 0.0012,
+      "5": 0.0001,
+      "6": 0.0
     },
     "avg_height": 78.21428571428571,
     "avg_weight": 198.71428571428572,
@@ -20407,11 +20595,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Virginia enters the 2026 NCAA Tournament as a 3-seed with an impressive 29-5 record, a r\u00e9sum\u00e9 built on genuine depth of schedule and remarkable offensive transformation under first-year head coach Ryan Odom. Against ranked opponents, the Cavaliers went 5-6: notable wins include a road victory at No. 20 Louisville, a comeback double-overtime road win at Notre Dame (rallying from 19 down), road wins at SMU and Georgia Tech, and a dominant ACC Tournament run that included victories over Miami twice and N.C. State three times. Their losses to ranked opponents came against No. 22 North Carolina (at home, 85-80), a blowout at No. 1 Duke (77-51), a narrow ACC Tournament championship loss to No. 1 Duke (74-70), a triple-overtime New Year's Eve loss at Virginia Tech, and a competitive home loss to Butler early in the season. Over their final five game summaries \u2014 wins over N.C. State (90-61), Virginia Tech (76-72), and ACC Tournament victories over N.C. State (81-74), Miami (84-62), and a narrow loss to Duke (74-70) \u2014 Virginia has been playing its best basketball of the season, winning nine of ten heading into March with the only blemish being a road blowout at Cameron Indoor. Crucially, freshman center Ugonna Onyenso recorded a stunning 21 blocks across three ACC Tournament games, shattering Tim Duncan's long-standing record and announcing himself as a legitimate force at both ends.\n\nThis Virginia team is not the slow-paced, defensive-minded Bennett-era squad \u2014 Odom has engineered a high-octane offense averaging a program-record 84 points per game and a program-high 28-plus 3-point attempts per night. The Cavaliers are capable of explosive offensive bursts, as evidenced by a 61-point first half against Marshall, a 42-9 run to open the Georgia Tech game, and Jacari White's seven-for-seven 3-point game against Dayton \u2014 but they are equally capable of shooting themselves into trouble, as their 20% three-point performance at Duke and a 30% showing at Florida State attest. The star power is real: freshman Thijs De Ridder (a top international prospect from Belgium) has delivered multiple clutch performances including a 32-point double-overtime road masterpiece at Notre Dame and consistent production throughout conference play, while Malik Thomas provides reliable secondary scoring with a propensity for big three-point nights. Sam Lewis has emerged as a clutch playmaker, and White is a dangerous bench weapon when healthy. The primary concern is health \u2014 De Ridder was seen limping late in the N.C. State win, and forward Devin Tillis exited the Georgia Tech game with a lower-body injury, both worth monitoring. Virginia is 10-0 at home, 10-2 away from home (including 3-1 on neutral courts), suggesting they travel exceptionally well \u2014 a meaningful advantage in tournament play. Their identity is that of a resilient, multi-dimensional team capable of both gritty comebacks and dominant wire-to-wire performances, though they can go cold from three and get blown out when Duke-level athleticism suffocates their perimeter attack. The Cavaliers have demonstrated they can compete with the nation's best team in a close game (74-70 in the ACC title game), and Onyenso's rim protection gives them a legitimate defensive anchor. **Virginia's realistic tournament ceiling is the Elite Eight**: talented, well-coached, and battle-tested enough to handle most brackets through the Sweet 16, but their three-point dependency and vulnerability against elite athleticism \u2014 as Duke proved twice \u2014 makes a Final Four run a stretch without a favorable draw.",
     "region": "Midwest",
-    "predicted_wins": 1,
+    "predicted_wins": 4,
     "win_probability_distribution": {
-      "0": 0.2002,
-      "1": 0.6562,
-      "2+": 0.1436
+      "0": 0.061,
+      "1": 0.0384,
+      "2": 0.1653,
+      "3": 0.1664,
+      "4": 0.2521,
+      "5": 0.1661,
+      "6": 0.1506
     },
     "avg_height": 78.0,
     "avg_weight": 209.78571428571428,
@@ -20808,11 +21000,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Wright State enters the 2026 NCAA Tournament as a 14-seed with a 23-11 record, a r\u00e9sum\u00e9 built almost entirely on Horizon League dominance but lacking credible wins against high-major competition. The Raiders went 0-4 against their most notable non-conference opponents \u2014 losing to California by 10, Toledo by 10, Kent State by 4, and getting blown out by Butler 94-69 \u2014 signaling clear limitations when the caliber of competition rises. There are no identifiable ranked wins in the provided summaries, and the losses to mid-majors like Youngstown State (by 1, at home) and Marshall (by 2) further cloud the r\u00e9sum\u00e9. That said, Wright State finished 14-5 in Horizon League play and closed the regular season on a strong note, winning their final four regular-season games \u2014 including a 13-point blowout of Cleveland State and a 103-90 dismantling of Northern Kentucky \u2014 before grinding out back-to-back conference tournament wins over Northern Kentucky (92-91) and Detroit Mercy (66-63). Those last five results (wins over Purdue Fort Wayne by 4, Northern Kentucky by 1 in regular season, Cleveland State by 29, Northern Kentucky by 13 in tournament, and Detroit Mercy by 3 in tournament) reflect a team trending upward but also one that consistently lives on the edge in close games, suggesting resilience rather than dominance.\n\nWright State's offensive identity is built around a multi-headed scoring attack led by Michael Cooper, Michael Imariagbe, TJ Burch, and Solomon Callaghan \u2014 all of whom are capable of reaching 20-plus on a given night \u2014 with Callaghan in particular emerging as a lethal perimeter shooter (going 6-for-7 from three against Purdue Fort Wayne, 6-for-9 against Oakland). The team plays a moderately up-tempo, guard-oriented style that can produce high-scoring outputs, but has shown a troubling pattern of surrendering big first halves and needing frantic comebacks, as seen in the California loss and the Detroit Mercy regular-season home defeat where a go-ahead basket with 10 seconds left sealed the Raiders' fate. They are 6-4 on the road based on available summaries, holding their own away from home, but their neutral-site sample is thin. The Butler blowout remains the most telling data point: against a legitimate high-major opponent in a power environment, Wright State was overmatched from the second half onward, allowing 65 second-half points. For a 14-seed facing a 3-seed or better in the first round, that gap is hard to overcome. **Verdict: Wright State is a likely first-round exit.** They are a well-coached, offensively versatile team peaking at the right time, and their multi-scorer attack gives them a puncher's chance \u2014 but their non-conference record against quality opponents (0-4) and the absence of any ranked wins make a first-round upset highly unlikely. Ceiling: Round of 64 exit, with a slim but real upset potential if their three-point shooting runs hot.",
     "region": "Midwest",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.4602,
-      "1": 0.4929,
-      "2+": 0.0469
+      "0": 0.939,
+      "1": 0.0372,
+      "2": 0.0186,
+      "3": 0.0043,
+      "4": 0.0007,
+      "5": 0.0001,
+      "6": 0.0
     },
     "avg_height": 77.83333333333333,
     "avg_weight": 204.16666666666666,
@@ -20882,11 +21078,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Alabama enters the 2026 NCAA Tournament as a 4-seed with a 23-9 record \u2014 a r\u00e9sum\u00e9 built on explosive offense, elite perimeter shooting, and a genuinely brutal non-conference schedule that simultaneously proved the Tide's ceiling and exposed their floor. Against ranked opponents this season, Alabama went 8-9: statement wins over then-#5 St. John's at Madison Square Garden, #11 Illinois at the United Center, #11 Vanderbilt on the road, and #22 Tennessee in Knoxville stand out as legitimate elite-level victories, while losses to #2 Purdue, #12 Gonzaga, #1 Arizona, and #19 Florida \u2014 the latter two by a combined 44 points \u2014 reveal a team that can be overwhelmed physically when it cannot shoot its way back into a game. The Tide rank among the nation's leaders in 3-pointers made, averaging over 12 per game, and have strung together nine or more consecutive games with double-digit makes from deep; when that shot is falling, Alabama is nearly impossible to guard, as evidenced by their 117-115 double-overtime thriller over #20 Arkansas in which Labaron Philon Jr. scored a career-high 35 points and Aiden Sherrell added 26. Looking at the final five games, Alabama went 3-2: a 100-75 blowout of Mississippi State (with Philon sidelined), a gutsy 71-69 road win at #22 Tennessee on a Philon jumper with 22.8 seconds left, a deflating 98-88 loss at Georgia in which Kanon Catchings torched them for 32, a bounce-back 96-84 home win over Auburn in the regular-season finale, and then a stunning 80-79 first-round SEC Tournament upset loss to 15th-seeded Ole Miss \u2014 a team Alabama had beaten by 19 in the regular season \u2014 that raises serious questions about consistency and composure at the worst possible moment. Alabama's identity is high-wire offense: they win in shootouts, come back from deficits through hot shooting runs, and occasionally blow teams out with 22-3-pointer explosions, but they are also turnover-prone (18 turnovers in the Florida blowout, five from Philon alone in the Texas loss), and they are consistently destroyed on the glass \u2014 outrebounded by Purdue 52-28, Gonzaga 48-36, Arizona 52-32, and Florida decisively \u2014 which becomes a compounding problem when 3-point shooting goes cold. Philon, the SEC's leading scorer averaging 22 points per game, is the engine of everything Alabama does; his ability to create off the dribble, hit pull-up jumpers, and push the pace makes him a genuine first-team All-SEC talent, while Aden Holloway provides a complementary scoring punch from deep (career-high 26 points twice this season), and Latrell Wrightsell Jr. gives Alabama a dangerous tertiary option, going 7-of-10 from three against Missouri. The injury situation has been a persistent subplot all season \u2014 Holloway, Wrightsell, Keitenn Bristow, Jalil Bethea, and even Philon have missed games at various points \u2014 and the eligibility circus surrounding 7-footer Charles Bediako ultimately ended when his injunction was denied, leaving Alabama without a true interior presence to counter elite frontcourts. At home, Alabama is dominant, but on the road and at neutral sites the picture is messier: they beat St. John's and Illinois in neutral/road settings yet were blown out by Arizona, Florida, and lost to Georgia and Ole Miss in their final four away-from-home appearances. **Alabama is a dangerous, unpredictable team capable of beating anyone on a hot-shooting night, but their inability to rebound, tendency to collapse against elite frontcourts, chronic turnover issues, and the psychological weight of that late SEC Tournament implosion against Ole Miss cap their realistic ceiling at the Sweet 16** \u2014 with a first- or second-round exit equally plausible if they run into a physical, defense-first team that can take them off the 3-point line before Philon catches fire.",
     "region": "Midwest",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.3758,
-      "1": 0.5591,
-      "2+": 0.0652
+      "0": 0.7718,
+      "1": 0.1323,
+      "2": 0.0853,
+      "3": 0.0099,
+      "4": 0.0006,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": -1.0,
     "avg_weight": -1.0,
@@ -21283,11 +21483,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Hofstra enters the 2026 NCAA Tournament as a 13-seed with a 24-10 record, a mark that understates the program's legitimate quality \u2014 particularly their stunning mid-season stretch against Power Conference competition. The Pride's most compelling r\u00e9sum\u00e9 items are back-to-back ACC wins in December: an 80-73 road demolition of Pittsburgh behind Cruz Davis's career-high 36 points, followed immediately by a 70-69 stunner at Syracuse on a German Plotnikov 3-pointer with 34 seconds left, sealed by Victory Onuetu's game-saving block. Those wins give Hofstra genuine big-game credibility that most 13-seeds simply cannot claim. Their early-season struggles \u2014 opening 0-2 with losses to UCF and Iona, both by single digits \u2014 reflect a team still finding its identity, but the mid-season 0-5 skid (Games 18-22, spanning losses to Stony Brook, Elon, North Carolina A&T, William & Mary, and Charleston) is a legitimate red flag, exposing vulnerabilities when Davis is contained and the supporting cast goes cold. Entering the tournament, however, Hofstra is playing its best basketball: over their final five games (CAA quarterfinal, semifinal, and championship wins over William & Mary 92-61, Towson 68-65 in overtime, and Monmouth 75-69, plus regular-season wins at Northeastern 82-68 and at home over Stony Brook 67-58), Hofstra went 5-0 and won the CAA Tournament outright, demonstrating genuine momentum.\n\nCruz Davis is unquestionably one of the most dangerous mid-major scorers in the country, capable of single-handedly dismantling opponents \u2014 his 36-point outburst at Pitt and 30-point CAA quarterfinal performance against William & Mary illustrate his elite ceiling \u2014 and Preston Edmead complements him as a clutch secondary creator, hitting the game-winning 3-pointer in overtime of the CAA semifinal and consistently delivering in big moments throughout the year. The supporting cast \u2014 Plotnikov as a streaky but capable floor-spacer, James Patterson as a reliable physical presence, and Joshua DeCady as a tertiary scorer \u2014 provides enough depth to win games when Davis is off, though Hofstra's mid-season collapse demonstrated that when neither Davis nor Edmead is efficient simultaneously, the offense can stall badly. Stylistically, this is a team that wins through offensive firepower and clutch shot-making rather than defensive dominance, thriving in high-scoring environments and proving capable of dramatic comebacks (the Towson overtime win, the late Syracuse victory), but also prone to close losses when opponents match their scoring punch. Their location splits paint an interesting picture: some of the team's best performances have come away from home (the Pitt blowout, the Northeastern road win, the neutral-site CAA run), suggesting they are not overly dependent on home-crowd energy \u2014 a meaningful trait entering a neutral-site tournament. The realistic ceiling for this Hofstra squad is the Round of 32, with a puncher's chance at the Sweet 16 if Davis catches fire: talented enough and battle-tested enough against Power Conference competition to pull a first-round upset, but too inconsistent across a full 40 minutes \u2014 and too susceptible to defensive breakdowns against disciplined high-major offenses \u2014 to be considered a genuine Elite Eight threat.",
     "region": "Midwest",
-    "predicted_wins": 0,
+    "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.9338,
-      "1": 0.0633,
-      "2+": 0.003
+      "0": 0.2282,
+      "1": 0.1651,
+      "2": 0.2957,
+      "3": 0.2236,
+      "4": 0.0605,
+      "5": 0.0203,
+      "6": 0.0067
     },
     "avg_height": 77.5,
     "avg_weight": 203.0,
@@ -21766,9 +21970,13 @@
     "region": "East",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.4099,
-      "1": 0.5331,
-      "2+": 0.057
+      "0": 0.1286,
+      "1": 0.6215,
+      "2": 0.2175,
+      "3": 0.0258,
+      "4": 0.0053,
+      "5": 0.001,
+      "6": 0.0002
     },
     "avg_height": 78.06666666666666,
     "avg_weight": 205.33333333333334,
@@ -21841,9 +22049,13 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.6766,
-      "1": 0.3037,
-      "2+": 0.0197
+      "0": 0.8714,
+      "1": 0.124,
+      "2": 0.0045,
+      "3": 0.0002,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": -1.0,
     "avg_weight": -1.0,
@@ -22267,9 +22479,13 @@
     "region": "Midwest",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.6644,
-      "1": 0.3149,
-      "2+": 0.0208
+      "0": 0.8445,
+      "1": 0.1282,
+      "2": 0.0221,
+      "3": 0.0048,
+      "4": 0.0004,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 77.38461538461539,
     "avg_weight": 206.23076923076923,
@@ -22695,9 +22911,13 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0915,
-      "1": 0.6144,
-      "2+": 0.2941
+      "0": 0.1555,
+      "1": 0.5744,
+      "2": 0.177,
+      "3": 0.0782,
+      "4": 0.0123,
+      "5": 0.0022,
+      "6": 0.0003
     },
     "avg_height": 76.84615384615384,
     "avg_weight": 201.15384615384616,
@@ -23148,11 +23368,15 @@
     "highest_ranked_win": null,
     "profile_summary": "St. John's enters the 2026 NCAA Tournament as a 5-seed with a 28-6 record and back-to-back Big East regular-season and tournament championships \u2014 a program that has undergone a genuine transformation under Hall of Fame coach Rick Pitino. Against ranked opponents, the Red Storm went approximately 5-7, with marquee wins over No. 3 UConn (81-72 at MSG), No. 6 UConn again (72-52 in the Big East title game), and No. 15 Baylor (96-81), but also notable losses to No. 15 Alabama, No. 15 Iowa State, No. 21 Auburn, and a brutal 72-40 blowout at UConn in late February that exposed real vulnerabilities when their offense goes cold. Their final five games tell a compelling story of resilience and dominance: a 72-65 road win at Seton Hall to clinch the Big East title, followed by blowout tournament victories over Providence (85-72), Seton Hall (78-68), and UConn (72-52), punctuated by Zuby Ejiofor's triple-double demolition of Villanova (89-57) just before the tournament run. That 13-game winning streak snapped by the UConn road blowout is worth noting \u2014 this team can completely disappear offensively, as evidenced by shooting 20% and missing their final 24 field goal attempts at Storrs \u2014 but the response, winning six straight and outscoring opponents by an average of roughly 19 points per game through the Big East Tournament, is equally telling about their mental makeup. Ejiofor is the engine: the Big East Player, Defensive Player, and Scholar-Athlete of the Year is producing at an elite level, delivering 21 points, 10 rebounds, and seven blocks in the conference title game alone, and he sets both the physical and emotional tone for this team. Supporting him is a deep, versatile roster \u2014 Bryce Hopkins provides 17-20 point outbursts with elite rebounding, Dylan Darling is a clutch bench weapon, Oziyah Sellers is a streaky but dangerous three-point threat, and Dillon Mitchell is a high-energy two-way contributor \u2014 though Ian Jackson's sprained ankle bears monitoring heading into the bracket. St. John's plays with genuine two-way identity: they win with paint dominance (54 points in the paint against William & Mary), fast-break efficiency, and a suffocating interior defense anchored by Ejiofor's shot-blocking, but they have also demonstrated a pronounced habit of digging themselves massive second-half holes \u2014 trailing by 15 or more against Seton Hall, Xavier, Georgetown, and Providence \u2014 before engineering dramatic comebacks, which is both a testament to their toughness and a warning sign against elite tournament opponents who won't let such deficits slip away. Their location splits reinforce their identity as a Madison Square Garden team: Pitino is 15-0 at Carnesecca Arena and the Red Storm have been electric at MSG all season, but they dropped games at Iowa State, Auburn, and Kentucky, and absorbed that catastrophic loss at UConn, suggesting road and neutral environments introduce real inconsistency. Still, the Big East Tournament \u2014 played on their home neutral floor at MSG \u2014 produced three dominant, wire-to-wire performances, and the program's experience navigating hostile environments during a 6-0 road stretch in conference play adds credibility to their neutral-site r\u00e9sum\u00e9. **Verdict**: St. John's is a legitimate Elite Eight threat and cannot be dismissed as a Final Four contender. Their combination of a dominant star in Ejiofor, proven clutch scoring, championship-level recent form, and big-game experience against UConn specifically gives them the profile of a team capable of advancing deep \u2014 but their tendency to vanish offensively for long stretches and their 5-7 record against ranked opponents signals they are not yet a lock-step national title contender. Expect them to win their first two rounds comfortably and threaten seriously in the regional, with advancement to the Final Four within genuine reach if Ejiofor remains healthy and the offense doesn't go cold at the wrong moment.",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.27,
-      "1": 0.6281,
-      "2+": 0.1019
+      "0": 0.7402,
+      "1": 0.0766,
+      "2": 0.1382,
+      "3": 0.0308,
+      "4": 0.0097,
+      "5": 0.003,
+      "6": 0.0014
     },
     "avg_height": 77.78571428571429,
     "avg_weight": 207.14285714285714,
@@ -23550,11 +23774,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Northern Iowa enters the 2026 NCAA Tournament as a 12-seed with a 23-12 record \u2014 a r\u00e9sum\u00e9 built on Missouri Valley Conference toughness rather than marquee non-conference scalps. The Panthers' best non-conference wins came against South Dakota State and Oakland, but they dropped games to Tulsa, Wichita State, and Saint Mary's (63-58, in a game where they shot just 3-of-5 from the free-throw line against a team that went 25-of-27 from the stripe), suggesting the offense can go flat against disciplined, high-level competition. Against quality MVC opponents, Northern Iowa went through a brutal mid-season stretch \u2014 losing five straight at one point \u2014 before righting the ship. Their conference tournament run, however, is the most compelling data point on this roster: the Panthers knocked off Illinois State (74-52), upset No. 2 seed Bradley 73-69 on Leon Bond III's 19-point effort (13 in the first half alone), and then blew out UIC 84-69 in the championship, winning the automatic bid as a No. 6 conference seed. That is a genuinely impressive three-day gauntlet. The final five games \u2014 wins over Drake (75-53), Evansville (68-59), Illinois State (74-52), Bradley (73-69), and UIC (84-69) \u2014 represent a five-game winning streak with an average margin of roughly 17 points, the hottest stretch Northern Iowa has played all season. Trey Campbell is the engine of this offense, and he is playing his best basketball right now: 23 points against Evansville in the tournament opener, 13 points with six assists and four steals against Bradley, and consistent double-digit scoring throughout the stretch run. Ben Schwieger provides a reliable second option (17 points, 10 rebounds vs. Bradley in Game 17; 15 points vs. Illinois State in Game 30), and Leon Bond III can take over in bursts. Will Hornseth adds toughness as a two-way contributor and rebounder. The Panthers play a grind-it-out, defensively physical style \u2014 they held Bradley to 69 and UIC to 69 in back-to-back tournament games \u2014 but they are capable of eruptions, as seen in their 89-60 demolition of Murray State in February. Location-wise, Northern Iowa appears comfortable on neutral sites: they won the MVC Tournament in St. Louis and performed respectably in early-season neutral-site games (splitting at the Acrisure Holiday Invitational), though they have shown vulnerability on the road, including losses at Southern Illinois, Valparaiso, and Illinois State. Their lone real flaw heading in is free-throw shooting and a tendency to go cold offensively in bursts \u2014 they were held to 44 points at Valparaiso and 50 at Southern Illinois in January \u2014 which remains a legitimate concern against NCAA Tournament-caliber defense. **Verdict**: Northern Iowa is a genuinely dangerous 12-seed riding a five-game hot streak with a battle-tested backcourt, a recent upset win over a quality MVC opponent in Bradley, and a clear identity. They are a realistic first-round upset threat and have the pieces to reach the Sweet 16, but their inconsistency against elite competition and offensive fragility in road-like environments caps their realistic ceiling at **a second-round appearance, with a Sweet 16 run possible if Campbell continues his current form**.",
     "region": "East",
-    "predicted_wins": 1,
+    "predicted_wins": 2,
     "win_probability_distribution": {
-      "0": 0.2542,
-      "1": 0.6362,
-      "2+": 0.1096
+      "0": 0.2598,
+      "1": 0.178,
+      "2": 0.3942,
+      "3": 0.097,
+      "4": 0.0377,
+      "5": 0.021,
+      "6": 0.0124
     },
     "avg_height": 77.33333333333333,
     "avg_weight": 207.08333333333334,
@@ -24060,9 +24288,13 @@
     "region": "Midwest",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.4354,
-      "1": 0.513,
-      "2+": 0.0516
+      "0": 0.3462,
+      "1": 0.5971,
+      "2": 0.0367,
+      "3": 0.016,
+      "4": 0.0036,
+      "5": 0.0004,
+      "6": 0.0
     },
     "avg_height": 77.375,
     "avg_weight": 211.6875,
@@ -24513,11 +24745,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Kentucky enters the 2026 NCAA Tournament as a 7-seed with a 21-13 record \u2014 a r\u00e9sum\u00e9 built on resilience and star power, but undermined by persistent inconsistency and a brutal injury-shortened season. Against ranked opponents, the Wildcats went 6-12, with notable wins over No. 25 Tennessee (twice), No. 22 St. John's, No. 15 Arkansas, and No. 24 Tennessee on the road, but suffered blowout losses to No. 11 Gonzaga (94-59), No. 17 Michigan State (83-66), and No. 5 Florida twice, as well as home losses to North Carolina, Missouri, and Georgia \u2014 programs Kentucky should have handled at Rupp Arena. The injury toll was significant all season: starting point guard Jaland Lowe dislocated his shoulder in preseason and ultimately underwent season-ending surgery in January, Jayden Quaintance (knee) missed large stretches after his much-anticipated debut, and Jamarion Davis-Fleming was also lost mid-season, forcing coach Mark Pope to constantly reconfigure his rotation. Entering the tournament, Kentucky's final five games paint a mixed picture \u2014 wins over Vanderbilt (91-77) and Missouri in the SEC Tournament were encouraging, but the Wildcats also dropped to Texas A&M (96-85) in a second-half collapse, fell to Florida 84-77 in the regular-season finale, and were then dispatched 71-63 by Florida in the SEC quarterfinals after playing three games in three days, finishing that stretch looking fatigued and undermanned.\n\nThe engine of this Kentucky team is unambiguously Otega Oweh, the preseason SEC Player of the Year, who has scored in double figures in every game this season and posted a career-high 29 points against Auburn; without him, this team has no consistent offensive identity. Collin Chandler and Denzel Aberdeen provide secondary firepower, with Aberdeen posting a memorable 22-point second-half performance at Tennessee and Chandler hitting a career-high 23 in the Vanderbilt rematch, but both have been maddeningly inconsistent \u2014 particularly from three-point range. Kentucky's style is defined by clutch comebacks (erasing 17-point deficits at both Tennessee and LSU in the same week) and free-throw-line dependence, rather than dominant wire-to-wire performances; they are collapse-prone in the first half but capable of historic second-half surges. Defensively, the Wildcats can generate steals and force turnovers in bunches \u2014 14 steals against Mississippi State stands out \u2014 but they have been gashed by elite perimeter shooting and routinely outrebounded by upper-tier opponents. At home, Kentucky went 11-4, but their 10-9 mark away from Rupp Arena and neutral sites reveals a team that struggles to sustain energy on the road, with road blowout losses to Gonzaga and Michigan State exposing their ceiling against elite competition. The tournament ceiling for this Kentucky team is realistically the Round of 32: Oweh's star power and their proven capacity for dramatic comebacks make them a dangerous first-round opponent, but the loss of Lowe, the inability to contain elite perimeter offenses, chronic first-half struggles, and a 6-12 record against ranked teams all point to a team unlikely to advance past a well-coached, healthy opponent in the second round.",
     "region": "Midwest",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.217,
-      "1": 0.6515,
-      "2+": 0.1315
+      "0": 0.6812,
+      "1": 0.2091,
+      "2": 0.0959,
+      "3": 0.0095,
+      "4": 0.0035,
+      "5": 0.0006,
+      "6": 0.0001
     },
     "avg_height": 78.5,
     "avg_weight": 214.28571428571428,
@@ -24914,11 +25150,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Santa Clara enters the 2026 NCAA Tournament as a 10-seed with a 26-8 record, having built one of the more compelling mid-major r\u00e9sum\u00e9s in the country after winning the WCC regular-season title and reaching the conference championship game. Against quality competition, the Broncos acquitted themselves well in spots \u2014 most notably a dominant 87-68 neutral-site win over Xavier in November and a 96-92 home win over Washington State \u2014 but their profile against elite opponents reveals real limitations. In ranked games, Santa Clara went 0-3: a 12-point loss at No. 8 Gonzaga in January, a 8-point home loss to No. 12 Gonzaga in February, and an 11-point loss to the Bulldogs again in the WCC Championship game. That said, they pushed Gonzaga to within two points midway through the second half of that title game before the Bulldogs pulled away, which is meaningful context. The five-game stretch to close the season tells a nuanced story: a 19-point win over San Francisco, a blowout loss at Saint Mary's (86-67), a comfortable regular-season-finale win over Oregon State, a WCC quarterfinal win over Pacific, a dramatic semifinal win over No. 21 Saint Mary's (76-71), and a WCC final loss to Gonzaga (79-68) \u2014 making their recent form a mixed bag of dominant performances punctuated by lapses against top-end competition.\n\nStylistically, Santa Clara is a high-octane offensive team that can fill it up from multiple sources, averaging well over 80 points in most wins and demonstrating the ability to build large halftime leads \u2014 53-20 over Oregon State, 44-31 over Loyola Marymount \u2014 but they have shown a troubling tendency to let big advantages evaporate, as illustrated by the Arizona State collapse where they surrendered a 19-point second-half lead. The key players are legitimately dangerous: Christian Hammond is a multi-level scorer who poured in 24 points in the WCC final, Elijah Mahi is a reliable 17-22 point performer who can take over games (30 points at San Francisco), Allen Graves provides elite two-way production off the bench, and Sash Gavalyugov is a wild-card weapon capable of 23-point explosions \u2014 though he was held to 8 points on 3-of-13 shooting in the championship loss, a reminder of his inconsistency. The Broncos appear confident and resilient, capable of thrilling comebacks \u2014 the Portland road win, erasing a 10-2 deficit against Saint Mary's in the semifinal \u2014 but they are also collapse-prone when opponents make extended runs, and their three losses to Gonzaga confirm they struggle to close out elite opponents. On location, they are a strong home team (the Leavey Center crowd was a factor against Gonzaga in February) but have shown they can compete on the road and neutral sites, with neutral-site wins over Xavier and Minnesota and a gutty semifinal win over Saint Mary's in Las Vegas. Santa Clara's realistic tournament ceiling is the Sweet 16: they are dangerous enough to beat a 7-seed and potentially a 2-seed on a good night given their offensive firepower and multiple reliable scorers, but their inability to close out Gonzaga-caliber opponents three times this season and their vulnerability to second-half collapses make a run deeper than the Sweet 16 unlikely.",
     "region": "Midwest",
-    "predicted_wins": 0,
+    "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.6814,
-      "1": 0.2994,
-      "2+": 0.0192
+      "0": 0.3188,
+      "1": 0.4356,
+      "2": 0.2135,
+      "3": 0.0217,
+      "4": 0.0085,
+      "5": 0.0016,
+      "6": 0.0002
     },
     "avg_height": 78.0,
     "avg_weight": 202.5,
@@ -25316,9 +25556,13 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0916,
-      "1": 0.6145,
-      "2+": 0.2938
+      "0": 0.108,
+      "1": 0.6928,
+      "2": 0.1334,
+      "3": 0.0497,
+      "4": 0.0124,
+      "5": 0.0031,
+      "6": 0.0006
     },
     "avg_height": 78.08333333333333,
     "avg_weight": 222.91666666666666,
@@ -25742,9 +25986,13 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.5912,
-      "1": 0.3806,
-      "2+": 0.0282
+      "0": 0.892,
+      "1": 0.1016,
+      "2": 0.0061,
+      "3": 0.0003,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 80.23076923076923,
     "avg_weight": 220.76923076923077,
@@ -26170,9 +26418,13 @@
     "region": "East",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.0906,
-      "1": 0.613,
-      "2+": 0.2965
+      "0": 0.1032,
+      "1": 0.7169,
+      "2": 0.0372,
+      "3": 0.1147,
+      "4": 0.0205,
+      "5": 0.0057,
+      "6": 0.0018
     },
     "avg_height": 78.0,
     "avg_weight": 215.0,
@@ -26623,9 +26875,13 @@
     "region": "East",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.7527,
-      "1": 0.2337,
-      "2+": 0.0136
+      "0": 0.8968,
+      "1": 0.1007,
+      "2": 0.0019,
+      "3": 0.0006,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0
     },
     "avg_height": 78.78571428571429,
     "avg_weight": 209.57142857142858,
@@ -27049,9 +27305,13 @@
     "region": "West",
     "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.6847,
-      "1": 0.2963,
-      "2+": 0.019
+      "0": 0.647,
+      "1": 0.2983,
+      "2": 0.0469,
+      "3": 0.0069,
+      "4": 0.0008,
+      "5": 0.0001,
+      "6": 0.0
     },
     "avg_height": 78.0,
     "avg_weight": 209.84615384615384,
@@ -27450,9 +27710,13 @@
     "region": "West",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.1693,
-      "1": 0.6599,
-      "2+": 0.1707
+      "0": 0.353,
+      "1": 0.5485,
+      "2": 0.0849,
+      "3": 0.0121,
+      "4": 0.0013,
+      "5": 0.0001,
+      "6": 0.0
     },
     "avg_height": 78.08333333333333,
     "avg_weight": 207.5,
@@ -27851,9 +28115,13 @@
     "region": "South",
     "predicted_wins": 1,
     "win_probability_distribution": {
-      "0": 0.3247,
-      "1": 0.595,
-      "2+": 0.0803
+      "0": 0.1409,
+      "1": 0.3754,
+      "2": 0.2091,
+      "3": 0.0895,
+      "4": 0.1075,
+      "5": 0.0394,
+      "6": 0.0383
     },
     "avg_height": 78.66666666666667,
     "avg_weight": 201.41666666666666,
@@ -28249,11 +28517,15 @@
     "highest_ranked_win": null,
     "profile_summary": "Iowa enters the 2026 NCAA Tournament as a 9-seed with a 21-12 record \u2014 a r\u00e9sum\u00e9 that reflects a program that genuinely overachieved under first-year coach Ben McCollum, who brought six players from Drake including star guard Bennett Stirtz, but one that also reveals significant limitations against elite competition. Against ranked opponents this season, the Hawkeyes went 1-9: their lone ranked win came over No. 9 Nebraska at home on February 18, a 57-52 grind-it-out victory that sent Hawkeyes fans storming the court, while losses came against No. 7 Michigan State, No. 4 Iowa State, No. 16 Illinois, No. 5 Purdue (twice), No. 13 Purdue, No. 24 Wisconsin, No. 9 Nebraska (twice), and No. 3 Michigan \u2014 a brutal body of evidence suggesting this team consistently falls short when the competition crests into the top tier. Their final five games paint a picture of a team that is inconsistent and grinding rather than surging: a home win over Nebraska (57-52), a road loss at Wisconsin (71-84), a home win over Ohio State (74-57), a road loss at Penn State (69-71) to a team that finished 3-15 in Big Ten play, and a road loss at Nebraska in overtime (75-84) \u2014 a 2-3 stretch that includes a damaging defeat to one of the Big Ten's worst conference teams and a regulation collapse that required a miraculous Kael Combs three-pointer just to force OT. In the Big Ten Tournament, Iowa showed genuine fight \u2014 beating Maryland decisively behind a 21-0 run fueled by Cooper Koch's career-high 19 points and Stirtz's eight assists \u2014 before falling to Ohio State 72-69 in a game they led by only six at halftime and ultimately lost on a missed Folgueiras free throw and a desperation heave at the buzzer, a collapse-prone ending that has become something of a calling card.\n\nStirtz is unquestionably the engine of this offense and one of the more dangerous scorers in the country entering March \u2014 he posted a career-high 36 points against Northwestern, followed it with 32 in consecutive weeks, and is averaging north of 20 points over his last ten games with the ability to get hot from three and draw fouls at will \u2014 but Iowa's supporting cast is maddeningly inconsistent, and the team's identity shifts week to week in ways that raise tournament concerns. When Tavion Banks (career-high 26 at Indiana) and Folgueiras (season-high 20 against Ohio State) are engaged, this offense has legitimate punch and real depth; when they go cold, as happened in the back-to-back losses to Maryland and Purdue in mid-February, the Hawkeyes fall apart shooting-wise and struggle to score off turnovers. Stylistically, Iowa is a team that builds large first-half leads and then spends the second half defending them, often barely \u2014 the UCLA game (led by 20, nearly blew it), the USC game (led by 17, nearly blew it), and the Nebraska OT loss all reflect a team prone to second-half fade. Location matters: Iowa is undefeated at home in non-conference play and dominant in Iowa City through much of the season, but they are a concerning 5-8 away from home and on neutral sites, which is exactly where the NCAA Tournament is played. The Hawkeyes carry a scrappy, resilient energy and McCollum has clearly built genuine culture fast \u2014 the court-storming Nebraska win and the Big Ten Tournament comeback over Maryland show they can rise to moments \u2014 but a 1-9 record against ranked teams, a penchant for second-half collapses, and road/neutral-site struggles make a deep run implausible. **Ceiling: First-round exit to second-round upset pick.** Stirtz's star power makes Iowa dangerous enough to steal one game as a 9-seed, potentially pulling off an upset over an 8-seed in the first round if his shot is falling, but this team has shown no ability to beat elite competition consistently and is too prone to second-half fade and neutral-site struggles to advance past the second round.",
     "region": "South",
-    "predicted_wins": 1,
+    "predicted_wins": 0,
     "win_probability_distribution": {
-      "0": 0.4324,
-      "1": 0.5154,
-      "2+": 0.0522
+      "0": 0.8591,
+      "1": 0.1098,
+      "2": 0.023,
+      "3": 0.0051,
+      "4": 0.0025,
+      "5": 0.0004,
+      "6": 0.0001
     },
     "avg_height": 78.66666666666667,
     "avg_weight": 217.5,
