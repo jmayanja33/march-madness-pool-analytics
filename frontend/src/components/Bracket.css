@@ -8,9 +8,9 @@
 .bracket-wrapper {
   display: grid;
   grid-template-areas:
-    "east  champion  south"    /* upper row: left region, center, right region */
+    "east  champion  west"     /* upper row: left region, center, right region */
     ".     band      ."        /* championship band: center column only */
-    "west  spacer    midwest"; /* lower row */
+    "south spacer    midwest"; /* lower row */
   /* All three columns shrink-wrap to content so the grid is exactly as wide
      as its content — prevents the center column from expanding and off-centering. */
   grid-template-columns: max-content auto max-content;

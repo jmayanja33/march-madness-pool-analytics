@@ -6,26 +6,26 @@
 export const FIRST_FOUR_2026 = [
   {
     id: 'ff-west-11',
-    teamA: { seed: 11, name: 'NC State' },
-    teamB: { seed: 11, name: 'Texas' },
+    teamA: { seed: 11, name: 'Texas' },
+    teamB: { seed: 11, name: 'NC State' },
     destination: 'West 11',
   },
   {
     id: 'ff-midwest-11',
-    teamA: { seed: 11, name: 'SMU' },
-    teamB: { seed: 11, name: 'Miami (OH)' },
+    teamA: { seed: 11, name: 'Miami (OH)' },
+    teamB: { seed: 11, name: 'SMU' },
     destination: 'Midwest 11',
   },
   {
     id: 'ff-south-16',
-    teamA: { seed: 16, name: 'Howard' },
-    teamB: { seed: 16, name: 'UMBC' },
+    teamA: { seed: 16, name: 'Lehigh' },
+    teamB: { seed: 16, name: 'Prairie View A&M' },
     destination: 'South 16',
   },
   {
     id: 'ff-midwest-16',
-    teamA: { seed: 16, name: 'Lehigh' },
-    teamB: { seed: 16, name: 'Prairie View A&M' },
+    teamA: { seed: 16, name: 'Howard' },
+    teamB: { seed: 16, name: 'UMBC' },
     destination: 'Midwest 16',
   },
 ];
@@ -38,10 +38,10 @@ export const RESULTS_2026 = null;
 //
 // First Four slots use a "Team A/Team B" slash notation in the main bracket
 // to indicate the two teams competing for that seed position.
-// West 11  → NC State vs. Texas winner
-// Midwest 11 → SMU vs. Miami (OH) winner
-// South 16 → Howard vs. UMBC winner
-// Midwest 16 → Lehigh vs. Prairie View A&M winner
+// West 11  → Texas vs. NC State winner
+// Midwest 11 → Miami (OH) vs. SMU winner
+// South 16 → Lehigh vs. Prairie View A&M winner
+// Midwest 16 → Howard vs. UMBC winner
 export const BRACKET_2026 = {
   East: [
     { seed: 1,  name: 'Duke' },
@@ -72,7 +72,7 @@ export const BRACKET_2026 = {
     { seed: 8,  name: 'Villanova' },
     { seed: 9,  name: 'Utah State' },
     { seed: 10, name: 'Missouri' },
-    { seed: 11, name: 'NC State/Texas' },   // First Four winner
+    { seed: 11, name: 'Texas/NC State' },    // First Four winner
     { seed: 12, name: 'High Point' },
     { seed: 13, name: "Hawai'i" },
     { seed: 14, name: 'Kennesaw State' },
@@ -95,7 +95,7 @@ export const BRACKET_2026 = {
     { seed: 13, name: 'Troy' },
     { seed: 14, name: 'Pennsylvania' },
     { seed: 15, name: 'Idaho' },
-    { seed: 16, name: 'Howard/UMBC' },      // First Four winner
+    { seed: 16, name: 'Lehigh/Prairie View A&M' }, // First Four winner
   ],
   Midwest: [
     { seed: 1,  name: 'Michigan' },
@@ -108,11 +108,11 @@ export const BRACKET_2026 = {
     { seed: 8,  name: 'Georgia' },
     { seed: 9,  name: 'Saint Louis' },
     { seed: 10, name: 'Santa Clara' },
-    { seed: 11, name: 'SMU/Miami (OH)' },   // First Four winner
+    { seed: 11, name: 'Miami (OH)/SMU' },   // First Four winner
     { seed: 12, name: 'Akron' },
     { seed: 13, name: 'Hofstra' },
     { seed: 14, name: 'Wright State' },
     { seed: 15, name: 'Tennessee State' },
-    { seed: 16, name: 'Lehigh/Prairie View A&M' }, // First Four winner
+    { seed: 16, name: 'Howard/UMBC' },      // First Four winner
   ],
 };

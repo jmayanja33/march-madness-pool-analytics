@@ -1,9 +1,9 @@
 // Full tournament bracket composed of four regional brackets and a center section.
 //
 // Layout uses CSS Grid with named areas:
-//   "east    champion   south"    ← upper row: top-left, center, top-right
+//   "east    champion   west"     ← upper row: top-left, center, top-right
 //   ".       band       ."        ← band row: championship strip (center only)
-//   "west    spacer     midwest"  ← lower row: bottom-left, center, bottom-right
+//   "south   spacer     midwest"  ← lower row: bottom-left, center, bottom-right
 //
 // The champion-box (center of the upper row) contains two stacked sections:
 //   1. First Four band — flush with the tops of the East/South regions
@@ -120,12 +120,12 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
 
       </div>
 
-      <div className="region-south">
+      <div className="region-west">
         <BracketRegion
-          name="South"
-          teams={bracket.South}
+          name="West"
+          teams={bracket.West}
           direction="right"
-          results={results?.South ?? null}
+          results={results?.West ?? null}
           onTeamClick={onTeamClick}
         />
       </div>
@@ -186,12 +186,12 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
       </div>
 
       {/* ── Lower row ── */}
-      <div className="region-west">
+      <div className="region-south">
         <BracketRegion
-          name="West"
-          teams={bracket.West}
+          name="South"
+          teams={bracket.South}
           direction="left"
-          results={results?.West ?? null}
+          results={results?.South ?? null}
           onTeamClick={onTeamClick}
         />
       </div>
