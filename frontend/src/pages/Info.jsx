@@ -102,16 +102,7 @@ export default function Info() {
                 value="0.917"
                 tooltip="Measures how well the model separates winners from losers across all possible decision thresholds — a score near 1.0 means it almost never confuses a winner for a loser. Ideal: 1.0"
               />
-              <MetricCard
-                label="Non-Upset Accuracy"
-                value="90.65%"
-                tooltip="How often the model correctly predicted the outcome of matchups where the favored team won (non-upsets). Ideal: 100%"
-              />
-              <MetricCard
-                label="Upset Accuracy"
-                value="67.24%"
-                tooltip="How often the model correctly predicted the outcome of matchups where the underdog won (upsets). Ideal: 100%"
-              />
+
             </div>
 
             <p className="info-model-detail">
@@ -120,8 +111,7 @@ export default function Info() {
               as good at avoiding false calls as it is at finding real winners. The F1 Score (83.01%)
               confirms this balance. Most notably, the ROC AUC of 0.917 — where 1.0 is ideal — shows the
               model can reliably separate winners from losers across every possible decision threshold, not
-              just the default 50/50 split. The model correctly identifies non-upsets 90.65% of the time,
-              and still captures upsets at a 67.24% rate.
+              just the default 50/50 split.
             </p>
           </div>
         </section>

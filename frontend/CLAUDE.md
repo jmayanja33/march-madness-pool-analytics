@@ -146,8 +146,6 @@ model is performing with the following metrics:
 - **Precision**: 83.71%
 - **Recall**: 82.32%
 - **ROC AUC**: 0.917
-- **Non-Upset Accuracy**: 90.65%
-- **Upset Accuracy**: 67.24%
 
 An accuracy of 83.15% means the model picks the correct winner in more than 5 out of every 6 matchups. Precision
 (83.71%) and Recall (82.32%) are well balanced — the model is nearly as good at avoiding false calls as it is at
