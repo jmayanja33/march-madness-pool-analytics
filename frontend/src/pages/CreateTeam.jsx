@@ -58,25 +58,78 @@ function formatTotalWins(n) {
 }
 
 
-// Compute aggregate pool stats from the array of filled team data objects.
+// Compute aggregate pool stats from the convolved win distribution.
+// The peak (mode) of the distribution is used so the "Expected Team Wins"
+// box matches the tallest bar in the Win Projection histogram exactly.
 // Returns { totalWins, avgProb } or null when no teams are selected.
 function computePoolStats(filledTeams) {
   if (filledTeams.length === 0) return null;
 
-  let totalWins = 0;
-  let totalProb = 0;
+  // Convolve all team distributions into one combined distribution.
+  const raw = computeWinProjection(filledTeams);
+  if (!raw) return null;
 
-  for (const team of filledTeams) {
-    const { numeric, prob } = getExpectedWins(team.win_probability_distribution);
-    totalWins += numeric;
-    totalProb += prob;
-  }
+  // Normalize to correct any floating-point drift.
+  const total = raw.reduce((sum, d) => sum + d.prob, 0);
+  const normalized = total > 0 ? raw.map(d => ({ wins: d.wins, prob: d.prob / total })) : raw;
 
-  return { totalWins, avgProb: totalProb / filledTeams.length };
+  // The mode: total-win count with the highest probability — this is the
+  // same bar that appears tallest in the histogram.
+  const peak = normalized.reduce((best, cur) => cur.prob > best.prob ? cur : best);
+
+  return { totalWins: peak.wins, avgProb: peak.prob };
 }
 
 // Standard region display order for the Region Breakdown section.
 const REGION_ORDER = ['East', 'West', 'South', 'Midwest'];
+
+// Ordered list of win-distribution keys — index matches the win count (0–6).
+const WIN_DIST_KEYS = [
+  'zero_wins', 'one_win', 'two_wins', 'three_wins',
+  'four_wins', 'five_wins', 'six_wins',
+];
+
+// Compute the probability distribution of the pool's *total* wins by convolving
+// each selected team's individual win distribution together.  The result maps
+// every achievable total-win count to its probability.
+//
+// Example: with 2 teams the total wins range is 0–12; with 8 teams it is 0–48.
+// The convolution is computed iteratively: start with {0: 1.0} and for each
+// team fold its distribution into the running combined distribution.
+//
+// Returns a sorted array of { wins, prob } entries, or null when no teams exist.
+/**
+ * @param {Array<Object>} filledTeams - Array of PoolTeamSummary objects.
+ * @returns {Array<{wins: number, prob: number}>|null}
+ */
+function computeWinProjection(filledTeams) {
+  if (filledTeams.length === 0) return null;
+
+  // Running combined distribution: total wins → probability.
+  let combined = new Map([[0, 1.0]]);
+
+  for (const team of filledTeams) {
+    const dist   = team.win_probability_distribution;
+    // Extract this team's per-win probabilities in order (index = win count).
+    const probs  = WIN_DIST_KEYS.map(key => dist[key] ?? 0);
+    const next   = new Map();
+
+    // For every existing (totalWins, probability) pair, add the contribution
+    // of each of this team's possible win outcomes.
+    for (const [totalWins, combinedProb] of combined) {
+      for (let w = 0; w < probs.length; w++) {
+        const newTotal = totalWins + w;
+        next.set(newTotal, (next.get(newTotal) ?? 0) + combinedProb * probs[w]);
+      }
+    }
+    combined = next;
+  }
+
+  // Return sorted array so the x-axis always runs low → high.
+  return Array.from(combined.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([wins, prob]) => ({ wins, prob }));
+}
 
 // Seed tier groupings used by the Seed Breakdown section.
 // Ranges are non-overlapping; label matches what the user sees.
@@ -128,9 +181,10 @@ export default function CreateTeam() {
   // Name of the team whose full TeamCard popup is currently open, or null.
   const [popupTeam, setPopupTeam] = useState(null);
 
-  // Collapsed state for the two breakdown sections (open by default).
+  // Collapsed state for the three breakdown sections (open by default).
   const [seedOpen, setSeedOpen]     = useState(true);
   const [regionOpen, setRegionOpen] = useState(true);
+  const [projOpen, setProjOpen]     = useState(true);
 
   // Load the dropdown list once on mount.
   useEffect(() => {
@@ -368,6 +422,20 @@ export default function CreateTeam() {
                   </div>
                 </div>
               </div>
+
+              {/* ── Win Projection histogram ── */}
+              <div className="ct-breakdown">
+                <button className="ct-breakdown-title" onClick={() => setProjOpen(o => !o)}>
+                  <span className={`ct-bd-chevron ${projOpen ? 'open' : ''}`}>▶</span>
+                  Win Projection
+                </button>
+                {/* Animated slide wrapper — content stays in DOM for smooth transition */}
+                <div className={`ct-bd-slide ${projOpen ? 'open' : ''}`}>
+                  <div className="ct-bd-slide-inner">
+                    <WinProjectionChart teams={filledSlots} />
+                  </div>
+                </div>
+              </div>
             </>
           )}
         </section>
@@ -535,6 +603,159 @@ function TeamPicker({ teamList, loading, error, assignedNames, onSelect }) {
       </div>
 
       {error && <p className="picker-error">{error}</p>}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// WinProjectionChart — histogram of the aggregated win-probability distribution
+// ---------------------------------------------------------------------------
+// Renders a bar chart of the pool's total-win probability distribution.
+// Bar heights are in absolute pixels (tallest bar = BAR_MAX_PX) to avoid
+// percentage-of-parent overflow that would clip inside the collapsible slide.
+// Bars are colored by their probability relative to the tallest bar:
+// the most likely outcome is green, least likely is red.
+
+// Histogram-specific threshold color function.
+// Colors each bar by its position in the cumulative distribution (CDF):
+//
+//   CDF 0–5%  and 95–100%  → pure red   (extreme tail outcomes)
+//   CDF 5–15% and 85–95%   → red→yellow (near-tail transition)
+//   CDF 15–25% and 75–85%  → stable yellow
+//   CDF 25–50%              → yellow→green
+//   CDF 50%                 → pure green (most expected outcome)
+//   CDF 50–75%              → green→yellow  (symmetric)
+//
+// @param {number} cdfPos - Bar's CDF midpoint position (0–1).
+// @returns {string} HSL color string.
+function histBarColor(cdfPos) {
+  // Convert to symmetric distance from center: 0 = median (green), 1 = extreme (red).
+  const dist = Math.abs(cdfPos - 0.5) * 2;
+
+  let h, s, l;
+
+  if (dist <= 0.5) {
+    // CDF 25–75%: green at center (dist=0), yellow at edges (dist=0.5).
+    const t = dist / 0.5;
+    h = 145 + t * (43  - 145);
+    s = 46  + t * (80  - 46);
+    l = 42  + t * (46  - 42);
+  } else if (dist <= 0.7) {
+    // CDF 15–25% and 75–85%: stable yellow.
+    h = 43; s = 80; l = 46;
+  } else if (dist <= 0.9) {
+    // CDF 5–15% and 85–95%: yellow → red.
+    const t = (dist - 0.7) / 0.2;
+    h = 43 + t * (0  - 43);
+    s = 80 + t * (72 - 80);
+    l = 46 + t * (60 - 46);
+  } else {
+    // CDF 0–5% and 95–100%: pure red.
+    h = 0; s = 72; l = 60;
+  }
+
+  return `hsl(${h.toFixed(1)}, ${s.toFixed(1)}%, ${l.toFixed(1)}%)`;
+}
+
+// Tallest bar height in pixels — all other bars scale proportionally.
+const BAR_MAX_PX = 120;
+
+// Space below bars reserved for the win-count x-axis label (px).
+// Used to position reference lines above the labels.
+const BAR_BOTTOM_OFFSET = 16;
+
+// CDF fractions at which to draw y-axis reference lines.
+const PERCENTILE_FRACS = [0.05, 0.25, 0.50, 0.75, 0.95];
+
+/**
+ * @param {Object}        props
+ * @param {Array<Object>} props.teams - Array of PoolTeamSummary objects currently in the pool.
+ */
+function WinProjectionChart({ teams }) {
+  // Compute the full convolved win-probability distribution for the pool.
+  const raw = computeWinProjection(teams);
+  if (!raw) return null;
+
+  // Normalize so displayed percentages sum to exactly 100%, correcting for any
+  // floating-point drift accumulated during convolution.
+  const totalProb = raw.reduce((sum, d) => sum + d.prob, 0);
+  const normalized = totalProb > 0
+    ? raw.map(d => ({ wins: d.wins, prob: d.prob / totalProb }))
+    : raw;
+
+  // Drop any entry below 0.1% — covers true zeros and near-zero floating-point
+  // residuals on extreme outcomes that would display as "0.0%".
+  const data = normalized.filter(d => d.prob >= 0.001);
+  if (data.length === 0) return null;
+
+  // The tallest bar's probability — used to scale pixel heights.
+  const maxProb = Math.max(...data.map(d => d.prob));
+
+  // Annotate each bar with its CDF midpoint position (0–1).
+  // cdfPos = cumulative probability of all preceding bars + half this bar's prob,
+  // giving the center of this bar's probability mass in the distribution.
+  let cumulative = 0;
+  const dataWithCdf = data.map(d => {
+    const cdfPos = cumulative + d.prob / 2;
+    cumulative += d.prob;
+    return { ...d, cdfPos };
+  });
+
+  return (
+    <div className="ct-proj-chart">
+      {/* Y-axis title above the chart */}
+      <div className="ct-proj-y-label">% Chance</div>
+
+      {/* Y-axis column + bar area side by side */}
+      <div className="ct-proj-body">
+
+        {/* Y-axis: tick labels at each percentile height, absolutely positioned */}
+        <div className="ct-proj-yaxis">
+          {PERCENTILE_FRACS.map(frac => (
+            <span
+              key={frac}
+              className="ct-proj-ytick"
+              style={{ bottom: `${BAR_BOTTOM_OFFSET + frac * BAR_MAX_PX}px` }}
+            >
+              {(frac * maxProb * 100).toFixed(1)}%
+            </span>
+          ))}
+        </div>
+
+        {/* Bar area: reference lines (absolute) sit behind flex bar columns */}
+        <div className="ct-proj-bars">
+          {/* Horizontal reference lines at each percentile */}
+          {PERCENTILE_FRACS.map(frac => (
+            <div
+              key={`ref-${frac}`}
+              className="ct-proj-refline"
+              style={{ bottom: `${BAR_BOTTOM_OFFSET + frac * BAR_MAX_PX}px` }}
+            />
+          ))}
+
+          {/* Bar columns */}
+          {dataWithCdf.map(({ wins, prob, cdfPos }) => {
+            const barPx = maxProb > 0 ? (prob / maxProb) * BAR_MAX_PX : 0;
+            const color = histBarColor(cdfPos);
+
+            return (
+              <div key={wins} className="ct-proj-bar-col">
+                {/* Colored bar — absolute pixel height */}
+                <div
+                  className="ct-proj-bar-fill"
+                  style={{ height: `${barPx}px`, background: color }}
+                />
+                {/* X-axis label: total wins value */}
+                <span className="ct-proj-bar-label">{wins}</span>
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+
+      {/* X-axis title */}
+      <div className="ct-proj-x-label">Number of Wins</div>
     </div>
   );
 }

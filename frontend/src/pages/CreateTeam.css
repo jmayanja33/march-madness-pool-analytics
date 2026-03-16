@@ -420,6 +420,121 @@
 }
 .ct-bd-row:last-child { border-bottom: none; }
 
+/* ── Win Projection histogram ── */
+
+/* Outer chart container — overflow: hidden prevents bars from spilling outside
+   the collapsible panel when many win-count buckets are visible. */
+.ct-proj-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+  overflow: hidden;
+}
+
+/* Rotated y-axis label — "% Chance" */
+.ct-proj-y-label {
+  font-size: 0.72rem;
+  color: var(--silver);
+  font-weight: 600;
+  text-align: left;
+  padding-left: 4px;
+}
+
+/* Row containing the y-axis column and the bar area */
+.ct-proj-body {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 0;
+}
+
+/* Y-axis column: fixed width, relative-positioned so tick labels can be
+   absolutely placed at the correct pixel heights. */
+.ct-proj-yaxis {
+  position: relative;
+  width: 38px;
+  /* BAR_MAX_PX (120) + BAR_BOTTOM_OFFSET (16) — must match bar column total height */
+  height: 136px;
+  flex-shrink: 0;
+}
+
+/* Individual y-axis tick label — centered vertically on the reference line */
+.ct-proj-ytick {
+  position: absolute;
+  right: 4px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--silver);
+  white-space: nowrap;
+  line-height: 1;
+  /* translateY(50%) shifts label down by half its height so it centers on the line */
+  transform: translateY(50%);
+}
+
+/* Horizontal reference lines spanning the full bar area.
+   Absolutely positioned within .ct-proj-bars (position: relative). */
+.ct-proj-refline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Row of bar columns — all aligned to the same bottom baseline.
+   position: relative so reference lines can be absolutely placed inside.
+   overflow: hidden prevents bars from spilling outside the panel. */
+.ct-proj-bars {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Single bar column: bar fill → x-axis label, bottom-aligned.
+   z-index: 1 ensures bars render on top of the reference lines. */
+.ct-proj-bar-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Bar fill — absolute pixel height set inline; background color set inline */
+.ct-proj-bar-fill {
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+  min-height: 3px;
+}
+
+/* X-axis label: total-wins value below each bar */
+.ct-proj-bar-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--silver);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* Centered "Number of Wins" x-axis title */
+.ct-proj-x-label {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--silver);
+  margin-top: 2px;
+}
+
 /* ── Modal overlay and picker ── */
 .ct-overlay {
   position: fixed;

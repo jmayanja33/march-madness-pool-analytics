@@ -63,6 +63,17 @@ this bar will be Expected Team Wins: $Number of Wins$ $(Percentage with Coloring
 The expected team wins can be calculated as the sum of the expected wins for each team. The probability for expected wins should
 be calculated based off of the maximum win probabilities for each individual team selected.
 
+On the right side of the page, below the Seed Breakdown and Region Breakdown, there shpuld be a wins projection tab.
+The win projection section should have a histogram of the teams expected performance, based off of the win distribution of 
+each team. The x-axis of the histogram will be number of wins, and the y-axis will represent the percentage chance. The bars themselves must follow a threshold coloring, different from 
+the current threshold coloring. This coloring should have:
+- the bottom/top 5% of the histogram red
+- the 5%-15% and 75%-95% moving from red to yellow 
+- the 25%-75% moving from yellow to green, with green at 50%
+
+There should be 3 markings on the y-axis. One to the peak percentage (connected by a dashed line). One to the 25th and 
+75th percentiles (also connected by a dashed line) and one to the 5th and 95th percentiles (also connected by a dashed line).
+
 
 ## Power Rankings Page
 
