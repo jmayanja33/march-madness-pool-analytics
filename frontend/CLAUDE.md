@@ -141,17 +141,20 @@ A secondary logistic regression model was trained on PCA-reduced team embeddings
 predict the winner of any individual matchup between two teams in the tournament field. For this year (2026), the
 model is performing with the following metrics:
 
-- **Accuracy**: 83.70%
-- **F1 Score**: 83.75%
-- **Precision**: 83.52%
-- **Recall**: 83.98%
-- **ROC AUC**: 0.919
+- **Accuracy**: 83.15%
+- **F1 Score**: 83.01%
+- **Precision**: 83.71%
+- **Recall**: 82.32%
+- **ROC AUC**: 0.917
+- **Non-Upset Accuracy**: 90.65%
+- **Upset Accuracy**: 67.24%
 
-An accuracy of 83.43% means the model picks the correct winner in more than 5 out of every 6 matchups. Precision
-(83.06%) and Recall (83.98%) are nearly identical — the model is just as good at avoiding false calls as it is at
-finding real winners, with no meaningful tradeoff between the two. The F1 Score (83.52%) confirms this balance.
-Most notably, the ROC AUC of 0.919 — where 1.0 is ideal — shows the model can reliably separate winners from
-losers across every possible decision threshold, not just the default 50/50 split.
+An accuracy of 83.15% means the model picks the correct winner in more than 5 out of every 6 matchups. Precision
+(83.71%) and Recall (82.32%) are well balanced — the model is nearly as good at avoiding false calls as it is at
+finding real winners. The F1 Score (83.01%) confirms this balance. Most notably, the ROC AUC of 0.917 — where
+1.0 is ideal — shows the model can reliably separate winners from losers across every possible decision threshold,
+not just the default 50/50 split. The model correctly identifies non-upsets 90.65% of the time, and still captures
+upsets at a 67.24% rate.
 
 Each metric card shows a tooltip on hover explaining what the metric measures and its ideal value.
 

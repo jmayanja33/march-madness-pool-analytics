@@ -79,38 +79,49 @@ export default function Info() {
             <div className="info-metrics-grid">
               <MetricCard
                 label="Accuracy"
-                value="83.70%"
+                value="83.15%"
                 tooltip="Out of every 100 predicted matchups, the model correctly identified the winner this many times. Ideal: 100%"
               />
               <MetricCard
                 label="F1 Score"
-                value="83.75%"
+                value="83.01%"
                 tooltip="A combined measure of precision and recall — how well the model balances finding winners without generating too many false calls. Ideal: 100%"
               />
               <MetricCard
                 label="Precision"
-                value="83.52%"
+                value="83.71%"
                 tooltip="When the model predicted a team would win a matchup, how often it was actually right. Ideal: 100%"
               />
               <MetricCard
                 label="Recall"
-                value="83.98%"
+                value="82.32%"
                 tooltip="Out of all teams that actually won their matchup, the percentage the model successfully identified as the winner. Ideal: 100%"
               />
               <MetricCard
                 label="ROC AUC"
-                value="0.919"
+                value="0.917"
                 tooltip="Measures how well the model separates winners from losers across all possible decision thresholds — a score near 1.0 means it almost never confuses a winner for a loser. Ideal: 1.0"
+              />
+              <MetricCard
+                label="Non-Upset Accuracy"
+                value="90.65%"
+                tooltip="How often the model correctly predicted the outcome of matchups where the favored team won (non-upsets). Ideal: 100%"
+              />
+              <MetricCard
+                label="Upset Accuracy"
+                value="67.24%"
+                tooltip="How often the model correctly predicted the outcome of matchups where the underdog won (upsets). Ideal: 100%"
               />
             </div>
 
             <p className="info-model-detail">
-              An accuracy of 83.70% means the model picks the correct winner in more than 5 out of every
-              6 matchups. Precision (83.52%) and Recall (83.98%) are nearly identical — the model is just
-              as good at avoiding false calls as it is at finding real winners, with no meaningful tradeoff
-              between the two. The F1 Score (83.75%) confirms this balance. Most notably, the ROC AUC of
-              0.919 — where 1.0 is ideal — shows the model can reliably separate winners from losers
-              across every possible decision threshold, not just the default 50/50 split.
+              An accuracy of 83.15% means the model picks the correct winner in more than 5 out of every
+              6 matchups. Precision (83.71%) and Recall (82.32%) are well balanced — the model is nearly
+              as good at avoiding false calls as it is at finding real winners. The F1 Score (83.01%)
+              confirms this balance. Most notably, the ROC AUC of 0.917 — where 1.0 is ideal — shows the
+              model can reliably separate winners from losers across every possible decision threshold, not
+              just the default 50/50 split. The model correctly identifies non-upsets 90.65% of the time,
+              and still captures upsets at a 67.24% rate.
             </p>
           </div>
         </section>

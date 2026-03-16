@@ -6,15 +6,23 @@ import { probColor } from '../utils/colors';
 import './TeamCard.css';
 
 export default function TeamCard({ team, onRemove }) {
+  const dist = team.win_probability_distribution;
+
+  // Final Four probability: sum of winning 4, 5, or 6 games.
+  const finalFourProb = dist.four_wins + dist.five_wins + dist.six_wins;
+
+  // Championship probability: probability of winning all 6 games.
+  const champProb = dist.six_wins;
+
   // Build win-probability rows for each possible outcome (0–6 wins).
   const winRows = [
-    { label: '0 wins', value: team.win_probability_distribution.zero_wins  },
-    { label: '1 win',  value: team.win_probability_distribution.one_win    },
-    { label: '2 wins', value: team.win_probability_distribution.two_wins   },
-    { label: '3 wins', value: team.win_probability_distribution.three_wins },
-    { label: '4 wins', value: team.win_probability_distribution.four_wins  },
-    { label: '5 wins', value: team.win_probability_distribution.five_wins  },
-    { label: '6 wins', value: team.win_probability_distribution.six_wins   },
+    { label: '0 wins', value: dist.zero_wins  },
+    { label: '1 win',  value: dist.one_win    },
+    { label: '2 wins', value: dist.two_wins   },
+    { label: '3 wins', value: dist.three_wins },
+    { label: '4 wins', value: dist.four_wins  },
+    { label: '5 wins', value: dist.five_wins  },
+    { label: '6 wins', value: dist.six_wins   },
   ];
 
   return (
@@ -63,6 +71,27 @@ export default function TeamCard({ team, onRemove }) {
         </div>
       </section>
 
+      {/* ── Championship Probabilities ── */}
+      <section className="tc-section">
+        <h3 className="tc-section-label">Championship Probability</h3>
+        <div className="tc-champ-stats">
+          {/* Final Four probability: P(4 wins) + P(5 wins) + P(6 wins) */}
+          <div className="tc-champ-stat">
+            <span className="tc-champ-stat-label">Final Four</span>
+            <span className="tc-champ-stat-value" style={{ color: probColor(finalFourProb) }}>
+              {(finalFourProb * 100).toFixed(1)}%
+            </span>
+          </div>
+          {/* Championship probability: P(6 wins) */}
+          <div className="tc-champ-stat">
+            <span className="tc-champ-stat-label">Championship</span>
+            <span className="tc-champ-stat-value" style={{ color: probColor(champProb) }}>
+              {(champProb * 100).toFixed(1)}%
+            </span>
+          </div>
+        </div>
+      </section>
+
       {/* ── Team Stats ── */}
       <section className="tc-section">
         <h3 className="tc-section-label">Team Stats</h3>
@@ -108,7 +137,7 @@ export default function TeamCard({ team, onRemove }) {
                   <td>{p.height}</td>
                   <td>{p.avg_minutes}</td>
                   <td>{p.avg_points}</td>
-                  <td>{p.free_throw_pct}%</td>
+                  <td style={{ color: probColor(p.free_throw_pct / 100), fontWeight: 600 }}>{p.free_throw_pct}%</td>
                 </tr>
               ))}
             </tbody>

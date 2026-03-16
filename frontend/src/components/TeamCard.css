@@ -140,6 +140,33 @@
 .tc-prob-fill  { height: 100%; background: var(--light-blue); border-radius: 5px; transition: width 0.45s ease; }
 .tc-prob-pct   { width: 44px; text-align: right; color: var(--silver); flex-shrink: 0; }
 
+/* ── Championship probabilities ── */
+/* Two inline stats (Final Four / Championship) displayed side by side. */
+.tc-champ-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.tc-champ-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tc-champ-stat-label {
+  font-size: 0.75rem;
+  color: var(--silver);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Color applied inline via probColor utility */
+.tc-champ-stat-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
 /* ── Team stats grid ── */
 /* 2-column grid; each cell shows a label above a value. */
 .tc-stats-grid {
