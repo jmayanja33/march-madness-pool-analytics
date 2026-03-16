@@ -2,9 +2,9 @@
 // win outcome (6 wins → 0 wins), ranked by probability within each section.
 // Uses the same compact team card as the Create a Team page.
 //
-// Layout (top to bottom): 6 Wins → … → 0 Wins → Potential Final Four →
-// Potential Champion → Potential Upsets.  Each section has a numbered
-// 2-column grid of lightweight team cards.
+// Layout (top to bottom): Potential Champion → Potential Final Four →
+// Potential Upsets → Projected 6 Wins → … → Projected 0 Wins.
+// Each section has a numbered 2-column grid of lightweight team cards.
 import { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import TeamPopup from '../components/TeamPopup';
@@ -247,50 +247,17 @@ export default function PowerRankings() {
         {/* Error state */}
         {error && <p className="pr-error">{error}</p>}
 
-        {/* Rankings content — three stacked sections */}
-        {rankings && SECTIONS.map(({ key, title, bucketProb }) => {
-          const teams = rankings[key];
-          const isCollapsed = collapsed[key];
-          return (
-            <section key={key} className="pr-section">
-
-              {/* Clickable section header with collapse caret */}
-              <button
-                className="pr-section-header"
-                onClick={() => toggleSection(key)}
-                aria-expanded={!isCollapsed}
-              >
-                <h2 className="pr-section-title">{title} <span className="pr-section-count">({teams.length} {teams.length === 1 ? 'Team' : 'Teams'})</span></h2>
-                <span className={`pr-caret${isCollapsed ? ' pr-caret--collapsed' : ''}`}>&#8964;</span>
-              </button>
-
-              {/* Section body — hidden when collapsed */}
-              {!isCollapsed && (
-                teams.length === 0 ? (
-                  <p className="pr-empty">No teams in this category.</p>
-                ) : (
-                  <div className="pr-slots-grid">
-                    {teams.map((team, i) => (
-                      <RankCard
-                        key={team.name}
-                        rank={i + 1}
-                        team={team}
-                        bucketProb={bucketProb(team)}
-                        onInfo={() => setPopupTeam(team.name)}
-                      />
-                    ))}
-                  </div>
-                )
-              )}
-            </section>
-          );
-        })}
-
-        {/* Potential Final Four and Champion sections — derived from rankings data */}
+        {/* Potential Champion, Final Four, and Upsets — shown at the top */}
         {rankings && (() => {
           // Gather all teams from every win bucket into a flat array.
           const allTeams = ['six_wins','five_wins','four_wins','three_wins','two_wins','one_win','zero_wins']
             .flatMap(bucket => rankings[bucket]);
+
+          // Championship probability: P(6 wins) >= 5%.
+          const championTeams = allTeams
+            .map(t => ({ team: t, prob: t.win_probability_distribution.six_wins }))
+            .filter(x => x.prob >= 0.05)
+            .sort((a, b) => b.prob - a.prob);
 
           // Final Four probability: P(4 wins) + P(5 wins) + P(6 wins) >= 20%.
           const finalFourTeams = allTeams
@@ -301,51 +268,8 @@ export default function PowerRankings() {
             .filter(x => x.prob >= 0.20)
             .sort((a, b) => b.prob - a.prob);
 
-          // Championship probability: P(6 wins) >= 10%.
-          const championTeams = allTeams
-            .map(t => ({ team: t, prob: t.win_probability_distribution.six_wins }))
-            .filter(x => x.prob >= 0.05)
-            .sort((a, b) => b.prob - a.prob);
-
           return (
             <>
-              {/* ── Potential Final Four ── */}
-              <section className="pr-section">
-                <button
-                  className="pr-section-header"
-                  onClick={() => toggleSection('finalFour')}
-                  aria-expanded={!collapsed.finalFour}
-                >
-                  <h2 className="pr-section-title">
-                    Potential Final Four{' '}
-                    <span className="pr-section-count">({finalFourTeams.length} {finalFourTeams.length === 1 ? 'Team' : 'Teams'})</span>
-                  </h2>
-                  <span className={`pr-caret${collapsed.finalFour ? ' pr-caret--collapsed' : ''}`}>&#8964;</span>
-                </button>
-
-                {!collapsed.finalFour && (
-                  <>
-                    <p className="pr-section-sub">Teams with a 20%+ chance of reaching the Final Four.</p>
-                    {finalFourTeams.length === 0 ? (
-                      <p className="pr-empty">No teams meet this threshold.</p>
-                    ) : (
-                      <div className="pr-slots-grid">
-                        {finalFourTeams.map((x, i) => (
-                          <ProspectCard
-                            key={x.team.name}
-                            rank={i + 1}
-                            team={x.team}
-                            probLabel="Final Four Prob."
-                            prob={x.prob}
-                            onInfo={() => setPopupTeam(x.team.name)}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                )}
-              </section>
-
               {/* ── Potential Champion ── */}
               <section className="pr-section">
                 <button
@@ -382,11 +306,48 @@ export default function PowerRankings() {
                   </>
                 )}
               </section>
+
+              {/* ── Potential Final Four ── */}
+              <section className="pr-section">
+                <button
+                  className="pr-section-header"
+                  onClick={() => toggleSection('finalFour')}
+                  aria-expanded={!collapsed.finalFour}
+                >
+                  <h2 className="pr-section-title">
+                    Potential Final Four{' '}
+                    <span className="pr-section-count">({finalFourTeams.length} {finalFourTeams.length === 1 ? 'Team' : 'Teams'})</span>
+                  </h2>
+                  <span className={`pr-caret${collapsed.finalFour ? ' pr-caret--collapsed' : ''}`}>&#8964;</span>
+                </button>
+
+                {!collapsed.finalFour && (
+                  <>
+                    <p className="pr-section-sub">Teams with a 20%+ chance of reaching the Final Four.</p>
+                    {finalFourTeams.length === 0 ? (
+                      <p className="pr-empty">No teams meet this threshold.</p>
+                    ) : (
+                      <div className="pr-slots-grid">
+                        {finalFourTeams.map((x, i) => (
+                          <ProspectCard
+                            key={x.team.name}
+                            rank={i + 1}
+                            team={x.team}
+                            probLabel="Final Four Prob."
+                            prob={x.prob}
+                            onInfo={() => setPopupTeam(x.team.name)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </section>
             </>
           );
         })()}
 
-        {/* Potential Upsets section — shown after h2h data resolves */}
+        {/* Potential Upsets section — shown after rankings load */}
         {rankings && (
           <section className="pr-section">
 
@@ -396,7 +357,7 @@ export default function PowerRankings() {
               onClick={() => toggleSection('upsets')}
               aria-expanded={!collapsed.upsets}
             >
-              <h2 className="pr-section-title">Potential Upsets</h2>
+              <h2 className="pr-section-title">Potential Upsets{upsets !== null && <span className="pr-section-count"> ({upsets.length} {upsets.length === 1 ? 'Team' : 'Teams'})</span>}</h2>
               <span className={`pr-caret${collapsed.upsets ? ' pr-caret--collapsed' : ''}`}>&#8964;</span>
             </button>
 
@@ -435,6 +396,45 @@ export default function PowerRankings() {
             )}
           </section>
         )}
+
+        {/* Win bucket sections — projected wins from 6 down to 0 */}
+        {rankings && SECTIONS.map(({ key, title, bucketProb }) => {
+          const teams = rankings[key];
+          const isCollapsed = collapsed[key];
+          return (
+            <section key={key} className="pr-section">
+
+              {/* Clickable section header with collapse caret */}
+              <button
+                className="pr-section-header"
+                onClick={() => toggleSection(key)}
+                aria-expanded={!isCollapsed}
+              >
+                <h2 className="pr-section-title">Projected {title} <span className="pr-section-count">({teams.length} {teams.length === 1 ? 'Team' : 'Teams'})</span></h2>
+                <span className={`pr-caret${isCollapsed ? ' pr-caret--collapsed' : ''}`}>&#8964;</span>
+              </button>
+
+              {/* Section body — hidden when collapsed */}
+              {!isCollapsed && (
+                teams.length === 0 ? (
+                  <p className="pr-empty">No teams in this category.</p>
+                ) : (
+                  <div className="pr-slots-grid">
+                    {teams.map((team, i) => (
+                      <RankCard
+                        key={team.name}
+                        rank={i + 1}
+                        team={team}
+                        bucketProb={bucketProb(team)}
+                        onInfo={() => setPopupTeam(team.name)}
+                      />
+                    ))}
+                  </div>
+                )
+              )}
+            </section>
+          );
+        })}
       </div>
 
       {/* Full team detail popup — opened by the ⓘ button on any card */}
