@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import NavBar from '../components/NavBar';
 import Bracket from '../components/Bracket';
 import TeamPopup from '../components/TeamPopup';
-import { BRACKET_2025, FIRST_FOUR_2025, RESULTS_2025 } from '../data/bracketData';
+import { BRACKET_2026, FIRST_FOUR_2026, RESULTS_2026 } from '../data/bracketData';
 import './BracketPage.css';
 
 export default function BracketPage() {
@@ -58,7 +58,7 @@ export default function BracketPage() {
       <NavBar />
       <main className="bracket-page-main">
         <div className="bracket-page-header fade-in">
-          <h1>2025 NCAA Tournament</h1>
+          <h1>2026 NCAA Tournament</h1>
           <p>Click on any team to view analytics</p>
         </div>
 
@@ -75,11 +75,11 @@ export default function BracketPage() {
             className="bracket-scale-inner"
             style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}
           >
-            {/* Pass 2025 bracket, First Four data, and full results; onTeamClick opens the analytics popup */}
+            {/* Pass 2026 bracket, First Four data, and results (null — no games played yet); onTeamClick opens the analytics popup */}
             <Bracket
-              bracket={BRACKET_2025}
-              firstFour={FIRST_FOUR_2025}
-              results={RESULTS_2025}
+              bracket={BRACKET_2026}
+              firstFour={FIRST_FOUR_2026}
+              results={RESULTS_2026}
               onTeamClick={setSelectedTeam}
             />
           </div>

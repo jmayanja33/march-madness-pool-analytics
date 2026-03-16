@@ -45,7 +45,7 @@ POSITION_LABELS: dict[int, str] = {
 }
 
 # Year of the current-season predictions file (update each year).
-CURRENT_YEAR: int = 2025
+CURRENT_YEAR: int = 2026
 
 # ---------------------------------------------------------------------------
 # Predictions data loading

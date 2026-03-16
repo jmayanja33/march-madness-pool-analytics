@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import TeamPopup from '../components/TeamPopup';
 import { fetchPowerRankings, fetchH2H } from '../api/teamApi';
-import { BRACKET_2025, FIRST_FOUR_2025 } from '../data/bracketData';
+import { BRACKET_2026, FIRST_FOUR_2026 } from '../data/bracketData';
 import { probColor } from '../utils/colors';
 import './PowerRankings.css';
 
@@ -18,7 +18,7 @@ import './PowerRankings.css';
 // ---------------------------------------------------------------------------
 
 const TEAM_REGION_MAP = {};
-for (const [region, teams] of Object.entries(BRACKET_2025)) {
+for (const [region, teams] of Object.entries(BRACKET_2026)) {
   for (const team of teams) {
     TEAM_REGION_MAP[team.name] = region;
   }
@@ -78,7 +78,7 @@ function buildUpsetCandidates(teamMap) {
   const seen = new Set();
 
   // Process each region's first-round underdog matchups from the main bracket.
-  for (const [region, teams] of Object.entries(BRACKET_2025)) {
+  for (const [region, teams] of Object.entries(BRACKET_2026)) {
     // Index bracket teams by seed for quick lookup.
     const bySeed = {};
     for (const t of teams) bySeed[t.seed] = t;
@@ -100,10 +100,10 @@ function buildUpsetCandidates(teamMap) {
 
   // Add the "other" team from each First Four game (the team not in the bracket
   // winner slot), evaluated against the same R64 opponent the winner slot would face.
-  for (const ff of FIRST_FOUR_2025) {
+  for (const ff of FIRST_FOUR_2026) {
     const [ffRegion, ffSeedStr] = ff.destination.split(' ');
     const ffSeed = parseInt(ffSeedStr, 10);
-    const regionTeams = BRACKET_2025[ffRegion];
+    const regionTeams = BRACKET_2026[ffRegion];
 
     // Index region teams by seed.
     const bySeed = {};

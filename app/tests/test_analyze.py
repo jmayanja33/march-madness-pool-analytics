@@ -140,9 +140,9 @@ def test_chroma_id_multi_word() -> None:
 
 
 def test_chroma_id_default_year() -> None:
-    """Default year is CURRENT_YEAR (2025)."""
+    """Default year is CURRENT_YEAR (2026)."""
     result = team_name_to_chroma_id("Duke")
-    assert result.endswith("_2025")
+    assert result.endswith("_2026")
 
 
 # ---------------------------------------------------------------------------

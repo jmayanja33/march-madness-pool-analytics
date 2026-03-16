@@ -11,7 +11,7 @@ import { useState, useEffect, useRef } from 'react';
 import NavBar from '../components/NavBar';
 import TeamPopup from '../components/TeamPopup';
 import { fetchTeams, fetchPoolTeams } from '../api/teamApi';
-import { BRACKET_2025 } from '../data/bracketData';
+import { BRACKET_2026 } from '../data/bracketData';
 import { probColor } from '../utils/colors';
 import './CreateTeam.css';
 
@@ -20,7 +20,7 @@ import './CreateTeam.css';
 // ---------------------------------------------------------------------------
 
 const TEAM_REGION_MAP = {};
-for (const [region, teams] of Object.entries(BRACKET_2025)) {
+for (const [region, teams] of Object.entries(BRACKET_2026)) {
   for (const team of teams) {
     TEAM_REGION_MAP[team.name] = region;
   }

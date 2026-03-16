@@ -141,13 +141,13 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
           <BracketSlot
             seed={ff?.semi1.teamA ? seedLookup[ff.semi1.teamA] ?? null : null}
             name={ff?.semi1.teamA ?? ''}
-            winner={ff?.semi1.winner === ff?.semi1.teamA}
+            winner={Boolean(ff && ff.semi1.winner === ff.semi1.teamA)}
             onClick={() => ff?.semi1.teamA && onTeamClick(ff.semi1.teamA)}
           />
           <BracketSlot
             seed={ff?.semi1.teamB ? seedLookup[ff.semi1.teamB] ?? null : null}
             name={ff?.semi1.teamB ?? ''}
-            winner={ff?.semi1.winner === ff?.semi1.teamB}
+            winner={Boolean(ff && ff.semi1.winner === ff.semi1.teamB)}
             onClick={() => ff?.semi1.teamB && onTeamClick(ff.semi1.teamB)}
           />
         </div>
@@ -157,13 +157,13 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
           <BracketSlot
             seed={ff?.semi1.winner ? seedLookup[ff.semi1.winner] ?? null : null}
             name={ff?.semi1.winner ?? ''}
-            winner={ff?.champion === ff?.semi1.winner}
+            winner={Boolean(ff && ff.champion === ff.semi1.winner)}
             onClick={() => ff?.semi1.winner && onTeamClick(ff.semi1.winner)}
           />
           <BracketSlot
             seed={ff?.semi2.winner ? seedLookup[ff.semi2.winner] ?? null : null}
             name={ff?.semi2.winner ?? ''}
-            winner={ff?.champion === ff?.semi2.winner}
+            winner={Boolean(ff && ff.champion === ff.semi2.winner)}
             onClick={() => ff?.semi2.winner && onTeamClick(ff.semi2.winner)}
           />
         </div>
@@ -173,13 +173,13 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
           <BracketSlot
             seed={ff?.semi2.teamA ? seedLookup[ff.semi2.teamA] ?? null : null}
             name={ff?.semi2.teamA ?? ''}
-            winner={ff?.semi2.winner === ff?.semi2.teamA}
+            winner={Boolean(ff && ff.semi2.winner === ff.semi2.teamA)}
             onClick={() => ff?.semi2.teamA && onTeamClick(ff.semi2.teamA)}
           />
           <BracketSlot
             seed={ff?.semi2.teamB ? seedLookup[ff.semi2.teamB] ?? null : null}
             name={ff?.semi2.teamB ?? ''}
-            winner={ff?.semi2.winner === ff?.semi2.teamB}
+            winner={Boolean(ff && ff.semi2.winner === ff.semi2.teamB)}
             onClick={() => ff?.semi2.teamB && onTeamClick(ff.semi2.teamB)}
           />
         </div>
