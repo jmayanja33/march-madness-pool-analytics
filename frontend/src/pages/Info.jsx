@@ -1,34 +1,11 @@
-// Info page — five sections: Background/How to Play, Data, Wins Model, Head to Head Model, More Info.
-// Model metrics are fetched from the /info API endpoint; all other content is static.
-import { useEffect, useState } from 'react';
+// Info page — five sections: Background/How to Play, Data, Head to Head Model, Wins Model, More Info.
+// All content is static.
+import { useEffect } from 'react';
 import NavBar from '../components/NavBar';
-import { fetchInfo } from '../api/teamApi';
 import './Info.css';
 
 export default function Info() {
-  // Model metrics loaded from the API; null until the request resolves.
-  const [infoData, setInfoData] = useState(null);
-
-  useEffect(() => {
-    document.title = 'The Pool | Info';
-
-    // Fetch structured project info from the backend.
-    fetchInfo()
-      .then(data => setInfoData(data))
-      .catch(err => console.error('[Info] Failed to load info data:', err));
-  }, []);
-
-  // Resolve metrics from API data or fall back to static values from the spec.
-  const metrics = infoData?.model ?? {
-    accuracy: 75.26,
-    f1_weighted: 76.33,
-    precision_weighted: 79.05,
-    quadratic_weighted_kappa: 0.763,
-    ranked_probability_score: 0.097,
-    training_samples: 643,
-    test_samples: 190,
-    seasons: '2010–2025',
-  };
+  useEffect(() => { document.title = 'The Pool | Info'; }, []);
 
   return (
     <div className="info-page">
@@ -87,61 +64,7 @@ export default function Info() {
           </div>
         </section>
 
-        {/* ── Section 3: Wins Model ── */}
-        <section className="info-section">
-          <h2 className="info-section-title">Wins Model</h2>
-          <div className="info-section-body">
-            <p>
-              One feature of the team analytics is their predicted wins in the tournament. For this, an
-              ordinal regression model was used to evaluate the probability that a team would win 0, 1,
-              2, 3, 4, 5, or 6 games in the tournament. For this year (2026), the model is performing
-              with the following metrics:
-            </p>
-
-            {/* Model performance metrics grid — each card shows a tooltip on hover */}
-            <div className="info-metrics-grid">
-              <MetricCard
-                label="Accuracy"
-                value={`${metrics.accuracy}%`}
-                tooltip="Out of every 100 teams, the model correctly predicted the right number of tournament wins for this many. Ideal: 100%"
-              />
-              <MetricCard
-                label="F1 Score"
-                value={`${metrics.f1_weighted}%`}
-                tooltip="A combined score that rewards the model for being both accurate and consistent across all three win outcomes. Ideal: 100%"
-              />
-              <MetricCard
-                label="Precision"
-                value={`${metrics.precision_weighted}%`}
-                tooltip="When the model predicted a team would win a certain number of games, how often it was right. Ideal: 100%"
-              />
-              <MetricCard
-                label="Quadratic Weighted Kappa"
-                value={metrics.quadratic_weighted_kappa}
-                tooltip="Measures how close the model's predictions are to reality — a score near 1.0 means predictions rarely miss by more than one win bucket. Ideal: 1.0"
-              />
-              <MetricCard
-                label="Ranked Probability Score"
-                value={metrics.ranked_probability_score}
-                tooltip="Measures how trustworthy the model's confidence levels are — a lower score means it's not just guessing, it knows when it's sure and when it isn't. Ideal: 0"
-              />
-            </div>
-
-            <p className="info-model-detail">
-              Accuracy measures how often the model correctly places a team in the right win bucket —
-              at {metrics.accuracy}%, that&apos;s roughly 3 in 4 teams correctly called. F1
-              ({metrics.f1_weighted}%) and Precision ({metrics.precision_weighted}%) both approach 80%,
-              with 100% being perfect, reflecting consistent performance across all three outcomes rather
-              than just the most common one. The Quadratic Weighted Kappa of {metrics.quadratic_weighted_kappa} —
-              where 1.0 is perfect agreement — shows that when the model misses, it tends to miss by one
-              bucket, not two. Most notably, a Ranked Probability Score of {metrics.ranked_probability_score} (lower
-              is better, with 0 being ideal) means the confidence behind each prediction is well-calibrated,
-              not just a best guess.
-            </p>
-          </div>
-        </section>
-
-        {/* ── Section 4: Head to Head Model ── */}
+        {/* ── Section 3: Head to Head Model ── */}
         <section className="info-section">
           <h2 className="info-section-title">Head to Head Model</h2>
           <div className="info-section-body">
@@ -188,6 +111,20 @@ export default function Info() {
               between the two. The F1 Score (83.75%) confirms this balance. Most notably, the ROC AUC of
               0.919 — where 1.0 is ideal — shows the model can reliably separate winners from losers
               across every possible decision threshold, not just the default 50/50 split.
+            </p>
+          </div>
+        </section>
+
+        {/* ── Section 4: Wins Model ── */}
+        <section className="info-section">
+          <h2 className="info-section-title">Wins Model</h2>
+          <div className="info-section-body">
+            <p>
+              One feature of the team analytics is their predicted wins in the tournament. For this, a
+              Monte Carlo simulation of the entire tournament was performed using predictions from the
+              Head to Head model for each game. 1.6 million simulations were run, and these results were
+              used to evaluate the probability that a team would win 0, 1, 2, 3, 4, 5, or 6 games in
+              the tournament.
             </p>
           </div>
         </section>
