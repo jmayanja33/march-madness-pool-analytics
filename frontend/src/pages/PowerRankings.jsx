@@ -1,10 +1,10 @@
 // PowerRankings — displays all tournament teams grouped by their most likely
-// win outcome (2+ wins, 1 win, 0 wins), ranked by probability within each
-// section.  Uses the same compact team card as the Create a Team page.
+// win outcome (6 wins → 0 wins), ranked by probability within each section.
+// Uses the same compact team card as the Create a Team page.
 //
-// Layout: four stacked sections (top to bottom): 2 Wins → 1 Win → 0 Wins →
-// Potential Upsets.  Each section has a numbered 2-column grid of lightweight
-// team cards.
+// Layout (top to bottom): 6 Wins → … → 0 Wins → Potential Final Four →
+// Potential Champion → Potential Upsets.  Each section has a numbered
+// 2-column grid of lightweight team cards.
 import { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import TeamPopup from '../components/TeamPopup';
@@ -166,7 +166,7 @@ export default function PowerRankings() {
   // Name of the team whose full TeamCard popup is currently open, or null.
   const [popupTeam, setPopupTeam] = useState(null);
 
-  // Collapsed state for each section — keyed by section key + 'upsets'.
+  // Collapsed state for each section — keyed by section key + special sections.
   // All sections start expanded.
   const [collapsed, setCollapsed] = useState({
     six_wins:   false,
@@ -177,6 +177,8 @@ export default function PowerRankings() {
     one_win:    false,
     zero_wins:  false,
     upsets:     false,
+    finalFour:  false,
+    champion:   false,
   });
 
   // Toggle a single section's collapsed state by key.
@@ -284,6 +286,106 @@ export default function PowerRankings() {
           );
         })}
 
+        {/* Potential Final Four and Champion sections — derived from rankings data */}
+        {rankings && (() => {
+          // Gather all teams from every win bucket into a flat array.
+          const allTeams = ['six_wins','five_wins','four_wins','three_wins','two_wins','one_win','zero_wins']
+            .flatMap(bucket => rankings[bucket]);
+
+          // Final Four probability: P(4 wins) + P(5 wins) + P(6 wins) >= 20%.
+          const finalFourTeams = allTeams
+            .map(t => {
+              const d = t.win_probability_distribution;
+              return { team: t, prob: d.four_wins + d.five_wins + d.six_wins };
+            })
+            .filter(x => x.prob >= 0.20)
+            .sort((a, b) => b.prob - a.prob);
+
+          // Championship probability: P(6 wins) >= 10%.
+          const championTeams = allTeams
+            .map(t => ({ team: t, prob: t.win_probability_distribution.six_wins }))
+            .filter(x => x.prob >= 0.05)
+            .sort((a, b) => b.prob - a.prob);
+
+          return (
+            <>
+              {/* ── Potential Final Four ── */}
+              <section className="pr-section">
+                <button
+                  className="pr-section-header"
+                  onClick={() => toggleSection('finalFour')}
+                  aria-expanded={!collapsed.finalFour}
+                >
+                  <h2 className="pr-section-title">
+                    Potential Final Four{' '}
+                    <span className="pr-section-count">({finalFourTeams.length} {finalFourTeams.length === 1 ? 'Team' : 'Teams'})</span>
+                  </h2>
+                  <span className={`pr-caret${collapsed.finalFour ? ' pr-caret--collapsed' : ''}`}>&#8964;</span>
+                </button>
+
+                {!collapsed.finalFour && (
+                  <>
+                    <p className="pr-section-sub">Teams with a 20%+ chance of reaching the Final Four.</p>
+                    {finalFourTeams.length === 0 ? (
+                      <p className="pr-empty">No teams meet this threshold.</p>
+                    ) : (
+                      <div className="pr-slots-grid">
+                        {finalFourTeams.map((x, i) => (
+                          <ProspectCard
+                            key={x.team.name}
+                            rank={i + 1}
+                            team={x.team}
+                            probLabel="Final Four Prob."
+                            prob={x.prob}
+                            onInfo={() => setPopupTeam(x.team.name)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </section>
+
+              {/* ── Potential Champion ── */}
+              <section className="pr-section">
+                <button
+                  className="pr-section-header"
+                  onClick={() => toggleSection('champion')}
+                  aria-expanded={!collapsed.champion}
+                >
+                  <h2 className="pr-section-title">
+                    Potential Champion{' '}
+                    <span className="pr-section-count">({championTeams.length} {championTeams.length === 1 ? 'Team' : 'Teams'})</span>
+                  </h2>
+                  <span className={`pr-caret${collapsed.champion ? ' pr-caret--collapsed' : ''}`}>&#8964;</span>
+                </button>
+
+                {!collapsed.champion && (
+                  <>
+                    <p className="pr-section-sub">Teams with a 5%+ chance of winning the championship.</p>
+                    {championTeams.length === 0 ? (
+                      <p className="pr-empty">No teams meet this threshold.</p>
+                    ) : (
+                      <div className="pr-slots-grid">
+                        {championTeams.map((x, i) => (
+                          <ProspectCard
+                            key={x.team.name}
+                            rank={i + 1}
+                            team={x.team}
+                            probLabel="Championship Prob."
+                            prob={x.prob}
+                            onInfo={() => setPopupTeam(x.team.name)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </section>
+            </>
+          );
+        })()}
+
         {/* Potential Upsets section — shown after h2h data resolves */}
         {rankings && (
           <section className="pr-section">
@@ -387,6 +489,56 @@ function RankCard({ rank, team, bucketProb, onInfo }) {
           <span className="pr-slot-stat-value" style={{ color }}>
             {winsText}
             <span className="pr-slot-prob"> ({(bucketProb * 100).toFixed(2)}% likely)</span>
+          </span>
+          <button className="pr-slot-info-btn" onClick={onInfo} title="View team details">ⓘ</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ProspectCard — compact numbered card for Final Four / Champion candidates.
+// ---------------------------------------------------------------------------
+// Shares the same layout as RankCard but replaces "Expected Wins" with a
+// configurable probability label (e.g. "Final Four Prob." or "Championship Prob.").
+
+function ProspectCard({ rank, team, probLabel, prob, onInfo }) {
+  const region = getTeamRegion(team.name);
+  const color = probColor(prob);
+
+  return (
+    <div className="pr-slot-card fade-in">
+      {/* Rank number badge — top-left corner */}
+      <span className="pr-rank-badge">{rank}</span>
+
+      {/* Team logo */}
+      <img
+        src={`/logos/${team.name}.png`}
+        alt={`${team.name} logo`}
+        className="pr-slot-logo"
+        onError={e => { e.currentTarget.style.display = 'none'; }}
+      />
+
+      {/* Team identity and stats */}
+      <div className="pr-slot-info">
+        <div className="pr-slot-name">
+          <span className="pr-slot-seed">#{team.seed}</span>
+          <span className="pr-slot-teamname">{team.name}</span>
+          <span className="pr-slot-conf">{team.conference}</span>
+        </div>
+
+        {/* Region */}
+        <div className="pr-slot-stat">
+          <span className="pr-slot-stat-label">Region</span>
+          <span className="pr-slot-stat-value">{region}</span>
+        </div>
+
+        {/* Colored probability with info button */}
+        <div className="pr-slot-stat">
+          <span className="pr-slot-stat-label">{probLabel}</span>
+          <span className="pr-slot-stat-value" style={{ color }}>
+            {(prob * 100).toFixed(2)}%
           </span>
           <button className="pr-slot-info-btn" onClick={onInfo} title="View team details">ⓘ</button>
         </div>
