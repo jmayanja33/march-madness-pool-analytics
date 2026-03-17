@@ -168,8 +168,27 @@
 /* Vertical divider between the two halves */
 .h2h-divider {
   width: 1px;
-  background: var(--border);
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Line segment — fills available space above/below the subtitle, or full height when no subtitle */
+.h2h-divider-line {
+  flex: 1;
+  width: 1px;
+  background: var(--border);
+}
+
+/* Page subtitle — horizontal, centered in the gap between the two line segments */
+.h2h-page-sub {
+  white-space: nowrap;
+  font-size: 0.8rem;
+  color: var(--silver);
+  margin: 10px 0;
+  padding: 0 10px;
+  pointer-events: none;
 }
 
 /* ── Picker empty-state wrapper — centers the combobox in the half-pane ── */

@@ -15,6 +15,14 @@
   background: var(--bg);
 }
 
+/* ── Page-level subtitle ── */
+.ct-page-sub {
+  font-size: 0.9rem;
+  color: var(--silver);
+  padding: 8px 24px 0;
+  margin: 0;
+}
+
 /* ── Two-panel body ── */
 .ct-body {
   flex: 1;

@@ -87,7 +87,7 @@ export default function Analyze() {
         <div className="analyze-empty fade-in">
           <h2 className="analyze-empty-title">Compare Teams</h2>
           <p className="analyze-empty-sub">
-            Select up to 4 Teams
+            Select up to 4 Teams to Evaluate
           </p>
           <TeamPicker
             teamList={teamList}

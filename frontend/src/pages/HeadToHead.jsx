@@ -269,8 +269,18 @@ export default function HeadToHead() {
           )}
         </div>
 
-        {/* ── Vertical divider ── */}
-        <div className="h2h-divider" />
+        {/* ── Vertical divider — subtitle shown only when no team cards are rendered ── */}
+        <div className="h2h-divider">
+          {!(team1 || team2) ? (
+            <>
+              <div className="h2h-divider-line" />
+              <p className="h2h-page-sub">Evaluate 2 teams and determine who will win a head to head matchup</p>
+              <div className="h2h-divider-line" />
+            </>
+          ) : (
+            <div className="h2h-divider-line" />
+          )}
+        </div>
 
         {/* ── Right side — Team 2 ── */}
         <div className="h2h-side">

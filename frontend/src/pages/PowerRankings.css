@@ -28,6 +28,14 @@
   margin-bottom: 28px;
 }
 
+/* ── Page-level subtitle ── */
+.pr-page-sub {
+  font-size: 0.9rem;
+  color: var(--silver);
+  margin-top: -20px;
+  margin-bottom: 28px;
+}
+
 /* ── Status / error messages ── */
 .pr-status {
   font-size: 0.9rem;
