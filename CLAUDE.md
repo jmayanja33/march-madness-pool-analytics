@@ -50,6 +50,14 @@ Linting uses `ruff`. To check: `uv run ruff check .`. To auto-fix: `uv run ruff 
 All source code should be dockerized. The vector database should be dockerized as well. A docker compose file should 
 include both, and should be executable for local development.
 
+A second docker compose file should be created for production. This docker compose file will be deployed via a github actions
+pipeline to a production AWS instance. The FQDN for the production instance is mmthepool.com - which is where users will
+access the site on the web. 
+
+The production docker compose file should include a lets encrypt service which automatically cuts an SSL certificate
+for the server. This certificate should be auto-renewed by the lets encrypt service as needed. Renewals should occur
+during off-peak hours (between  3:00am - 5:00am EST).
+
 ## Data
 
 All predictions for this data will be precalculated. Predictions will be stored in JSON files containing Team objects.

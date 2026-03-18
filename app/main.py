@@ -80,17 +80,12 @@ app.add_middleware(
 # Routers
 # ---------------------------------------------------------------------------
 
-# /analyze and /analyze/most-similar routes defined in app/routers/analyze.py
-app.include_router(analyze.router)
-
-# /create-a-team route defined in app/routers/pool.py
-app.include_router(pool.router)
-
-# /power-rankings route defined in app/routers/power_rankings.py
-app.include_router(power_rankings.router)
-
-# /head-to-head route defined in app/routers/head_to_head.py
-app.include_router(head_to_head.router)
+# All API routes are served under /api so they don't collide with React Router
+# client-side paths (e.g. /analyze, /info, /power-rankings, /head-to-head).
+app.include_router(analyze.router,        prefix="/api")
+app.include_router(pool.router,           prefix="/api")
+app.include_router(power_rankings.router, prefix="/api")
+app.include_router(head_to_head.router,   prefix="/api")
 
 # ---------------------------------------------------------------------------
 # Root — health check
@@ -117,7 +112,7 @@ async def root() -> HealthResponse:
 
 
 @app.get(
-    "/teams",
+    "/api/teams",
     response_model=list[TeamListItem],
     tags=["teams"],
     summary="List all tournament teams",
@@ -133,7 +128,7 @@ async def teams() -> list[TeamListItem]:
 
 
 @app.get(
-    "/info", response_model=InfoResponse, tags=["info"], summary="Project information"
+    "/api/info", response_model=InfoResponse, tags=["info"], summary="Project information"
 )
 async def info() -> InfoResponse:
     """

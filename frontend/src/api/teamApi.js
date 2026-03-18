@@ -1,8 +1,10 @@
 // API module — functions for communicating with the FastAPI backend.
-// The Vite dev proxy forwards /analyze, /teams, and /info to http://localhost:8000.
+// The Vite dev proxy forwards all /api/* requests to http://localhost:8000.
 
-// Base path for team-specific data endpoints.
-const ANALYZE_BASE = '/analyze';
+// Base path for all backend API endpoints. The /api prefix ensures Vite's dev
+// proxy (and nginx in production) routes these to FastAPI rather than React Router.
+const API_BASE = '/api';
+const ANALYZE_BASE = `${API_BASE}/analyze`;
 
 // Fetches all pre-calculated data for a given team from the backend.
 // Returns a TeamAnalysis object containing record, players, win distribution, and similar teams.
@@ -22,7 +24,7 @@ export async function fetchTeamData(teamName) {
 // Returns an array of { name, seed } objects used to populate the Analyze dropdown.
 // Throws an error if the request fails.
 export async function fetchTeams() {
-  const res = await fetch('/teams');
+  const res = await fetch(`${API_BASE}/teams`);
   if (!res.ok) {
     console.error(`[API] fetchTeams failed: HTTP ${res.status}`);
     throw new Error(`Failed to fetch team list: ${res.status}`);
@@ -34,7 +36,7 @@ export async function fetchTeams() {
 // Returns an InfoResponse object used to populate the Info page.
 // Throws an error if the request fails.
 export async function fetchInfo() {
-  const res = await fetch('/info');
+  const res = await fetch(`${API_BASE}/info`);
   if (!res.ok) {
     console.error(`[API] fetchInfo failed: HTTP ${res.status}`);
     throw new Error(`Failed to fetch project info: ${res.status}`);
@@ -48,7 +50,7 @@ export async function fetchInfo() {
 // probability descending.
 // Throws an error if the request fails.
 export async function fetchPowerRankings() {
-  const res = await fetch('/power-rankings');
+  const res = await fetch(`${API_BASE}/power-rankings`);
   if (!res.ok) {
     console.error(`[API] fetchPowerRankings failed: HTTP ${res.status}`);
     throw new Error(`Failed to fetch power rankings: ${res.status}`);
@@ -69,7 +71,7 @@ export async function fetchPowerRankings() {
 // Throws if the network request fails or the pair is not found (404).
 export async function fetchH2H(team1Name, team2Name) {
   const params = new URLSearchParams({ team1: team1Name, team2: team2Name });
-  const res = await fetch(`/head-to-head?${params.toString()}`);
+  const res = await fetch(`${API_BASE}/head-to-head?${params.toString()}`);
   if (!res.ok) {
     console.error(`[API] fetchH2H failed — ${team1Name} vs ${team2Name}: HTTP ${res.status}`);
     throw new Error(`Failed to fetch H2H data: ${res.status}`);
@@ -88,7 +90,7 @@ export async function fetchH2H(team1Name, team2Name) {
 // omitted from the response rather than causing an error.
 // Throws if the network request itself fails.
 export async function fetchPoolTeams(teamNames) {
-  const res = await fetch('/create-a-team', {
+  const res = await fetch(`${API_BASE}/create-a-team`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ teams: teamNames }),

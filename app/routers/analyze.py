@@ -1,12 +1,12 @@
 """
 Analyze router — handles all /analyze endpoints.
 
-Routes defined in this module (prefix "/analyze" is applied in main.py):
+Routes defined in this module (router prefix "/analyze", global prefix "/api" applied in main.py):
 
-    GET /analyze/most-similar/{team}
+    GET /api/analyze/most-similar/{team}
         Query ChromaDB for the 3 most similar historical teams to the given team.
 
-    GET /analyze/{team}
+    GET /api/analyze/{team}
         Load team data from the predictions JSON and return a full TeamAnalysis,
         including similar_teams populated from ChromaDB.
 

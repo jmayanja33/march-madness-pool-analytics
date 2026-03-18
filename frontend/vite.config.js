@@ -20,18 +20,12 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      // Proxy /analyze and /info to the FastAPI backend, keeping the frontend
+      // Proxy all /api/* requests to the FastAPI backend, keeping the frontend
       // and backend on the same origin in development to avoid CORS issues.
+      // Using a single /api prefix prevents Vite from intercepting page-level
+      // navigation (e.g. /analyze) before React Router can handle it.
       proxy: {
-        // Use explicit option objects so changeOrigin rewrites the Host header
-        // to match the target — required when the backend runs on a different
-        // host (e.g., the "backend" Docker service name vs. "localhost").
-        '/analyze':          { target: backendUrl, changeOrigin: true },
-        '/teams':            { target: backendUrl, changeOrigin: true },
-        '/info':             { target: backendUrl, changeOrigin: true },
-        '/create-a-team':    { target: backendUrl, changeOrigin: true },
-        '/power-rankings':   { target: backendUrl, changeOrigin: true },
-        '/head-to-head':     { target: backendUrl, changeOrigin: true },
+        '/api': { target: backendUrl, changeOrigin: true },
       },
     },
   };
