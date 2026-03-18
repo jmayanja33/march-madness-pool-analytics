@@ -240,7 +240,14 @@ export default function PowerRankings() {
 
       <div className="pr-body">
         <h1 className="pr-page-title">Power Rankings</h1>
-        <p className="pr-page-sub">PROJECTIONS FOR LIKELY CHAMPIONS, FINAL FOUR TEAMS, UPSET BIDS, AND WIN TOTALS PER TEAM IN THE TOURNAMENT</p>
+        <p className="pr-page-sub">
+          PROJECTIONS FOR:<br />
+          <br />
+          &nbsp;&nbsp;&nbsp;&nbsp;• National Champion Candidates<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;• Final Four Candidates<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;• Upset Bids<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;• Tournament Win Totals per Team
+        </p>
 
         {/* Loading state */}
         {loading && <p className="pr-status">Loading rankings…</p>}
