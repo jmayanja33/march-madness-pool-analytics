@@ -4,21 +4,18 @@
 #
 # On workflow_dispatch (manual trigger from the Actions UI):
 #   1. CI jobs run first (lint, test, secrets).
-#   2. build — builds the backend and nginx Docker images and pushes them to
-#              the GitHub Container Registry (ghcr.io).
-#   3. deploy — SSHes into the production EC2 instance, pulls the new images,
-#               and restarts the stack. No building happens on the server.
+#   2. build  — builds the backend and nginx Docker images and pushes them to
+#               the GitHub Container Registry (ghcr.io).
+#   3. deploy — copies the required config files from the CI runner to the
+#               server, then pulls the pre-built images and starts the stack.
+#               No git clone or Docker build is required on the server.
 #
-# First-time setup — after the first successful build, make both packages
-# public so the server can pull without authentication:
-#   GitHub → Packages → mmthepool-backend → Package settings → Change visibility → Public
-#   GitHub → Packages → mmthepool-nginx   → Package settings → Change visibility → Public
-#
-# Required GitHub repository secrets for deploy:
+# Required GitHub repository secrets:
 #   EC2_HOST       — public hostname or IP of the production AWS instance
 #   EC2_USER       — SSH username (e.g. ubuntu)
 #   EC2_SSH_KEY    — private SSH key (PEM format) authorised on the instance
 #   CERTBOT_EMAIL  — email address for Let's Encrypt certificate issuance
+#   GHCR_TOKEN     — GitHub PAT with read:packages scope for pulling images
 
 name: CI
 
@@ -133,15 +130,13 @@ jobs:
 
   # ── Deploy ────────────────────────────────────────────────────────────────
   # Runs only when triggered manually via workflow_dispatch.
-  # Waits for build to complete, then SSHes into the production EC2 instance,
-  # pulls the latest pre-built images, and restarts the stack.
-  # No Docker build happens on the server — only a pull and up.
-  #
-  # First-deploy behaviour:
-  #   If no Let's Encrypt certificate exists yet, init-letsencrypt.sh is run
-  #   automatically before the stack starts. CERTBOT_EMAIL is forwarded as an
-  #   environment variable — it never appears as a CLI argument, so it is not
-  #   visible in process listings (ps aux) on the server.
+  # Waits for build to complete, then:
+  #   1. Copies the three config files the server needs directly from the CI
+  #      runner checkout — no git clone or git pull required on the server.
+  #   2. SSHes in, installs Docker if absent, authenticates to GHCR with a
+  #      read-only PAT (GHCR_TOKEN), obtains the SSL cert on first deploy,
+  #      pulls the pre-built images, and starts the production stack.
+  #      GHCR credentials are removed from the server after the pull.
   deploy:
     name: Deploy
     needs: [lint, test, secrets, build]
@@ -153,23 +148,38 @@ jobs:
       group: deploy
       cancel-in-progress: false
     steps:
+      - uses: actions/checkout@v4
+
+      # Copy the three files the server needs from the CI runner directly.
+      # This replaces any need for git on the server — it always receives
+      # exactly the files that passed CI, nothing more.
+      - name: Copy config files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "docker-compose.prod.yml,nginx/,init-letsencrypt.sh"
+          target: "~/march-madness-pool-analytics/"
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          # Forward CERTBOT_EMAIL into the SSH session as an environment
-          # variable so it is never exposed as a command-line argument.
-          envs: CERTBOT_EMAIL
+          # Forward secrets as environment variables — they never appear as
+          # CLI arguments and are not visible in process listings (ps aux).
+          envs: CERTBOT_EMAIL,GHCR_TOKEN
           # 1. Install Docker if not already present.
-          # 2. Pull the latest config from the repo.
-          # 3. On first deploy only: obtain the initial SSL certificate.
-          #    Runs init-letsencrypt.sh with sudo -E (preserves env vars,
-          #    bypasses docker group membership on a fresh install).
-          # 4. Pull pre-built images from GHCR and restart all services.
-          #    sudo is used so docker commands work whether or not the ubuntu
-          #    user's docker group membership is active in the current session.
+          # 2. Authenticate to GHCR with the read-only PAT.
+          # 3. On first deploy only: obtain the initial SSL certificate via
+          #    init-letsencrypt.sh. sudo -E preserves env vars and bypasses
+          #    docker group membership on a fresh install.
+          # 4. Pull pre-built images from GHCR and start the production stack.
+          # 5. Log out of GHCR so credentials are not left on the server.
+          #    sudo is used throughout so docker commands work whether or not
+          #    the ubuntu user's docker group membership is active.
           script: |
             if ! command -v docker &>/dev/null; then
               sudo apt-get update -y
@@ -177,13 +187,15 @@ jobs:
               sudo systemctl enable --now docker
               sudo usermod -aG docker "$USER"
             fi
+            echo "$GHCR_TOKEN" | sudo docker login ghcr.io -u jmayanja33 --password-stdin
             cd ~/march-madness-pool-analytics
-            git pull origin master
             if [ ! -d "./data/certbot/conf/live/mmthepool.com" ]; then
               chmod +x ./init-letsencrypt.sh
               DOMAIN=mmthepool.com EMAIL="$CERTBOT_EMAIL" sudo -E bash ./init-letsencrypt.sh
             fi
             sudo docker compose -f docker-compose.prod.yml pull
             sudo docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            sudo docker logout ghcr.io
         env:
           CERTBOT_EMAIL: ${{ secrets.CERTBOT_EMAIL }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
