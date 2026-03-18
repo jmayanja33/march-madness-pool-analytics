@@ -3,7 +3,7 @@
 # Differences from docker-compose.yml (local dev):
 #   - nginx service replaces the raw frontend port exposure; it terminates TLS
 #     and proxies API requests to the backend.
-#   - certbot service runs alongside nginx and auto-renews certificates at 04:00 EST daily.
+#   - certbot service runs alongside nginx and auto-renews certificates at 04:00 EST every 2 weeks.
 #   - backend and chromadb ports are NOT published to the host; they are only
 #     reachable inside the Docker-internal network.
 #   - frontend uses Dockerfile.prod (multi-stage build, no Vite dev server).
@@ -23,6 +23,7 @@ services:
   # Internal only — not exposed to the host.
   chromadb:
     image: chromadb/chroma:latest
+    restart: unless-stopped
     volumes:
       - ./data/vector_db:/data
 
@@ -32,6 +33,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: unless-stopped
     volumes:
       - ./data:/app/data   # prediction JSON files
     environment:
@@ -55,6 +57,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
+    restart: unless-stopped
     ports:
       - "80:80"    # HTTP — ACME challenge + redirect to HTTPS
       - "443:443"  # HTTPS — production traffic
@@ -74,19 +77,22 @@ services:
       /bin/sh -c "while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"
 
   # ── Certbot ─────────────────────────────────────────────────────────────────
-  # Runs in the background and attempts certificate renewal once per day during
-  # the off-peak window: 04:00 EST (= 09:00 UTC).
-  # Let's Encrypt certificates expire after 90 days; Certbot only renews when
-  # fewer than 30 days remain, so a once-daily check is safe and efficient.
+  # Runs in the background and attempts certificate renewal every 2 weeks at
+  # 04:00 EST (= 09:00 UTC).  Let's Encrypt certificates expire after 90 days;
+  # Certbot only renews when fewer than 30 days remain, so a two-week cadence
+  # provides plenty of lead time while minimising unnecessary API calls.
   certbot:
     image: certbot/certbot
+    restart: unless-stopped
     volumes:
       # Same volumes as nginx so certbot can write new certs and challenge files.
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-    # Loop: sleep until 09:00 UTC (04:00 EST), then attempt renewal.
-    # Shell arithmetic calculates seconds remaining until the next 09:00 UTC
-    # so the renewal fires in the correct off-peak window every day.
+    # Loop: sleep until 09:00 UTC (04:00 EST), attempt renewal, then sleep
+    # exactly 14 days before the next check.  Because 14 days is an exact
+    # multiple of 24 h, every subsequent check also lands at 09:00 UTC.
+    # Certbot only renews when fewer than 30 days remain on the certificate,
+    # so a two-week cadence is safe and avoids unnecessary Let's Encrypt calls.
     entrypoint: >
       /bin/sh -c "trap exit TERM;
                   while :; do
@@ -100,4 +106,6 @@ services:
                     echo \"Next renewal check in $${SLEEP}s (04:00 EST / 09:00 UTC)\";
                     sleep $$SLEEP & wait $${!};
                     certbot renew;
+                    echo \"Renewal attempt done. Next check in 14 days.\";
+                    sleep 1209600 & wait $${!};
                   done"
