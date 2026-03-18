@@ -1,0 +1,103 @@
+# Docker Compose — Production.
+#
+# Differences from docker-compose.yml (local dev):
+#   - nginx service replaces the raw frontend port exposure; it terminates TLS
+#     and proxies API requests to the backend.
+#   - certbot service runs alongside nginx and auto-renews certificates at 04:00 EST daily.
+#   - backend and chromadb ports are NOT published to the host; they are only
+#     reachable inside the Docker-internal network.
+#   - frontend uses Dockerfile.prod (multi-stage build, no Vite dev server).
+#   - backend runs without --reload.
+#
+# Before first run:
+#   1. Set DOMAIN in the environment or export it in your shell.
+#   2. Run:  ./init-letsencrypt.sh
+#   3. Then: docker compose -f docker-compose.prod.yml up -d
+#
+# Access:
+#   https://yourdomain.com   — the full application
+
+services:
+
+  # ── ChromaDB vector database ────────────────────────────────────────────────
+  # Internal only — not exposed to the host.
+  chromadb:
+    image: chromadb/chroma:latest
+    volumes:
+      - ./data/vector_db:/data
+
+  # ── FastAPI backend ──────────────────────────────────────────────────────────
+  # Internal only — nginx proxies traffic to it; the port is not published.
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data   # prediction JSON files
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    depends_on:
+      - chromadb
+    # Override dev CMD: no --reload in production.
+    command: ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # ── Nginx reverse proxy + frontend ──────────────────────────────────────────
+  # Builds the React app (Dockerfile.prod multi-stage) and serves static files.
+  # Also terminates TLS using certs from the shared certbot volume.
+  nginx:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"    # HTTP — ACME challenge + redirect to HTTPS
+      - "443:443"  # HTTPS — production traffic
+    volumes:
+      # Nginx server-block configuration (replace yourdomain.com first).
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      # Shared Let's Encrypt certificate store written by certbot.
+      - ./data/certbot/conf:/etc/letsencrypt:ro
+      # Webroot directory for ACME HTTP-01 challenge files.
+      - ./data/certbot/www:/var/www/certbot:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    # Reload nginx config every 6 h so renewed certs are picked up without
+    # a full container restart.
+    command: >
+      /bin/sh -c "while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g 'daemon off;'"
+
+  # ── Certbot ─────────────────────────────────────────────────────────────────
+  # Runs in the background and attempts certificate renewal once per day during
+  # the off-peak window: 04:00 EST (= 09:00 UTC).
+  # Let's Encrypt certificates expire after 90 days; Certbot only renews when
+  # fewer than 30 days remain, so a once-daily check is safe and efficient.
+  certbot:
+    image: certbot/certbot
+    volumes:
+      # Same volumes as nginx so certbot can write new certs and challenge files.
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    # Loop: sleep until 09:00 UTC (04:00 EST), then attempt renewal.
+    # Shell arithmetic calculates seconds remaining until the next 09:00 UTC
+    # so the renewal fires in the correct off-peak window every day.
+    entrypoint: >
+      /bin/sh -c "trap exit TERM;
+                  while :; do
+                    SECS_NOW=$$(( $$(date -u +%H) * 3600 + $$(date -u +%M) * 60 + $$(date -u +%S) ));
+                    TARGET=32400;
+                    if [ $$SECS_NOW -lt $$TARGET ]; then
+                      SLEEP=$$(($$TARGET - $$SECS_NOW));
+                    else
+                      SLEEP=$$((86400 - $$SECS_NOW + $$TARGET));
+                    fi;
+                    echo \"Next renewal check in $${SLEEP}s (04:00 EST / 09:00 UTC)\";
+                    sleep $$SLEEP & wait $${!};
+                    certbot renew;
+                  done"

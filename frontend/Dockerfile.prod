@@ -1,0 +1,33 @@
+# Frontend Dockerfile — Production build.
+# Multi-stage:
+#   Stage 1 (builder): Node compiles the Vite/React app to static files.
+#   Stage 2 (nginx):   Nginx serves the compiled files.
+#
+# The resulting image is used by the nginx reverse-proxy service in
+# docker-compose.prod.yml, which also handles SSL termination via Let's Encrypt.
+
+# ── Stage 1: build ────────────────────────────────────────────────────────────
+FROM node:20-slim AS builder
+
+WORKDIR /app
+
+# Install dependencies first — separate layer for better caching.
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy the rest of the frontend source.
+COPY . .
+
+# Build the production bundle. Output goes to /app/dist.
+RUN npm run build
+
+# ── Stage 2: serve ────────────────────────────────────────────────────────────
+FROM nginx:alpine
+
+# Copy the compiled static files into nginx's default serving directory.
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# nginx configuration is mounted at runtime via docker-compose.prod.yml,
+# so it can be updated without rebuilding the image.
+
+EXPOSE 80 443

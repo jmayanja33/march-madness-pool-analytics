@@ -1,6 +1,15 @@
-# CI pipeline — runs on every push and pull request to master.
-# Three jobs run in parallel: lint, test, and secret detection.
+# CI/CD pipeline — runs on every push and pull request to master.
+# Three CI jobs run in parallel: lint, test, and secret detection.
 # All three must pass for the pipeline to succeed.
+#
+# A separate deploy job can be triggered manually via workflow_dispatch
+# from the GitHub Actions UI. It requires all CI jobs to pass first,
+# then SSHes into the production EC2 instance and redeploys the stack.
+#
+# Required GitHub repository secrets for deploy:
+#   EC2_HOST    — public hostname or IP of the production AWS instance
+#   EC2_USER    — SSH username (e.g. ec2-user or ubuntu)
+#   EC2_SSH_KEY — private SSH key (PEM format) authorised on the instance
 
 name: CI
 
@@ -9,6 +18,8 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  # Allows the deploy job to be triggered manually from the Actions UI.
+  workflow_dispatch:
 
 jobs:
 
@@ -67,3 +78,28 @@ jobs:
       - uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ── Deploy ────────────────────────────────────────────────────────────────
+  # Runs only when triggered manually via workflow_dispatch.
+  # All three CI jobs must pass before this job begins.
+  # SSHes into the production EC2 instance, pulls the latest code, and
+  # rebuilds + restarts the production Docker Compose stack.
+  deploy:
+    name: Deploy
+    needs: [lint, test, secrets]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          # Pull latest code then rebuild and restart all services.
+          # --build forces a fresh image build so new code is picked up.
+          # --remove-orphans cleans up any containers from removed services.
+          script: |
+            cd ~/march-madness-pool-analytics
+            git pull origin master
+            docker compose -f docker-compose.prod.yml up -d --build --remove-orphans

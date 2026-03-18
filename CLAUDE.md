@@ -52,7 +52,7 @@ include both, and should be executable for local development.
 
 A second docker compose file should be created for production. This docker compose file will be deployed via a github actions
 pipeline to a production AWS instance. The FQDN for the production instance is mmthepool.com - which is where users will
-access the site on the web. 
+access the site on the web. On deployment, the vector db should be populated as well.
 
 The production docker compose file should include a lets encrypt service which automatically cuts an SSL certificate
 for the server. This certificate should be auto-renewed by the lets encrypt service as needed. Renewals should occur
