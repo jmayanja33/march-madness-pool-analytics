@@ -2,14 +2,23 @@
 # Three CI jobs run in parallel: lint, test, and secret detection.
 # All three must pass for the pipeline to succeed.
 #
-# A separate deploy job can be triggered manually via workflow_dispatch
-# from the GitHub Actions UI. It requires all CI jobs to pass first,
-# then SSHes into the production EC2 instance and redeploys the stack.
+# On workflow_dispatch (manual trigger from the Actions UI):
+#   1. CI jobs run first (lint, test, secrets).
+#   2. build — builds the backend and nginx Docker images and pushes them to
+#              the GitHub Container Registry (ghcr.io).
+#   3. deploy — SSHes into the production EC2 instance, pulls the new images,
+#               and restarts the stack. No building happens on the server.
+#
+# First-time setup — after the first successful build, make both packages
+# public so the server can pull without authentication:
+#   GitHub → Packages → mmthepool-backend → Package settings → Change visibility → Public
+#   GitHub → Packages → mmthepool-nginx   → Package settings → Change visibility → Public
 #
 # Required GitHub repository secrets for deploy:
-#   EC2_HOST    — public hostname or IP of the production AWS instance
-#   EC2_USER    — SSH username (e.g. ec2-user or ubuntu)
-#   EC2_SSH_KEY — private SSH key (PEM format) authorised on the instance
+#   EC2_HOST       — public hostname or IP of the production AWS instance
+#   EC2_USER       — SSH username (e.g. ubuntu)
+#   EC2_SSH_KEY    — private SSH key (PEM format) authorised on the instance
+#   CERTBOT_EMAIL  — email address for Let's Encrypt certificate issuance
 
 name: CI
 
@@ -18,7 +27,7 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
-  # Allows the deploy job to be triggered manually from the Actions UI.
+  # Allows the build and deploy jobs to be triggered manually from the Actions UI.
   workflow_dispatch:
 
 jobs:
@@ -79,14 +88,63 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  # ── Build & Push Images ───────────────────────────────────────────────────
+  # Builds the backend and nginx/frontend Docker images and pushes them to
+  # the GitHub Container Registry (ghcr.io).
+  # Only runs on workflow_dispatch — not on every push.
+  # All three CI jobs must pass before this job begins.
+  build:
+    name: Build & Push Images
+    needs: [lint, test, secrets]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    # Write permission is required to push packages to ghcr.io.
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      # Authenticate to GHCR using the built-in GITHUB_TOKEN — no extra
+      # secrets required for pushing images.
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build the FastAPI backend image and push to GHCR.
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/mmthepool-backend:latest
+
+      # Build the nginx + React frontend image and push to GHCR.
+      - name: Build and push nginx image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile.prod
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/mmthepool-nginx:latest
+
   # ── Deploy ────────────────────────────────────────────────────────────────
   # Runs only when triggered manually via workflow_dispatch.
-  # All three CI jobs must pass before this job begins.
-  # SSHes into the production EC2 instance, pulls the latest code, and
-  # rebuilds + restarts the production Docker Compose stack.
+  # Waits for build to complete, then SSHes into the production EC2 instance,
+  # pulls the latest pre-built images, and restarts the stack.
+  # No Docker build happens on the server — only a pull and up.
+  #
+  # First-deploy behaviour:
+  #   If no Let's Encrypt certificate exists yet, init-letsencrypt.sh is run
+  #   automatically before the stack starts. CERTBOT_EMAIL is forwarded as an
+  #   environment variable — it never appears as a CLI argument, so it is not
+  #   visible in process listings (ps aux) on the server.
   deploy:
     name: Deploy
-    needs: [lint, test, secrets]
+    needs: [lint, test, secrets, build]
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
     # Prevent two deploys running simultaneously — a second trigger will
@@ -101,10 +159,31 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          # Pull latest code then rebuild and restart all services.
-          # --build forces a fresh image build so new code is picked up.
-          # --remove-orphans cleans up any containers from removed services.
+          # Forward CERTBOT_EMAIL into the SSH session as an environment
+          # variable so it is never exposed as a command-line argument.
+          envs: CERTBOT_EMAIL
+          # 1. Install Docker if not already present.
+          # 2. Pull the latest config from the repo.
+          # 3. On first deploy only: obtain the initial SSL certificate.
+          #    Runs init-letsencrypt.sh with sudo -E (preserves env vars,
+          #    bypasses docker group membership on a fresh install).
+          # 4. Pull pre-built images from GHCR and restart all services.
+          #    sudo is used so docker commands work whether or not the ubuntu
+          #    user's docker group membership is active in the current session.
           script: |
+            if ! command -v docker &>/dev/null; then
+              sudo apt-get update -y
+              sudo apt-get install -y docker.io docker-compose-plugin
+              sudo systemctl enable --now docker
+              sudo usermod -aG docker "$USER"
+            fi
             cd ~/march-madness-pool-analytics
             git pull origin master
-            docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+            if [ ! -d "./data/certbot/conf/live/mmthepool.com" ]; then
+              chmod +x ./init-letsencrypt.sh
+              DOMAIN=mmthepool.com EMAIL="$CERTBOT_EMAIL" sudo -E bash ./init-letsencrypt.sh
+            fi
+            sudo docker compose -f docker-compose.prod.yml pull
+            sudo docker compose -f docker-compose.prod.yml up -d --remove-orphans
+        env:
+          CERTBOT_EMAIL: ${{ secrets.CERTBOT_EMAIL }}

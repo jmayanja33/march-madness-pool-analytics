@@ -1,12 +1,13 @@
 # Docker Compose — Production.
 #
 # Differences from docker-compose.yml (local dev):
+#   - backend and nginx use pre-built images from ghcr.io (pushed by CI) rather
+#     than building from source — no Docker build happens on the server.
 #   - nginx service replaces the raw frontend port exposure; it terminates TLS
 #     and proxies API requests to the backend.
 #   - certbot service runs alongside nginx and auto-renews certificates at 04:00 EST every 2 weeks.
 #   - backend and chromadb ports are NOT published to the host; they are only
 #     reachable inside the Docker-internal network.
-#   - frontend uses Dockerfile.prod (multi-stage build, no Vite dev server).
 #   - backend runs without --reload.
 #
 # Before first run:
@@ -29,10 +30,9 @@ services:
 
   # ── FastAPI backend ──────────────────────────────────────────────────────────
   # Internal only — nginx proxies traffic to it; the port is not published.
+  # Image is built and pushed to GHCR by the CI pipeline.
   backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/jmayanja33/mmthepool-backend:latest
     restart: unless-stopped
     volumes:
       - ./data:/app/data   # prediction JSON files
@@ -51,12 +51,10 @@ services:
       start_period: 10s
 
   # ── Nginx reverse proxy + frontend ──────────────────────────────────────────
-  # Builds the React app (Dockerfile.prod multi-stage) and serves static files.
-  # Also terminates TLS using certs from the shared certbot volume.
+  # Serves the pre-built React static files and terminates TLS.
+  # Image is built and pushed to GHCR by the CI pipeline.
   nginx:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
+    image: ghcr.io/jmayanja33/mmthepool-nginx:latest
     restart: unless-stopped
     ports:
       - "80:80"    # HTTP — ACME challenge + redirect to HTTPS
