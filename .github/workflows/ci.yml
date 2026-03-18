@@ -150,16 +150,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Copy the three files the server needs from the CI runner directly.
+      # Copy all files the server needs from the CI runner directly.
       # This replaces any need for git on the server — it always receives
       # exactly the files that passed CI, nothing more.
+      # Includes data/predictions/ so the backend has the prediction JSON
+      # files available when the volume is mounted at runtime.
       - name: Copy config files to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "docker-compose.prod.yml,nginx/,init-letsencrypt.sh"
+          source: "docker-compose.prod.yml,nginx/,init-letsencrypt.sh,data/predictions/"
           target: "~/march-madness-pool-analytics/"
 
       - name: Deploy to EC2
