@@ -99,37 +99,37 @@ async def test_root_response_has_message(client: AsyncClient) -> None:
 
 async def test_info_status_code(client: AsyncClient) -> None:
     """GET /info should return HTTP 200."""
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     assert response.status_code == 200
 
 
 async def test_info_contains_project_key(client: AsyncClient) -> None:
     """GET /info response body should include a 'project' field."""
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     assert "project" in response.json()
 
 
 async def test_info_contains_model_key(client: AsyncClient) -> None:
     """GET /info response body should include a 'model' field."""
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     assert "model" in response.json()
 
 
 async def test_info_contains_data_source_key(client: AsyncClient) -> None:
     """GET /info response body should include a 'data_source' field."""
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     assert "data_source" in response.json()
 
 
 async def test_info_model_has_accuracy(client: AsyncClient) -> None:
     """GET /info model object should expose an 'accuracy' field."""
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     assert "accuracy" in response.json()["model"]
 
 
 async def test_info_model_accuracy_is_number(client: AsyncClient) -> None:
     """GET /info model accuracy should be a numeric value."""
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     assert isinstance(response.json()["model"]["accuracy"], (int, float))
 
 
@@ -137,7 +137,7 @@ async def test_info_data_source_has_three_sources(client: AsyncClient) -> None:
     """
     GET /info data_source should list player_team_stats, game_summaries, and team_logos.
     """
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     ds = response.json()["data_source"]
     assert "player_team_stats" in ds
     assert "game_summaries" in ds
@@ -146,13 +146,13 @@ async def test_info_data_source_has_three_sources(client: AsyncClient) -> None:
 
 async def test_info_contains_contact_key(client: AsyncClient) -> None:
     """GET /info response body should include a 'contact' field."""
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     assert "contact" in response.json()
 
 
 async def test_info_contact_has_email(client: AsyncClient) -> None:
     """GET /info contact object should include an 'email' field."""
-    response = await client.get("/info")
+    response = await client.get("/api/info")
     assert "email" in response.json()["contact"]
 
 
@@ -164,14 +164,14 @@ async def test_info_contact_has_email(client: AsyncClient) -> None:
 async def test_analyze_team_returns_200_for_known_team(client: AsyncClient) -> None:
     """GET /analyze/{team} returns 200 when the team exists in the predictions."""
     with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM):
-        response = await client.get("/analyze/Duke")
+        response = await client.get("/api/analyze/Duke")
     assert response.status_code == 200
 
 
 async def test_analyze_team_response_shape(client: AsyncClient) -> None:
     """GET /analyze/{team} response includes all expected top-level fields."""
     with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM):
-        response = await client.get("/analyze/Duke")
+        response = await client.get("/api/analyze/Duke")
     body = response.json()
     assert body["name"] == "Duke"
     assert body["seed"] == 3
@@ -188,14 +188,14 @@ async def test_analyze_team_similar_teams_empty(client: AsyncClient) -> None:
     """similar_teams is an empty list when ChromaDB returns no results."""
     with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM), \
          patch("app.routers.analyze.get_similar_teams", return_value=[]):
-        response = await client.get("/analyze/Duke")
+        response = await client.get("/api/analyze/Duke")
     assert response.json()["similar_teams"] == []
 
 
 async def test_analyze_team_returns_top_5_players(client: AsyncClient) -> None:
     """top_players contains at most 5 entries, sorted by minutes descending."""
     with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM):
-        response = await client.get("/analyze/Duke")
+        response = await client.get("/api/analyze/Duke")
     players = response.json()["top_players"]
     assert len(players) <= 5
 
@@ -203,7 +203,7 @@ async def test_analyze_team_returns_top_5_players(client: AsyncClient) -> None:
 async def test_analyze_team_returns_404_for_unknown_team(client: AsyncClient) -> None:
     """GET /analyze/{team} returns 404 when the team is not found."""
     with patch("app.routers.analyze.find_team", return_value=None):
-        response = await client.get("/analyze/Nonexistent")
+        response = await client.get("/api/analyze/Nonexistent")
     assert response.status_code == 404
 
 
@@ -218,7 +218,7 @@ async def test_analyze_most_similar_returns_200_for_known_team(
     """GET /analyze/most-similar/{team} returns 200 when the team is found."""
     with patch("app.routers.analyze.find_team", return_value=_MOCK_TEAM), \
          patch("app.routers.analyze.get_similar_teams", return_value=[]):
-        response = await client.get("/analyze/most-similar/Duke")
+        response = await client.get("/api/analyze/most-similar/Duke")
     assert response.status_code == 200
 
 
@@ -227,5 +227,5 @@ async def test_analyze_most_similar_returns_404_for_unknown_team(
 ) -> None:
     """GET /analyze/most-similar/{team} returns 404 when the team is not found."""
     with patch("app.routers.analyze.find_team", return_value=None):
-        response = await client.get("/analyze/most-similar/Nonexistent")
+        response = await client.get("/api/analyze/most-similar/Nonexistent")
     assert response.status_code == 404

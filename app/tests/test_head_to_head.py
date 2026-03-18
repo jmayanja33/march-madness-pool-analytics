@@ -100,14 +100,14 @@ def test_returns_none_for_empty_predictions() -> None:
 async def test_h2h_returns_200(client: AsyncClient) -> None:
     """GET /head-to-head returns HTTP 200 for a valid pair."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        response = await client.get("/head-to-head?team1=Duke&team2=Kentucky")
+        response = await client.get("/api/head-to-head?team1=Duke&team2=Kentucky")
     assert response.status_code == 200
 
 
 async def test_h2h_response_shape(client: AsyncClient) -> None:
     """The response contains team1 and team2 objects with name and win_probability."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        response = await client.get("/head-to-head?team1=Duke&team2=Kentucky")
+        response = await client.get("/api/head-to-head?team1=Duke&team2=Kentucky")
     data = response.json()
     assert "team1" in data
     assert "team2" in data
@@ -120,7 +120,7 @@ async def test_h2h_response_shape(client: AsyncClient) -> None:
 async def test_h2h_reversed_order(client: AsyncClient) -> None:
     """Response maps probabilities to the request order, not the stored order."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        response = await client.get("/head-to-head?team1=Kentucky&team2=Duke")
+        response = await client.get("/api/head-to-head?team1=Kentucky&team2=Duke")
     data = response.json()
     assert data["team1"]["name"] == "Kentucky"
     assert data["team2"]["name"] == "Duke"
@@ -129,26 +129,26 @@ async def test_h2h_reversed_order(client: AsyncClient) -> None:
 async def test_h2h_returns_404_for_unknown_pair(client: AsyncClient) -> None:
     """GET /head-to-head returns 404 when no prediction exists for the pair."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        response = await client.get("/head-to-head?team1=Alabama&team2=Oregon")
+        response = await client.get("/api/head-to-head?team1=Alabama&team2=Oregon")
     assert response.status_code == 404
 
 
 async def test_h2h_returns_400_for_same_team(client: AsyncClient) -> None:
     """GET /head-to-head returns 400 when team1 and team2 are the same."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        response = await client.get("/head-to-head?team1=Duke&team2=Duke")
+        response = await client.get("/api/head-to-head?team1=Duke&team2=Duke")
     assert response.status_code == 400
 
 
 async def test_h2h_missing_team1_returns_422(client: AsyncClient) -> None:
     """GET /head-to-head returns 422 when team1 query param is missing."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        response = await client.get("/head-to-head?team2=Kentucky")
+        response = await client.get("/api/head-to-head?team2=Kentucky")
     assert response.status_code == 422
 
 
 async def test_h2h_missing_team2_returns_422(client: AsyncClient) -> None:
     """GET /head-to-head returns 422 when team2 query param is missing."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        response = await client.get("/head-to-head?team1=Duke")
+        response = await client.get("/api/head-to-head?team1=Duke")
     assert response.status_code == 422

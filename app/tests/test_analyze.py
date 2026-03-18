@@ -296,7 +296,7 @@ async def test_teams_returns_200(client: AsyncClient) -> None:
         {"name": "Duke", "seed": 1},
         {"name": "Auburn", "seed": 1},
     ]):
-        response = await client.get("/teams")
+        response = await client.get("/api/teams")
     assert response.status_code == 200
 
 
@@ -305,7 +305,7 @@ async def test_teams_excludes_unseeded(client: AsyncClient) -> None:
     with patch("app.main.get_all_teams", return_value=[
         {"name": "Duke", "seed": 1},
     ]):
-        response = await client.get("/teams")
+        response = await client.get("/api/teams")
     names = [t["name"] for t in response.json()]
     assert "No-Seed Team" not in names
 
@@ -315,7 +315,7 @@ async def test_teams_response_shape(client: AsyncClient) -> None:
     with patch("app.main.get_all_teams", return_value=[
         {"name": "Duke", "seed": 1},
     ]):
-        response = await client.get("/teams")
+        response = await client.get("/api/teams")
     item = response.json()[0]
     assert "name" in item
     assert "seed" in item

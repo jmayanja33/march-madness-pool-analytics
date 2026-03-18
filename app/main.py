@@ -128,7 +128,10 @@ async def teams() -> list[TeamListItem]:
 
 
 @app.get(
-    "/api/info", response_model=InfoResponse, tags=["info"], summary="Project information"
+    "/api/info",
+    response_model=InfoResponse,
+    tags=["info"],
+    summary="Project information",
 )
 async def info() -> InfoResponse:
     """

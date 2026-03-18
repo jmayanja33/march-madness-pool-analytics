@@ -126,14 +126,14 @@ def test_build_pool_team_summary_empty_distribution() -> None:
 async def test_pool_returns_200(client: AsyncClient) -> None:
     """POST /pool with a valid team name returns HTTP 200."""
     with patch("app.routers.pool.find_team", return_value=_MOCK_TEAM):
-        response = await client.post("/create-a-team", json={"teams": ["Duke"]})
+        response = await client.post("/api/create-a-team", json={"teams": ["Duke"]})
     assert response.status_code == 200
 
 
 async def test_pool_returns_team_data(client: AsyncClient) -> None:
     """The response includes the expected team name and seed."""
     with patch("app.routers.pool.find_team", return_value=_MOCK_TEAM):
-        response = await client.post("/create-a-team", json={"teams": ["Duke"]})
+        response = await client.post("/api/create-a-team", json={"teams": ["Duke"]})
     data = response.json()
     assert data["teams"][0]["name"] == "Duke"
     assert data["teams"][0]["seed"] == 1
@@ -142,7 +142,9 @@ async def test_pool_returns_team_data(client: AsyncClient) -> None:
 async def test_pool_skips_unknown_teams(client: AsyncClient) -> None:
     """Teams not found in the predictions data are omitted from the response."""
     with patch("app.routers.pool.find_team", return_value=None):
-        response = await client.post("/create-a-team", json={"teams": ["Unknown Team"]})
+        response = await client.post(
+            "/api/create-a-team", json={"teams": ["Unknown Team"]}
+        )
     assert response.status_code == 200
     assert response.json()["teams"] == []
 
@@ -160,7 +162,7 @@ async def test_pool_multiple_teams(client: AsyncClient) -> None:
 
     with patch("app.routers.pool.find_team", side_effect=find_team_side_effect):
         response = await client.post(
-            "/create-a-team", json={"teams": ["Duke", "Auburn"]}
+            "/api/create-a-team", json={"teams": ["Duke", "Auburn"]}
         )
     data = response.json()
     assert len(data["teams"]) == 2
@@ -178,7 +180,7 @@ async def test_pool_partial_resolution(client: AsyncClient) -> None:
 
     with patch("app.routers.pool.find_team", side_effect=find_team_side_effect):
         response = await client.post(
-            "/create-a-team", json={"teams": ["Duke", "Unknown Team"]}
+            "/api/create-a-team", json={"teams": ["Duke", "Unknown Team"]}
         )
     data = response.json()
     # Only Duke should appear in the response.
@@ -188,7 +190,7 @@ async def test_pool_partial_resolution(client: AsyncClient) -> None:
 
 async def test_pool_empty_request(client: AsyncClient) -> None:
     """An empty teams list returns an empty response without errors."""
-    response = await client.post("/create-a-team", json={"teams": []})
+    response = await client.post("/api/create-a-team", json={"teams": []})
     assert response.status_code == 200
     assert response.json()["teams"] == []
 
@@ -196,7 +198,7 @@ async def test_pool_empty_request(client: AsyncClient) -> None:
 async def test_pool_response_includes_win_distribution(client: AsyncClient) -> None:
     """Each team in the response includes a win-probability distribution."""
     with patch("app.routers.pool.find_team", return_value=_MOCK_TEAM):
-        response = await client.post("/create-a-team", json={"teams": ["Duke"]})
+        response = await client.post("/api/create-a-team", json={"teams": ["Duke"]})
     dist = response.json()["teams"][0]["win_probability_distribution"]
     assert "zero_wins" in dist
     assert "one_win" in dist
@@ -210,5 +212,5 @@ async def test_pool_response_includes_win_distribution(client: AsyncClient) -> N
 async def test_pool_response_includes_conference(client: AsyncClient) -> None:
     """Each team in the response includes the conference field."""
     with patch("app.routers.pool.find_team", return_value=_MOCK_TEAM):
-        response = await client.post("/create-a-team", json={"teams": ["Duke"]})
+        response = await client.post("/api/create-a-team", json={"teams": ["Duke"]})
     assert response.json()["teams"][0]["conference"] == "ACC"

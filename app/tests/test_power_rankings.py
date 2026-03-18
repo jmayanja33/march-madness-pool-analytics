@@ -302,14 +302,14 @@ def test_all_teams_total_count() -> None:
 async def test_power_rankings_returns_200(client: AsyncClient) -> None:
     """GET /power-rankings returns HTTP 200."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        response = await client.get("/power-rankings")
+        response = await client.get("/api/power-rankings")
     assert response.status_code == 200
 
 
 async def test_power_rankings_response_has_all_buckets(client: AsyncClient) -> None:
     """The response contains all seven win-bucket keys."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        response = await client.get("/power-rankings")
+        response = await client.get("/api/power-rankings")
     data = response.json()
     assert "six_wins" in data
     assert "five_wins" in data
@@ -323,7 +323,7 @@ async def test_power_rankings_response_has_all_buckets(client: AsyncClient) -> N
 async def test_power_rankings_team_fields(client: AsyncClient) -> None:
     """Each ranked team includes name, seed, conference, and win distribution."""
     with patch("app.services.load_predictions", return_value=[_TEAM_TWO_WINS]):
-        response = await client.get("/power-rankings")
+        response = await client.get("/api/power-rankings")
     team = response.json()["two_wins"][0]
     assert team["name"] == "Duke"
     assert team["seed"] == 1
@@ -334,7 +334,7 @@ async def test_power_rankings_team_fields(client: AsyncClient) -> None:
 async def test_power_rankings_unseeded_teams_excluded(client: AsyncClient) -> None:
     """Teams without a seed do not appear in any bucket."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        response = await client.get("/power-rankings")
+        response = await client.get("/api/power-rankings")
     data = response.json()
     all_names = (
         [t["name"] for t in data["six_wins"]]
@@ -351,7 +351,7 @@ async def test_power_rankings_unseeded_teams_excluded(client: AsyncClient) -> No
 async def test_power_rankings_empty_predictions(client: AsyncClient) -> None:
     """An empty predictions file returns seven empty lists with status 200."""
     with patch("app.services.load_predictions", return_value=[]):
-        response = await client.get("/power-rankings")
+        response = await client.get("/api/power-rankings")
     assert response.status_code == 200
     data = response.json()
     assert data["six_wins"] == []
