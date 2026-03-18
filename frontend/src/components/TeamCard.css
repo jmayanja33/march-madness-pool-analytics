@@ -276,3 +276,24 @@
   line-height: 1.65;
   color: #444;
 }
+
+/* ── Mobile — shrink logo, collapse stats to single column ── */
+@media (max-width: 768px) {
+  .tc-name {
+    font-size: 1.3rem;
+  }
+
+  .tc-logo {
+    height: 56px;
+    max-width: 72px;
+  }
+
+  .tc-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Compress similar-team row: drop the last two stat columns at very small widths */
+  .tc-sim-row {
+    grid-template-columns: 22px 2fr 2fr 44px 44px;
+  }
+}

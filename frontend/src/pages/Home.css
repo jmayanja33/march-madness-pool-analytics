@@ -74,3 +74,10 @@
   transform: translateY(0);
   box-shadow: var(--shadow);
 }
+
+/* ── Mobile — 2-column button grid ── */
+@media (max-width: 768px) {
+  .home-nav-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

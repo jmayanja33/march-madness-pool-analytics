@@ -252,3 +252,25 @@
   transition: color 0.15s;
 }
 .picker-close:hover { color: var(--black); }
+
+/* ── Mobile — stack team columns vertically ── */
+@media (max-width: 768px) {
+  .teams-container {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .team-column {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    overflow: visible;
+  }
+
+  .team-column:last-child {
+    border-bottom: none;
+  }
+
+  .analyze-topbar {
+    padding: 8px 16px;
+  }
+}

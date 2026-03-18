@@ -587,3 +587,29 @@
   transition: color 0.15s;
 }
 .ct-modal-close:hover { color: var(--black); }
+
+/* ── Mobile — stack left/right panels vertically, single-column slot grid ── */
+@media (max-width: 768px) {
+  .ct-body {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .ct-left {
+    flex: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ct-right {
+    flex: none;
+  }
+
+  .ct-slots-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ct-page-sub {
+    padding: 8px 16px 0;
+  }
+}

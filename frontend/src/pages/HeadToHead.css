@@ -214,3 +214,38 @@
   min-height: 0;
   overflow-y: auto;
 }
+
+/* ── Mobile — stack the two team halves vertically ── */
+@media (max-width: 768px) {
+  .h2h-body {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  /* Hide the vertical divider — not meaningful in a stacked layout */
+  .h2h-divider {
+    display: none;
+  }
+
+  .h2h-side {
+    overflow: visible;
+    padding: 16px;
+  }
+
+  .h2h-card-wrap {
+    overflow: visible;
+  }
+
+  .h2h-meter-wrap {
+    padding: 14px 16px 10px;
+  }
+
+  .h2h-meter-logo {
+    height: 48px;
+    max-width: 60px;
+  }
+
+  .h2h-meter-bar {
+    height: 36px;
+  }
+}

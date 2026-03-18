@@ -65,3 +65,33 @@
   color: var(--white);
   border-bottom-color: var(--light-blue);
 }
+
+/* ── Mobile — stack brand above links, wrap links to two rows if needed ── */
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+    padding: 10px 16px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .navbar-logo {
+    height: 26px;
+  }
+
+  .navbar-title {
+    font-size: 1.2rem;
+  }
+
+  .navbar-links {
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .navbar-links a {
+    font-size: 0.75rem;
+  }
+}

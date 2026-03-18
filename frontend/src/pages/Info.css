@@ -181,3 +181,14 @@
   font-size: 0.95rem;
   color: var(--black);
 }
+
+/* ── Mobile — tighter padding, metric cards fill width ── */
+@media (max-width: 768px) {
+  .info-main {
+    padding: 24px 16px 40px;
+  }
+
+  .info-metric-card {
+    min-width: 100px;
+  }
+}
