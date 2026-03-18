@@ -175,7 +175,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "docker-compose.prod.yml,nginx/,init-letsencrypt.sh,data/predictions/"
+          source: "docker-compose.prod.yml,nginx/,init-letsencrypt.sh,data/predictions/,data/vector_db/chroma_vectors.json"
           target: "~/march-madness-pool-analytics/"
 
       - name: Deploy to EC2
@@ -224,6 +224,12 @@ jobs:
             fi
             sudo docker compose -f docker-compose.prod.yml pull
             sudo docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            if [ ! -f "./data/vector_db/chroma.sqlite3" ]; then
+              echo "ChromaDB is empty — waiting for services to be ready..."
+              sleep 20
+              sudo docker compose -f docker-compose.prod.yml exec -T backend \
+                uv run scripts/import_vectors.py --host chromadb --port 8000 --reset
+            fi
             sudo docker logout ghcr.io
         env:
           CERTBOT_EMAIL: ${{ secrets.CERTBOT_EMAIL }}

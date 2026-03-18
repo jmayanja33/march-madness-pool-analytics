@@ -13,8 +13,9 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --no-dev --frozen
 
-# Copy application source and pre-calculated data
+# Copy application source, scripts, and pre-calculated data
 COPY app/ ./app/
+COPY scripts/ ./scripts/
 COPY data/ ./data/
 
 EXPOSE 8000
