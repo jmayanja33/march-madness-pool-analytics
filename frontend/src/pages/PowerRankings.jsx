@@ -240,7 +240,7 @@ export default function PowerRankings() {
 
       <div className="pr-body">
         <h1 className="pr-page-title">Power Rankings</h1>
-        <p className="pr-page-sub">Projections for likely Champions, Final Four teams, upset bids, and win totals per team in the tournament</p>
+        <p className="pr-page-sub">PROJECTIONS FOR LIKELY CHAMPIONS, FINAL FOUR TEAMS, UPSET BIDS, AND WIN TOTALS PER TEAM IN THE TOURNAMENT</p>
 
         {/* Loading state */}
         {loading && <p className="pr-status">Loading rankings…</p>}
@@ -287,7 +287,7 @@ export default function PowerRankings() {
 
                 {!collapsed.champion && (
                   <>
-                    <p className="pr-section-sub">Teams with a 5%+ chance of winning the championship.</p>
+                    <p className="pr-section-sub">TEAMS WITH A 5%+ CHANCE OF WINNING THE CHAMPIONSHIP.</p>
                     {championTeams.length === 0 ? (
                       <p className="pr-empty">No teams meet this threshold.</p>
                     ) : (
@@ -324,7 +324,7 @@ export default function PowerRankings() {
 
                 {!collapsed.finalFour && (
                   <>
-                    <p className="pr-section-sub">Teams with a 20%+ chance of reaching the Final Four.</p>
+                    <p className="pr-section-sub">TEAMS WITH A 20%+ CHANCE OF REACHING THE FINAL FOUR.</p>
                     {finalFourTeams.length === 0 ? (
                       <p className="pr-empty">No teams meet this threshold.</p>
                     ) : (
@@ -366,7 +366,7 @@ export default function PowerRankings() {
             {!collapsed.upsets && (
               <>
                 <p className="pr-section-sub">
-                  Higher-seeded teams with a 40%+ chance of beating their Round of 64 opponent.
+                  HIGHER-SEEDED TEAMS WITH A 40%+ CHANCE OF BEATING THEIR ROUND OF 64 OPPONENT.
                 </p>
 
                 {/* Loading state for upsets — h2h calls still in flight */}

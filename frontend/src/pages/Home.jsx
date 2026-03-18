@@ -23,7 +23,7 @@ export default function Home() {
         />
 
         {/* Branded subtitle in navy Anton font */}
-        <h1 className="home-subtitle">The Pool — Analytics</h1>
+        <h1 className="home-subtitle">THE POOL — ANALYTICS</h1>
 
         {/* Navigation buttons — 2 rows of 3 */}
         <div className="home-nav-buttons">

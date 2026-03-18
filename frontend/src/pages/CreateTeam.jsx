@@ -250,7 +250,7 @@ export default function CreateTeam() {
       <NavBar />
 
       {/* ── Page-level subtitle ── */}
-      <p className="ct-page-sub">Create a Mock Team Entry for the Pool</p>
+      <p className="ct-page-sub">CREATE A MOCK TEAM ENTRY FOR THE POOL</p>
 
       <div className="ct-body">
 
