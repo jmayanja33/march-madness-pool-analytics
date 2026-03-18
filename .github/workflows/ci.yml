@@ -150,6 +150,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Ensure the project directory exists and is owned by the SSH user
+      # before SCP runs. Docker and sudo operations from previous deploys
+      # can leave subdirectories owned by root, which causes SCP to fail
+      # when trying to write into them.
+      - name: Prepare server directory
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            mkdir -p ~/march-madness-pool-analytics
+            sudo chown -R "$USER:$USER" ~/march-madness-pool-analytics
+
       # Copy all files the server needs from the CI runner directly.
       # This replaces any need for git on the server — it always receives
       # exactly the files that passed CI, nothing more.
