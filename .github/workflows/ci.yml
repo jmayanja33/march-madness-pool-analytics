@@ -8,7 +8,8 @@
 #               the GitHub Container Registry (ghcr.io).
 #   3. deploy — copies the required config files from the CI runner to the
 #               server, then pulls the pre-built images and starts the stack.
-#               No git clone or Docker build is required on the server.
+#               ChromaDB is reset on every deploy: binary data is deleted and
+#               vectors are reimported from chroma_vectors.json.
 #
 # Required GitHub repository secrets:
 #   EC2_HOST       — public hostname or IP of the production AWS instance
@@ -224,12 +225,20 @@ jobs:
             fi
             sudo docker compose -f docker-compose.prod.yml pull
             sudo docker compose -f docker-compose.prod.yml up -d --remove-orphans
-            if [ ! -f "./data/vector_db/chroma.sqlite3" ]; then
-              echo "ChromaDB is empty — waiting for services to be ready..."
-              sleep 20
-              sudo docker compose -f docker-compose.prod.yml exec -T backend \
-                uv run scripts/import_vectors.py --host chromadb --port 8000 --reset
-            fi
+            # Reset ChromaDB on every deploy: stop the container, delete all
+            # binary data files (keeping only the source JSON), then restart
+            # and reimport.  This keeps storage lean and ensures the live
+            # collection always reflects the latest chroma_vectors.json.
+            echo "Stopping ChromaDB to reset data directory..."
+            sudo docker compose -f docker-compose.prod.yml stop chromadb
+            find ./data/vector_db -mindepth 1 \
+              ! -name 'chroma_vectors.json' ! -name '.gitkeep' -delete
+            echo "Restarting ChromaDB with clean data directory..."
+            sudo docker compose -f docker-compose.prod.yml start chromadb
+            sleep 10
+            echo "Importing vectors into ChromaDB..."
+            sudo docker compose -f docker-compose.prod.yml exec -T backend \
+              uv run scripts/import_vectors.py --host chromadb --port 8000 --reset
             sudo docker logout ghcr.io
         env:
           CERTBOT_EMAIL: ${{ secrets.CERTBOT_EMAIL }}
