@@ -100,7 +100,7 @@ docker compose -f docker-compose.prod.yml run --rm --entrypoint \
              /etc/letsencrypt/renewal/$DOMAIN.conf" \
     certbot
 
-echo "Requesting real Let's Encrypt certificate for $DOMAIN..."
+echo "Requesting real Let's Encrypt certificate for $DOMAIN and www.$DOMAIN..."
 docker compose -f docker-compose.prod.yml run --rm --entrypoint \
     "certbot certonly --webroot
      --webroot-path=/var/www/certbot
@@ -108,7 +108,8 @@ docker compose -f docker-compose.prod.yml run --rm --entrypoint \
      --email $EMAIL
      --agree-tos
      --no-eff-email
-     -d $DOMAIN" \
+     -d $DOMAIN
+     -d www.$DOMAIN" \
     certbot
 
 # ── Reload nginx to pick up the real certificate ──────────────────────────────
@@ -116,6 +117,6 @@ echo "Reloading nginx with the real certificate..."
 docker compose -f docker-compose.prod.yml exec nginx nginx -s reload
 
 echo ""
-echo "Done! Your site should now be reachable at https://$DOMAIN"
+echo "Done! Your site should now be reachable at https://$DOMAIN and https://www.$DOMAIN"
 echo "Start the full stack with:"
 echo "  docker compose -f docker-compose.prod.yml up -d"
