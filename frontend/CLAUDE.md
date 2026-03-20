@@ -223,8 +223,8 @@ Correct Predictions: 13
 Accuracy: 81.25%
 
 - 8. Ohio State: 64 vs. 9. TCU: 66 [CORRECT]
-- 4. Nebraska vs. 13. Troy: 47 [CORRECT]
-- 6. Louisville vs. 11. South Florida [CORRECT]
+- 4. Nebraska: 76 vs. 13. Troy: 47 [CORRECT]
+- 6. Louisville: 83 vs. 11. South Florida: 79 [CORRECT]
 - 5. Wisconsin: 82 vs. 12. High Point: 83 [INCORRECT]
 - 1. Duke: 71 vs 16. Siena: 65 [CORRECT]
 - 5. Vanderbilt: 78 vs. 12. McNeese: 68 [CORRECT]

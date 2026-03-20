@@ -42,14 +42,14 @@
             "correct": true
           },
           {
-            "team1": { "name": "Nebraska",         "seed": 4,  "score": null },
+            "team1": { "name": "Nebraska",         "seed": 4,  "score": 76 },
             "team2": { "name": "Troy",             "seed": 13, "score": 47 },
             "winner": "Nebraska",
             "correct": true
           },
           {
-            "team1": { "name": "Louisville",       "seed": 6,  "score": null },
-            "team2": { "name": "South Florida",    "seed": 11, "score": null },
+            "team1": { "name": "Louisville",       "seed": 6,  "score": 83 },
+            "team2": { "name": "South Florida",    "seed": 11, "score": 79 },
             "winner": "South Florida",
             "correct": true
           },
