@@ -152,7 +152,7 @@
           {
             "team1": { "name": "Virginia",          "seed": 3,  "score":  82},
             "team2": { "name": "Wright State",      "seed": 14,  "score":  73},
-            "winner": "Gonzaga",
+            "winner": "Virginia",
             "correct": true
           }
         ]
