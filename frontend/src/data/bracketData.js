@@ -30,9 +30,54 @@ export const FIRST_FOUR_2026 = [
   },
 ];
 
-// 2026 tournament results — no games have been played yet.
-// Passed as null to indicate the bracket is unpopulated.
-export const RESULTS_2026 = null;
+// 2026 tournament results — updated through Round of 64.
+//
+// firstFour: maps each First Four game id → the winner's name.
+//   Used by Bracket.jsx to highlight the winning team in each First Four pairing.
+//
+// Per-region keys: each region object contains:
+//   r64Winners — teams that won their Round of 64 game (used to green-outline
+//                their slot in the Round of 64 column).
+//   r32        — teams that advanced after winning a Round of 32 game (empty
+//                until that round is played; drives the Round of 32 column).
+//   s16/e8/f4  — analogous for later rounds.
+export const RESULTS_2026 = {
+  firstFour: {
+    'ff-west-11':   'Texas',
+    'ff-midwest-11': 'Miami (OH)',
+    'ff-south-16':  'Prairie View A&M',
+    'ff-midwest-16': 'Howard',
+  },
+  // r32 arrays are positionally ordered to match R32 bracket slots:
+  // slot 0 = winner of (1v16), slot 1 = winner of (8v9), slot 2 = winner of (5v12),
+  // slot 3 = winner of (4v13), slot 4 = winner of (6v11), slot 5 = winner of (3v14),
+  // slot 6 = winner of (7v10), slot 7 = winner of (2v15).
+  // null means that R64 game has not yet been played.
+  East: {
+    r64Winners: ['Duke', 'Michigan State', 'Louisville', 'TCU'],
+    //              1v16    8v9    5v12   4v13        6v11          3v14            7v10   2v15
+    r32: ['Duke', 'TCU',  null,  null, 'Louisville', 'Michigan State', null,   null],
+    s16: [], e8: [], f4: null,
+  },
+  West: {
+    r64Winners: ['Arkansas', 'High Point', 'Texas', 'Gonzaga'],
+    //             1v16   8v9    5v12         4v13       6v11    3v14   7v10   2v15
+    r32: [null,   null, 'High Point', 'Arkansas', 'Texas',  'Gonzaga',  null,  null],
+    s16: [], e8: [], f4: null,
+  },
+  South: {
+    r64Winners: ['Houston', 'Illinois', 'Nebraska', 'Vanderbilt', 'VCU', 'Texas A&M'],
+    //             1v16   8v9       5v12          4v13      6v11   3v14       7v10          2v15
+    r32: [null,   null, 'Vanderbilt', 'Nebraska', 'VCU', 'Illinois', 'Texas A&M', 'Houston'],
+    s16: [], e8: [], f4: null,
+  },
+  Midwest: {
+    r64Winners: ['Michigan', 'Saint Louis'],
+    //               1v16          8v9     5v12   4v13   6v11   3v14   7v10   2v15
+    r32: ['Michigan', 'Saint Louis', null,  null,  null,  null,  null,  null],
+    s16: [], e8: [], f4: null,
+  },
+};
 
 // Main bracket — 16 teams per region, seeded 1–16.
 //
@@ -72,7 +117,7 @@ export const BRACKET_2026 = {
     { seed: 8,  name: 'Villanova' },
     { seed: 9,  name: 'Utah State' },
     { seed: 10, name: 'Missouri' },
-    { seed: 11, name: 'Texas/NC State' },    // First Four winner
+    { seed: 11, name: 'Texas' },              // First Four winner (beat NC State)
     { seed: 12, name: 'High Point' },
     { seed: 13, name: "Hawai'i" },
     { seed: 14, name: 'Kennesaw State' },
@@ -95,7 +140,7 @@ export const BRACKET_2026 = {
     { seed: 13, name: 'Troy' },
     { seed: 14, name: 'Pennsylvania' },
     { seed: 15, name: 'Idaho' },
-    { seed: 16, name: 'Lehigh/Prairie View A&M' }, // First Four winner
+    { seed: 16, name: 'Prairie View A&M' },         // First Four winner (beat Lehigh)
   ],
   Midwest: [
     { seed: 1,  name: 'Michigan' },
@@ -108,11 +153,11 @@ export const BRACKET_2026 = {
     { seed: 8,  name: 'Georgia' },
     { seed: 9,  name: 'Saint Louis' },
     { seed: 10, name: 'Santa Clara' },
-    { seed: 11, name: 'Miami (OH)/SMU' },   // First Four winner
+    { seed: 11, name: 'Miami (OH)' },       // First Four winner (beat SMU)
     { seed: 12, name: 'Akron' },
     { seed: 13, name: 'Hofstra' },
     { seed: 14, name: 'Wright State' },
     { seed: 15, name: 'Tennessee State' },
-    { seed: 16, name: 'Howard/UMBC' },      // First Four winner
+    { seed: 16, name: 'Howard' },           // First Four winner (beat UMBC)
   ],
 };

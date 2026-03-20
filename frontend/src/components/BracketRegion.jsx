@@ -21,41 +21,44 @@ function buildRounds(teams, results) {
   // Helper: find a team's seed from the original region teams list
   const getSeed = name => teams.find(t => t.name === name)?.seed ?? null;
 
-  // Round 1: slot order follows FIRST_ROUND_SEEDS; winner = team is in r32
+  // Round 1: slot order follows FIRST_ROUND_SEEDS.
+  // winner = team appears in r64Winners, meaning they won their Round of 64 game.
+  // r64Winners is separate from r32 so partial R64 results don't break the R32 column.
+  const r64Winners = results?.r64Winners ?? [];
   const r1 = FIRST_ROUND_SEEDS.map(seed => {
     const match = teams.find(t => t.seed === seed);
     const team = match || { seed, name: '' };
     return {
       ...team,
-      winner: results ? results.r32.includes(team.name) : false,
+      winner: r64Winners.includes(team.name),
     };
   });
 
-  // Round of 32: populated from r32 winners; seed looked up from original teams
-  const r2 = results
-    ? results.r32.map((name, i) => ({
-        id: `r2-${i}`, seed: getSeed(name), name,
-        winner: results.s16.includes(name),
-      }))
-    : Array.from({ length: 8 }, (_, i) => ({ id: `r2-${i}`, seed: null, name: '', winner: false }));
+  // Round of 32: always 8 slots. r32 entries may be null (game not yet played → TBD).
+  // winner = team appears in s16 (they won their R32 game).
+  const r32 = results?.r32 ?? [];
+  const s16List = results?.s16 ?? [];
+  const r2 = Array.from({ length: 8 }, (_, i) => {
+    const name = r32[i] ?? null;
+    return { id: `r2-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? s16List.includes(name) : false };
+  });
 
-  // Sweet 16: populated from s16 winners; seed looked up from original teams
-  const s16 = results
-    ? results.s16.map((name, i) => ({
-        id: `s16-${i}`, seed: getSeed(name), name,
-        winner: results.e8.includes(name),
-      }))
-    : Array.from({ length: 4 }, (_, i) => ({ id: `s16-${i}`, seed: null, name: '', winner: false }));
+  // Sweet 16: always 4 slots. s16 entries may be null → TBD.
+  const s16 = results?.s16 ?? [];
+  const e8List = results?.e8 ?? [];
+  const sweet16 = Array.from({ length: 4 }, (_, i) => {
+    const name = s16[i] ?? null;
+    return { id: `s16-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? e8List.includes(name) : false };
+  });
 
-  // Elite 8: populated from e8 participants; seed looked up from original teams
-  const e8 = results
-    ? results.e8.map((name, i) => ({
-        id: `e8-${i}`, seed: getSeed(name), name,
-        winner: name === results.f4,
-      }))
-    : Array.from({ length: 2 }, (_, i) => ({ id: `e8-${i}`, seed: null, name: '', winner: false }));
+  // Elite 8: always 2 slots. e8 entries may be null → TBD.
+  const e8 = results?.e8 ?? [];
+  const elite8 = Array.from({ length: 2 }, (_, i) => {
+    const name = e8[i] ?? null;
+    return { id: `e8-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? name === results.f4 : false };
+  });
 
-  return [r1, r2, s16, e8];
+  return [r1, r2, sweet16, elite8];
 }
 
 // direction: 'left'  → R1 on the far left, E8 closest to center (East, West)

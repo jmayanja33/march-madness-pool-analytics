@@ -124,6 +124,12 @@
             "team2": { "name": "Saint Louis",      "seed": 9,  "score": 102 },
             "winner": "Saint Louis",
             "correct": true
+          },
+          {
+            "team1": { "name": "Gonzaga",          "seed": 3,  "score":  73},
+            "team2": { "name": "Kennesaw State",      "seed": 14,  "score":  64},
+            "winner": "Gonzaga",
+            "correct": true
           }
         ]
       },

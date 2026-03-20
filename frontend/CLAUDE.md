@@ -237,6 +237,7 @@ Accuracy: 80.00%
 - 3. Illinois: 105 vs. 14. Penn: 70 [CORRECT]
 - 2. Houston: 78 vs. 15. Idaho: 47 [CORRECT]
 - 8. Georgia: 77 vs. 9. Saint Louis: 102 [CORRECT]
+- 3. Gonzaga: 73 vs. 14. Kennesaw State: 64 [CORRECT]
 
 ##### Round of 32
 No games yet
