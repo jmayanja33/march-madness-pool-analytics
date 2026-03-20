@@ -72,9 +72,9 @@ export const RESULTS_2026 = {
     s16: [], e8: [], f4: null,
   },
   Midwest: {
-    r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Kentucky'],
+    r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Kentucky', 'Alabama', 'Iowa State'],
     //               1v16          8v9     5v12   4v13   6v11   3v14   7v10   2v15
-    r32: ['Michigan', 'Saint Louis', 'Texas Tech',  null,  null,  'Virginia',  'Kentucky',  null],
+    r32: ['Michigan', 'Saint Louis', 'Texas Tech',  'Alabama',  null,  'Virginia',  'Kentucky',  'Iowa State'],
     s16: [], e8: [], f4: null,
   },
 };
