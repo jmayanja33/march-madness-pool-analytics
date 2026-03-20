@@ -25,6 +25,7 @@ export default function NavBar() {
         <Link to="/power-rankings"  className={pathname === '/power-rankings'  ? 'active' : ''}>Power Rankings</Link>
         <Link to="/head-to-head"    className={pathname === '/head-to-head'    ? 'active' : ''}>Head to Head</Link>
         <Link to="/info"            className={pathname === '/info'            ? 'active' : ''}>Info</Link>
+        <Link to="/results"         className={pathname === '/results'         ? 'active' : ''}>Results</Link>
       </div>
     </nav>
   );

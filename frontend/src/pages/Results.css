@@ -1,0 +1,260 @@
+/* Results page — model accuracy by tournament year and round. */
+
+/* ── Page wrapper ── */
+.results-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ── Page body ── */
+.results-body {
+  flex: 1;
+  padding: 28px 32px 40px;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Page title ── */
+.results-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+/* ── Subtitle ── */
+.results-subtitle {
+  font-size: 0.9rem;
+  color: var(--silver);
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+
+/* ── Status / error messages ── */
+.results-status {
+  font-size: 0.9rem;
+  color: var(--silver);
+  font-style: italic;
+}
+
+.results-error {
+  font-size: 0.88rem;
+  color: #e05252;
+  background: #fff0f0;
+  border: 1px solid #f5c6c6;
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+/* ── Tournament year section ── */
+.results-year-section {
+  margin-bottom: 24px;
+}
+
+/* Clickable year header button — matches the navbar background exactly */
+.results-year-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--dark-blue);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  border: none;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.results-year-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+/* ── Accuracy badge — inline colored percentage ── */
+.results-accuracy-badge {
+  font-size: 1rem;
+}
+
+/* ── Collapse caret ── */
+.results-caret {
+  font-size: 1.4rem;
+  color: #fff;
+  transition: transform 0.2s ease;
+  display: inline-block;
+  line-height: 1;
+}
+
+.results-caret--small {
+  font-size: 1.1rem;
+  color: var(--dark-blue);
+}
+
+.results-caret--collapsed {
+  transform: rotate(90deg);
+}
+
+/* ── Year section body — bordered panel below the header ── */
+.results-year-body {
+  padding: 16px 18px 10px;
+  border: 1px solid var(--silver);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+/* ── Stats bar — games / correct / accuracy summary ── */
+.results-stats-bar {
+  display: flex;
+  gap: 24px;
+  font-size: 0.88rem;
+  color: var(--silver);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8ecf0;
+}
+
+.results-stats-bar strong {
+  color: var(--black);
+}
+
+.results-stats-bar--round {
+  font-size: 0.84rem;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+}
+
+/* ── Round sub-section ── */
+.results-round-section {
+  border: 1px solid #e8ecf0;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+/* Clickable round header button */
+.results-round-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #f5f7fa;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  border-bottom: 1px solid #e8ecf0;
+}
+
+.results-round-header:hover {
+  background: #edf0f5;
+}
+
+.results-round-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--dark-blue);
+  margin: 0;
+}
+
+/* ── Round body ── */
+.results-round-body {
+  padding: 10px 14px 12px;
+}
+
+/* ── No games yet ── */
+.results-no-games {
+  font-size: 0.88rem;
+  color: var(--silver);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── Game row ── */
+.results-game-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f2f5;
+  flex-wrap: wrap;
+}
+
+.results-game-row:last-child {
+  border-bottom: none;
+}
+
+/* Separator between teams */
+.results-game-vs {
+  font-size: 0.82rem;
+  color: var(--silver);
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+/* ── Team entry within a game row ── */
+.results-team-entry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.results-team-seed {
+  font-size: 0.82rem;
+  color: var(--silver);
+  flex-shrink: 0;
+  min-width: 26px;
+}
+
+.results-team-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.results-team-name {
+  font-size: 0.9rem;
+  color: var(--black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.results-team-score {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  flex-shrink: 0;
+}
+
+/* ── Mobile responsiveness ── */
+@media (max-width: 600px) {
+  .results-body {
+    padding: 16px 14px 32px;
+  }
+
+  .results-stats-bar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .results-game-row {
+    gap: 6px;
+  }
+
+  .results-team-name {
+    font-size: 0.82rem;
+  }
+}

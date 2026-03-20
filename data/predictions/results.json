@@ -1,0 +1,140 @@
+[
+  {
+    "year": 2026,
+    "tournament_name": "2026 Tournament",
+    "rounds": [
+      {
+        "name": "First Four",
+        "games": [
+          {
+            "team1": { "name": "UMBC",           "seed": 16, "score": 83 },
+            "team2": { "name": "Howard",          "seed": 16, "score": 86 },
+            "winner": "Howard",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Texas",           "seed": 11, "score": 68 },
+            "team2": { "name": "NC State",        "seed": 11, "score": 66 },
+            "winner": "Texas",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Prairie View A&M","seed": 16, "score": 67 },
+            "team2": { "name": "Lehigh",          "seed": 16, "score": 55 },
+            "winner": "Prairie View A&M",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Miami (OH)",      "seed": 11, "score": 89 },
+            "team2": { "name": "SMU",             "seed": 11, "score": 79 },
+            "winner": "Miami (OH)",
+            "correct": true
+          }
+        ]
+      },
+      {
+        "name": "Round of 64",
+        "games": [
+          {
+            "team1": { "name": "Ohio State",       "seed": 8,  "score": 64 },
+            "team2": { "name": "TCU",              "seed": 9,  "score": 66 },
+            "winner": "TCU",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Nebraska",         "seed": 4,  "score": null },
+            "team2": { "name": "Troy",             "seed": 13, "score": 47 },
+            "winner": "Nebraska",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Louisville",       "seed": 6,  "score": null },
+            "team2": { "name": "South Florida",    "seed": 11, "score": null },
+            "winner": "South Florida",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Wisconsin",        "seed": 5,  "score": 82 },
+            "team2": { "name": "High Point",       "seed": 12, "score": 83 },
+            "winner": "High Point",
+            "correct": false
+          },
+          {
+            "team1": { "name": "Duke",             "seed": 1,  "score": 71 },
+            "team2": { "name": "Siena",            "seed": 16, "score": 65 },
+            "winner": "Duke",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Vanderbilt",       "seed": 5,  "score": 78 },
+            "team2": { "name": "McNeese",          "seed": 12, "score": 68 },
+            "winner": "Vanderbilt",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Michigan State",   "seed": 3,  "score": 92 },
+            "team2": { "name": "North Dakota State","seed": 14, "score": 67 },
+            "winner": "Michigan State",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Arkansas",         "seed": 4,  "score": 97 },
+            "team2": { "name": "Hawai'i",          "seed": 13, "score": 78 },
+            "winner": "Arkansas",
+            "correct": true
+          },
+          {
+            "team1": { "name": "North Carolina",   "seed": 6,  "score": 78 },
+            "team2": { "name": "VCU",              "seed": 11, "score": 82 },
+            "winner": "VCU",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Michigan",         "seed": 1,  "score": 101 },
+            "team2": { "name": "Howard",           "seed": 16, "score": 80 },
+            "winner": "Michigan",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Saint Mary's",     "seed": 7,  "score": 50 },
+            "team2": { "name": "Texas A&M",        "seed": 10, "score": 63 },
+            "winner": "Texas A&M",
+            "correct": false
+          },
+          {
+            "team1": { "name": "BYU",              "seed": 6,  "score": 71 },
+            "team2": { "name": "Texas",            "seed": 11, "score": 79 },
+            "winner": "Texas",
+            "correct": false
+          },
+          {
+            "team1": { "name": "Illinois",         "seed": 3,  "score": 105 },
+            "team2": { "name": "Penn",             "seed": 14, "score": 70 },
+            "winner": "Illinois",
+            "correct": true
+          }
+        ]
+      },
+      {
+        "name": "Round of 32",
+        "games": []
+      },
+      {
+        "name": "Sweet Sixteen",
+        "games": []
+      },
+      {
+        "name": "Elite 8",
+        "games": []
+      },
+      {
+        "name": "Final 4",
+        "games": []
+      },
+      {
+        "name": "National Championship",
+        "games": []
+      }
+    ]
+  }
+]

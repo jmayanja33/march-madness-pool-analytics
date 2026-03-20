@@ -21,6 +21,11 @@ from app.models import (
     H2HTeamResult,
     PlayerProfile,
     PoolTeamSummary,
+    ResultsGame,
+    ResultsResponse,
+    ResultsRound,
+    ResultsTeamEntry,
+    ResultsTournament,
     SimilarTeam,
     TeamAnalysis,
     TeamStats,
@@ -56,20 +61,21 @@ CURRENT_YEAR: int = 2026
 def load_predictions() -> list[dict]:
     """Load and cache the current season's predictions JSON.
 
-    Picks the lexicographically last ``*.json`` file inside PREDICTIONS_DIR
-    so that a new season's file is used without any code changes.
-    The result is cached in-process for the lifetime of the server.
+    Loads ``predictions.json`` directly from PREDICTIONS_DIR.  Other files in
+    the same directory (e.g. ``results.json``, ``h2h-predictions.json``) are
+    intentionally ignored so that adding new data files never accidentally
+    replaces the team predictions.
 
     Returns:
         List of raw team dicts from the predictions JSON.
 
     Raises:
-        FileNotFoundError: If PREDICTIONS_DIR contains no ``*.json`` files.
+        FileNotFoundError: If ``predictions.json`` does not exist in PREDICTIONS_DIR.
     """
-    files = sorted(PREDICTIONS_DIR.glob("*.json"))
-    if not files:
-        raise FileNotFoundError(f"No predictions JSON found in {PREDICTIONS_DIR}")
-    return json.loads(files[-1].read_text(encoding="utf-8"))
+    path = PREDICTIONS_DIR / "predictions.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Predictions file not found: {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def find_team(name: str) -> Optional[dict]:
@@ -600,3 +606,82 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
         # ChromaDB unavailable or team not indexed — log and degrade gracefully.
         logger.exception("get_similar_teams failed for '%s'", team_name)
         return []
+
+
+# ---------------------------------------------------------------------------
+# Results data loading
+# ---------------------------------------------------------------------------
+
+# Path to the pre-calculated tournament results JSON file.
+RESULTS_FILE = PREDICTIONS_DIR / "results.json"
+
+
+@lru_cache(maxsize=1)
+def load_results_data() -> list[dict]:
+    """Load and cache the tournament results JSON from disk.
+
+    The file at RESULTS_FILE is read once and cached for the lifetime of the
+    server process.  It contains one entry per tracked tournament year.
+
+    Returns:
+        List of raw tournament dicts, each containing year, tournament_name,
+        and a list of round dicts with game results.
+
+    Raises:
+        FileNotFoundError: If RESULTS_FILE does not exist.
+    """
+    if not RESULTS_FILE.exists():
+        raise FileNotFoundError(f"Results file not found: {RESULTS_FILE}")
+    return json.loads(RESULTS_FILE.read_text(encoding="utf-8"))
+
+
+def get_results() -> ResultsResponse:
+    """Build a ResultsResponse from the raw results JSON data.
+
+    Parses all tournament years and their round game data into Pydantic models.
+    Rounds with no games are still included so the frontend can display them
+    as "No games yet".
+
+    Returns:
+        Populated :class:`~app.models.ResultsResponse` instance with all
+        tracked tournament years and their game results.
+    """
+    raw_tournaments = load_results_data()
+    tournaments: list[ResultsTournament] = []
+
+    for raw_t in raw_tournaments:
+        rounds: list[ResultsRound] = []
+
+        # Parse each round and its games.
+        for raw_r in raw_t.get("rounds", []):
+            games: list[ResultsGame] = []
+
+            for raw_g in raw_r.get("games", []):
+                # Build each team's entry from the raw game dict.
+                team1 = ResultsTeamEntry(
+                    name=raw_g["team1"]["name"],
+                    seed=raw_g["team1"]["seed"],
+                    score=raw_g["team1"].get("score"),
+                )
+                team2 = ResultsTeamEntry(
+                    name=raw_g["team2"]["name"],
+                    seed=raw_g["team2"]["seed"],
+                    score=raw_g["team2"].get("score"),
+                )
+                games.append(ResultsGame(
+                    team1=team1,
+                    team2=team2,
+                    winner=raw_g["winner"],
+                    correct=raw_g["correct"],
+                ))
+
+            rounds.append(ResultsRound(name=raw_r["name"], games=games))
+
+        tournaments.append(ResultsTournament(
+            year=raw_t["year"],
+            tournament_name=raw_t["tournament_name"],
+            rounds=rounds,
+        ))
+
+    logger.info("get_results: loaded %d tournament year(s)", len(tournaments))
+    return ResultsResponse(tournaments=tournaments)

@@ -75,6 +75,11 @@
   box-shadow: var(--shadow);
 }
 
+/* Center the lone 7th button in the middle column */
+.home-btn--last {
+  grid-column: 2;
+}
+
 /* ── Mobile — 2-column button grid ── */
 @media (max-width: 768px) {
   .home-nav-buttons {

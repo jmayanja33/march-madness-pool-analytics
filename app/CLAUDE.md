@@ -40,3 +40,6 @@ This endpoint routes a user to the power rankings page.
 ### /head-to-head
 This endpoint routes users to the head to head matchup page.
 
+### /results
+This endpoint routes users to the results page.
+

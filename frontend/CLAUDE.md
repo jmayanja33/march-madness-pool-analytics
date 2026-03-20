@@ -180,3 +180,69 @@ For more information on the model development or data collection process, reach 
 **Email**: joshmayanja30@gmail.com
 **LinkedIn**: https://www.linkedin.com/in/josh-mayanja-a3001b200/
 **GitHub**: https://github.com/jmayanja33
+
+
+## Results Page
+
+The results page should track model results. The subtitle of the page should be "MODEL RESULTS BY YEAR AND ROUND". 
+The page for have a section for each year that is collapsable (similar to the Power Rankings page). The title of each section
+should be the year and tournament (ex. "2026 Tournament"). As of right now, there will only be one section, for the 2026
+tournament. Each section will have the rounds of the tournament as nested sections. 
+In parentheses next to each section title, the accuracy of the section should be listed. The accuracy
+will follow the color threshold for probabilities. In each section, the number of games, correct predictions, and accuracy
+will be listed. If no games have been played yet for a section display this, and do not include accuracy in the section
+title. 
+
+Below the accuracy reporting, each game will be listed with a score. The two teams will be listed with their logos.
+The format should be seed 1 logo 1 team 1 score 1 vs. seed 2 logo 2 team 2 score 2. If the prediction was correct, the winning team name
+should be in green. If it was incorrect, the winning team name should be in red. Find the content for each section below.
+
+### 2026 Tournament
+Number of Games: 17
+Correct Predictions: 14
+Accuracy: 82.35%
+
+
+### First Four
+Number of Games: 4
+Correct Predictions: 4
+Accuracy: 100.00% 
+
+- 16. UMBC: 83 vs. 16. Howard: 86 [CORRECT]
+- 11. Texas: 68 vs. 11. NC State: 66 [CORRECT]
+- 16. Prairie View A&M: 67 vs. 16. Lehigh: 55 [CORRECT]
+- 11. Miami (OH): 89 vs. 11. SMU: 79 [CORRECT]
+
+### Round of 64
+Number of Games: 13
+Correct Predictions: 10
+Accuracy: 76.92%
+
+- 8. Ohio State: 64 vs. 9. TCU: 66 [CORRECT]
+- 4. Nebraska vs. 13. Troy: 47 [CORRECT]
+- 6. Louisville vs. 11. South Florida [CORRECT]
+- 5. Wisconsin: 82 vs. 12. High Point: 83 [INCORRECT]
+- 1. Duke: 71 vs 16. Siena: 65 [CORRECT]
+- 5. Vanderbilt: 78 vs. 12. McNeese: 68 [CORRECT]
+- 3. Michigan State: 92 vs. 14. North Dakota State: 67 [CORRECT]
+- 4. Arkansas: 97 vs. 13. Hawai'i: 78 [CORRECT]
+- 6. North Carolina: 78 vs. 11. VCU: 82 [CORRECT]
+- 1. Michigan: 101 vs. 16. Howard: 80 [CORRECT]
+- 7. Saint Mary's: 50 vs. 10. Texas A&M: 63 [INCORRECT]
+- 6. BYU: 71 vs. 11. Texas: 79 [INCORRECT]
+- 3. Illinois: 105 vs. 14. Penn: 70 [CORRECT]
+
+### Round of 32
+No games yet
+
+### Sweet Sixteen
+No games yet
+
+### Elite 8
+No games yet
+
+### Final 4
+No games yet
+
+### National Championship
+No games yet

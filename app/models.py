@@ -6,6 +6,8 @@ the API endpoints.  Using Pydantic ensures automatic validation and clean
 OpenAPI documentation.
 """
 
+from typing import Optional
+
 from pydantic import BaseModel
 
 # ---------------------------------------------------------------------------
@@ -266,6 +268,73 @@ class H2HResponse(BaseModel):
 # ---------------------------------------------------------------------------
 # Power rankings models
 # ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Results models
+# ---------------------------------------------------------------------------
+
+
+class ResultsTeamEntry(BaseModel):
+    """
+    One team's entry in a single game result.
+
+    Score is optional because some results in the data source omit it.
+    """
+
+    name: str               # Team display name, e.g. "Duke"
+    seed: int               # Tournament seed (1–16)
+    score: Optional[int]    # Points scored in this game, or None if unavailable
+
+
+class ResultsGame(BaseModel):
+    """
+    Result for a single tournament game.
+
+    Contains both teams' info, the winner's name, and whether the model's
+    prediction for this matchup was correct.
+    """
+
+    team1: ResultsTeamEntry   # First team (left side of display)
+    team2: ResultsTeamEntry   # Second team (right side of display)
+    winner: str               # Display name of the winning team
+    correct: bool             # True if the model correctly predicted the winner
+
+
+class ResultsRound(BaseModel):
+    """
+    Results for one round of the tournament (e.g. 'First Four', 'Round of 64').
+
+    An empty games list means no games have been played for this round yet.
+    """
+
+    name: str                  # Round name, e.g. "First Four"
+    games: list[ResultsGame]   # Games played; empty if round has not started
+
+
+class ResultsTournament(BaseModel):
+    """
+    All results for one tournament year, broken down by round.
+
+    Contains computed aggregate totals (games, correct predictions) for the
+    entire tournament derived from the individual round game lists.
+    """
+
+    year: int                      # Tournament year, e.g. 2026
+    tournament_name: str           # Display title, e.g. "2026 Tournament"
+    # Ordered list of rounds from First Four to National Championship.
+    rounds: list[ResultsRound]
+
+
+class ResultsResponse(BaseModel):
+    """
+    Top-level response returned by GET /api/results.
+
+    Contains one ResultsTournament entry per year of tracked results.
+    Currently only the 2026 season is included.
+    """
+
+    tournaments: list[ResultsTournament]
 
 
 class PowerRankingsResponse(BaseModel):

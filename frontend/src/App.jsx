@@ -8,6 +8,7 @@ import CreateTeam from './pages/CreateTeam';
 import PowerRankings from './pages/PowerRankings';
 import HeadToHead from './pages/HeadToHead';
 import Info from './pages/Info';
+import Results from './pages/Results';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/power-rankings"  element={<PowerRankings />} />  {/* Power rankings */}
         <Route path="/head-to-head"    element={<HeadToHead />} />     {/* H2H matchup */}
         <Route path="/info"            element={<Info />} />           {/* Project info */}
+        <Route path="/results"         element={<Results />} />        {/* Model results */}
       </Routes>
     </BrowserRouter>
   );

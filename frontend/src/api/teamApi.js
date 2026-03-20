@@ -84,6 +84,21 @@ export async function fetchH2H(team1Name, team2Name) {
   return data;
 }
 
+// Fetches tournament model results grouped by year and round from the backend.
+// Returns a ResultsResponse containing all tracked tournament years, each with
+// a list of rounds and the game results (teams, scores, winner, correct flag).
+// Throws an error if the request fails or the data file is unavailable (503).
+export async function fetchResults() {
+  const res = await fetch(`${API_BASE}/results`);
+  if (!res.ok) {
+    console.error(`[API] fetchResults failed: HTTP ${res.status}`);
+    throw new Error(`Failed to fetch results: ${res.status}`);
+  }
+  const data = await res.json();
+  console.log(`[API] fetchResults — ${data.tournaments.length} tournament year(s)`);
+  return data;
+}
+
 // Fetches lightweight pool summaries for a list of team names from the backend.
 // Accepts an array of team display names (up to 8) and returns the resolved
 // PoolTeamSummary objects.  Teams not found in the predictions data are
