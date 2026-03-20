@@ -238,10 +238,10 @@ No games yet
 ### Sweet Sixteen
 No games yet
 
-### Elite 8
+### Elite Eight
 No games yet
 
-### Final 4
+### Final Four
 No games yet
 
 ### National Championship
