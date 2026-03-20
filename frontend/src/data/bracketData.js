@@ -60,9 +60,9 @@ export const RESULTS_2026 = {
     s16: [], e8: [], f4: null,
   },
   West: {
-    r64Winners: ['Arkansas', 'High Point', 'Texas', 'Gonzaga'],
+    r64Winners: ['Arkansas', 'High Point', 'Texas', 'Gonzaga', 'Arizona'],
     //             1v16   8v9    5v12         4v13       6v11    3v14   7v10   2v15
-    r32: [null,   null, 'High Point', 'Arkansas', 'Texas',  'Gonzaga',  null,  null],
+    r32: ['Arizona',   null, 'High Point', 'Arkansas', 'Texas',  'Gonzaga',  null,  null],
     s16: [], e8: [], f4: null,
   },
   South: {
@@ -72,9 +72,9 @@ export const RESULTS_2026 = {
     s16: [], e8: [], f4: null,
   },
   Midwest: {
-    r64Winners: ['Michigan', 'Saint Louis'],
+    r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Kentucky'],
     //               1v16          8v9     5v12   4v13   6v11   3v14   7v10   2v15
-    r32: ['Michigan', 'Saint Louis', null,  null,  null,  null,  null,  null],
+    r32: ['Michigan', 'Saint Louis', null,  'Texas Tech',  null,  'Virginia',  'Kentucky',  null],
     s16: [], e8: [], f4: null,
   },
 };

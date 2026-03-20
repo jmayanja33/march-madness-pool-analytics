@@ -127,7 +127,31 @@
           },
           {
             "team1": { "name": "Gonzaga",          "seed": 3,  "score":  73},
-            "team2": { "name": "Kennesaw State",      "seed": 14,  "score":  64},
+            "team2": { "name": "Kennesaw State",   "seed": 14,  "score":  64},
+            "winner": "Gonzaga",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Kentucky",         "seed": 7,  "score":  89},
+            "team2": { "name": "Santa Clara",      "seed": 10,  "score":  84},
+            "winner": "Kentucky",
+            "correct": false
+          },
+          {
+            "team1": { "name": "Texas Tech",       "seed": 5,  "score":  91},
+            "team2": { "name": "Akron",            "seed": 12,  "score":  71},
+            "winner": "Texas Tech",
+            "correct": false
+          },
+          {
+            "team1": { "name": "Arizona",          "seed": 1,  "score":  92},
+            "team2": { "name": "Long Island University",   "seed": 16,  "score":  58},
+            "winner": "Arizona",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Virginia",          "seed": 3,  "score":  82},
+            "team2": { "name": "Wright State",      "seed": 14,  "score":  73},
             "winner": "Gonzaga",
             "correct": true
           }
