@@ -187,7 +187,10 @@ For more information on the model development or data collection process, reach 
 The results page should track model results. The subtitle of the page should be "MODEL RESULTS BY YEAR AND ROUND". 
 The page for have a section for each year that is collapsable (similar to the Power Rankings page). The title of each section
 should be the year and tournament (ex. "2026 Tournament"). As of right now, there will only be one section, for the 2026
-tournament. Each section will have the rounds of the tournament as nested sections. 
+tournament. Inside of each tournament, there will be 2 sections: Head to Head Model, and Wins Model. 
+These sections should have a slightly darker box to differentiate them. The head to head section will have each round of the 
+tournament as nested sections.
+
 In parentheses next to each section title, the accuracy of the section should be listed. The accuracy
 will follow the color threshold for probabilities. In each section, the number of games, correct predictions, and accuracy
 will be listed. If no games have been played yet for a section display this, and do not include accuracy in the section
@@ -198,12 +201,13 @@ The format should be seed 1 logo 1 team 1 score 1 vs. seed 2 logo 2 team 2 score
 should be in green. If it was incorrect, the winning team name should be in red. Find the content for each section below.
 
 ### 2026 Tournament
-Number of Games: 17
-Correct Predictions: 14
-Accuracy: 82.35%
 
+#### Head to Head Model
+Number of Games: 20
+Correct Predictions: 17
+Accuracy: 85.00%
 
-### First Four
+##### First Four
 Number of Games: 4
 Correct Predictions: 4
 Accuracy: 100.00% 
@@ -213,10 +217,10 @@ Accuracy: 100.00%
 - 16. Prairie View A&M: 67 vs. 16. Lehigh: 55 [CORRECT]
 - 11. Miami (OH): 89 vs. 11. SMU: 79 [CORRECT]
 
-### Round of 64
-Number of Games: 13
-Correct Predictions: 10
-Accuracy: 76.92%
+##### Round of 64
+Number of Games: 15
+Correct Predictions: 12
+Accuracy: 80.00%
 
 - 8. Ohio State: 64 vs. 9. TCU: 66 [CORRECT]
 - 4. Nebraska vs. 13. Troy: 47 [CORRECT]
@@ -231,18 +235,24 @@ Accuracy: 76.92%
 - 7. Saint Mary's: 50 vs. 10. Texas A&M: 63 [INCORRECT]
 - 6. BYU: 71 vs. 11. Texas: 79 [INCORRECT]
 - 3. Illinois: 105 vs. 14. Penn: 70 [CORRECT]
+- 2. Houston: 78 vs. 15. Idaho: 47 [CORRECT]
+- 8. Georgia: 77 vs. 9. Saint Louis: 102 [CORRECT]
 
-### Round of 32
+##### Round of 32
 No games yet
 
-### Sweet Sixteen
+##### Sweet Sixteen
 No games yet
 
-### Elite Eight
+##### Elite Eight
 No games yet
 
-### Final Four
+##### Final Four
 No games yet
 
-### National Championship
+##### National Championship
 No games yet
+
+
+#### Wins Model
+No data yet

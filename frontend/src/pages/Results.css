@@ -72,6 +72,14 @@
   text-align: left;
 }
 
+/* Left side of the year header — stacks title above model accuracy lines */
+.results-year-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
 .results-year-title {
   font-family: 'Anton', sans-serif;
   font-size: 1.2rem;
@@ -80,6 +88,25 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin: 0;
+}
+
+/* Per-model accuracy lines beneath the year title */
+.results-year-model-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.results-year-model-stat {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.results-year-model-stat strong {
+  color: #fff;
 }
 
 /* ── Accuracy badge — inline colored percentage ── */
@@ -132,6 +159,47 @@
   font-size: 0.84rem;
   margin-bottom: 8px;
   padding-bottom: 6px;
+}
+
+/* ── Model box (Head to Head / Wins Model) ── */
+/* Slightly darker background than the year body to visually separate each model. */
+.results-model-section {
+  border: 1px solid #d4d9e3;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  background: #edf0f5;
+}
+
+/* Clickable model header */
+.results-model-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  background: #dde2ec;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  border-bottom: 1px solid #d4d9e3;
+}
+
+.results-model-header:hover {
+  background: #d3d9e6;
+}
+
+.results-model-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* Model box body — contains rounds or the "No data yet" message */
+.results-model-body {
+  padding: 12px 16px 14px;
 }
 
 /* ── Round sub-section ── */
