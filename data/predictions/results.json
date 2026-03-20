@@ -165,7 +165,7 @@
             "team1": { "name": "Alabama",          "seed": 4,  "score":  90},
             "team2": { "name": "Hofstra",      "seed": 13,  "score":  70},
             "winner": "Alabama",
-            "correct": true
+            "correct": false
           }
         ]
       },
