@@ -297,7 +297,21 @@ export default function CreateTeam() {
                 const color = probColor(poolStats.avgProb);
                 return (
                   <div className="ct-total-box">
-                    <span className="ct-total-box-label">Expected Team Wins</span>
+                    <span className="ct-total-box-label">
+                      Expected Team Wins
+                      {/* Tooltip icon — explains the calculation in plain language */}
+                      <span className="ct-total-tooltip-wrap">
+                        <span className="ct-total-tooltip-icon">ⓘ</span>
+                        <span className="ct-total-tooltip-body">
+                          The single most likely total win count for your team, based on
+                          combining each team&apos;s win odds together. This matches the
+                          tallest bar in the Win Projection chart. It may not equal the
+                          sum of each team&apos;s individual expected wins, because some
+                          win totals become more or less likely when all teams are
+                          considered together.
+                        </span>
+                      </span>
+                    </span>
                     <span className="ct-perf-wins" style={{ color }}>
                       {formatTotalWins(poolStats.totalWins)}
                       <span className="ct-perf-pct"> ({(poolStats.avgProb * 100).toFixed(1)}%)</span>

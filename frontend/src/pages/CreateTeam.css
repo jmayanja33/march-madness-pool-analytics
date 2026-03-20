@@ -314,6 +314,67 @@
 .ct-total-box-label {
   font-size: 0.95rem;
   color: var(--black);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Tooltip trigger wrapper — positions the floating bubble */
+.ct-total-tooltip-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* The ⓘ icon itself */
+.ct-total-tooltip-icon {
+  font-size: 0.85rem;
+  color: var(--silver);
+  cursor: default;
+  line-height: 1;
+}
+.ct-total-tooltip-icon:hover {
+  color: var(--light-blue);
+}
+
+/* The floating tooltip bubble — hidden until hover */
+.ct-total-tooltip-body {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 10px);
+  transform: translateY(-50%);
+  width: 240px;
+  background: #1e2a3a;
+  color: #f0f4ff;
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.45;
+  padding: 8px 10px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transition: opacity 0.15s;
+  z-index: 300;
+  white-space: normal;
+}
+
+/* Small arrow pointing left from the bubble */
+.ct-total-tooltip-body::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right-color: #1e2a3a;
+}
+
+/* Show on hover */
+.ct-total-tooltip-wrap:hover .ct-total-tooltip-body {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* ── Team Breakdown section ── */
