@@ -263,7 +263,7 @@
             "correct": false
           },
           {
-            "team1": { "name": "Illiois",          "seed": 3,  "score":  76},
+            "team1": { "name": "Illinois",          "seed": 3,  "score":  76},
             "team2": { "name": "VCU",      "seed": 11,  "score":  55},
             "winner": "Illinois",
             "correct": false
