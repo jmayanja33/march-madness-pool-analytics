@@ -53,28 +53,35 @@ export const RESULTS_2026 = {
   // slot 3 = winner of (4v13), slot 4 = winner of (6v11), slot 5 = winner of (3v14),
   // slot 6 = winner of (7v10), slot 7 = winner of (2v15).
   // null means that R64 game has not yet been played.
+  //
+  // r32Winners: teams that won their Round of 32 game (used to green-highlight
+  //             their slot in the Round of 32 column), analogous to r64Winners.
   East: {
-    r64Winners: ['Duke', 'Michigan State', 'Louisville', 'TCU'],
+    r64Winners: ['Duke', 'Michigan State', 'Louisville', 'TCU', "St. John's", "Kansas", "UCLA", "UConn"],
     //              1v16    8v9    5v12   4v13        6v11          3v14            7v10   2v15
-    r32: ['Duke', 'TCU',  null,  null, 'Louisville', 'Michigan State', null,   null],
+    r32: ['Duke', 'TCU', "St. John's", "Kansas", 'Louisville', 'Michigan State', "UCLA", "UConn"],
+    r32Winners: [],
     s16: [], e8: [], f4: null,
   },
   West: {
-    r64Winners: ['Arkansas', 'High Point', 'Texas', 'Gonzaga', 'Arizona'],
+    r64Winners: ['Arkansas', 'Utah State', 'High Point', 'Texas', 'Gonzaga', 'Arizona', 'Miami'],
     //             1v16   8v9    5v12         4v13       6v11    3v14   7v10   2v15
-    r32: ['Arizona',   null, 'High Point', 'Arkansas', 'Texas',  'Gonzaga',  null,  null],
+    r32: ['Arizona', 'Utah State', 'High Point', 'Arkansas', 'Texas', 'Gonzaga', 'Miami', 'Purdue'],
+    r32Winners: [],
     s16: [], e8: [], f4: null,
   },
   South: {
-    r64Winners: ['Houston', 'Illinois', 'Nebraska', 'Vanderbilt', 'VCU', 'Texas A&M'],
+    r64Winners: ['Florida', 'Houston', 'Illinois', 'Nebraska', 'Vanderbilt', 'VCU', 'Texas A&M', 'Iowa'],
     //             1v16   8v9       5v12          4v13      6v11   3v14       7v10          2v15
-    r32: [null,   null, 'Vanderbilt', 'Nebraska', 'VCU', 'Illinois', 'Texas A&M', 'Houston'],
+    r32: ['Florida', 'Iowa', 'Vanderbilt', 'Nebraska', 'VCU', 'Illinois', 'Texas A&M', 'Houston'],
+    r32Winners: [],
     s16: [], e8: [], f4: null,
   },
   Midwest: {
     r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Kentucky', 'Alabama', 'Iowa State'],
     //               1v16          8v9     5v12   4v13   6v11   3v14   7v10   2v15
-    r32: ['Michigan', 'Saint Louis', 'Texas Tech',  'Alabama',  null,  'Virginia',  'Kentucky',  'Iowa State'],
+    r32: ['Michigan', 'Saint Louis', 'Texas Tech', 'Alabama', 'Tennessee', 'Virginia', 'Kentucky', 'Iowa State'],
+    r32Winners: [],
     s16: [], e8: [], f4: null,
   },
 };

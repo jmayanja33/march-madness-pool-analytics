@@ -35,12 +35,12 @@ function buildRounds(teams, results) {
   });
 
   // Round of 32: always 8 slots. r32 entries may be null (game not yet played → TBD).
-  // winner = team appears in s16 (they won their R32 game).
+  // winner = team appears in r32Winners (they won their R32 game), analogous to r64Winners.
   const r32 = results?.r32 ?? [];
-  const s16List = results?.s16 ?? [];
+  const r32Winners = results?.r32Winners ?? [];
   const r2 = Array.from({ length: 8 }, (_, i) => {
     const name = r32[i] ?? null;
-    return { id: `r2-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? s16List.includes(name) : false };
+    return { id: `r2-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? r32Winners.includes(name) : false };
   });
 
   // Sweet 16: always 4 slots. s16 entries may be null → TBD.
