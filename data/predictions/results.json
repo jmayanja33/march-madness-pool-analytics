@@ -50,7 +50,7 @@
           {
             "team1": { "name": "Louisville",       "seed": 6,  "score": 83 },
             "team2": { "name": "South Florida",    "seed": 11, "score": 79 },
-            "winner": "South Florida",
+            "winner": "Louisville",
             "correct": true
           },
           {
@@ -284,6 +284,36 @@
             "team1": { "name": "Purdue",          "seed": 2,  "score":  79},
             "team2": { "name": "Miami",      "seed": 7,  "score":  69},
             "winner": "Purdue",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Iowa State",          "seed": 2,  "score":  82},
+            "team2": { "name": "Kentucky",      "seed": 7,  "score":  63},
+            "winner": "Iowa State",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Kansas",          "seed": 4,  "score":  65},
+            "team2": { "name": "St. John's",      "seed": 5,  "score":  67},
+            "winner": "St. John's",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Virginia",          "seed": 3,  "score":  79},
+            "team2": { "name": "Tennessee",      "seed": 6,  "score":  82},
+            "winner": "Tennessee",
+            "correct": false
+          },
+          {
+            "team1": { "name": "Florida",          "seed": 1,  "score":  73},
+            "team2": { "name": "Iowa",      "seed": 9,  "score":  72},
+            "winner": "Iowa",
+            "correct": false
+          },
+          {
+            "team1": { "name": "Arizona",          "seed": 1,  "score":  78},
+            "team2": { "name": "Utah State",      "seed": 7,  "score":  66},
+            "winner": "Arizona",
             "correct": true
           }
         ]

@@ -30,17 +30,25 @@ export const FIRST_FOUR_2026 = [
   },
 ];
 
-// 2026 tournament results — updated through Round of 64.
+// 2026 tournament results — updated through Round of 32.
 //
 // firstFour: maps each First Four game id → the winner's name.
 //   Used by Bracket.jsx to highlight the winning team in each First Four pairing.
 //
 // Per-region keys: each region object contains:
-//   r64Winners — teams that won their Round of 64 game (used to green-outline
-//                their slot in the Round of 64 column).
-//   r32        — teams that advanced after winning a Round of 32 game (empty
-//                until that round is played; drives the Round of 32 column).
-//   s16/e8/f4  — analogous for later rounds.
+//   r64Winners — teams that won their Round of 64 game (green-highlights their
+//                slot in the Round of 64 column).
+//   r32        — teams that advanced from R64; populates the Round of 32 column.
+//                Positional order: slot 0 = winner of (1v16), slot 1 = winner of (8v9),
+//                slot 2 = winner of (5v12), slot 3 = winner of (4v13),
+//                slot 4 = winner of (6v11), slot 5 = winner of (3v14),
+//                slot 6 = winner of (7v10), slot 7 = winner of (2v15).
+//                null means that R64 game has not yet been played.
+//   r32Winners — teams that won their Round of 32 game (green-highlights their
+//                slot in the Round of 32 column), analogous to r64Winners.
+//   s16        — teams advancing to the Sweet 16; 4 slots ordered by bracket half.
+//                null means that R32 game has not yet been played.
+//   e8/f4      — analogous for later rounds (empty until those rounds are played).
 export const RESULTS_2026 = {
   firstFour: {
     'ff-west-11':   'Texas',
@@ -48,41 +56,44 @@ export const RESULTS_2026 = {
     'ff-south-16':  'Prairie View A&M',
     'ff-midwest-16': 'Howard',
   },
-  // r32 arrays are positionally ordered to match R32 bracket slots:
-  // slot 0 = winner of (1v16), slot 1 = winner of (8v9), slot 2 = winner of (5v12),
-  // slot 3 = winner of (4v13), slot 4 = winner of (6v11), slot 5 = winner of (3v14),
-  // slot 6 = winner of (7v10), slot 7 = winner of (2v15).
-  // null means that R64 game has not yet been played.
-  //
-  // r32Winners: teams that won their Round of 32 game (used to green-highlight
-  //             their slot in the Round of 32 column), analogous to r64Winners.
   East: {
-    r64Winners: ['Duke', 'Michigan State', 'Louisville', 'TCU', "St. John's", "Kansas", "UCLA", "UConn"],
-    //              1v16    8v9    5v12   4v13        6v11          3v14            7v10   2v15
-    r32: ['Duke', 'TCU', "St. John's", "Kansas", 'Louisville', 'Michigan State', "UCLA", "UConn"],
-    r32Winners: [],
-    s16: [], e8: [], f4: null,
+    r64Winners: ['Duke', 'Michigan State', 'Louisville', 'TCU', "St. John's", 'Kansas', 'UCLA', 'UConn'],
+    //              1v16       3v14           6v11         8v9       5v12        4v13    7v10   2v15
+    r32: ['Duke', 'TCU', "St. John's", 'Kansas', 'Louisville', 'Michigan State', 'UCLA', 'UConn'],
+    // R32 results: Duke beat TCU, St. John's beat Kansas, Louisville beat Michigan State.
+    // UCLA vs UConn has not yet been played.
+    r32Winners: ['Duke', "St. John's", 'Louisville'],
+    s16: ['Duke', "St. John's", 'Louisville', null],
+    e8: [], f4: null,
   },
   West: {
-    r64Winners: ['Arkansas', 'Utah State', 'High Point', 'Texas', 'Gonzaga', 'Arizona', 'Miami'],
-    //             1v16   8v9    5v12         4v13       6v11    3v14   7v10   2v15
+    r64Winners: ['Arkansas', 'Utah State', 'High Point', 'Texas', 'Gonzaga', 'Arizona', 'Miami', 'Purdue'],
+    //              4v13         8v9           5v12        6v11     3v14       1v16      7v10    2v15
     r32: ['Arizona', 'Utah State', 'High Point', 'Arkansas', 'Texas', 'Gonzaga', 'Miami', 'Purdue'],
-    r32Winners: [],
-    s16: [], e8: [], f4: null,
+    // R32 results: Arizona beat Utah State, Arkansas beat High Point, Texas beat Gonzaga, Purdue beat Miami.
+    // Note: Arizona vs Utah State game is still ongoing — will be updated when complete.
+    r32Winners: ['Arizona', 'Arkansas', 'Texas', 'Purdue'],
+    s16: ['Arizona', 'Arkansas', 'Texas', 'Purdue'],
+    e8: [], f4: null,
   },
   South: {
     r64Winners: ['Florida', 'Houston', 'Illinois', 'Nebraska', 'Vanderbilt', 'VCU', 'Texas A&M', 'Iowa'],
-    //             1v16   8v9       5v12          4v13      6v11   3v14       7v10          2v15
+    //              1v16      2v15       3v14         4v13         5v12        6v11     7v10       8v9
     r32: ['Florida', 'Iowa', 'Vanderbilt', 'Nebraska', 'VCU', 'Illinois', 'Texas A&M', 'Houston'],
-    r32Winners: [],
-    s16: [], e8: [], f4: null,
+    // R32 results: Iowa beat Florida, Nebraska beat Vanderbilt, Illinois beat VCU, Houston beat Texas A&M.
+    r32Winners: ['Iowa', 'Nebraska', 'Illinois', 'Houston'],
+    s16: ['Iowa', 'Nebraska', 'Illinois', 'Houston'],
+    e8: [], f4: null,
   },
   Midwest: {
-    r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Kentucky', 'Alabama', 'Iowa State'],
-    //               1v16          8v9     5v12   4v13   6v11   3v14   7v10   2v15
+    r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Tennessee', 'Alabama', 'Kentucky', 'Iowa State'],
+    //               1v16         8v9          3v14        5v12          6v11        4v13       7v10         2v15
     r32: ['Michigan', 'Saint Louis', 'Texas Tech', 'Alabama', 'Tennessee', 'Virginia', 'Kentucky', 'Iowa State'],
-    r32Winners: [],
-    s16: [], e8: [], f4: null,
+    // R32 results: Michigan beat Saint Louis, Tennessee beat Virginia, Iowa State beat Kentucky.
+    // Texas Tech vs Alabama has not yet been played.
+    r32Winners: ['Michigan', 'Tennessee', 'Iowa State'],
+    s16: ['Michigan', null, 'Tennessee', 'Iowa State'],
+    e8: [], f4: null,
   },
 };
 
