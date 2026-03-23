@@ -60,18 +60,14 @@ export const RESULTS_2026 = {
     r64Winners: ['Duke', 'Michigan State', 'Louisville', 'TCU', "St. John's", 'Kansas', 'UCLA', 'UConn'],
     //              1v16       3v14           6v11         8v9       5v12        4v13    7v10   2v15
     r32: ['Duke', 'TCU', "St. John's", 'Kansas', 'Louisville', 'Michigan State', 'UCLA', 'UConn'],
-    // R32 results: Duke beat TCU, St. John's beat Kansas, Louisville beat Michigan State.
-    // UCLA vs UConn has not yet been played.
-    r32Winners: ['Duke', "St. John's", 'Louisville'],
-    s16: ['Duke', "St. John's", 'Louisville', null],
+    r32Winners: ['Duke', "St. John's", 'Michigan State', 'UConn'],
+    s16: ['Duke', "St. John's", 'Michigan State', 'UConn'],
     e8: [], f4: null,
   },
   West: {
     r64Winners: ['Arkansas', 'Utah State', 'High Point', 'Texas', 'Gonzaga', 'Arizona', 'Miami', 'Purdue'],
     //              4v13         8v9           5v12        6v11     3v14       1v16      7v10    2v15
     r32: ['Arizona', 'Utah State', 'High Point', 'Arkansas', 'Texas', 'Gonzaga', 'Miami', 'Purdue'],
-    // R32 results: Arizona beat Utah State, Arkansas beat High Point, Texas beat Gonzaga, Purdue beat Miami.
-    // Note: Arizona vs Utah State game is still ongoing — will be updated when complete.
     r32Winners: ['Arizona', 'Arkansas', 'Texas', 'Purdue'],
     s16: ['Arizona', 'Arkansas', 'Texas', 'Purdue'],
     e8: [], f4: null,
@@ -80,7 +76,6 @@ export const RESULTS_2026 = {
     r64Winners: ['Florida', 'Houston', 'Illinois', 'Nebraska', 'Vanderbilt', 'VCU', 'Texas A&M', 'Iowa'],
     //              1v16      2v15       3v14         4v13         5v12        6v11     7v10       8v9
     r32: ['Florida', 'Iowa', 'Vanderbilt', 'Nebraska', 'VCU', 'Illinois', 'Texas A&M', 'Houston'],
-    // R32 results: Iowa beat Florida, Nebraska beat Vanderbilt, Illinois beat VCU, Houston beat Texas A&M.
     r32Winners: ['Iowa', 'Nebraska', 'Illinois', 'Houston'],
     s16: ['Iowa', 'Nebraska', 'Illinois', 'Houston'],
     e8: [], f4: null,
@@ -89,10 +84,8 @@ export const RESULTS_2026 = {
     r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Tennessee', 'Alabama', 'Kentucky', 'Iowa State'],
     //               1v16         8v9          3v14        5v12          6v11        4v13       7v10         2v15
     r32: ['Michigan', 'Saint Louis', 'Texas Tech', 'Alabama', 'Tennessee', 'Virginia', 'Kentucky', 'Iowa State'],
-    // R32 results: Michigan beat Saint Louis, Tennessee beat Virginia, Iowa State beat Kentucky.
-    // Texas Tech vs Alabama has not yet been played.
-    r32Winners: ['Michigan', 'Tennessee', 'Iowa State'],
-    s16: ['Michigan', null, 'Tennessee', 'Iowa State'],
+    r32Winners: ['Michigan', 'Tennessee', 'Iowa State', 'Alabama'],
+    s16: ['Michigan', 'Alabama', 'Tennessee', 'Iowa State'],
     e8: [], f4: null,
   },
 };
