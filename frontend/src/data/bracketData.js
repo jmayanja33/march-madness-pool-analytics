@@ -48,7 +48,12 @@ export const FIRST_FOUR_2026 = [
 //                slot in the Round of 32 column), analogous to r64Winners.
 //   s16        — teams advancing to the Sweet 16; 4 slots ordered by bracket half.
 //                null means that R32 game has not yet been played.
-//   e8/f4      — analogous for later rounds (empty until those rounds are played).
+//   s16Winners — teams that won their Sweet 16 game (green-highlights their slot
+//                in the Sweet 16 column), analogous to r32Winners.
+//   e8         — teams advancing to the Elite 8; 2 slots. null means S16 game not yet played.
+//   e8Winners  — teams that won their Elite 8 game (green-highlights their slot
+//                in the Elite 8 column), analogous to r32Winners.
+//   f4         — the regional champion advancing to the Final Four (string or null).
 export const RESULTS_2026 = {
   firstFour: {
     'ff-west-11':   'Texas',
@@ -62,7 +67,8 @@ export const RESULTS_2026 = {
     r32: ['Duke', 'TCU', "St. John's", 'Kansas', 'Louisville', 'Michigan State', 'UCLA', 'UConn'],
     r32Winners: ['Duke', "St. John's", 'Michigan State', 'UConn'],
     s16: ['Duke', "St. John's", 'Michigan State', 'UConn'],
-    e8: [], f4: null,
+    s16Winners: [],
+    e8: [null, null], e8Winners: [], f4: null,
   },
   West: {
     r64Winners: ['Arkansas', 'Utah State', 'High Point', 'Texas', 'Gonzaga', 'Arizona', 'Miami', 'Purdue'],
@@ -70,7 +76,8 @@ export const RESULTS_2026 = {
     r32: ['Arizona', 'Utah State', 'High Point', 'Arkansas', 'Texas', 'Gonzaga', 'Miami', 'Purdue'],
     r32Winners: ['Arizona', 'Arkansas', 'Texas', 'Purdue'],
     s16: ['Arizona', 'Arkansas', 'Texas', 'Purdue'],
-    e8: [], f4: null,
+    s16Winners: ['Purdue'],
+    e8: ['Purdue', null], e8Winners: [], f4: null,
   },
   South: {
     r64Winners: ['Florida', 'Houston', 'Illinois', 'Nebraska', 'Vanderbilt', 'VCU', 'Texas A&M', 'Iowa'],
@@ -78,7 +85,8 @@ export const RESULTS_2026 = {
     r32: ['Florida', 'Iowa', 'Vanderbilt', 'Nebraska', 'VCU', 'Illinois', 'Texas A&M', 'Houston'],
     r32Winners: ['Iowa', 'Nebraska', 'Illinois', 'Houston'],
     s16: ['Iowa', 'Nebraska', 'Illinois', 'Houston'],
-    e8: [], f4: null,
+    s16Winners: ['Iowa'],
+    e8: ['Iowa', null], e8Winners: [], f4: null,
   },
   Midwest: {
     r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Tennessee', 'Alabama', 'Kentucky', 'Iowa State'],
@@ -86,7 +94,8 @@ export const RESULTS_2026 = {
     r32: ['Michigan', 'Saint Louis', 'Texas Tech', 'Alabama', 'Tennessee', 'Virginia', 'Kentucky', 'Iowa State'],
     r32Winners: ['Michigan', 'Tennessee', 'Iowa State', 'Alabama'],
     s16: ['Michigan', 'Alabama', 'Tennessee', 'Iowa State'],
-    e8: [], f4: null,
+    s16Winners: [],
+    e8: [null, null], e8Winners: [], f4: null,
   },
 };
 

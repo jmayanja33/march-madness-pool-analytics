@@ -332,7 +332,20 @@
       },
       {
         "name": "Sweet Sixteen",
-        "games": []
+        "games": [
+          {
+            "team1": { "name": "Purdue",          "seed": 2,  "score":  79},
+            "team2": { "name": "Texas",      "seed": 11,  "score":  77},
+            "winner": "Purdue",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Nebraska",          "seed": 4,  "score":  71},
+            "team2": { "name": "Iowa",      "seed": 9,  "score":  77},
+            "winner": "Iowa",
+            "correct": true
+          }
+        ]
       },
       {
         "name": "Elite Eight",

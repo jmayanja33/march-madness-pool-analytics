@@ -44,18 +44,21 @@ function buildRounds(teams, results) {
   });
 
   // Sweet 16: always 4 slots. s16 entries may be null → TBD.
+  // winner = team appears in s16Winners (they won their S16 game), analogous to r32Winners.
   const s16 = results?.s16 ?? [];
-  const e8List = results?.e8 ?? [];
+  const s16Winners = results?.s16Winners ?? [];
   const sweet16 = Array.from({ length: 4 }, (_, i) => {
     const name = s16[i] ?? null;
-    return { id: `s16-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? e8List.includes(name) : false };
+    return { id: `s16-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? s16Winners.includes(name) : false };
   });
 
   // Elite 8: always 2 slots. e8 entries may be null → TBD.
+  // winner = team appears in e8Winners (they won their E8 game and advanced to Final Four).
   const e8 = results?.e8 ?? [];
+  const e8Winners = results?.e8Winners ?? [];
   const elite8 = Array.from({ length: 2 }, (_, i) => {
     const name = e8[i] ?? null;
-    return { id: `e8-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? name === results.f4 : false };
+    return { id: `e8-${i}`, seed: name ? getSeed(name) : null, name: name || '', winner: name ? e8Winners.includes(name) : false };
   });
 
   return [r1, r2, sweet16, elite8];
