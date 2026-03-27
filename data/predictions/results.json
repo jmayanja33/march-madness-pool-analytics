@@ -344,6 +344,18 @@
             "team2": { "name": "Iowa",      "seed": 9,  "score":  77},
             "winner": "Iowa",
             "correct": true
+          },
+          {
+            "team1": { "name": "Houston",          "seed": 2,  "score":  55},
+            "team2": { "name": "Illinois",      "seed": 3,  "score":  65},
+            "winner": "Illinois",
+            "correct": false
+          },
+          {
+            "team1": { "name": "Arizona",          "seed": 1,  "score":  109},
+            "team2": { "name": "Arkansas",      "seed": 4,  "score":  88},
+            "winner": "Arizona",
+            "correct": true
           }
         ]
       },

@@ -76,8 +76,8 @@ export const RESULTS_2026 = {
     r32: ['Arizona', 'Utah State', 'High Point', 'Arkansas', 'Texas', 'Gonzaga', 'Miami', 'Purdue'],
     r32Winners: ['Arizona', 'Arkansas', 'Texas', 'Purdue'],
     s16: ['Arizona', 'Arkansas', 'Texas', 'Purdue'],
-    s16Winners: ['Purdue'],
-    e8: ['Purdue', null], e8Winners: [], f4: null,
+    s16Winners: ['Arizona', 'Purdue'],
+    e8: ['Arizona', 'Purdue'], e8Winners: [], f4: null,
   },
   South: {
     r64Winners: ['Florida', 'Houston', 'Illinois', 'Nebraska', 'Vanderbilt', 'VCU', 'Texas A&M', 'Iowa'],
@@ -85,8 +85,8 @@ export const RESULTS_2026 = {
     r32: ['Florida', 'Iowa', 'Vanderbilt', 'Nebraska', 'VCU', 'Illinois', 'Texas A&M', 'Houston'],
     r32Winners: ['Iowa', 'Nebraska', 'Illinois', 'Houston'],
     s16: ['Iowa', 'Nebraska', 'Illinois', 'Houston'],
-    s16Winners: ['Iowa'],
-    e8: ['Iowa', null], e8Winners: [], f4: null,
+    s16Winners: ['Iowa', 'Illinois'],
+    e8: ['Iowa', 'Illinois'], e8Winners: [], f4: null,
   },
   Midwest: {
     r64Winners: ['Michigan', 'Saint Louis', 'Virginia', 'Texas Tech', 'Tennessee', 'Alabama', 'Kentucky', 'Iowa State'],
