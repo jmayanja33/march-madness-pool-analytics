@@ -88,11 +88,8 @@ def test_load_results_data_reads_json_file() -> None:
         tmp_path = Path(f.name)
 
     with patch("app.services.RESULTS_FILE", tmp_path):
-        # Clear the lru_cache so the patched path is used.
-        load_results_data.cache_clear()
         data = load_results_data()
 
-    load_results_data.cache_clear()
     assert data == payload
     tmp_path.unlink()
 
