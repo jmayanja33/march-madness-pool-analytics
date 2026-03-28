@@ -227,6 +227,9 @@ jobs:
               chmod +x ./init-letsencrypt.sh
               DOMAIN=mmthepool.com EMAIL="$CERTBOT_EMAIL" sudo -E bash ./init-letsencrypt.sh
             fi
+            # Remove unused images, stopped containers, and dangling build cache
+            # before pulling to ensure there is enough disk space on the server.
+            sudo docker system prune -f
             sudo docker compose -f docker-compose.prod.yml pull
             sudo docker compose -f docker-compose.prod.yml up -d --force-recreate --remove-orphans
             # Reset ChromaDB on every deploy: stop the container, delete all
