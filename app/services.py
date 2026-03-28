@@ -616,12 +616,12 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
 RESULTS_FILE = PREDICTIONS_DIR / "results.json"
 
 
-@lru_cache(maxsize=1)
 def load_results_data() -> list[dict]:
-    """Load and cache the tournament results JSON from disk.
+    """Load the tournament results JSON from disk on every call.
 
-    The file at RESULTS_FILE is read once and cached for the lifetime of the
-    server process.  It contains one entry per tracked tournament year.
+    Results are NOT cached because results.json is updated throughout the
+    tournament as games are completed.  Reading fresh each request ensures the
+    page always reflects the latest results without requiring a server restart.
 
     Returns:
         List of raw tournament dicts, each containing year, tournament_name,
