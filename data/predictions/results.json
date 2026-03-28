@@ -368,6 +368,18 @@
             "team2": { "name": "Alabama",      "seed": 4,  "score":  77},
             "winner": "Michigan",
             "correct": true
+          },
+          {
+            "team1": { "name": "Iowa State",          "seed": 2,  "score":  62},
+            "team2": { "name": "Tennessee",      "seed": 6,  "score":  76},
+            "winner": "Tennessee",
+            "correct": false
+          },
+          {
+            "team1": { "name": "UConn",          "seed": 2,  "score":  67},
+            "team2": { "name": "Michigan State",      "seed": 3,  "score":  63},
+            "winner": "UConn",
+            "correct": true
           }
         ]
       },
