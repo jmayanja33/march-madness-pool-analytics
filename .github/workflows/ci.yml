@@ -224,7 +224,7 @@ jobs:
               DOMAIN=mmthepool.com EMAIL="$CERTBOT_EMAIL" sudo -E bash ./init-letsencrypt.sh
             fi
             sudo docker compose -f docker-compose.prod.yml pull
-            sudo docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            sudo docker compose -f docker-compose.prod.yml up -d --force-recreate --remove-orphans
             # Reset ChromaDB on every deploy: stop the container, delete all
             # binary data files (keeping only the source JSON), then restart
             # and reimport.  This keeps storage lean and ensures the live

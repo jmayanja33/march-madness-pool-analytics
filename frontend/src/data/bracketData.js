@@ -67,8 +67,8 @@ export const RESULTS_2026 = {
     r32: ['Duke', 'TCU', "St. John's", 'Kansas', 'Louisville', 'Michigan State', 'UCLA', 'UConn'],
     r32Winners: ['Duke', "St. John's", 'Michigan State', 'UConn'],
     s16: ['Duke', "St. John's", 'Michigan State', 'UConn'],
-    s16Winners: [],
-    e8: [null, null], e8Winners: [], f4: null,
+    s16Winners: ['Duke'],
+    e8: ['Duke', null], e8Winners: [], f4: null,
   },
   West: {
     r64Winners: ['Arkansas', 'Utah State', 'High Point', 'Texas', 'Gonzaga', 'Arizona', 'Miami', 'Purdue'],
