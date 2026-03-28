@@ -362,6 +362,12 @@
             "team2": { "name": "St. John's",      "seed": 5,  "score":  75},
             "winner": "Duke",
             "correct": true
+          },
+          {
+            "team1": { "name": "Michigan",          "seed": 1,  "score":  90},
+            "team2": { "name": "Alabama",      "seed": 4,  "score":  77},
+            "winner": "Michigan",
+            "correct": true
           }
         ]
       },
