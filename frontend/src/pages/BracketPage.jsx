@@ -2,11 +2,17 @@
 // Clicking any filled team slot opens a TeamPopup with that team's analytics.
 // The bracket is scaled down via CSS transform so it always fits the viewport
 // with no horizontal scrolling.
+//
+// Results are fetched live from the API on mount and transformed into the
+// per-region format the bracket components expect.  If the fetch fails the
+// bracket renders with all advancement columns showing TBD.
 import { useState, useEffect, useRef, useCallback } from 'react';
 import NavBar from '../components/NavBar';
 import Bracket from '../components/Bracket';
 import TeamPopup from '../components/TeamPopup';
-import { BRACKET_2026, FIRST_FOUR_2026, RESULTS_2026 } from '../data/bracketData';
+import { BRACKET_2026, FIRST_FOUR_2026 } from '../data/bracketData';
+import { fetchResults } from '../api/teamApi';
+import { transformAPIResults } from '../utils/bracketUtils';
 import './BracketPage.css';
 
 export default function BracketPage() {
@@ -14,6 +20,23 @@ export default function BracketPage() {
 
   // Tracks which team the user has clicked; null means no popup is open
   const [selectedTeam, setSelectedTeam] = useState(null);
+
+  // Live bracket results derived from the API.  Starts null (all TBD) and
+  // populates once the fetch completes.
+  const [bracketResults, setBracketResults] = useState(null);
+
+  useEffect(() => {
+    fetchResults()
+      .then(data => {
+        // Transform the flat round/game list into per-region bracket format
+        const derived = transformAPIResults(data, BRACKET_2026, FIRST_FOUR_2026);
+        if (derived) setBracketResults(derived);
+      })
+      .catch(err => {
+        // Non-fatal: bracket renders with all TBD advancement columns
+        console.warn('[BracketPage] Could not fetch live results:', err.message);
+      });
+  }, []);
 
   // ── Scaling logic ──────────────────────────────────────────────────────────
   // Measure the natural bracket width against the container width and apply a
@@ -75,11 +98,11 @@ export default function BracketPage() {
             className="bracket-scale-inner"
             style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}
           >
-            {/* Pass 2026 bracket, First Four data, and results (null — no games played yet); onTeamClick opens the analytics popup */}
+            {/* Pass 2026 bracket, First Four data, and live results; onTeamClick opens the analytics popup */}
             <Bracket
               bracket={BRACKET_2026}
               firstFour={FIRST_FOUR_2026}
-              results={RESULTS_2026}
+              results={bracketResults}
               onTeamClick={setSelectedTeam}
             />
           </div>

@@ -241,7 +241,7 @@
           {
             "team1": { "name": "Michigan State",          "seed": 3,  "score":  77},
             "team2": { "name": "Louisville",      "seed": 6,  "score":  69},
-            "winner": "Louisville",
+            "winner": "Michigan State",
             "correct": false
           },
           {
