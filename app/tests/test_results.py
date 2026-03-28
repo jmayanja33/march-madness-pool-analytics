@@ -98,10 +98,8 @@ def test_load_results_data_raises_when_file_missing() -> None:
     """load_results_data raises FileNotFoundError when the file is absent."""
     missing = Path("/nonexistent/results.json")
     with patch("app.services.RESULTS_FILE", missing):
-        load_results_data.cache_clear()
         with pytest.raises(FileNotFoundError):
             load_results_data()
-    load_results_data.cache_clear()
 
 
 # ---------------------------------------------------------------------------
