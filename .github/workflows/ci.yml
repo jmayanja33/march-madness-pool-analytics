@@ -121,12 +121,15 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/mmthepool-backend:latest
 
       # Build the nginx + React frontend image and push to GHCR.
+      # no-cache: true forces a clean build every time so stale BuildKit
+      # layers never cause the old frontend bundle to be shipped.
       - name: Build and push nginx image
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
           file: ./frontend/Dockerfile.prod
           push: true
+          no-cache: true
           tags: ghcr.io/${{ github.repository_owner }}/mmthepool-nginx:latest
 
   # ── Deploy ────────────────────────────────────────────────────────────────
@@ -198,6 +201,7 @@ jobs:
           #    sudo is used throughout so docker commands work whether or not
           #    the ubuntu user's docker group membership is active.
           script: |
+            set -e
             if ! command -v docker &>/dev/null; then
               sudo apt-get update -y
               sudo apt-get install -y ca-certificates curl
