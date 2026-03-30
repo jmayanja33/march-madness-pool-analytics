@@ -397,6 +397,18 @@
             "team2": { "name": "Purdue",      "seed": 2,  "score":  64},
             "winner": "Arizona",
             "correct": true
+          },
+          {
+            "team1": { "name": "Michigan",          "seed": 1,  "score":  95},
+            "team2": { "name": "Tennessee",      "seed": 6,  "score":  62},
+            "winner": "Michigan",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Duke",          "seed": 1,  "score":  72},
+            "team2": { "name": "UConn",      "seed": 2,  "score":  73},
+            "winner": "UConn",
+            "correct": false
           }
         ]
       },
