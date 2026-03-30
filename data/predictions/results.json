@@ -305,8 +305,8 @@
             "correct": false
           },
           {
-            "team1": { "name": "Florida",          "seed": 1,  "score":  73},
-            "team2": { "name": "Iowa",      "seed": 9,  "score":  72},
+            "team1": { "name": "Florida",          "seed": 1,  "score":  72},
+            "team2": { "name": "Iowa",      "seed": 9,  "score":  73},
             "winner": "Iowa",
             "correct": false
           },
