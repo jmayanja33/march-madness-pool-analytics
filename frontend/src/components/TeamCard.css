@@ -167,6 +167,26 @@
   font-weight: 700;
 }
 
+/* ── Expected performance ── */
+/* Single row: round name + win count on the left, colored probability on the right. */
+.tc-exp-perf {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.tc-exp-perf-round {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-blue);
+}
+
+/* Color applied inline via probColor — threshold-based red/yellow/green */
+.tc-exp-perf-prob {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
 /* ── Team stats grid ── */
 /* 2-column grid; each cell shows a label above a value. */
 .tc-stats-grid {

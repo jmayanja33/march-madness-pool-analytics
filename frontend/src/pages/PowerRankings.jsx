@@ -32,19 +32,44 @@ function getTeamRegion(teamName) {
 // Expected-wins helper — returns the probability for the team's win bucket.
 // ---------------------------------------------------------------------------
 
-// Return the probability and label for the team's most likely win outcome.
-// Checks all seven buckets (0–6) and returns the one with the highest probability.
+// Compute the expected wins for a team's win probability distribution.
+// Uses the standard expected-value formula: E[W] = Σ k · P(W = k) for k = 0..6.
+// Returns a single float — the probability-weighted average number of wins.
 function getExpectedWins(dist) {
-  const entries = [
-    { winsText: '6 wins', prob: dist.six_wins   },
-    { winsText: '5 wins', prob: dist.five_wins  },
-    { winsText: '4 wins', prob: dist.four_wins  },
-    { winsText: '3 wins', prob: dist.three_wins },
-    { winsText: '2 wins', prob: dist.two_wins   },
-    { winsText: '1 win',  prob: dist.one_win    },
-    { winsText: '0 wins', prob: dist.zero_wins  },
-  ];
-  return entries.reduce((best, cur) => cur.prob > best.prob ? cur : best);
+  return (
+    0 * dist.zero_wins  +
+    1 * dist.one_win    +
+    2 * dist.two_wins   +
+    3 * dist.three_wins +
+    4 * dist.four_wins  +
+    5 * dist.five_wins  +
+    6 * dist.six_wins
+  );
+}
+
+// Distribution keys indexed by win count (0–6) — used for cumulative probability lookup.
+const WINS_KEYS = [
+  'zero_wins', 'one_win', 'two_wins', 'three_wins',
+  'four_wins', 'five_wins', 'six_wins',
+];
+
+// Compute the probability used for expected-wins coloring.
+// For 0 expected wins: P(W = 0) — P(W ≥ 0) is always 1.0 and meaningless.
+// For N > 0: P(W ≥ N) — probability of reaching at least the expected round.
+// Matches the coloring used in TeamCard's Expected Performance section.
+function getExpectedWinsProb(dist) {
+  const roundedWins = Math.round(getExpectedWins(dist));
+  if (roundedWins === 0) return dist.zero_wins;
+  return WINS_KEYS
+    .slice(roundedWins)
+    .reduce((sum, key) => sum + dist[key], 0);
+}
+
+// Format an expected-wins float for display.
+// Rounds to the nearest integer and handles the 1-win singular correctly.
+function formatExpectedWins(n) {
+  const rounded = Math.round(n);
+  return rounded === 1 ? '1 win' : `${rounded} wins`;
 }
 
 // ---------------------------------------------------------------------------
@@ -52,14 +77,16 @@ function getExpectedWins(dist) {
 // ---------------------------------------------------------------------------
 
 // Section definitions — one per possible win outcome, ordered from most wins to fewest.
+// `wins` is the integer win count used to re-group teams by their rounded E[W].
+// `bucketProb` returns P(W = wins) for a team — used to sort within the section.
 const SECTIONS = [
-  { key: 'six_wins',   title: '6 Wins', bucketProb: t => t.win_probability_distribution.six_wins   },
-  { key: 'five_wins',  title: '5 Wins', bucketProb: t => t.win_probability_distribution.five_wins  },
-  { key: 'four_wins',  title: '4 Wins', bucketProb: t => t.win_probability_distribution.four_wins  },
-  { key: 'three_wins', title: '3 Wins', bucketProb: t => t.win_probability_distribution.three_wins },
-  { key: 'two_wins',   title: '2 Wins', bucketProb: t => t.win_probability_distribution.two_wins   },
-  { key: 'one_win',    title: '1 Win',  bucketProb: t => t.win_probability_distribution.one_win    },
-  { key: 'zero_wins',  title: '0 Wins', bucketProb: t => t.win_probability_distribution.zero_wins  },
+  { key: 'six_wins',   wins: 6, title: '6 Wins', bucketProb: t => t.win_probability_distribution.six_wins   },
+  { key: 'five_wins',  wins: 5, title: '5 Wins', bucketProb: t => t.win_probability_distribution.five_wins  },
+  { key: 'four_wins',  wins: 4, title: '4 Wins', bucketProb: t => t.win_probability_distribution.four_wins  },
+  { key: 'three_wins', wins: 3, title: '3 Wins', bucketProb: t => t.win_probability_distribution.three_wins },
+  { key: 'two_wins',   wins: 2, title: '2 Wins', bucketProb: t => t.win_probability_distribution.two_wins   },
+  { key: 'one_win',    wins: 1, title: '1 Win',  bucketProb: t => t.win_probability_distribution.one_win    },
+  { key: 'zero_wins',  wins: 0, title: '0 Wins', bucketProb: t => t.win_probability_distribution.zero_wins  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -405,10 +432,29 @@ export default function PowerRankings() {
           </section>
         )}
 
-        {/* Win bucket sections — projected wins from 6 down to 0 */}
-        {rankings && SECTIONS.map(({ key, title, bucketProb }) => {
-          const teams = rankings[key];
-          const isCollapsed = collapsed[key];
+        {/* Win bucket sections — projected wins from 6 down to 0.
+            Teams are re-grouped by their rounded E[W] so each card's "Expected Wins"
+            label always matches the section it appears in. */}
+        {rankings && (() => {
+          // Flatten all teams across every server-side bucket into one array.
+          const allTeams = ['six_wins','five_wins','four_wins','three_wins','two_wins','one_win','zero_wins']
+            .flatMap(bucket => rankings[bucket]);
+
+          // Group by Math.round(E[W]) so sections align with the expected-wins values
+          // displayed on each card, regardless of the server-side mode bucket.
+          const byExpected = {};
+          for (const team of allTeams) {
+            const ew = Math.round(getExpectedWins(team.win_probability_distribution));
+            if (!byExpected[ew]) byExpected[ew] = [];
+            byExpected[ew].push(team);
+          }
+
+          return SECTIONS.map(({ key, wins, title, bucketProb }) => {
+            // Sort by P(W = wins) descending — highest probability of this outcome first.
+            const teams = (byExpected[wins] ?? [])
+              .slice()
+              .sort((a, b) => bucketProb(b) - bucketProb(a));
+            const isCollapsed = collapsed[key];
           return (
             <section key={key} className="pr-section">
 
@@ -442,7 +488,8 @@ export default function PowerRankings() {
               )}
             </section>
           );
-        })}
+          });
+        })()}
       </div>
 
       {/* Full team detail popup — opened by the ⓘ button on any card */}
@@ -461,8 +508,9 @@ export default function PowerRankings() {
 
 function RankCard({ rank, team, bucketProb, onInfo }) {
   const region = getTeamRegion(team.name);
-  const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
-  const color = probColor(prob);
+  const expectedWins = getExpectedWins(team.win_probability_distribution);
+  // Color via P(W ≥ round(E[W])) — matches TeamCard's Expected Performance coloring.
+  const color = probColor(getExpectedWinsProb(team.win_probability_distribution));
 
   return (
     <div className="pr-slot-card fade-in">
@@ -491,12 +539,11 @@ function RankCard({ rank, team, bucketProb, onInfo }) {
           <span className="pr-slot-stat-value">{region}</span>
         </div>
 
-        {/* Expected wins with colored probability + info button */}
+        {/* Expected wins (E[W] = Σ k·P(k)) with colored value + info button */}
         <div className="pr-slot-stat">
           <span className="pr-slot-stat-label">Expected Wins</span>
           <span className="pr-slot-stat-value" style={{ color }}>
-            {winsText}
-            <span className="pr-slot-prob"> ({(bucketProb * 100).toFixed(2)}% likely)</span>
+            {formatExpectedWins(expectedWins)}
           </span>
           <button className="pr-slot-info-btn" onClick={onInfo} title="View team details">ⓘ</button>
         </div>

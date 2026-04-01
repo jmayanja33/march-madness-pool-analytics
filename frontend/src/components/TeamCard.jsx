@@ -5,6 +5,23 @@
 import { probColor } from '../utils/colors';
 import './TeamCard.css';
 
+// Tournament round names indexed by win count (0–6).
+const ROUND_NAMES = [
+  'Round of 64',
+  'Round of 32',
+  'Sweet Sixteen',
+  'Elite Eight',
+  'Final Four',
+  'National Championship',
+  'National Champion',
+];
+
+// Distribution keys indexed by win count (0–6) — used to look up P(W = k).
+const WINS_KEYS = [
+  'zero_wins', 'one_win', 'two_wins', 'three_wins',
+  'four_wins', 'five_wins', 'six_wins',
+];
+
 export default function TeamCard({ team, onRemove }) {
   const dist = team.win_probability_distribution;
 
@@ -13,6 +30,27 @@ export default function TeamCard({ team, onRemove }) {
 
   // Championship probability: probability of winning all 6 games.
   const champProb = dist.six_wins;
+
+  // Expected wins: E[W] = Σ k · P(W = k) for k = 0..6.
+  const expectedWins = (
+    0 * dist.zero_wins  +
+    1 * dist.one_win    +
+    2 * dist.two_wins   +
+    3 * dist.three_wins +
+    4 * dist.four_wins  +
+    5 * dist.five_wins  +
+    6 * dist.six_wins
+  );
+
+  // Round to the nearest integer to map to a specific tournament round.
+  const roundedWins  = Math.round(expectedWins);
+  const perfRound    = ROUND_NAMES[roundedWins];
+  const perfWinsText = roundedWins === 1 ? '1 win' : `${roundedWins} wins`;
+  // For 0 expected wins use P(W = 0) — P(W ≥ 0) is always 1.0 and meaningless.
+  // For N > 0 use P(W ≥ N): probability of reaching AT LEAST the expected round.
+  const perfProb = roundedWins === 0
+    ? dist.zero_wins
+    : WINS_KEYS.slice(roundedWins).reduce((sum, key) => sum + dist[key], 0);
 
   // Build win-probability rows for each possible outcome (0–6 wins).
   const winRows = [
@@ -89,6 +127,19 @@ export default function TeamCard({ team, onRemove }) {
               {(champProb * 100).toFixed(1)}%
             </span>
           </div>
+        </div>
+      </section>
+
+      {/* ── Expected Performance ── */}
+      <section className="tc-section">
+        <h3 className="tc-section-label">Expected Performance</h3>
+        <div className="tc-exp-perf">
+          {/* Round name and win count — the most likely tournament destination */}
+          <span className="tc-exp-perf-round">{perfRound} &ndash; {perfWinsText}</span>
+          {/* Probability of reaching exactly that round, colored by threshold */}
+          <span className="tc-exp-perf-prob" style={{ color: probColor(perfProb) }}>
+            ({(perfProb * 100).toFixed(1)}%)
+          </span>
         </div>
       </section>
 

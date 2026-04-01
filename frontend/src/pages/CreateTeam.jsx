@@ -34,34 +34,45 @@ function getTeamRegion(teamName) {
 // Expected-wins helpers
 // ---------------------------------------------------------------------------
 
-// Determine the most likely win outcome for a team's probability distribution.
-// Checks all seven buckets (0–6) and returns the bucket with the highest probability,
-// along with its numeric value (used in sums) and a display string.
+// Compute the expected wins for a team's win probability distribution.
+// Uses the standard expected-value formula: E[W] = Σ k · P(W = k) for k = 0..6.
+// Returns a single float — the probability-weighted average number of wins.
 function getExpectedWins(dist) {
-  const entries = [
-    { numeric: 6, prob: dist.six_wins,   winsText: '6 wins' },
-    { numeric: 5, prob: dist.five_wins,  winsText: '5 wins' },
-    { numeric: 4, prob: dist.four_wins,  winsText: '4 wins' },
-    { numeric: 3, prob: dist.three_wins, winsText: '3 wins' },
-    { numeric: 2, prob: dist.two_wins,   winsText: '2 wins' },
-    { numeric: 1, prob: dist.one_win,    winsText: '1 win'  },
-    { numeric: 0, prob: dist.zero_wins,  winsText: '0 wins' },
-  ];
-  return entries.reduce((best, cur) => cur.prob > best.prob ? cur : best);
+  return (
+    0 * dist.zero_wins  +
+    1 * dist.one_win    +
+    2 * dist.two_wins   +
+    3 * dist.three_wins +
+    4 * dist.four_wins  +
+    5 * dist.five_wins  +
+    6 * dist.six_wins
+  );
 }
 
-// Format a summed wins total for group/pool totals.
-// Uses correct singular for exactly 1 win; pluralizes all other values.
+// Compute the probability used for expected-wins coloring.
+// For 0 expected wins: P(W = 0) — P(W ≥ 0) is always 1.0 and meaningless.
+// For N > 0: P(W ≥ N) — probability of reaching at least the expected round.
+// Matches the probability shown in TeamCard's Expected Performance section.
+function getExpectedWinsProb(dist) {
+  const roundedWins = Math.round(getExpectedWins(dist));
+  if (roundedWins === 0) return dist.zero_wins;
+  return WIN_DIST_KEYS
+    .slice(roundedWins)
+    .reduce((sum, key) => sum + dist[key], 0);
+}
+
+// Format an expected-wins total for display in group and pool summaries.
+// Rounds to the nearest integer and handles the 1-win singular correctly.
 function formatTotalWins(n) {
-  if (n === 1) return '1 win';
-  return `${n} wins`;
+  const rounded = Math.round(n);
+  return rounded === 1 ? '1 win' : `${rounded} wins`;
 }
 
 
 // Compute aggregate pool stats from the convolved win distribution.
-// The peak (mode) of the distribution is used so the "Expected Team Wins"
-// box matches the tallest bar in the Win Projection histogram exactly.
-// Returns { totalWins, avgProb } or null when no teams are selected.
+// The expected value E[W] = Σ wins · P(wins) is used — the probability-weighted
+// mean of the combined distribution, not the mode.
+// Returns { totalWins } or null when no teams are selected.
 function computePoolStats(filledTeams) {
   if (filledTeams.length === 0) return null;
 
@@ -73,11 +84,10 @@ function computePoolStats(filledTeams) {
   const total = raw.reduce((sum, d) => sum + d.prob, 0);
   const normalized = total > 0 ? raw.map(d => ({ wins: d.wins, prob: d.prob / total })) : raw;
 
-  // The mode: total-win count with the highest probability — this is the
-  // same bar that appears tallest in the histogram.
-  const peak = normalized.reduce((best, cur) => cur.prob > best.prob ? cur : best);
+  // Expected value: probability-weighted average of all possible total-win counts.
+  const expectedWins = normalized.reduce((sum, d) => sum + d.wins * d.prob, 0);
 
-  return { totalWins: peak.wins, avgProb: peak.prob };
+  return { totalWins: expectedWins };
 }
 
 // Standard region display order for the Region Breakdown section.
@@ -140,18 +150,15 @@ const SEED_GROUPS = [
   { label: 'Seeds 13+',   test: seed => seed >= 13 },
 ];
 
-// Compute total wins and average probability for a subset of teams.
-// Returns { totalWins, avgProb } or null for an empty array.
+// Compute the total expected wins for a subset of teams.
+// Sums each team's E[W]; by linearity of expectation this equals the group's E[total wins].
+// Returns { totalWins } or null for an empty array.
 function computeGroupStats(teams) {
   if (teams.length === 0) return null;
-  let totalWins = 0;
-  let totalProb = 0;
-  for (const team of teams) {
-    const { numeric, prob } = getExpectedWins(team.win_probability_distribution);
-    totalWins += numeric;
-    totalProb += prob;
-  }
-  return { totalWins, avgProb: totalProb / teams.length };
+  const totalWins = teams.reduce(
+    (sum, team) => sum + getExpectedWins(team.win_probability_distribution), 0
+  );
+  return { totalWins };
 }
 
 // ---------------------------------------------------------------------------
@@ -237,11 +244,10 @@ export default function CreateTeam() {
 
   // All filled slots, sorted by expected wins descending (for the right panel).
   const filledSlots = slots.filter(Boolean);
-  const sortedTeams = [...filledSlots].sort((a, b) => {
-    const winsA = getExpectedWins(a.win_probability_distribution).numeric;
-    const winsB = getExpectedWins(b.win_probability_distribution).numeric;
-    return winsB - winsA;
-  });
+  const sortedTeams = [...filledSlots].sort((a, b) =>
+    getExpectedWins(b.win_probability_distribution) -
+    getExpectedWins(a.win_probability_distribution)
+  );
 
   const poolStats = computePoolStats(filledSlots);
 
@@ -294,7 +300,8 @@ export default function CreateTeam() {
             <>
               {/* Total expected wins — standalone box */}
               {poolStats && (() => {
-                const color = probColor(poolStats.avgProb);
+                // Color scales from red (0 wins) to green (max possible wins).
+                const color = probColor(poolStats.totalWins / (filledSlots.length * 6));
                 return (
                   <div className="ct-total-box">
                     <span className="ct-total-box-label">
@@ -303,18 +310,15 @@ export default function CreateTeam() {
                       <span className="ct-total-tooltip-wrap">
                         <span className="ct-total-tooltip-icon">ⓘ</span>
                         <span className="ct-total-tooltip-body">
-                          The single most likely total win count for your team, based on
-                          combining each team&apos;s win odds together. This matches the
-                          tallest bar in the Win Projection chart. It may not equal the
-                          sum of each team&apos;s individual expected wins, because some
-                          win totals become more or less likely when all teams are
-                          considered together.
+                          The probability-weighted average total wins for your pool team,
+                          calculated by combining each team&apos;s win distribution together.
+                          This is E[W] = &Sigma; wins &times; P(wins) across the combined
+                          distribution — the true expected value, not just the most likely outcome.
                         </span>
                       </span>
                     </span>
                     <span className="ct-perf-wins" style={{ color }}>
                       {formatTotalWins(poolStats.totalWins)}
-                      <span className="ct-perf-pct"> ({(poolStats.avgProb * 100).toFixed(1)}%)</span>
                     </span>
                   </div>
                 );
@@ -334,7 +338,8 @@ export default function CreateTeam() {
                       const groupTeams = sortedTeams.filter(t => group.test(t.seed));
                       if (groupTeams.length === 0) return null;
                       const stats = computeGroupStats(groupTeams);
-                      const groupColor = probColor(stats.avgProb);
+                      // Color scales with average expected wins per team (0 = red, 6 = green).
+                      const groupColor = probColor(stats.totalWins / (groupTeams.length * 6));
                       return (
                         <div key={group.label} className="ct-bd-group">
                           {/* Group header: label on left, summed wins on right */}
@@ -345,14 +350,14 @@ export default function CreateTeam() {
                             </span>
                             <span className="ct-perf-wins" style={{ color: groupColor }}>
                               {formatTotalWins(stats.totalWins)}
-                              <span className="ct-perf-pct"> ({(stats.avgProb * 100).toFixed(1)}%)</span>
                             </span>
                           </div>
                           {/* Individual teams within the group */}
                           <ul className="ct-bd-list">
                             {groupTeams.map(team => {
-                              const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
-                              const color = probColor(prob);
+                              const expectedWins = getExpectedWins(team.win_probability_distribution);
+                              // Color via P(W ≥ round(E[W])) — matches TeamCard's Expected Performance coloring.
+                              const color = probColor(getExpectedWinsProb(team.win_probability_distribution));
                               return (
                                 <li key={team.name} className="ct-bd-row">
                                   <div className="ct-perf-name">
@@ -366,8 +371,7 @@ export default function CreateTeam() {
                                     />
                                   </div>
                                   <span className="ct-perf-wins" style={{ color }}>
-                                    {winsText}
-                                    <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
+                                    {formatTotalWins(expectedWins)}
                                   </span>
                                 </li>
                               );
@@ -394,7 +398,8 @@ export default function CreateTeam() {
                       const regionTeams = sortedTeams.filter(t => getTeamRegion(t.name) === region);
                       if (regionTeams.length === 0) return null;
                       const stats = computeGroupStats(regionTeams);
-                      const groupColor = probColor(stats.avgProb);
+                      // Color scales with average expected wins per team (0 = red, 6 = green).
+                      const groupColor = probColor(stats.totalWins / (regionTeams.length * 6));
                       return (
                         <div key={region} className="ct-bd-group">
                           {/* Region header: name + team count on left, summed wins on right */}
@@ -405,14 +410,14 @@ export default function CreateTeam() {
                             </span>
                             <span className="ct-perf-wins" style={{ color: groupColor }}>
                               {formatTotalWins(stats.totalWins)}
-                              <span className="ct-perf-pct"> ({(stats.avgProb * 100).toFixed(1)}%)</span>
                             </span>
                           </div>
                           {/* Individual teams within the region */}
                           <ul className="ct-bd-list">
                             {regionTeams.map(team => {
-                              const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
-                              const color = probColor(prob);
+                              const expectedWins = getExpectedWins(team.win_probability_distribution);
+                              // Color via P(W ≥ round(E[W])) — matches TeamCard's Expected Performance coloring.
+                              const color = probColor(getExpectedWinsProb(team.win_probability_distribution));
                               return (
                                 <li key={team.name} className="ct-bd-row">
                                   <div className="ct-perf-name">
@@ -426,8 +431,7 @@ export default function CreateTeam() {
                                     />
                                   </div>
                                   <span className="ct-perf-wins" style={{ color }}>
-                                    {winsText}
-                                    <span className="ct-perf-pct"> ({(prob * 100).toFixed(1)}%)</span>
+                                    {formatTotalWins(expectedWins)}
                                   </span>
                                 </li>
                               );
@@ -492,8 +496,9 @@ export default function CreateTeam() {
 
 function TeamSlotCard({ team, onRemove, onInfo }) {
   const region = getTeamRegion(team.name);
-  const { winsText, prob } = getExpectedWins(team.win_probability_distribution);
-  const color = probColor(prob);
+  const expectedWins = getExpectedWins(team.win_probability_distribution);
+  // Color via P(W ≥ round(E[W])) — matches TeamCard's Expected Performance coloring.
+  const color = probColor(getExpectedWinsProb(team.win_probability_distribution));
 
   return (
     <div className="ct-slot-card fade-in">
@@ -523,8 +528,7 @@ function TeamSlotCard({ team, onRemove, onInfo }) {
         <div className="ct-slot-stat">
           <span className="ct-slot-stat-label">Expected Wins</span>
           <span className="ct-slot-stat-value" style={{ color }}>
-            {winsText}
-            <span className="ct-slot-prob"> ({(prob * 100).toFixed(2)}% likely)</span>
+            {formatTotalWins(expectedWins)}
           </span>
           <button className="ct-slot-info-btn" onClick={onInfo} title="View team details">ⓘ</button>
         </div>
