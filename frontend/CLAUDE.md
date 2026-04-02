@@ -18,11 +18,19 @@ These buttons should link to each of their respective pages.
 
 
 ## Bracket Page
-The bracket page will have a large bracket of the 20226 NCAA men's basketball tournament. The bracket will be interactive, with each team placed
-in the correct region/seed. When the team is clicked on, a small window will pop up. This will call the analyze/${team} endpoint,
-and the appropriate data will be populated in that window. If too much data is provided, the window can be scrollable.
+The bracket page will have two tabs, a predicted bracket tab, and a live bracket tab. Each tab can be clicked on at 
+the top of the page, with the tab selected showing on the page.
 
-If a template of a bracket is provided, then teams can be manually filled in as the tournament goes on.
+The live bracket tab will have a large bracket of the 20226 NCAA men's basketball tournament. The bracket will be interactive, with each team placed
+in the correct region/seed. When the team is clicked on, a small window will pop up. This will call the analyze/${team} endpoint,
+and the appropriate data will be populated in that window. If too much data is provided, the window can be scrollable vertically, not horizontally.
+The bracket will be completed based on the results.json, with the winning team outlined in green.
+
+The predicted bracket tab will also have a large bracket of the 20226 NCAA men's basketball tournament. The difference
+with this bracket however, is that it will be completely filled based on the predictions in data/predictions/most-liekly-bracket.json.
+As the tournament goes on, the bracket will be updated with the results in results.json. Correct predictions will 
+be outlined in green, and incorrect predictions in red. At the bottom of the page, there should be some accuracy metrics (total games, correct predictions, percentage).
+
 
 ## Analyze Page
 

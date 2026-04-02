@@ -66,3 +66,107 @@
     font-size: 1.6rem;
   }
 }
+
+/* ── Tab bar ── */
+/* Centered row of tab buttons below the page header */
+.bracket-tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 32px 0;
+}
+
+/* Individual tab button — outlined, inactive state */
+.bracket-tab {
+  padding: 8px 24px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 2px solid var(--dark-blue);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--dark-blue);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.bracket-tab:hover {
+  background: #e8f0fe;
+}
+
+/* Active tab — filled with dark blue, white text */
+.bracket-tab.active {
+  background: var(--dark-blue);
+  color: var(--white);
+}
+
+/* ── Predicted bracket wrapper ──
+   Wraps the <Bracket> and the accuracy metrics row so they scale together. */
+.predicted-bracket-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Accuracy metrics row ── */
+/* Three stat cards displayed in a horizontal row below the predicted bracket. */
+.accuracy-metrics {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 32px;
+  padding: 20px 32px 12px;
+  width: 100%;
+}
+
+/* Individual stat card */
+.accuracy-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 24px;
+  background: #f0f7ff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-width: 140px;
+}
+
+/* Label above the value */
+.accuracy-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--silver);
+}
+
+/* Numeric value displayed prominently */
+.accuracy-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark-blue);
+}
+
+/* ── Mobile — compact tabs and metrics ── */
+@media (max-width: 768px) {
+  .bracket-tabs {
+    padding: 12px 16px 0;
+  }
+
+  .accuracy-metrics {
+    gap: 12px;
+    padding: 16px 16px 8px;
+  }
+
+  .accuracy-stat {
+    min-width: 100px;
+    padding: 10px 12px;
+  }
+
+  .accuracy-value {
+    font-size: 1.2rem;
+  }
+}

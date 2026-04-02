@@ -1,16 +1,21 @@
 // A single team slot in the bracket.
 // Renders as clickable when a team name is present, or as a greyed-out "TBD" placeholder.
 // Filled slots show a small logo to the left of the seed and name.
-// winner: when true, applies a green outline to indicate this team advanced.
+// winner:    when true, applies a green outline to indicate this team advanced.
+// incorrect: when true, applies a red outline to indicate an incorrect prediction.
+//            incorrect takes precedence over winner when both are true.
 import './BracketSlot.css';
 
-export default function BracketSlot({ seed, name, winner = false, onClick }) {
+export default function BracketSlot({ seed, name, winner = false, incorrect = false, onClick }) {
   // Slot is considered "filled" only when a team name has been provided
   const filled = Boolean(name);
 
+  // incorrect takes precedence over winner
+  const statusClass = incorrect ? 'slot-incorrect' : winner ? 'slot-winner' : '';
+
   return (
     <div
-      className={`bracket-slot ${filled ? 'filled' : 'empty'} ${winner ? 'slot-winner' : ''}`}
+      className={`bracket-slot ${filled ? 'filled' : 'empty'} ${statusClass}`}
       onClick={filled ? onClick : undefined}  // only fire click on filled slots
       title={filled ? name : undefined}       // tooltip on hover for long names
     >

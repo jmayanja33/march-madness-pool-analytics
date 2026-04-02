@@ -33,6 +33,12 @@
   box-shadow: 0 0 0 1px #22c55e;
 }
 
+/* ── Incorrect prediction — red outline (overrides winner) ── */
+.bracket-slot.slot-incorrect {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444;
+}
+
 /* ── Empty slot (TBD) — not interactive ── */
 .bracket-slot.empty {
   background: #f1f5f9;
