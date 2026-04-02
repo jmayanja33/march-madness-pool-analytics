@@ -181,26 +181,43 @@ export function transformAPIResults(apiData, bracket, firstFour) {
 
   // ── Final Four & National Championship ────────────────────────────────────
   // Bracket.jsx expects results.finalFour = { semi1, semi2, champion } where
-  // each semi has { teamA, teamB, winner }.  Game order in the JSON is assumed
-  // to be semi1 (East/Midwest) then semi2 (West/South), matching the bracket
-  // layout.
-  let finalFour = null;
-  const f4Round   = getRound('Final Four');
+  // each semi has { teamA, teamB, winner }.
+  //
+  // F4 participants (teamA/teamB) are always the regional champs from E8 results,
+  // so the F4 section populates as soon as the Elite Eight is complete — before
+  // the F4 games are actually played.  Winners are only filled in once the F4
+  // round exists in the API response.
+  //
+  // Pairing: East vs South (semi1), Midwest vs West (semi2).
+  const f4Round    = getRound('Final Four');
   const champRound = getRound('National Championship');
-  if (f4Round && f4Round.games.length >= 2) {
-    const semi1 = f4Round.games[0];
-    const semi2 = f4Round.games[1];
+
+  const eastChamp    = regionData.East.f4    ?? '';
+  const southChamp   = regionData.South.f4   ?? '';
+  const midwestChamp = regionData.Midwest.f4 ?? '';
+  const westChamp    = regionData.West.f4    ?? '';
+
+  let finalFour = null;
+
+  // Build finalFour whenever at least one regional champ is known.
+  if (eastChamp || southChamp || midwestChamp || westChamp) {
+    // Match each actual F4 game to the correct pairing by checking whether one
+    // of the participants is the East or South champ (semi1) vs Midwest or West (semi2).
+    let semi1Winner = '';
+    let semi2Winner = '';
+    for (const game of f4Round?.games ?? []) {
+      const t1 = game.team1.name;
+      const t2 = game.team2.name;
+      if (t1 === eastChamp || t2 === eastChamp || t1 === southChamp || t2 === southChamp) {
+        semi1Winner = game.winner ?? '';
+      } else {
+        semi2Winner = game.winner ?? '';
+      }
+    }
+
     finalFour = {
-      semi1: {
-        teamA:  semi1.team1.name,
-        teamB:  semi1.team2.name,
-        winner: semi1.winner ?? '',
-      },
-      semi2: {
-        teamA:  semi2.team1.name,
-        teamB:  semi2.team2.name,
-        winner: semi2.winner ?? '',
-      },
+      semi1: { teamA: eastChamp,    teamB: southChamp,   winner: semi1Winner },
+      semi2: { teamA: midwestChamp, teamB: westChamp,    winner: semi2Winner },
       champion: champRound?.games[0]?.winner ?? '',
     };
   }

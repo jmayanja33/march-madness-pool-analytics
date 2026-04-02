@@ -283,13 +283,13 @@ export default function Bracket({ bracket = DEFAULT_BRACKET, firstFour = [], res
                   <BracketSlot
                     seed={ff?.semi1.winner ? seedLookup[ff.semi1.winner] ?? null : null}
                     name={ff?.semi1.winner ?? ''}
-                    winner={Boolean(ff && ff.champion === ff.semi1.winner)}
+                    winner={Boolean(ff && ff.champion && ff.champion === ff.semi1.winner)}
                     onClick={() => ff?.semi1.winner && onTeamClick(ff.semi1.winner)}
                   />
                   <BracketSlot
                     seed={ff?.semi2.winner ? seedLookup[ff.semi2.winner] ?? null : null}
                     name={ff?.semi2.winner ?? ''}
-                    winner={Boolean(ff && ff.champion === ff.semi2.winner)}
+                    winner={Boolean(ff && ff.champion && ff.champion === ff.semi2.winner)}
                     onClick={() => ff?.semi2.winner && onTeamClick(ff.semi2.winner)}
                   />
                 </>
