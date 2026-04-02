@@ -177,9 +177,9 @@ Each metric card shows a tooltip on hover explaining what the metric measures an
 
 ### Wins Model
 
-One feature of the team analytics is their predicted wins in the tournament. For this, a monte carlo simulation of the entire tournament 
-was performed using predictions from the head to head model for each game. 1.6 million simulations were run, and these
-results were used to evaluate the probability that a team would win 0, 1, 2, 3, 4, 5, or 6 games in the tournament. 
+One feature of the team analytics is their predicted wins in the tournament. For this, a simulation of the entire tournament 
+was performed using predictions from the head to head model for each game. These results were used to evaluate the 
+probability that a team would win 0, 1, 2, 3, 4, 5, or 6 games in the tournament. 
 
 ### More Info
 

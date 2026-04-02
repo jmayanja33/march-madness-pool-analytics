@@ -79,39 +79,40 @@ export default function Info() {
             <div className="info-metrics-grid">
               <MetricCard
                 label="Accuracy"
-                value="83.15%"
+                value="85.36%"
                 tooltip="Out of every 100 predicted matchups, the model correctly identified the winner this many times. Ideal: 100%"
               />
               <MetricCard
                 label="F1 Score"
-                value="83.01%"
+                value="85.48%"
                 tooltip="A combined measure of precision and recall — how well the model balances finding winners without generating too many false calls. Ideal: 100%"
               />
               <MetricCard
                 label="Precision"
-                value="83.71%"
+                value="84.78%"
                 tooltip="When the model predicted a team would win a matchup, how often it was actually right. Ideal: 100%"
               />
               <MetricCard
                 label="Recall"
-                value="82.32%"
+                value="86.19%"
                 tooltip="Out of all teams that actually won their matchup, the percentage the model successfully identified as the winner. Ideal: 100%"
               />
               <MetricCard
                 label="ROC AUC"
-                value="0.917"
+                value="0.914"
                 tooltip="Measures how well the model separates winners from losers across all possible decision thresholds — a score near 1.0 means it almost never confuses a winner for a loser. Ideal: 1.0"
               />
 
             </div>
 
             <p className="info-model-detail">
-              An accuracy of 83.15% means the model picks the correct winner in more than 5 out of every
-              6 matchups. Precision (83.71%) and Recall (82.32%) are well balanced — the model is nearly
-              as good at avoiding false calls as it is at finding real winners. The F1 Score (83.01%)
-              confirms this balance. Most notably, the ROC AUC of 0.917 — where 1.0 is ideal — shows the
+              An accuracy of 85.36% means the model picks the correct winner in more than 5 out of every
+              6 matchups. Precision (84.78%) and Recall (86.19%) are well balanced — the model is nearly
+              as good at avoiding false calls as it is at finding real winners. The F1 Score (85.48%)
+              confirms this balance. Most notably, the ROC AUC of 0.914 — where 1.0 is ideal — shows the
               model can reliably separate winners from losers across every possible decision threshold, not
-              just the default 50/50 split.
+              just the default 50/50 split. The model correctly identifies non-upsets 92.52% of the time,
+              and still captures upsets at a 68.52% rate.
             </p>
           </div>
         </section>
@@ -122,10 +123,9 @@ export default function Info() {
           <div className="info-section-body">
             <p>
               One feature of the team analytics is their predicted wins in the tournament. For this, a
-              Monte Carlo simulation of the entire tournament was performed using predictions from the
-              Head to Head model for each game. 1.6 million simulations were run, and these results were
-              used to evaluate the probability that a team would win 0, 1, 2, 3, 4, 5, or 6 games in
-              the tournament.
+              simulation of the entire tournament was performed using predictions from the
+              Head to Head model for each game. These results were used to evaluate the probability that a team would
+              win 0, 1, 2, 3, 4, 5, or 6 games in the tournament.
             </p>
           </div>
         </section>
