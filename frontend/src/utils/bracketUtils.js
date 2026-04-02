@@ -509,11 +509,13 @@ export function transformPredictedBracket(predictedData, liveResults, bracket, f
     };
 
     finalFourStatus = {
-      // F4 participant slot statuses come from the E8 result for each region.
-      semi1TeamA: regionData.East.f4Status,
-      semi1TeamB: regionData.South.f4Status,
-      semi2TeamA: regionData.Midwest.f4Status,
-      semi2TeamB: regionData.West.f4Status,
+      // F4 participant slots are left uncolored until the F4 games are played.
+      // The E8 result is already shown in the E8 column — repeating it here
+      // makes the F4 section appear scored before any game has been played.
+      semi1TeamA: 'pending',
+      semi1TeamB: 'pending',
+      semi2TeamA: 'pending',
+      semi2TeamB: 'pending',
       // Championship slot statuses = was the predicted F4 winner correct?
       semi1Winner: s1Status,
       semi2Winner: s2Status,
