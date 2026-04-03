@@ -1,4 +1,4 @@
-// PowerRankings — displays all tournament teams grouped by their most likely
+// Projections — displays all tournament teams grouped by their most likely
 // win outcome (6 wins → 0 wins), ranked by probability within each section.
 // Uses the same compact team card as the Create a Team page.
 //
@@ -8,10 +8,10 @@
 import { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import TeamPopup from '../components/TeamPopup';
-import { fetchPowerRankings, fetchH2H } from '../api/teamApi';
+import { fetchProjections, fetchH2H } from '../api/teamApi';
 import { BRACKET_2026, FIRST_FOUR_2026 } from '../data/bracketData';
 import { probColor } from '../utils/colors';
-import './PowerRankings.css';
+import './Projections.css';
 
 // ---------------------------------------------------------------------------
 // Region lookup — build a map of teamName → region from the bracket data.
@@ -178,10 +178,10 @@ function buildUpsetCandidates(teamMap) {
 // Main component
 // ---------------------------------------------------------------------------
 
-export default function PowerRankings() {
-  useEffect(() => { document.title = 'The Pool | Power Rankings'; }, []);
+export default function Projections() {
+  useEffect(() => { document.title = 'The Pool | Projections'; }, []);
 
-  // Power rankings data from the API — keyed by two_wins / one_win / zero_wins.
+  // Projections data from the API — keyed by two_wins / one_win / zero_wins.
   const [rankings, setRankings]   = useState(null);
   const [loading, setLoading]     = useState(true);
   const [error, setError]         = useState(null);
@@ -215,9 +215,9 @@ export default function PowerRankings() {
 
   // Fetch rankings on mount.
   useEffect(() => {
-    fetchPowerRankings()
+    fetchProjections()
       .then(setRankings)
-      .catch(() => setError('Could not load power rankings. Make sure the backend is running.'))
+      .catch(() => setError('Could not load projections. Make sure the backend is running.'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -266,7 +266,7 @@ export default function PowerRankings() {
       <NavBar />
 
       <div className="pr-body">
-        <h1 className="pr-page-title">Power Rankings</h1>
+        <h1 className="pr-page-title">Projections</h1>
         <p className="pr-page-sub">
           PROJECTIONS FOR:<br />
           <br />

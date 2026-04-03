@@ -44,20 +44,20 @@ export async function fetchInfo() {
   return res.json();
 }
 
-// Fetches power rankings for all tournament teams from the backend.
-// Returns a PowerRankingsResponse with three ranked lists: two_wins, one_win,
+// Fetches projections for all tournament teams from the backend.
+// Returns a ProjectionsResponse with three ranked lists: two_wins, one_win,
 // and zero_wins, each containing PoolTeamSummary objects sorted by win-bucket
 // probability descending.
 // Throws an error if the request fails.
-export async function fetchPowerRankings() {
-  const res = await fetch(`${API_BASE}/power-rankings`);
+export async function fetchProjections() {
+  const res = await fetch(`${API_BASE}/projections`);
   if (!res.ok) {
-    console.error(`[API] fetchPowerRankings failed: HTTP ${res.status}`);
-    throw new Error(`Failed to fetch power rankings: ${res.status}`);
+    console.error(`[API] fetchProjections failed: HTTP ${res.status}`);
+    throw new Error(`Failed to fetch projections: ${res.status}`);
   }
   const data = await res.json();
   console.log(
-    `[API] fetchPowerRankings — ${data.six_wins.length} six-win, ` +
+    `[API] fetchProjections — ${data.six_wins.length} six-win, ` +
     `${data.five_wins.length} five-win, ${data.four_wins.length} four-win, ` +
     `${data.three_wins.length} three-win, ${data.two_wins.length} two-win, ` +
     `${data.one_win.length} one-win, ${data.zero_wins.length} zero-win teams`

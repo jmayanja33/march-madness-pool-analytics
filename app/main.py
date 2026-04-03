@@ -26,7 +26,7 @@ from app.models import (
     TeamListItem,
     WinsEvaluationResponse,
 )
-from app.routers import analyze, head_to_head, pool, power_rankings, results
+from app.routers import analyze, head_to_head, pool, projections, results
 from app.services import get_all_teams, get_wins_evaluation
 
 logger = logging.getLogger(__name__)
@@ -82,10 +82,10 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 
 # All API routes are served under /api so they don't collide with React Router
-# client-side paths (e.g. /analyze, /info, /power-rankings, /head-to-head).
-app.include_router(analyze.router,        prefix="/api")
-app.include_router(pool.router,           prefix="/api")
-app.include_router(power_rankings.router, prefix="/api")
+# client-side paths (e.g. /analyze, /info, /projections, /head-to-head).
+app.include_router(analyze.router,     prefix="/api")
+app.include_router(pool.router,        prefix="/api")
+app.include_router(projections.router, prefix="/api")
 app.include_router(head_to_head.router,   prefix="/api")
 app.include_router(results.router,        prefix="/api")
 

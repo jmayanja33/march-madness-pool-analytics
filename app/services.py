@@ -338,11 +338,11 @@ def build_pool_team_summary(team: dict) -> PoolTeamSummary:
 
 
 # ---------------------------------------------------------------------------
-# Power rankings builder
+# Projections builder
 # ---------------------------------------------------------------------------
 
 
-def get_power_rankings() -> dict:
+def get_projections() -> dict:
     """Group and sort all tournament teams by their expected win outcome.
 
     Each team is assigned to the win bucket (0–6) whose probability is highest.

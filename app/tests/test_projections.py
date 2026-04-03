@@ -1,5 +1,5 @@
 """
-Tests for the GET /power-rankings endpoint and the get_power_rankings service.
+Tests for the GET /projections endpoint and the get_projections service.
 
 Service tests are fully isolated (no file I/O or network calls).
 Endpoint tests use the HTTPX async client wired directly to the FastAPI app,
@@ -12,7 +12,7 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 
 from app.main import app
-from app.services import get_power_rankings
+from app.services import get_projections
 
 # ---------------------------------------------------------------------------
 # Shared test fixtures
@@ -153,63 +153,63 @@ async def client() -> AsyncClient:
 
 
 # ---------------------------------------------------------------------------
-# get_power_rankings — unit tests (bucket placement)
+# get_projections — unit tests (bucket placement)
 # ---------------------------------------------------------------------------
 
 
 def test_two_wins_bucket_contains_correct_team() -> None:
     """Teams whose highest probability is two_wins land in two_wins."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     assert any(t.name == "Duke" for t in rankings["two_wins"])
 
 
 def test_one_win_bucket_contains_correct_team() -> None:
     """Teams whose highest probability is one_win land in one_win."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     assert any(t.name == "Kentucky" for t in rankings["one_win"])
 
 
 def test_zero_wins_bucket_contains_correct_team() -> None:
     """Teams whose highest probability is zero_wins land in zero_wins."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     assert any(t.name == "Wagner" for t in rankings["zero_wins"])
 
 
 def test_three_wins_bucket_contains_correct_team() -> None:
     """Teams whose highest probability is three_wins land in three_wins."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     assert any(t.name == "Gonzaga" for t in rankings["three_wins"])
 
 
 def test_four_wins_bucket_contains_correct_team() -> None:
     """Teams whose highest probability is four_wins land in four_wins."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     assert any(t.name == "Houston" for t in rankings["four_wins"])
 
 
 def test_five_wins_bucket_contains_correct_team() -> None:
     """Teams whose highest probability is five_wins land in five_wins."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     assert any(t.name == "Auburn" for t in rankings["five_wins"])
 
 
 def test_six_wins_bucket_contains_correct_team() -> None:
     """Teams whose highest probability is six_wins land in six_wins."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     assert any(t.name == "Florida" for t in rankings["six_wins"])
 
 
 def test_non_tournament_teams_excluded() -> None:
     """Teams without a tournament_seed are excluded from all buckets."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     all_names = (
         [t.name for t in rankings["six_wins"]]
         + [t.name for t in rankings["five_wins"]]
@@ -238,7 +238,7 @@ def test_buckets_are_sorted_by_probability_descending() -> None:
     with patch(
         "app.services.load_predictions", return_value=[team_a, team_b]
     ):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     names = [t.name for t in rankings["two_wins"]]
     assert names.index("Team A") < names.index("Team B")
 
@@ -259,7 +259,7 @@ def test_tiebreaker_is_alphabetical() -> None:
     with patch(
         "app.services.load_predictions", return_value=[team_z, team_a]
     ):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     names = [t.name for t in rankings["two_wins"]]
     assert names.index("Apple State") < names.index("Zebra University")
 
@@ -267,7 +267,7 @@ def test_tiebreaker_is_alphabetical() -> None:
 def test_empty_predictions_returns_empty_buckets() -> None:
     """An empty predictions file produces seven empty lists."""
     with patch("app.services.load_predictions", return_value=[]):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     assert rankings["six_wins"] == []
     assert rankings["five_wins"] == []
     assert rankings["four_wins"] == []
@@ -280,7 +280,7 @@ def test_empty_predictions_returns_empty_buckets() -> None:
 def test_all_teams_total_count() -> None:
     """Total ranked teams equals the number of seeded teams in predictions."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        rankings = get_power_rankings()
+        rankings = get_projections()
     total = (
         len(rankings["six_wins"])
         + len(rankings["five_wins"])
@@ -295,21 +295,21 @@ def test_all_teams_total_count() -> None:
 
 
 # ---------------------------------------------------------------------------
-# GET /power-rankings — endpoint tests
+# GET /projections — endpoint tests
 # ---------------------------------------------------------------------------
 
 
-async def test_power_rankings_returns_200(client: AsyncClient) -> None:
-    """GET /power-rankings returns HTTP 200."""
+async def test_projections_returns_200(client: AsyncClient) -> None:
+    """GET /projections returns HTTP 200."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        response = await client.get("/api/power-rankings")
+        response = await client.get("/api/projections")
     assert response.status_code == 200
 
 
-async def test_power_rankings_response_has_all_buckets(client: AsyncClient) -> None:
+async def test_projections_response_has_all_buckets(client: AsyncClient) -> None:
     """The response contains all seven win-bucket keys."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        response = await client.get("/api/power-rankings")
+        response = await client.get("/api/projections")
     data = response.json()
     assert "six_wins" in data
     assert "five_wins" in data
@@ -320,10 +320,10 @@ async def test_power_rankings_response_has_all_buckets(client: AsyncClient) -> N
     assert "zero_wins" in data
 
 
-async def test_power_rankings_team_fields(client: AsyncClient) -> None:
+async def test_projections_team_fields(client: AsyncClient) -> None:
     """Each ranked team includes name, seed, conference, and win distribution."""
     with patch("app.services.load_predictions", return_value=[_TEAM_TWO_WINS]):
-        response = await client.get("/api/power-rankings")
+        response = await client.get("/api/projections")
     team = response.json()["two_wins"][0]
     assert team["name"] == "Duke"
     assert team["seed"] == 1
@@ -331,10 +331,10 @@ async def test_power_rankings_team_fields(client: AsyncClient) -> None:
     assert "win_probability_distribution" in team
 
 
-async def test_power_rankings_unseeded_teams_excluded(client: AsyncClient) -> None:
+async def test_projections_unseeded_teams_excluded(client: AsyncClient) -> None:
     """Teams without a seed do not appear in any bucket."""
     with patch("app.services.load_predictions", return_value=_ALL_MOCK_TEAMS):
-        response = await client.get("/api/power-rankings")
+        response = await client.get("/api/projections")
     data = response.json()
     all_names = (
         [t["name"] for t in data["six_wins"]]
@@ -348,10 +348,10 @@ async def test_power_rankings_unseeded_teams_excluded(client: AsyncClient) -> No
     assert "Not In Tournament" not in all_names
 
 
-async def test_power_rankings_empty_predictions(client: AsyncClient) -> None:
+async def test_projections_empty_predictions(client: AsyncClient) -> None:
     """An empty predictions file returns seven empty lists with status 200."""
     with patch("app.services.load_predictions", return_value=[]):
-        response = await client.get("/api/power-rankings")
+        response = await client.get("/api/projections")
     assert response.status_code == 200
     data = response.json()
     assert data["six_wins"] == []

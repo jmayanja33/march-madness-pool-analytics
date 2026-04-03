@@ -266,7 +266,7 @@ class H2HResponse(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Power rankings models
+# Projections models
 # ---------------------------------------------------------------------------
 
 
@@ -392,9 +392,9 @@ class WinsEvaluationResponse(BaseModel):
     midwest: list[WinsEvaluationEntry]    # Midwest region teams sorted by seed
 
 
-class PowerRankingsResponse(BaseModel):
+class ProjectionsResponse(BaseModel):
     """
-    Response returned by GET /power-rankings.
+    Response returned by GET /projections.
 
     All tournament teams are grouped by their most likely win outcome (the
     probability bucket with the highest value).  Within each group teams are

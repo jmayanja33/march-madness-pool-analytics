@@ -30,7 +30,7 @@ export default function Home() {
           <Link to="/bracket"        className="home-btn">Bracket</Link>
           <Link to="/analyze"        className="home-btn">Analyze</Link>
           <Link to="/create-team"    className="home-btn">Create Team</Link>
-          <Link to="/power-rankings" className="home-btn">Power Rankings</Link>
+          <Link to="/projections"    className="home-btn">Projections</Link>
           <Link to="/head-to-head"   className="home-btn">Head to Head</Link>
           <Link to="/info"           className="home-btn">Info</Link>
           <Link to="/results"        className="home-btn home-btn--last">Results</Link>

@@ -1,9 +1,9 @@
 """
-Power rankings router — handles the GET /power-rankings endpoint.
+Projections router — handles the GET /projections endpoint.
 
 Routes defined in this module (no prefix applied — registered at root in main.py):
 
-    GET /power-rankings
+    GET /projections
         Return all tournament teams grouped by their most likely win outcome
         (2+, 1, or 0 games won).  Within each group teams are ranked by their
         win-bucket probability descending, with alphabetical tie-breaking.
@@ -13,8 +13,8 @@ import logging
 
 from fastapi import APIRouter
 
-from app.models import PowerRankingsResponse
-from app.services import get_power_rankings
+from app.models import ProjectionsResponse
+from app.services import get_projections
 
 logger = logging.getLogger(__name__)
 
@@ -22,20 +22,20 @@ logger = logging.getLogger(__name__)
 # Router
 # ---------------------------------------------------------------------------
 
-router = APIRouter(tags=["power-rankings"])
+router = APIRouter(tags=["projections"])
 
 
 # ---------------------------------------------------------------------------
-# GET /power-rankings
+# GET /projections
 # ---------------------------------------------------------------------------
 
 
 @router.get(
-    "/power-rankings",
-    response_model=PowerRankingsResponse,
-    summary="Get power rankings for all tournament teams",
+    "/projections",
+    response_model=ProjectionsResponse,
+    summary="Get projections for all tournament teams",
 )
-async def power_rankings() -> PowerRankingsResponse:
+async def projections() -> ProjectionsResponse:
     """
     Return all tournament teams grouped by their expected win outcome.
 
@@ -46,12 +46,12 @@ async def power_rankings() -> PowerRankingsResponse:
     order by name breaks any probability ties.
 
     Returns:
-        PowerRankingsResponse with three ranked lists: two_wins, one_win,
+        ProjectionsResponse with three ranked lists: two_wins, one_win,
         and zero_wins.
     """
-    rankings = get_power_rankings()
+    rankings = get_projections()
     logger.info(
-        "power-rankings: %d six-win, %d five-win, %d four-win, %d three-win, "
+        "projections: %d six-win, %d five-win, %d four-win, %d three-win, "
         "%d two-win, %d one-win, %d zero-win teams",
         len(rankings["six_wins"]),
         len(rankings["five_wins"]),
@@ -61,4 +61,4 @@ async def power_rankings() -> PowerRankingsResponse:
         len(rankings["one_win"]),
         len(rankings["zero_wins"]),
     )
-    return PowerRankingsResponse(**rankings)
+    return ProjectionsResponse(**rankings)

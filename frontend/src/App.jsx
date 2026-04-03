@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import BracketPage from './pages/BracketPage';
 import Analyze from './pages/Analyze';
 import CreateTeam from './pages/CreateTeam';
-import PowerRankings from './pages/PowerRankings';
+import Projections from './pages/Projections';
 import HeadToHead from './pages/HeadToHead';
 import Info from './pages/Info';
 import Results from './pages/Results';
@@ -18,7 +18,7 @@ export default function App() {
         <Route path="/bracket"         element={<BracketPage />} />    {/* Interactive bracket */}
         <Route path="/analyze"         element={<Analyze />} />        {/* Team comparison */}
         <Route path="/create-team"     element={<CreateTeam />} />     {/* Pool builder */}
-        <Route path="/power-rankings"  element={<PowerRankings />} />  {/* Power rankings */}
+        <Route path="/projections"     element={<Projections />} />    {/* Projections */}
         <Route path="/head-to-head"    element={<HeadToHead />} />     {/* H2H matchup */}
         <Route path="/info"            element={<Info />} />           {/* Project info */}
         <Route path="/results"         element={<Results />} />        {/* Model results */}
