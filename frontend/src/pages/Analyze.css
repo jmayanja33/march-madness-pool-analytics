@@ -273,4 +273,10 @@
   .analyze-topbar {
     padding: 8px 16px;
   }
+
+  /* Prevent iOS Safari from auto-zooming when the picker input is focused.
+     Safari zooms in on any input with font-size < 16px. */
+  .picker-input {
+    font-size: 16px;
+  }
 }
