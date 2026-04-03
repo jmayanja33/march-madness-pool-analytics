@@ -416,6 +416,96 @@
   margin-left: 2px;
 }
 
+/* ── H2H Confidence Breakdown ── */
+.h2h-confidence-breakdown {
+  margin-bottom: 14px;
+}
+
+/* Calibration metric row — sits above the confidence breakdown table.
+   Matches the stats bar's bottom spacing and border for consistent rhythm. */
+.h2h-metric-row {
+  font-size: 0.88rem;
+  color: var(--silver);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8ecf0;
+}
+
+.h2h-metric-row .results-metric-label {
+  font-weight: 600;
+  color: var(--dark-blue);
+  border-bottom: 1px dotted var(--silver);
+}
+
+.h2h-metric-row strong {
+  color: var(--black);
+}
+
+/* Section header — uses the existing metric-label tooltip pattern */
+.h2h-confidence-header {
+  font-size: 0.88rem;
+  color: var(--silver);
+  margin-bottom: 8px;
+}
+
+/* The underlined label acts as the tooltip trigger */
+.h2h-confidence-header .results-metric-label {
+  font-weight: 600;
+  color: var(--dark-blue);
+  border-bottom: 1px dotted var(--silver);
+}
+
+/* Table wrapper */
+.h2h-confidence-table {
+  border: 1px solid #e8ecf0;
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 0.86rem;
+}
+
+/* Each row — header + data */
+.h2h-confidence-row {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.h2h-confidence-row:last-child {
+  border-bottom: none;
+}
+
+/* Header row styling */
+.h2h-confidence-row--header {
+  background: #f5f7fa;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--silver);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 5px 12px;
+}
+
+/* Confidence band column — takes remaining space */
+.h2h-confidence-col-band {
+  flex: 1;
+  color: var(--black);
+}
+
+/* Stat columns — fixed width, right-aligned */
+.h2h-confidence-col-stat {
+  width: 130px;
+  text-align: right;
+  flex-shrink: 0;
+  color: var(--black);
+}
+
+/* Accuracy value — bold for emphasis */
+.h2h-confidence-accuracy {
+  font-weight: 700;
+}
+
+
 /* ── Mobile responsiveness ── */
 @media (max-width: 600px) {
   .results-body {

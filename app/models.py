@@ -291,14 +291,17 @@ class ResultsGame(BaseModel):
     """
     Result for a single tournament game.
 
-    Contains both teams' info, the winner's name, and whether the model's
-    prediction for this matchup was correct.
+    Contains both teams' info, the winner's name, whether the model's
+    prediction for this matchup was correct, and the model's confidence
+    (the predicted winner's win probability, always >= 0.5).
     """
 
     team1: ResultsTeamEntry   # First team (left side of display)
     team2: ResultsTeamEntry   # Second team (right side of display)
     winner: str               # Display name of the winning team
     correct: bool             # True if the model correctly predicted the winner
+    # Model's confidence for the predicted winner (0.5–1.0); None if not found.
+    predicted_probability: Optional[float] = None
 
 
 class ResultsRound(BaseModel):

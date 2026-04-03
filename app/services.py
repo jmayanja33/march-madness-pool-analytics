@@ -638,12 +638,52 @@ def load_results_data() -> list[dict]:
     return json.loads(RESULTS_FILE.read_text(encoding="utf-8"))
 
 
+def _get_game_predicted_probability(
+    team1_name: str, team2_name: str
+) -> Optional[float]:
+    """Return the model's confidence for a game matchup.
+
+    Looks up the pre-calculated h2h prediction for the two teams and returns
+    the higher of the two win probabilities.  This represents the model's
+    confidence in whichever team it predicted to win (always >= 0.5).
+
+    Args:
+        team1_name: Display name of the first team.
+        team2_name: Display name of the second team.
+
+    Returns:
+        The predicted winner's win probability (0.5–1.0), or ``None`` if the
+        matchup is not found in h2h-predictions.json.
+    """
+    needle1 = team1_name.casefold()
+    needle2 = team2_name.casefold()
+
+    try:
+        predictions = load_h2h_predictions()
+    except FileNotFoundError:
+        return None
+
+    for entry in predictions:
+        stored1 = entry["team1"]["name"].casefold()
+        stored2 = entry["team2"]["name"].casefold()
+
+        # Match in either direction — return the higher probability.
+        if (stored1 == needle1 and stored2 == needle2) or \
+           (stored1 == needle2 and stored2 == needle1):
+            p1 = entry["team1"]["win_probability"]
+            p2 = entry["team2"]["win_probability"]
+            return max(p1, p2)
+
+    return None
+
+
 def get_results() -> ResultsResponse:
     """Build a ResultsResponse from the raw results JSON data.
 
     Parses all tournament years and their round game data into Pydantic models.
-    Rounds with no games are still included so the frontend can display them
-    as "No games yet".
+    Each game is enriched with the model's predicted probability (confidence)
+    looked up from h2h-predictions.json.  Rounds with no games are still
+    included so the frontend can display them as "No games yet".
 
     Returns:
         Populated :class:`~app.models.ResultsResponse` instance with all
@@ -671,11 +711,19 @@ def get_results() -> ResultsResponse:
                     seed=raw_g["team2"]["seed"],
                     score=raw_g["team2"].get("score"),
                 )
+
+                # Look up the model's confidence (max win probability) for this game.
+                predicted_prob = _get_game_predicted_probability(
+                    raw_g["team1"]["name"],
+                    raw_g["team2"]["name"],
+                )
+
                 games.append(ResultsGame(
                     team1=team1,
                     team2=team2,
                     winner=raw_g["winner"],
                     correct=raw_g["correct"],
+                    predicted_probability=predicted_prob,
                 ))
 
             rounds.append(ResultsRound(name=raw_r["name"], games=games))

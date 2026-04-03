@@ -47,6 +47,55 @@ function calcStats(games) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Confidence breakdown helpers
+// ---------------------------------------------------------------------------
+
+// Confidence bands used to group games by the model's predicted probability.
+// Each band covers a range of the model's confidence level.
+const CONFIDENCE_BANDS = [
+  { label: '50–65%', min: 0.50, max: 0.65 },
+  { label: '65–80%', min: 0.65, max: 0.80 },
+  { label: '80%+',   min: 0.80, max: 1.01 },
+];
+
+// Group games into confidence bands based on predicted_probability.
+// Each band includes games count, correct count, actual accuracy, and the
+// average predicted probability within the band (used as the "expected" rate).
+// Bands with zero games are excluded from the result.
+function calcConfidenceBands(games) {
+  return CONFIDENCE_BANDS
+    .map(band => {
+      const inBand = games.filter(
+        g => g.predicted_probability != null &&
+             g.predicted_probability >= band.min &&
+             g.predicted_probability < band.max,
+      );
+      const correct = inBand.filter(g => g.correct).length;
+      const avgPredicted = inBand.length > 0
+        ? inBand.reduce((sum, g) => sum + g.predicted_probability, 0) / inBand.length
+        : null;
+      return {
+        label: band.label,
+        games: inBand.length,
+        correct,
+        accuracy: inBand.length > 0 ? correct / inBand.length : null,
+        avgPredicted,
+      };
+    })
+    .filter(b => b.games > 0);
+}
+
+// Compute overall calibration: average predicted probability vs actual accuracy
+// across all games that have probability data. Returns null if no data.
+function calcCalibration(games) {
+  const withProb = games.filter(g => g.predicted_probability != null);
+  if (withProb.length === 0) return null;
+  const avgPredicted = withProb.reduce((s, g) => s + g.predicted_probability, 0) / withProb.length;
+  const actualAccuracy = withProb.filter(g => g.correct).length / withProb.length;
+  return { avgPredicted, actualAccuracy };
+}
+
 // Collect all games from every round in a tournament.
 function allGames(tournament) {
   return tournament.rounds.flatMap(r => r.games);
@@ -247,16 +296,28 @@ function H2HModelBox({ tournament, h2hStats, modelCollapsed, roundCollapsed, onT
 
           {/* Overall H2H stats */}
           {h2hStats.games > 0 && (
-            <div className="results-stats-bar">
-              <span>Games: <strong>{h2hStats.games}</strong></span>
-              <span>Correct: <strong>{h2hStats.correct}</strong></span>
-              <span>
-                Accuracy:{' '}
-                <strong style={{ color: probColor(h2hStats.accuracy) }}>
-                  {(h2hStats.accuracy * 100).toFixed(2)}%
-                </strong>
-              </span>
-            </div>
+            <>
+              <div className="results-stats-bar">
+                <span>Games: <strong>{h2hStats.games}</strong></span>
+                <span>Correct: <strong>{h2hStats.correct}</strong></span>
+                <span>
+                  {/* Accuracy label with hover tooltip */}
+                  <span className="results-metric-label">
+                    Accuracy
+                    <span className="results-metric-tooltip">
+                      The percentage of games where the model picked the correct winner. Higher is better.
+                    </span>
+                  </span>
+                  {': '}
+                  <strong style={{ color: probColor(h2hStats.accuracy) }}>
+                    {(h2hStats.accuracy * 100).toFixed(2)}%
+                  </strong>
+                </span>
+              </div>
+
+              {/* Calibration and confidence breakdown */}
+              <ConfidenceBreakdown games={allGames(tournament)} />
+            </>
           )}
 
           {/* Round sub-sections */}
@@ -501,6 +562,85 @@ function WinsModelBox({ year, winsEval, modelCollapsed, roundCollapsed, onToggle
         </div>
       )}
     </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// ConfidenceBreakdown — shows calibration summary and H2H model accuracy
+// grouped by confidence band. Calibration appears above the table.
+// Serves as both a confidence breakdown (was the model right when confident?)
+// and a calibration check (did stated confidence match actual win rates?).
+// Only renders when at least one game has predicted_probability data.
+// ---------------------------------------------------------------------------
+
+function ConfidenceBreakdown({ games }) {
+  const bands       = calcConfidenceBands(games);
+  const calibration = calcCalibration(games);
+
+  // Nothing to show if no games have probability data.
+  if (bands.length === 0 && !calibration) return null;
+
+  return (
+    <div className="h2h-confidence-breakdown">
+
+      {/* ── Calibration — shown above the confidence breakdown table ── */}
+      {calibration && (
+        <div className="h2h-metric-row">
+          <span className="results-metric-label">
+            Calibration
+            <span className="results-metric-tooltip">
+              Compares the model&apos;s average confidence ({(calibration.avgPredicted * 100).toFixed(1)}%) to its actual accuracy ({(calibration.actualAccuracy * 100).toFixed(1)}%). When these are close, the model&apos;s confidence matches reality. If actual accuracy is higher, the model is being overly conservative. If lower, then the model is overly aggresive.
+            </span>
+          </span>
+          {': '}
+          <strong>{(calibration.avgPredicted * 100).toFixed(1)}%</strong>
+          {' predicted vs '}
+          <strong style={{ color: probColor(calibration.actualAccuracy) }}>
+            {(calibration.actualAccuracy * 100).toFixed(1)}%
+          </strong>
+          {' actual'}
+        </div>
+      )}
+
+      {/* ── Confidence Breakdown table ── */}
+      {bands.length > 0 && (
+        <>
+          <div className="h2h-confidence-header">
+            <span className="results-metric-label">
+              Confidence Breakdown
+              <span className="results-metric-tooltip">
+                Groups games by how confident the model was in its prediction. Higher confidence bands should show higher accuracy in a well-performing model.
+              </span>
+            </span>
+          </div>
+
+          <div className="h2h-confidence-table">
+            {/* Column headers */}
+            <div className="h2h-confidence-row h2h-confidence-row--header">
+              <span className="h2h-confidence-col-band">Prediction Confidence</span>
+              <span className="h2h-confidence-col-stat">Number of Games</span>
+              <span className="h2h-confidence-col-stat">Correct Predictions</span>
+              <span className="h2h-confidence-col-stat">Percentage</span>
+            </div>
+
+            {/* Data rows */}
+            {bands.map(band => (
+              <div key={band.label} className="h2h-confidence-row">
+                <span className="h2h-confidence-col-band">{band.label}</span>
+                <span className="h2h-confidence-col-stat">{band.games}</span>
+                <span className="h2h-confidence-col-stat">{band.correct}</span>
+                <span
+                  className="h2h-confidence-col-stat h2h-confidence-accuracy"
+                  style={{ color: band.accuracy !== null ? probColor(band.accuracy) : 'inherit' }}
+                >
+                  {band.accuracy !== null ? `${(band.accuracy * 100).toFixed(1)}%` : '—'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
   );
 }
 
