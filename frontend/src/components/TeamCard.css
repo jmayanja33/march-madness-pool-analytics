@@ -316,4 +316,11 @@
   .tc-sim-row {
     grid-template-columns: 22px 2fr 2fr 44px 44px;
   }
+
+  /* On mobile the card is not inside a fixed-height flex column, so height: 100%
+     would resolve to the full content height. Switch to auto so the card-wrap's
+     max-height can act as the true ceiling. */
+  .team-card {
+    height: auto;
+  }
 }
