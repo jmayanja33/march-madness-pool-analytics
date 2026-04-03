@@ -126,14 +126,14 @@ export default function Results() {
       .then(([resultsData, evalData]) => {
         setData(resultsData);
         setWinsEval(evalData);
-        // Default all years, model boxes, rounds, and regions to expanded.
+        // Default years/rounds/regions to expanded; model boxes start collapsed.
         const yc = {};
         const mc = {};
         const rc = {};
         for (const t of resultsData.tournaments) {
           yc[t.year] = false;
-          mc[`${t.year}-h2h`]  = false;
-          mc[`${t.year}-wins`] = false;
+          mc[`${t.year}-h2h`]  = true;
+          mc[`${t.year}-wins`] = true;
           for (const r of t.rounds) {
             rc[`${t.year}-${r.name}`] = false;
           }
