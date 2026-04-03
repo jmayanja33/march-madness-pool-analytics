@@ -510,6 +510,8 @@ function WinsModelBox({ year, winsEval, modelCollapsed, roundCollapsed, onToggle
                     {/* Team rows */}
                     {!isRegionCollapsed && (
                       <div className="results-round-body">
+                        {/* Scrollable wrapper — allows horizontal scroll on narrow screens */}
+                        <div className="wins-eval-table">
                         {/* Column headers */}
                         <div className="wins-eval-header-row">
                           <span className="wins-eval-col-team">Team</span>
@@ -552,6 +554,7 @@ function WinsModelBox({ year, winsEval, modelCollapsed, roundCollapsed, onToggle
                             </span>
                           </div>
                         ))}
+                        </div>{/* end wins-eval-table */}
                       </div>
                     )}
                   </section>
