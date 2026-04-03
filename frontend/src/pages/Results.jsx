@@ -384,19 +384,40 @@ function WinsModelBox({ year, winsEval, modelCollapsed, roundCollapsed, onToggle
               <div className="results-stats-bar">
                 <span>Teams Evaluated: <strong>{winsEval.summary.teams_evaluated}</strong></span>
                 <span>
-                  MAE:{' '}
+                  {/* MAE label with hover tooltip */}
+                  <span className="results-metric-label">
+                    MAE
+                    <span className="results-metric-tooltip">
+                      On average, how many wins off the model&apos;s prediction was. An MAE of 1.0 means predictions were off by 1 win on average. Lower is better.
+                    </span>
+                  </span>
+                  {': '}
                   <strong style={{ color: diffColor(winsEval.summary.mae) }}>
                     {winsEval.summary.mae} wins
                   </strong>
                 </span>
                 <span>
-                  Bias:{' '}
+                  {/* Bias label with hover tooltip */}
+                  <span className="results-metric-label">
+                    Bias
+                    <span className="results-metric-tooltip">
+                      Whether the model consistently predicts too high or too low. A positive number means it tends to over-predict wins; negative means it under-predicts. Closer to 0 is better.
+                    </span>
+                  </span>
+                  {': '}
                   <strong style={{ color: diffColor(winsEval.summary.bias) }}>
                     {winsEval.summary.bias > 0 ? '+' : ''}{winsEval.summary.bias} wins
                   </strong>
                 </span>
                 <span>
-                  Within 1 Win:{' '}
+                  {/* Within 1 Win label with hover tooltip */}
+                  <span className="results-metric-label">
+                    Within 1 Win
+                    <span className="results-metric-tooltip">
+                      How often the model&apos;s prediction was close — within 1 win of what a team actually won. Higher is better.
+                    </span>
+                  </span>
+                  {': '}
                   <strong style={{ color: withinOneColor(winsEval.summary.within_one_pct) }}>
                     {winsEval.summary.within_one_pct}%
                   </strong>
