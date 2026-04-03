@@ -52,6 +52,8 @@ frontend/
 │   │   ├── HeadToHead.css
 │   │   ├── BracketPage.jsx       # Interactive tournament bracket viewer
 │   │   ├── BracketPage.css
+│   │   ├── Results.jsx           # Model results by year — H2H accuracy & wins evaluation
+│   │   ├── Results.css
 │   │   ├── Info.jsx              # Project background, data sources, model metrics
 │   │   └── Info.css
 │   ├── data/
@@ -158,6 +160,7 @@ Routes are defined in `src/App.jsx`:
 | `/create-team` | `CreateTeam` | Build a pool team (8 slots) |
 | `/power-rankings` | `PowerRankings` | Teams grouped by predicted win total |
 | `/head-to-head` | `HeadToHead` | Matchup win-probability predictor |
+| `/results` | `Results` | H2H model accuracy and wins evaluation by year |
 | `/info` | `Info` | Project background, data, and model metrics |
 
 All routes are client-side (React Router). nginx is configured with `try_files` to
@@ -249,6 +252,28 @@ Full interactive 2026 NCAA tournament bracket.
 **API calls:**
 - `GET /api/analyze/{team}` when a team slot is clicked (fetches data for the popup)
 
+### Results (`/results`)
+
+Model results broken down by tournament year. Each year is a collapsible section
+containing two model sub-sections.
+
+**Head to Head Model** — one collapsible round per tournament round (First Four through
+National Championship). Each game row shows seed, logo, team name, and score; the winning
+team is highlighted green (correct prediction) or red (incorrect). Round and overall
+accuracy are shown with `probColor` thresholds.
+
+**Wins Model** — per-team expected wins vs. actual wins grouped by bracket region.
+Expected wins is the probability-weighted average of each team's win distribution.
+Actual wins are counted from `results.json`; First Four wins are excluded since they
+are not part of the 0–6 win distribution. A summary bar shows MAE, bias, and within-one
+percentage with color-coded thresholds (diff/MAE: <0.75 green · 0.75–1.5 yellow · 1.5+
+red; within-one %: ≥70% green · 50–70% yellow · <50% red). Active (non-eliminated) teams
+are shown at reduced opacity with a green dot indicator.
+
+**API calls:**
+- `GET /api/results` on mount
+- `GET /api/wins-evaluation` on mount (fetched in parallel with results)
+
 ### Info (`/info`)
 
 Static content page with five sections:
@@ -327,6 +352,8 @@ parsed JSON, or `null` on error.
 | `fetchH2H(team1, team2)` | GET | `/api/head-to-head?team1=&team2=` | Head-to-head win probabilities |
 | `fetchPoolTeams(teamNames)` | POST | `/api/create-a-team` | Pool summaries for a list of teams |
 | `fetchPowerRankings()` | GET | `/api/power-rankings` | Teams grouped by win bucket |
+| `fetchResults()` | GET | `/api/results` | Game-by-game tournament results by year |
+| `fetchWinsEvaluation()` | GET | `/api/wins-evaluation` | Expected vs actual wins evaluation |
 | `fetchInfo()` | GET | `/api/info` | Project metadata and model metrics |
 
 Team names are encoded with `encodeURIComponent()` before being interpolated into URLs.

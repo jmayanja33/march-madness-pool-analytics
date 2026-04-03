@@ -24,16 +24,17 @@ similar-team lookups, and exposes a REST API consumed by the React frontend.
 ```
 app/
 ├── __init__.py
-├── main.py          # App factory, CORS, root endpoints (/api/teams, /api/info)
+├── main.py          # App factory, CORS, root endpoints (/api/teams, /api/info, /api/wins-evaluation)
 ├── config.py        # Environment variable settings
-├── models.py        # All Pydantic request/response models (19 models)
-├── services.py      # Business logic: data loading, formatting, ChromaDB queries
+├── models.py        # All Pydantic request/response models (22 models)
+├── services.py      # Business logic: data loading, formatting, ChromaDB queries, evaluation
 ├── routers/
 │   ├── __init__.py
 │   ├── analyze.py        # GET /api/analyze/{team}, /api/analyze/most-similar/{team}
 │   ├── pool.py           # POST /api/create-a-team
 │   ├── power_rankings.py # GET /api/power-rankings
-│   └── head_to_head.py   # GET /api/head-to-head
+│   ├── head_to_head.py   # GET /api/head-to-head
+│   └── results.py        # GET /api/results
 └── tests/
     ├── __init__.py
     ├── test_main.py           # Health check, /api/teams, /api/info
@@ -41,7 +42,9 @@ app/
     ├── test_analyze.py        # Analyze & most-similar endpoints
     ├── test_create_a_team.py  # Pool POST endpoint
     ├── test_head_to_head.py   # Head-to-head endpoint
-    └── test_power_rankings.py # Power rankings endpoint
+    ├── test_power_rankings.py # Power rankings endpoint
+    ├── test_results.py        # Results endpoint
+    └── test_wins_evaluation.py # Wins evaluation endpoint and service
 ```
 
 ---
@@ -265,6 +268,81 @@ Each entry is a `PoolTeamSummary`: `name`, `seed`, `conference`, `wins`, `losses
 
 ---
 
+### Tournament Results
+
+```
+GET /api/results
+```
+Returns game-by-game results for all tracked tournament years, grouped by round. The
+`correct` flag on each game indicates whether the head-to-head model correctly predicted
+the winner.
+
+**Response (`ResultsResponse`):**
+```json
+{
+  "tournaments": [
+    {
+      "year": 2026,
+      "tournament_name": "2026 Tournament",
+      "rounds": [
+        {
+          "name": "Round of 64",
+          "games": [
+            {
+              "team1": { "name": "Duke", "seed": 1, "score": 71 },
+              "team2": { "name": "Siena", "seed": 16, "score": 65 },
+              "winner": "Duke",
+              "correct": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Errors:** `503` if `results.json` is missing
+
+---
+
+### Wins Evaluation
+
+```
+GET /api/wins-evaluation
+```
+Compares the predicted expected wins (probability-weighted average of each team's win
+distribution) against actual tournament wins derived from `results.json`. Teams are
+grouped by bracket region and sorted by seed. Summary metrics are computed only over
+fully eliminated teams. First Four wins are excluded since the distribution covers
+Round of 64 through National Championship only.
+
+Results are read fresh on every request so the evaluation updates automatically as
+game results are added to `results.json`.
+
+**Response (`WinsEvaluationResponse`):**
+```json
+{
+  "summary": {
+    "teams_evaluated": 60,
+    "mae": 1.24,
+    "bias": 0.83,
+    "within_one_pct": 58.3
+  },
+  "east":    [{ "name": "Duke", "seed": 1, "region": "East", "expected_wins": 4.2, "actual_wins": 4, "difference": 0.2, "eliminated": false }, ...],
+  "west":    [...],
+  "south":   [...],
+  "midwest": [...]
+}
+```
+
+**Color thresholds (diff / MAE):** 0–0.75 green · 0.75–1.5 yellow · 1.5+ red
+**Color thresholds (within-one %):** ≥70% green · 50–70% yellow · <50% red
+
+**Errors:** `503` if `results.json` is missing
+
+---
+
 ### Create a Team (Pool Builder)
 
 ```
@@ -299,12 +377,12 @@ are silently skipped — partial pools are valid.
 
 ## Data Models (`models.py`)
 
-19 Pydantic models define all API contracts.
+22 Pydantic models define all API contracts.
 
 | Model | Used by | Description |
 |---|---|---|
 | `HealthResponse` | `GET /` | `{ status: str }` |
-| `TeamEntry` | `GET /api/teams` | `{ name, seed }` |
+| `TeamListItem` | `GET /api/teams` | `{ name, seed }` |
 | `WinProbabilityDistribution` | Many | Win probabilities for 0–6 wins |
 | `PlayerProfile` | `TeamAnalysis` | Position, height, per-game stats |
 | `TeamStats` | `TeamAnalysis` | Shooting %, blocks, rebounds, etc. |
@@ -315,8 +393,16 @@ are silently skipped — partial pools are valid.
 | `PowerRankingsResponse` | `GET /power-rankings` | 7 win-bucket lists |
 | `PoolRequest` | `POST /create-a-team` | `{ teams: [str] }` |
 | `PoolResponse` | `POST /create-a-team` | `{ teams: [PoolTeamSummary] }` |
-| `H2HTeam` | `H2HResponse` | `{ name, win_probability }` |
-| `H2HResponse` | `GET /head-to-head` | Two `H2HTeam` objects |
+| `H2HTeamResult` | `H2HResponse` | `{ name, win_probability }` |
+| `H2HResponse` | `GET /head-to-head` | Two `H2HTeamResult` objects |
+| `ResultsTeamEntry` | `ResultsGame` | `{ name, seed, score? }` |
+| `ResultsGame` | `ResultsRound` | Two teams, winner, correct flag |
+| `ResultsRound` | `ResultsTournament` | Round name + list of games |
+| `ResultsTournament` | `ResultsResponse` | Year + ordered rounds |
+| `ResultsResponse` | `GET /results` | All tracked tournament years |
+| `WinsEvaluationEntry` | `WinsEvaluationResponse` | Per-team expected/actual/diff |
+| `WinsEvaluationSummary` | `WinsEvaluationResponse` | MAE, bias, within-one-pct |
+| `WinsEvaluationResponse` | `GET /wins-evaluation` | Evaluation grouped by region |
 | `InfoResponse` | `GET /api/info` | Project metadata & metrics |
 
 ---
@@ -374,6 +460,32 @@ build_team_analysis(team_dict, similar) -> TeamAnalysis
 build_pool_team_summary(team_dict: dict) -> PoolTeamSummary
 get_power_rankings() -> dict[str, list[PoolTeamSummary]]
 ```
+
+### Results & Wins Evaluation
+
+```python
+load_results_data() -> list[dict]
+```
+Loads `data/predictions/results.json` fresh on every call (not cached), so the page
+reflects the latest tournament results without a server restart.
+
+```python
+get_results() -> ResultsResponse
+```
+Parses all tournament years and rounds into Pydantic models.
+
+```python
+calc_expected_wins(dist: dict) -> float
+```
+Computes the probability-weighted average of a win distribution dict (keys `'0'`–`'6'`).
+Returns a float rounded to two decimal places.
+
+```python
+get_wins_evaluation() -> WinsEvaluationResponse
+```
+Counts actual wins per team from `results.json` (excluding First Four wins), cross-joins
+with `predictions.json` expected wins, groups by region, and computes summary metrics
+(MAE, bias, within-one %) over eliminated teams only.
 
 ### ChromaDB Integration
 
@@ -460,6 +572,8 @@ uv run pytest -v
 | `test_create_a_team.py` | 8 | `POST /api/create-a-team` (valid, invalid, mixed, empty) |
 | `test_head_to_head.py` | 5 | `GET /api/head-to-head` (valid, unknown, self-matchup) |
 | `test_power_rankings.py` | 7 | `GET /api/power-rankings` (grouping, sorting, completeness) |
+| `test_results.py` | 11 | `GET /api/results` (parsing, scores, correct flag, 503) |
+| `test_wins_evaluation.py` | 28 | `calc_expected_wins`, `get_wins_evaluation` (wins counting, First Four exclusion, region grouping, metrics), `GET /api/wins-evaluation` |
 
 ### Testing Strategy
 

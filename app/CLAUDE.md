@@ -43,3 +43,14 @@ This endpoint routes users to the head to head matchup page.
 ### /results
 This endpoint routes users to the results page.
 
+### /api/wins-evaluation
+This endpoint returns the wins model evaluation. For each tournament team it computes
+the expected wins (probability-weighted average of the win probability distribution) and
+the actual wins derived from results.json, then computes the signed difference
+(expected − actual). Teams are grouped by bracket region (East, West, South, Midwest)
+and sorted by seed. Summary metrics — MAE, bias, and within-one-win percentage — are
+computed only over fully eliminated teams. First Four wins are excluded from actual win
+counts since the distribution covers Round of 64 through National Championship only.
+Results are read fresh on every request so the evaluation updates automatically as
+game results are added to results.json.
+

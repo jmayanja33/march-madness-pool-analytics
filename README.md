@@ -9,9 +9,10 @@ The March Madness pool is a pool of players, each of whom put together a collect
 Teams are auctioned off to each player, with the end goal of having the collection of teams with the most wins in the tournament.
 
 
-The goal of this project is to predict how a team will perform in the tournament. A probability distribution will be 
-calculated to determine the likelihood of any team in the field winning 0 games, 1 game, or 2+ games. In addition, the 
-3 most similar teams (since 2009-10) will also be calculated.
+The goal of this project is to predict how a team will perform in the tournament. A probability distribution is
+calculated to determine the likelihood of any team in the field winning 0, 1, 2, 3, 4, 5, or 6 games. In addition,
+the 3 most similar historical teams (since 2009–10) are identified via ChromaDB cosine similarity, and live wins
+model evaluation tracks predicted vs. actual wins as the tournament progresses.
 
 For more information on the data collection and model training methodologies, contact Josh Mayanja (joshmayanja30@gmail.com).
 
@@ -26,49 +27,70 @@ explore!
 march-madness-pool-analytics/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                    # Unit test, secret detection, and linting pipeline
-├── app/                              # FastAPI backend
-│   ├── CLAUDE.md
-│   ├── main.py                       # FastAPI app entry point
-│   ├── models/                       # Pydantic data models
-│   │   ├── team.py                   # Team and EmbeddedTeam objects
-│   │   └── player.py                 # Player data model
-│   ├── routers/                      # API route handlers
-│   │   ├── analyze.py                # /analyze and /analyze/{team} endpoints
-│   │   └── info.py                   # /info endpoint
-│   ├── services/                     # Business logic
-│   │   ├── team_service.py           # Load and parse team JSON predictions
-│   │   └── vector_db.py              # ChromaDB similarity queries
-│   └── tests/                        # pytest unit tests
-│       ├── test_team_service.py
-│       └── test_vector_db.py
+│       └── ci.yml                      # Unit test, secret detection, and linting pipeline
+├── app/                                # FastAPI backend
+│   ├── CLAUDE.md                       # Backend AI instructions and endpoint reference
+│   ├── README.md                       # Backend developer docs
+│   ├── main.py                         # FastAPI app, CORS, /api/teams, /api/info, /api/wins-evaluation
+│   ├── config.py                       # Environment variable settings
+│   ├── models.py                       # 22 Pydantic request/response models
+│   ├── services.py                     # Business logic: loading, formatting, ChromaDB, evaluation
+│   ├── routers/
+│   │   ├── analyze.py                  # GET /api/analyze/{team}, /api/analyze/most-similar/{team}
+│   │   ├── pool.py                     # POST /api/create-a-team
+│   │   ├── power_rankings.py           # GET /api/power-rankings
+│   │   ├── head_to_head.py             # GET /api/head-to-head
+│   │   └── results.py                  # GET /api/results
+│   └── tests/
+│       ├── test_main.py
+│       ├── test_infrastructure.py
+│       ├── test_analyze.py
+│       ├── test_create_a_team.py
+│       ├── test_head_to_head.py
+│       ├── test_power_rankings.py
+│       ├── test_results.py
+│       └── test_wins_evaluation.py
 ├── data/
-│   ├── predictions/                  # Precalculated team JSON files ({team}.json)
-│   └── vector_db/                    # ChromaDB persistent storage
-├── frontend/                         # React frontend
-│   ├── public/
-│   │   └── index.html
-│   └── src/
-│       ├── components/               # Reusable UI components
-│       │   ├── Bracket.jsx           # Interactive tournament bracket
-│       │   ├── TeamCard.jsx          # Team profile display
-│       │   ├── TeamPopup.jsx         # Bracket click popup
-│       │   └── NavBar.jsx
-│       ├── pages/                    # Page-level components
-│       │   ├── Home.jsx              # Interactive bracket page
-│       │   ├── Analyze.jsx           # Team comparison page
-│       │   └── Info.jsx              # Project info page
-│       ├── api/
-│       │   └── teamApi.js            # API call functions
-│       ├── App.jsx
-│       └── index.jsx
-├── scripts/                          # Data pipeline scripts
-│   ├── build_embeddings.py           # Build EmbeddedTeam vectors, PCA, load into ChromaDB
-│   └── generate_predictions.py       # Precalculate win distributions, write team JSONs
+│   ├── predictions/
+│   │   ├── predictions.json            # Pre-calculated team win distributions (2026 season)
+│   │   ├── h2h-predictions.json        # Pre-calculated head-to-head win probabilities
+│   │   ├── results.json                # Live tournament results (updated during tournament)
+│   │   └── most-likely-bracket.json    # Pre-calculated optimal bracket predictions
+│   └── vector_db/
+│       └── chroma_vectors.json         # PCA-reduced team embeddings for ChromaDB import
+├── frontend/                           # React + Vite SPA
+│   ├── README.md                       # Frontend developer docs
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── teamApi.js              # All backend API call functions
+│   │   ├── components/
+│   │   │   ├── NavBar.jsx / .css
+│   │   │   ├── TeamCard.jsx / .css
+│   │   │   ├── TeamPopup.jsx / .css
+│   │   │   ├── Bracket.jsx
+│   │   │   ├── BracketRegion.jsx / .css
+│   │   │   └── BracketSlot.jsx / .css
+│   │   ├── pages/
+│   │   │   ├── Home.jsx / .css
+│   │   │   ├── Analyze.jsx / .css
+│   │   │   ├── BracketPage.jsx / .css
+│   │   │   ├── CreateTeam.jsx / .css
+│   │   │   ├── PowerRankings.jsx / .css
+│   │   │   ├── HeadToHead.jsx / .css
+│   │   │   ├── Results.jsx / .css      # H2H accuracy + wins evaluation
+│   │   │   └── Info.jsx / .css
+│   │   ├── data/
+│   │   │   └── bracketData.js          # 2026 tournament bracket structure
+│   │   └── utils/
+│   │       └── colors.js               # Probability → hex color mapping
+│   └── public/
+│       └── logos/                      # Team logo PNG files
+├── scripts/
+│   └── import_vectors.py               # Imports PCA-reduced embeddings into ChromaDB
 ├── .gitignore
-├── CLAUDE.md
+├── CLAUDE.md                           # Root AI instructions for this project
 ├── README.md
-├── pyproject.toml                    # uv Python project configuration
+├── pyproject.toml                      # uv Python project configuration
 └── uv.lock
 ```
 
