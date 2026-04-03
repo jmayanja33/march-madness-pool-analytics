@@ -449,11 +449,14 @@ export default function Projections() {
             byExpected[ew].push(team);
           }
 
-          return SECTIONS.map(({ key, wins, title, bucketProb }) => {
-            // Sort by P(W = wins) descending — highest probability of this outcome first.
+          return SECTIONS.map(({ key, wins, title }) => {
+            // Sort by calculated expected win probability descending within each section.
             const teams = (byExpected[wins] ?? [])
               .slice()
-              .sort((a, b) => bucketProb(b) - bucketProb(a));
+              .sort((a, b) =>
+                getExpectedWinsProb(b.win_probability_distribution) -
+                getExpectedWinsProb(a.win_probability_distribution),
+              );
             const isCollapsed = collapsed[key];
           return (
             <section key={key} className="pr-section">
@@ -479,7 +482,6 @@ export default function Projections() {
                         key={team.name}
                         rank={i + 1}
                         team={team}
-                        bucketProb={bucketProb(team)}
                         onInfo={() => setPopupTeam(team.name)}
                       />
                     ))}
@@ -506,7 +508,7 @@ export default function Projections() {
 // Mirrors the TeamSlotCard in CreateTeam but adds a rank badge and removes
 // the remove button since this is a read-only view.
 
-function RankCard({ rank, team, bucketProb, onInfo }) {
+function RankCard({ rank, team, onInfo }) {
   const region = getTeamRegion(team.name);
   const expectedWins = getExpectedWins(team.win_probability_distribution);
   // Color via P(W ≥ round(E[W])) — matches TeamCard's Expected Performance coloring.
@@ -539,11 +541,15 @@ function RankCard({ rank, team, bucketProb, onInfo }) {
           <span className="pr-slot-stat-value">{region}</span>
         </div>
 
-        {/* Expected wins (E[W] = Σ k·P(k)) with colored value + info button */}
+        {/* Expected wins (E[W] = Σ k·P(k)) with probability and info button */}
         <div className="pr-slot-stat">
           <span className="pr-slot-stat-label">Expected Wins</span>
           <span className="pr-slot-stat-value" style={{ color }}>
             {formatExpectedWins(expectedWins)}
+            {' '}
+            <span className="pr-slot-stat-prob">
+              ({(getExpectedWinsProb(team.win_probability_distribution) * 100).toFixed(2)}%)
+            </span>
           </span>
           <button className="pr-slot-info-btn" onClick={onInfo} title="View team details">ⓘ</button>
         </div>
