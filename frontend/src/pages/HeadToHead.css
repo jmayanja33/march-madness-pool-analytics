@@ -172,6 +172,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Align subtitle with the Team 1 / Team 2 title row */
+  padding-top: 24px;
 }
 
 /* Line segment — fills available space above/below the subtitle, or full height when no subtitle */

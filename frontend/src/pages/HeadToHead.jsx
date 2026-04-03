@@ -273,7 +273,6 @@ export default function HeadToHead() {
         <div className="h2h-divider">
           {!(team1 || team2) ? (
             <>
-              <div className="h2h-divider-line" />
               <p className="h2h-page-sub">EVALUATE 2 TEAMS AND DETERMINE WHO WILL WIN A HEAD TO HEAD MATCHUP</p>
               <div className="h2h-divider-line" />
             </>
