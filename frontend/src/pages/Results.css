@@ -350,6 +350,11 @@
 
 /* ── Wins evaluation table ── */
 
+/* Scrollable wrapper — transparent on desktop, enables horizontal scroll on mobile */
+.wins-eval-table {
+  width: 100%;
+}
+
 /* Column header row */
 .wins-eval-header-row {
   display: flex;
@@ -525,23 +530,24 @@
     font-size: 0.82rem;
   }
 
-  /* Confidence breakdown — allow horizontal scroll so all columns are reachable */
+  /* Confidence breakdown — horizontal scroll + min-width keeps columns aligned */
   .h2h-confidence-table {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 
-  .h2h-confidence-col-stat {
-    width: 100px;
+  .h2h-confidence-row {
+    min-width: 420px;
   }
 
-  /* Wins eval — shrink stat columns so they don't crowd the team name */
-  .wins-eval-col-stat {
-    width: 68px;
-    font-size: 0.8rem;
+  /* Wins eval — horizontal scroll so team names are never cut off */
+  .wins-eval-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .wins-eval-header-row {
-    font-size: 0.72rem;
+  .wins-eval-header-row,
+  .wins-eval-row {
+    min-width: 360px;
   }
 }

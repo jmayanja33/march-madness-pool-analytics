@@ -227,17 +227,17 @@
     display: none;
   }
 
+  /* Cap each side so the second team selector is always visible below.
+     The card scrolls internally when its content exceeds the limit. */
   .h2h-side {
-    overflow: visible;
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: 16px;
   }
 
-  /* Cap the card height so the second side is always visible on screen.
-     The card scrolls internally if its content exceeds this limit. */
   .h2h-card-wrap {
-    max-height: 60vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible;
   }
 
   .h2h-meter-wrap {
