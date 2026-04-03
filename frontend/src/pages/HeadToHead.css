@@ -232,8 +232,12 @@
     padding: 16px;
   }
 
+  /* Cap the card height so the second side is always visible on screen.
+     The card scrolls internally if its content exceeds this limit. */
   .h2h-card-wrap {
-    overflow: visible;
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .h2h-meter-wrap {

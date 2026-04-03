@@ -524,4 +524,24 @@
   .results-team-name {
     font-size: 0.82rem;
   }
+
+  /* Confidence breakdown — allow horizontal scroll so all columns are reachable */
+  .h2h-confidence-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .h2h-confidence-col-stat {
+    width: 100px;
+  }
+
+  /* Wins eval — shrink stat columns so they don't crowd the team name */
+  .wins-eval-col-stat {
+    width: 68px;
+    font-size: 0.8rem;
+  }
+
+  .wins-eval-header-row {
+    font-size: 0.72rem;
+  }
 }
