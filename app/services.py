@@ -30,6 +30,9 @@ from app.models import (
     TeamAnalysis,
     TeamStats,
     WinProbabilityDistribution,
+    WinsEvaluationEntry,
+    WinsEvaluationResponse,
+    WinsEvaluationSummary,
 )
 
 # Module-level logger — output is captured by uvicorn and visible in docker logs.
@@ -685,3 +688,161 @@ def get_results() -> ResultsResponse:
 
     logger.info("get_results: loaded %d tournament year(s)", len(tournaments))
     return ResultsResponse(tournaments=tournaments)
+
+
+# ---------------------------------------------------------------------------
+# Wins evaluation
+# ---------------------------------------------------------------------------
+
+
+def calc_expected_wins(dist: dict) -> float:
+    """Compute the expected number of tournament wins from a probability distribution.
+
+    Expected wins is the probability-weighted average across all seven outcome
+    buckets (0–6 wins).  The distribution keys are strings ``'0'`` through
+    ``'6'`` as stored in the predictions JSON.
+
+    Args:
+        dist: Raw win-probability dict with string keys ``'0'``–``'6'``.
+
+    Returns:
+        Expected wins as a float rounded to two decimal places.
+    """
+    return round(sum(i * dist.get(str(i), 0.0) for i in range(7)), 2)
+
+
+def get_wins_evaluation() -> WinsEvaluationResponse:
+    """Build a per-team wins evaluation comparing expected vs actual tournament wins.
+
+    Actual wins for each team are counted by tallying game-winner entries across
+    all rounds of all tournaments in results.json.  A team is marked eliminated
+    once it appears as the loser in any game.
+
+    Expected wins are the probability-weighted averages of each team's win
+    distribution from predictions.json.
+
+    Summary metrics (MAE, bias, within-one percentage) are computed only over
+    teams that have been fully eliminated, since active teams do not yet have
+    a final win count.  Teams are grouped by bracket region and sorted by seed
+    within each group.
+
+    Returns:
+        Populated :class:`~app.models.WinsEvaluationResponse` instance.
+    """
+    # Count actual wins per team and build the eliminated set by walking all
+    # game results.  Every game produces exactly one winner and one loser.
+    actual_wins: dict[str, int] = {}
+    eliminated: set[str] = set()
+
+    for tournament in load_results_data():
+        for round_data in tournament.get("rounds", []):
+            # The win probability distribution covers Round of 64 through the
+            # National Championship only.  First Four games are play-in games
+            # that do not count as tournament wins in the distribution, so they
+            # must be excluded from the actual wins count.
+            if round_data.get("name") == "First Four":
+                # Still track First Four losers as eliminated so they appear
+                # correctly in the table, but do not credit any wins.
+                for game in round_data.get("games", []):
+                    t1 = game["team1"]["name"]
+                    t2 = game["team2"]["name"]
+                    winner = game["winner"]
+                    loser = t2 if t1 == winner else t1
+                    eliminated.add(loser)
+                continue
+
+            for game in round_data.get("games", []):
+                winner = game["winner"]
+                t1 = game["team1"]["name"]
+                t2 = game["team2"]["name"]
+                loser = t2 if t1 == winner else t1
+
+                # Accumulate wins for the winner.
+                actual_wins[winner] = actual_wins.get(winner, 0) + 1
+                # Track eliminated teams — losers have played their last game.
+                eliminated.add(loser)
+
+    # Build one WinsEvaluationEntry per tournament team, grouped by region.
+    east: list[WinsEvaluationEntry] = []
+    west: list[WinsEvaluationEntry] = []
+    south: list[WinsEvaluationEntry] = []
+    midwest: list[WinsEvaluationEntry] = []
+
+    for team in load_predictions():
+        # Skip non-tournament teams (no seed means they did not make the field).
+        if team.get("tournament_seed") is None:
+            continue
+
+        name = team["name"]
+        dist = team.get("win_probability_distribution", {})
+        expected = calc_expected_wins(dist)
+        actual = actual_wins.get(name, 0)
+        diff = round(expected - actual, 2)
+        region = team.get("region", "Unknown")
+
+        entry = WinsEvaluationEntry(
+            name=name,
+            seed=team.get("tournament_seed", 0),
+            region=region,
+            expected_wins=expected,
+            actual_wins=actual,
+            difference=diff,
+            eliminated=name in eliminated,
+        )
+
+        # Route to the correct region bucket (case-insensitive).
+        region_lower = region.lower()
+        if region_lower == "east":
+            east.append(entry)
+        elif region_lower == "west":
+            west.append(entry)
+        elif region_lower == "south":
+            south.append(entry)
+        elif region_lower == "midwest":
+            midwest.append(entry)
+
+    # Sort each region by seed ascending so the UI display is consistent.
+    for group in [east, west, south, midwest]:
+        group.sort(key=lambda e: e.seed)
+
+    # Compute summary metrics exclusively over eliminated teams.
+    elim_entries = [
+        e
+        for group in [east, west, south, midwest]
+        for e in group
+        if e.eliminated
+    ]
+
+    if elim_entries:
+        abs_errors = [abs(e.difference) for e in elim_entries]
+        signed_errors = [e.difference for e in elim_entries]
+        within_one_count = sum(1 for e in elim_entries if abs(e.difference) <= 1.0)
+
+        mae = round(sum(abs_errors) / len(abs_errors), 3)
+        bias = round(sum(signed_errors) / len(signed_errors), 3)
+        within_one_pct = round(within_one_count / len(elim_entries) * 100, 1)
+    else:
+        mae = 0.0
+        bias = 0.0
+        within_one_pct = 0.0
+
+    logger.info(
+        "get_wins_evaluation: %d eliminated teams — MAE=%.3f bias=%.3f within1=%.1f%%",
+        len(elim_entries),
+        mae,
+        bias,
+        within_one_pct,
+    )
+
+    return WinsEvaluationResponse(
+        summary=WinsEvaluationSummary(
+            teams_evaluated=len(elim_entries),
+            mae=mae,
+            bias=bias,
+            within_one_pct=within_one_pct,
+        ),
+        east=east,
+        west=west,
+        south=south,
+        midwest=midwest,
+    )

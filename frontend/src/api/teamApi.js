@@ -84,6 +84,24 @@ export async function fetchH2H(team1Name, team2Name) {
   return data;
 }
 
+// Fetches the wins model evaluation from the backend.
+// Returns a WinsEvaluationResponse with per-team expected vs actual wins grouped
+// by region and aggregate summary metrics (MAE, bias, within-one percentage).
+// Throws an error if the request fails or the data file is unavailable (503).
+export async function fetchWinsEvaluation() {
+  const res = await fetch(`${API_BASE}/wins-evaluation`);
+  if (!res.ok) {
+    console.error(`[API] fetchWinsEvaluation failed: HTTP ${res.status}`);
+    throw new Error(`Failed to fetch wins evaluation: ${res.status}`);
+  }
+  const data = await res.json();
+  console.log(
+    `[API] fetchWinsEvaluation — ${data.summary.teams_evaluated} teams evaluated, ` +
+    `MAE=${data.summary.mae}`
+  );
+  return data;
+}
+
 // Fetches tournament model results grouped by year and round from the backend.
 // Returns a ResultsResponse containing all tracked tournament years, each with
 // a list of rounds and the game results (teams, scores, winner, correct flag).

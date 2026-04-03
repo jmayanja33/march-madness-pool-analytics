@@ -337,6 +337,61 @@ class ResultsResponse(BaseModel):
     tournaments: list[ResultsTournament]
 
 
+# ---------------------------------------------------------------------------
+# Wins evaluation models
+# ---------------------------------------------------------------------------
+
+
+class WinsEvaluationEntry(BaseModel):
+    """
+    Per-team wins evaluation entry comparing expected vs actual tournament wins.
+
+    Expected wins is the weighted average of the win probability distribution.
+    Actual wins is derived from the live results data.  The difference is
+    signed (positive = model over-predicted, negative = under-predicted).
+    Teams still active in the tournament are included but excluded from
+    summary metric computation until they are eliminated.
+    """
+
+    name: str             # Team display name, e.g. "Duke"
+    seed: int             # Tournament seed (1–16)
+    region: str           # Bracket region, e.g. "East"
+    expected_wins: float  # Weighted average of win probability distribution
+    actual_wins: int      # Tournament wins counted from results data
+    difference: float     # expected_wins − actual_wins; positive = over-predicted
+    eliminated: bool      # False if the team is still active in the tournament
+
+
+class WinsEvaluationSummary(BaseModel):
+    """
+    Aggregate evaluation metrics computed across all eliminated teams.
+
+    Metrics are not computed for teams still active because their final
+    win count is unknown.
+    """
+
+    teams_evaluated: int    # Number of eliminated teams included in metrics
+    mae: float              # Mean absolute error: mean(|expected − actual|)
+    # Mean signed error: mean(expected − actual); positive = over-predicted
+    bias: float
+    within_one_pct: float   # Percentage of teams where |expected − actual| ≤ 1.0
+
+
+class WinsEvaluationResponse(BaseModel):
+    """
+    Response returned by GET /api/wins-evaluation.
+
+    Teams are grouped by bracket region and sorted by seed within each group.
+    Summary metrics are computed only over eliminated teams.
+    """
+
+    summary: WinsEvaluationSummary
+    east: list[WinsEvaluationEntry]       # East region teams sorted by seed
+    west: list[WinsEvaluationEntry]       # West region teams sorted by seed
+    south: list[WinsEvaluationEntry]      # South region teams sorted by seed
+    midwest: list[WinsEvaluationEntry]    # Midwest region teams sorted by seed
+
+
 class PowerRankingsResponse(BaseModel):
     """
     Response returned by GET /power-rankings.

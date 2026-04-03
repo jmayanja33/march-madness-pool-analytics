@@ -5,9 +5,31 @@
 // Correct predictions highlight the winning team in green; incorrect in red.
 import { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
-import { fetchResults } from '../api/teamApi';
+import { fetchResults, fetchWinsEvaluation } from '../api/teamApi';
 import { probColor } from '../utils/colors';
 import './Results.css';
+
+// ---------------------------------------------------------------------------
+// Color helpers
+// ---------------------------------------------------------------------------
+
+// Return a CSS color based on the absolute magnitude of a wins difference.
+// 0–0.75: green (accurate); 0.75–1.5: yellow (acceptable); 1.5+: red (significant miss).
+// The same thresholds apply to per-team diff values and the summary MAE.
+function diffColor(diff) {
+  const abs = Math.abs(diff);
+  if (abs < 0.75) return '#3a9e5f';
+  if (abs < 1.5)  return '#d4820a';
+  return '#e05252';
+}
+
+// Return a CSS color for a "within one win" percentage (0–100).
+// Higher is better: ≥70%: green; 50–70%: yellow; <50%: red.
+function withinOneColor(pct) {
+  if (pct >= 70) return '#3a9e5f';
+  if (pct >= 50) return '#d4820a';
+  return '#e05252';
+}
 
 // ---------------------------------------------------------------------------
 // Accuracy helpers
@@ -37,9 +59,10 @@ function allGames(tournament) {
 export default function Results() {
   useEffect(() => { document.title = 'The Pool | Results'; }, []);
 
-  const [data, setData]       = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [data, setData]           = useState(null);
+  const [winsEval, setWinsEval]   = useState(null);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState(null);
 
   // Each year section is collapsible; keyed by year number.
   const [yearCollapsed, setYearCollapsed] = useState({});
@@ -48,21 +71,25 @@ export default function Results() {
   // Each round section is collapsible; keyed by `${year}-${roundName}`.
   const [roundCollapsed, setRoundCollapsed] = useState({});
 
-  // Fetch results on mount.
+  // Fetch results and wins evaluation in parallel on mount.
   useEffect(() => {
-    fetchResults()
-      .then(d => {
-        setData(d);
-        // Default all years, model boxes, and rounds to expanded.
+    Promise.all([fetchResults(), fetchWinsEvaluation()])
+      .then(([resultsData, evalData]) => {
+        setData(resultsData);
+        setWinsEval(evalData);
+        // Default all years, model boxes, rounds, and regions to expanded.
         const yc = {};
         const mc = {};
         const rc = {};
-        for (const t of d.tournaments) {
+        for (const t of resultsData.tournaments) {
           yc[t.year] = false;
           mc[`${t.year}-h2h`]  = false;
           mc[`${t.year}-wins`] = false;
           for (const r of t.rounds) {
             rc[`${t.year}-${r.name}`] = false;
+          }
+          for (const region of ['East', 'West', 'South', 'Midwest']) {
+            rc[`${t.year}-wins-${region}`] = false;
           }
         }
         setYearCollapsed(yc);
@@ -127,7 +154,16 @@ export default function Results() {
                       </strong>
                     </span>
                     <span className="results-year-model-stat">
-                      Wins Model Accuracy: <strong>N/A</strong>
+                      Wins Model MAE:{' '}
+                      <strong style={
+                        winsEval && winsEval.summary.teams_evaluated > 0
+                          ? { color: diffColor(winsEval.summary.mae) }
+                          : {}
+                      }>
+                        {winsEval && winsEval.summary.teams_evaluated > 0
+                          ? `${winsEval.summary.mae} wins`
+                          : 'N/A'}
+                      </strong>
                     </span>
                   </div>
                 </div>
@@ -153,8 +189,11 @@ export default function Results() {
                   {/* ── Wins Model box ── */}
                   <WinsModelBox
                     year={tournament.year}
+                    winsEval={winsEval}
                     modelCollapsed={modelCollapsed}
+                    roundCollapsed={roundCollapsed}
                     onToggleModel={toggleModel}
+                    onToggleRound={toggleRound}
                   />
 
                 </div>
@@ -292,12 +331,16 @@ function H2HModelBox({ tournament, h2hStats, modelCollapsed, roundCollapsed, onT
 
 // ---------------------------------------------------------------------------
 // WinsModelBox — collapsible "Wins Model" section for one tournament.
-// Currently shows "No data yet" since no wins-model results are available.
+// Displays per-team expected vs actual wins grouped by bracket region,
+// with aggregate evaluation metrics (MAE, bias, within-one percentage).
 // ---------------------------------------------------------------------------
 
-function WinsModelBox({ year, modelCollapsed, onToggleModel }) {
-  const key        = `${year}-wins`;
+function WinsModelBox({ year, winsEval, modelCollapsed, roundCollapsed, onToggleModel, onToggleRound }) {
+  const key         = `${year}-wins`;
   const isCollapsed = modelCollapsed[key];
+
+  // Regions in display order.
+  const regions = ['East', 'West', 'South', 'Midwest'];
 
   return (
     <section className="results-model-section">
@@ -308,7 +351,17 @@ function WinsModelBox({ year, modelCollapsed, onToggleModel }) {
         onClick={() => onToggleModel(key)}
         aria-expanded={!isCollapsed}
       >
-        <h3 className="results-model-title">Wins Model</h3>
+        <h3 className="results-model-title">
+          Wins Model
+          {winsEval && winsEval.summary.teams_evaluated > 0 && (
+            <span
+              className="results-accuracy-badge"
+              style={{ color: diffColor(winsEval.summary.mae), fontSize: '0.88rem' }}
+            >
+              {' '}(MAE: {winsEval.summary.mae} wins)
+            </span>
+          )}
+        </h3>
         <span className={`results-caret results-caret--small${isCollapsed ? ' results-caret--collapsed' : ''}`}>
           &#8964;
         </span>
@@ -317,7 +370,113 @@ function WinsModelBox({ year, modelCollapsed, onToggleModel }) {
       {/* Model box body */}
       {!isCollapsed && (
         <div className="results-model-body">
-          <p className="results-no-games">No data yet</p>
+          {!winsEval && (
+            <p className="results-no-games">Loading…</p>
+          )}
+
+          {winsEval && winsEval.summary.teams_evaluated === 0 && (
+            <p className="results-no-games">No eliminated teams yet</p>
+          )}
+
+          {winsEval && winsEval.summary.teams_evaluated > 0 && (
+            <>
+              {/* Summary metrics bar */}
+              <div className="results-stats-bar">
+                <span>Teams Evaluated: <strong>{winsEval.summary.teams_evaluated}</strong></span>
+                <span>
+                  MAE:{' '}
+                  <strong style={{ color: diffColor(winsEval.summary.mae) }}>
+                    {winsEval.summary.mae} wins
+                  </strong>
+                </span>
+                <span>
+                  Bias:{' '}
+                  <strong style={{ color: diffColor(winsEval.summary.bias) }}>
+                    {winsEval.summary.bias > 0 ? '+' : ''}{winsEval.summary.bias} wins
+                  </strong>
+                </span>
+                <span>
+                  Within 1 Win:{' '}
+                  <strong style={{ color: withinOneColor(winsEval.summary.within_one_pct) }}>
+                    {winsEval.summary.within_one_pct}%
+                  </strong>
+                </span>
+              </div>
+
+              {/* Region sub-sections */}
+              {regions.map(region => {
+                const entries = winsEval[region.toLowerCase()] ?? [];
+                if (entries.length === 0) return null;
+                const regionKey = `${year}-wins-${region}`;
+                const isRegionCollapsed = roundCollapsed[regionKey];
+
+                return (
+                  <section key={region} className="results-round-section">
+
+                    {/* Region header */}
+                    <button
+                      className="results-round-header"
+                      onClick={() => onToggleRound(year, `wins-${region}`)}
+                      aria-expanded={!isRegionCollapsed}
+                    >
+                      <h4 className="results-round-title">{region}</h4>
+                      <span className={`results-caret results-caret--small${isRegionCollapsed ? ' results-caret--collapsed' : ''}`}>
+                        &#8964;
+                      </span>
+                    </button>
+
+                    {/* Team rows */}
+                    {!isRegionCollapsed && (
+                      <div className="results-round-body">
+                        {/* Column headers */}
+                        <div className="wins-eval-header-row">
+                          <span className="wins-eval-col-team">Team</span>
+                          <span className="wins-eval-col-stat">Expected Wins</span>
+                          <span className="wins-eval-col-stat">Actual Wins</span>
+                          <span className="wins-eval-col-stat">Diff</span>
+                        </div>
+
+                        {entries.map(entry => (
+                          <div key={entry.name} className={`wins-eval-row${!entry.eliminated ? ' wins-eval-row--active' : ''}`}>
+                            {/* Seed, logo, name */}
+                            <div className="wins-eval-col-team wins-eval-team-cell">
+                              <span className="results-team-seed">{entry.seed}.</span>
+                              <img
+                                src={`/logos/${entry.name}.png`}
+                                alt={`${entry.name} logo`}
+                                className="results-team-logo"
+                                onError={e => { e.currentTarget.style.display = 'none'; }}
+                              />
+                              <span className="results-team-name">
+                                {entry.name}
+                                {!entry.eliminated && (
+                                  <span className="wins-eval-active-badge"> ●</span>
+                                )}
+                              </span>
+                            </div>
+
+                            {/* Expected wins */}
+                            <span className="wins-eval-col-stat">{entry.expected_wins}</span>
+
+                            {/* Actual wins */}
+                            <span className="wins-eval-col-stat">{entry.actual_wins}</span>
+
+                            {/* Difference — signed and colored */}
+                            <span
+                              className="wins-eval-col-stat wins-eval-diff"
+                              style={{ color: entry.eliminated ? diffColor(entry.difference) : 'var(--silver)' }}
+                            >
+                              {entry.difference > 0 ? '+' : ''}{entry.difference}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </section>
+                );
+              })}
+            </>
+          )}
         </div>
       )}
     </section>

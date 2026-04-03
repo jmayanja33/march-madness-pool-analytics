@@ -13,7 +13,7 @@ The app is started by uvicorn as specified in the project Dockerfile:
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import CHROMA_HOST, CHROMA_PORT, PREDICTIONS_DIR
@@ -24,9 +24,10 @@ from app.models import (
     InfoResponse,
     ModelMetrics,
     TeamListItem,
+    WinsEvaluationResponse,
 )
 from app.routers import analyze, head_to_head, pool, power_rankings, results
-from app.services import get_all_teams
+from app.services import get_all_teams, get_wins_evaluation
 
 logger = logging.getLogger(__name__)
 
@@ -174,3 +175,33 @@ async def info() -> InfoResponse:
             github="https://github.com/jmayanja33",
         ),
     )
+
+
+# ---------------------------------------------------------------------------
+# Wins evaluation
+# ---------------------------------------------------------------------------
+
+
+@app.get(
+    "/api/wins-evaluation",
+    response_model=WinsEvaluationResponse,
+    tags=["evaluation"],
+    summary="Predicted vs actual wins evaluation",
+)
+async def wins_evaluation() -> WinsEvaluationResponse:
+    """
+    Compare each team's expected wins (weighted average of the predicted win
+    probability distribution) against their actual tournament wins derived from
+    the live results data.
+
+    Teams are grouped by bracket region (East, West, South, Midwest) and sorted
+    by seed within each group.  Summary metrics — MAE, bias, and within-one
+    percentage — are computed only over fully eliminated teams.
+
+    Results are read fresh on every request so the evaluation updates
+    automatically as new game results are added to results.json.
+    """
+    try:
+        return get_wins_evaluation()
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc

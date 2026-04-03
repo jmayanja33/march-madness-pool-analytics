@@ -109,7 +109,7 @@
           },
           {
             "team1": { "name": "Illinois",         "seed": 3,  "score": 105 },
-            "team2": { "name": "Penn",             "seed": 14, "score": 70 },
+            "team2": { "name": "Pennsylvania",     "seed": 14, "score": 70 },
             "winner": "Illinois",
             "correct": true
           },
@@ -199,7 +199,7 @@
           },
           {
             "team1": { "name": "Purdue",          "seed": 2,  "score": 104},
-            "team2": { "name": "Queens",      "seed": 15,  "score":  71},
+            "team2": { "name": "Queens University",      "seed": 15,  "score":  71},
             "winner": "Purdue",
             "correct": true
           },
