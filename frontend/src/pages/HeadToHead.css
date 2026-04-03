@@ -191,14 +191,15 @@
   pointer-events: none;
 }
 
-/* ── Picker empty-state wrapper — centers the combobox in the half-pane ── */
+/* ── Picker empty-state wrapper — pins the combobox near the top of the half-pane ── */
 .h2h-picker-wrap {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 12px;
+  padding-top: 40px;
   padding-bottom: 40px;
 }
 
