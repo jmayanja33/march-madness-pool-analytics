@@ -525,17 +525,24 @@ export function transformPredictedBracket(predictedData, liveResults, bracket, f
       champion,
     };
 
+    // Determine which F4 participant slot corresponds to the predicted winner
+    // in each semifinal.  Only the predicted winner's slot is highlighted (the
+    // loser's slot stays pending).  teamA = East/Midwest champ, teamB = South/West champ.
+    const s1PredictedWinner = semi1.winner;
+    const s2PredictedWinner = semi2.winner;
+
     finalFourStatus = {
-      // F4 participant slots are left uncolored until the F4 games are played.
-      // The E8 result is already shown in the E8 column — repeating it here
-      // makes the F4 section appear scored before any game has been played.
-      semi1TeamA: 'pending',
-      semi1TeamB: 'pending',
-      semi2TeamA: 'pending',
-      semi2TeamB: 'pending',
-      // Championship slot statuses = was the predicted F4 winner correct?
-      semi1Winner: s1Status,
-      semi2Winner: s2Status,
+      // Color only the predicted winner's slot in the Final Four section.
+      // Games not yet played → s1Status/s2Status = 'pending' → no highlight.
+      semi1TeamA: (regionData.East.f4    === s1PredictedWinner) ? s1Status : 'pending',
+      semi1TeamB: (regionData.South.f4   === s1PredictedWinner) ? s1Status : 'pending',
+      semi2TeamA: (regionData.Midwest.f4 === s2PredictedWinner) ? s2Status : 'pending',
+      semi2TeamB: (regionData.West.f4    === s2PredictedWinner) ? s2Status : 'pending',
+      // Championship participant slots: only colored once the championship has
+      // been played (i.e. a champion is known).  Highlighting them before then
+      // would imply the championship result is already decided.
+      semi1Winner: liveResults?.finalFour?.champion ? s1Status : 'pending',
+      semi2Winner: liveResults?.finalFour?.champion ? s2Status : 'pending',
       // Champion slot status = was the championship prediction correct?
       champion: cStatus,
     };
