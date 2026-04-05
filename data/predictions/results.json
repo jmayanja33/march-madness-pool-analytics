@@ -414,7 +414,20 @@
       },
       {
         "name": "Final Four",
-        "games": []
+        "games": [
+          {
+            "team1": { "name": "UConn",          "seed": 2,  "score":  71},
+            "team2": { "name": "Illinois",      "seed": 3,  "score":  62},
+            "winner": "UConn",
+            "correct": true
+          },
+          {
+            "team1": { "name": "Arizona",          "seed": 1,  "score":  73},
+            "team2": { "name": "Michigan",      "seed": 1,  "score":  91},
+            "winner": "Michigan",
+            "correct": false
+          }
+        ]
       },
       {
         "name": "National Championship",
