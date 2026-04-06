@@ -651,30 +651,84 @@ function ConfidenceBreakdown({ games }) {
 // GameRow — displays one game result with seeds, logos, names, and scores.
 // ---------------------------------------------------------------------------
 // The winning team's name is highlighted green (correct prediction) or red
-// (incorrect prediction). Optional scores are shown when available.
+// (incorrect prediction). When either team has a prior tournament path, a
+// toggle button reveals the opponents used for the path-difficulty adjustment,
+// allowing verification that the correct path was applied.
 
 function GameRow({ game }) {
+  const [pathOpen, setPathOpen] = useState(false);
+
   // Determine color for the winning team's name.
   const winnerColor = game.correct ? '#3a9e5f' : '#e05252';
 
+  // Only show the path toggle when at least one team has prior opponents.
+  const hasPath = (game.team1_path?.length ?? 0) > 0 || (game.team2_path?.length ?? 0) > 0;
+
   return (
-    <div className="results-game-row fade-in">
-      {/* Team 1 */}
-      <TeamEntry
-        team={game.team1}
-        isWinner={game.team1.name === game.winner}
-        winnerColor={winnerColor}
-      />
+    <div className="results-game-block fade-in">
+      {/* ── Main game row ── */}
+      <div className="results-game-row">
+        {/* Team 1 */}
+        <TeamEntry
+          team={game.team1}
+          isWinner={game.team1.name === game.winner}
+          winnerColor={winnerColor}
+        />
 
-      {/* Separator */}
-      <span className="results-game-vs">vs.</span>
+        {/* Separator */}
+        <span className="results-game-vs">vs.</span>
 
-      {/* Team 2 */}
-      <TeamEntry
-        team={game.team2}
-        isWinner={game.team2.name === game.winner}
-        winnerColor={winnerColor}
-      />
+        {/* Team 2 */}
+        <TeamEntry
+          team={game.team2}
+          isWinner={game.team2.name === game.winner}
+          winnerColor={winnerColor}
+        />
+
+        {/* Path toggle — only shown when prior opponents exist */}
+        {hasPath && (
+          <button
+            className="results-path-toggle"
+            onClick={() => setPathOpen(p => !p)}
+            aria-expanded={pathOpen}
+            title="Show path adjustment detail"
+          >
+            {pathOpen ? '▾' : '▸'} path
+          </button>
+        )}
+      </div>
+
+      {/* ── Path detail panel ── */}
+      {pathOpen && hasPath && (
+        <div className="results-path-detail">
+          <PathDetail teamName={game.team1.name} path={game.team1_path ?? []} />
+          <PathDetail teamName={game.team2.name} path={game.team2_path ?? []} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// PathDetail — one team's prior-path list inside the path detail panel.
+// ---------------------------------------------------------------------------
+
+function PathDetail({ teamName, path }) {
+  return (
+    <div className="results-path-team">
+      <span className="results-path-label">{teamName}:</span>
+      {path.length > 0 ? (
+        <span className="results-path-opponents">
+          {path.map((opp, i) => (
+            <span key={opp} className="results-path-opp">
+              {i > 0 && <span className="results-path-arrow"> › </span>}
+              {opp}
+            </span>
+          ))}
+        </span>
+      ) : (
+        <span className="results-path-none">no prior games</span>
+      )}
     </div>
   );
 }

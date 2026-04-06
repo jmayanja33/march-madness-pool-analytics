@@ -223,7 +223,8 @@ bucket.
 
 ### Head to Head (`/head-to-head`)
 
-Select two teams and see their predicted head-to-head win probability.
+Select two teams and see their predicted head-to-head win probability, optionally
+adjusted for each team's path difficulty through the tournament.
 
 **Features:**
 - Split-screen layout (Team 1 left, Team 2 right)
@@ -232,13 +233,28 @@ Select two teams and see their predicted head-to-head win probability.
   - Horizontal bar split proportionally by each team's win probability
   - Animated fill on load
   - Percentages shown inside the bar
+  - "· Path Adjusted" badge appears in the title when prior opponents are set
 - Full `TeamCard` displayed for each selected team
+- **Prior Path section** below each TeamCard:
+  - Searchable dropdown to add opponents the team has beaten before this matchup
+  - Selected opponents shown as removable chips
+  - Triggers a Bayesian log-odds path-difficulty adjustment to the win probability
+  - Clearing a team also resets its prior path
 - Teams can be cleared and re-selected
+
+**Path-difficulty adjustment:**
+
+For each prior beaten opponent, the backend looks up P(opponent beats team) from
+`h2h-predictions.json`. The path score is the sum of these probabilities. The net
+difference between the two teams' path scores shifts the prior log-odds of the
+matchup, and the result is returned as `path_adjusted_probability`. The base
+`win_probability` is always preserved alongside it.
 
 **API calls:**
 - `GET /api/teams` on mount (dropdowns)
 - `GET /api/analyze/{team}` for each selected team (TeamCard data)
-- `GET /api/head-to-head?team1=...&team2=...` when both teams are selected
+- `GET /api/head-to-head?team1=...&team2=...[&team1_opponents=csv&team2_opponents=csv]`
+  when both teams are selected (re-fetched whenever opponents change)
 
 ### Bracket (`/bracket`)
 
@@ -349,7 +365,7 @@ parsed JSON, or `null` on error.
 |---|---|---|---|
 | `fetchTeams()` | GET | `/api/teams` | All tournament teams (for dropdowns) |
 | `fetchTeamData(teamName)` | GET | `/api/analyze/{team}` | Full `TeamAnalysis` for one team |
-| `fetchH2H(team1, team2)` | GET | `/api/head-to-head?team1=&team2=` | Head-to-head win probabilities |
+| `fetchH2H(team1, team2, opponents1?, opponents2?)` | GET | `/api/head-to-head?team1=&team2=[&team1_opponents=&team2_opponents=]` | Head-to-head win probabilities with optional path adjustment |
 | `fetchPoolTeams(teamNames)` | POST | `/api/create-a-team` | Pool summaries for a list of teams |
 | `fetchPowerRankings()` | GET | `/api/power-rankings` | Teams grouped by win bucket |
 | `fetchResults()` | GET | `/api/results` | Game-by-game tournament results by year |

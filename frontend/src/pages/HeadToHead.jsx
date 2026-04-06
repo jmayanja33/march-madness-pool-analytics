@@ -1,11 +1,15 @@
-// HeadToHead — two-team matchup page.
+// HeadToHead — two-team matchup page with optional path-difficulty adjustment.
 //
 // Layout: the page is split vertically into two equal halves (Team 1 | Team 2).
 // Each half has a searchable team picker.  When a team is selected its full
-// TeamCard fills that half.  When both sides are populated a win-probability
-// meter appears at the top, animating from center to show each team's share.
+// TeamCard fills that half, and a "Prior Path" section appears below allowing
+// the user to add opponents that team beat on the way to this matchup.
+//
+// When both sides are populated a win-probability meter appears at the top.
+// If prior opponents are supplied the meter shows the path-adjusted probability
+// (Bayesian log-odds update); otherwise it shows the base pre-season probability.
 // The meter segments use each team's primary color extracted from their logo.
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import NavBar from '../components/NavBar';
 import TeamCard from '../components/TeamCard';
 import { fetchTeams, fetchTeamData, fetchH2H } from '../api/teamApi';
@@ -84,6 +88,10 @@ export default function HeadToHead() {
   const [error1, setError1]             = useState(null);
   const [error2, setError2]             = useState(null);
 
+  // Prior beaten opponents for each team (array of display name strings).
+  const [opponents1, setOpponents1]     = useState([]);
+  const [opponents2, setOpponents2]     = useState([]);
+
   // Head-to-head win probabilities from the backend, or null.
   const [h2hData, setH2hData]           = useState(null);
   const [h2hLoading, setH2hLoading]     = useState(false);
@@ -104,7 +112,7 @@ export default function HeadToHead() {
       .finally(() => setListLoading(false));
   }, []);
 
-  // Fetch H2H prediction whenever both sides are populated.
+  // Fetch H2H prediction whenever both sides are populated or opponents change.
   useEffect(() => {
     if (!team1 || !team2) {
       setH2hData(null);
@@ -115,7 +123,7 @@ export default function HeadToHead() {
     setMeterAnimated(false);
     setH2hLoading(true);
     setH2hError(null);
-    fetchH2H(team1.name, team2.name)
+    fetchH2H(team1.name, team2.name, opponents1, opponents2)
       .then(data => {
         setH2hData(data);
         // Small delay so the browser renders the 0-width bar before animating.
@@ -123,7 +131,7 @@ export default function HeadToHead() {
       })
       .catch(() => setH2hError('Could not load head-to-head prediction.'))
       .finally(() => setH2hLoading(false));
-  }, [team1, team2]);
+  }, [team1, team2, opponents1, opponents2]);
 
   // Extract team logo colors whenever teams change.
   useEffect(() => {
@@ -138,14 +146,16 @@ export default function HeadToHead() {
       .then(c => setColor2(c ?? FALLBACK_COLOR_2));
   }, [team2]);
 
-  // Load a team by name into the specified side.
+  // Load a team by name into the specified side and reset that side's opponents.
   async function loadTeam(name, side) {
     const setLoading = side === 1 ? setLoading1 : setLoading2;
     const setError   = side === 1 ? setError1   : setError2;
     const setTeam    = side === 1 ? setTeam1    : setTeam2;
+    const setOpps    = side === 1 ? setOpponents1 : setOpponents2;
 
     setLoading(true);
     setError(null);
+    setOpps([]);  // Clear prior opponents when a new team is selected.
     try {
       const data = await fetchTeamData(name);
       setTeam(data);
@@ -156,18 +166,22 @@ export default function HeadToHead() {
     }
   }
 
-  // Clear a side back to the empty/picker state.
+  // Clear a side back to the empty/picker state and remove its prior opponents.
   function clearTeam(side) {
-    if (side === 1) { setTeam1(null); setError1(null); }
-    else             { setTeam2(null); setError2(null); }
+    if (side === 1) { setTeam1(null); setError1(null); setOpponents1([]); }
+    else             { setTeam2(null); setError2(null); setOpponents2([]); }
   }
 
-  // Names already chosen — used to exclude each team from the opposite picker.
+  // Names already chosen on either main side — excluded from all pickers.
   const addedNames = new Set([team1?.name, team2?.name].filter(Boolean));
 
-  // Computed meter widths — start at 50/50 before animation fires.
-  const pct1 = h2hData ? h2hData.team1.win_probability * 100 : 50;
-  const pct2 = h2hData ? h2hData.team2.win_probability * 100 : 50;
+  // Display probabilities: use path-adjusted when available, else base.
+  const pct1 = h2hData
+    ? (h2hData.team1.path_adjusted_probability ?? h2hData.team1.win_probability) * 100
+    : 50;
+  const pct2 = h2hData
+    ? (h2hData.team2.path_adjusted_probability ?? h2hData.team2.win_probability) * 100
+    : 50;
 
   return (
     <div className="h2h-page">
@@ -262,10 +276,18 @@ export default function HeadToHead() {
               />
             </div>
           ) : (
-            /* Team loaded: show the full card (remove = clear back to picker) */
-            <div className="h2h-card-wrap fade-in">
-              <TeamCard team={team1} onRemove={() => clearTeam(1)} />
-            </div>
+            /* Team loaded: card then prior path section */
+            <>
+              <div className="h2h-card-wrap fade-in">
+                <TeamCard team={team1} onRemove={() => clearTeam(1)} />
+              </div>
+              <PriorGamesPicker
+                teamList={teamList}
+                excludeNames={new Set([...addedNames, ...opponents1])}
+                opponents={opponents1}
+                onChange={setOpponents1}
+              />
+            </>
           )}
         </div>
 
@@ -296,9 +318,17 @@ export default function HeadToHead() {
               />
             </div>
           ) : (
-            <div className="h2h-card-wrap fade-in">
-              <TeamCard team={team2} onRemove={() => clearTeam(2)} />
-            </div>
+            <>
+              <div className="h2h-card-wrap fade-in">
+                <TeamCard team={team2} onRemove={() => clearTeam(2)} />
+              </div>
+              <PriorGamesPicker
+                teamList={teamList}
+                excludeNames={new Set([...addedNames, ...opponents2])}
+                opponents={opponents2}
+                onChange={setOpponents2}
+              />
+            </>
           )}
         </div>
 
@@ -396,6 +426,125 @@ function TeamPicker({ teamList, loading, error, addedNames, onSelect }) {
       </div>
 
       {error && <p className="picker-error">{error}</p>}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// PriorGamesPicker — select opponents beaten before this matchup
+// ---------------------------------------------------------------------------
+// Renders a "Prior Path" section with removable chips for each selected opponent
+// and a searchable add-opponent button. Selected opponents drive the path-difficulty
+// Bayesian adjustment applied to the win probability meter.
+//
+// Props:
+//   teamList    — full { name, seed } list from the API
+//   excludeNames — Set of names to hide (the two main teams + already-chosen opponents)
+//   opponents   — current array of selected opponent display names
+//   onChange    — callback(newOpponentsArray) called on add/remove
+
+function PriorGamesPicker({ teamList, excludeNames, opponents, onChange }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery]   = useState('');
+  const containerRef        = useRef(null);
+
+  // Teams available to add: not already selected, not the two main teams.
+  const available = teamList.filter(t => !excludeNames.has(t.name));
+  const filtered  = query.trim()
+    ? available.filter(t => t.name.toLowerCase().includes(query.toLowerCase()))
+    : available;
+
+  // Close the dropdown when clicking outside.
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setIsOpen(false);
+        setQuery('');
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  function addOpponent(name) {
+    onChange([...opponents, name]);
+    setIsOpen(false);
+    setQuery('');
+  }
+
+  function removeOpponent(name) {
+    onChange(opponents.filter(o => o !== name));
+  }
+
+  return (
+    <div className="h2h-prior-section">
+      {/* Section header */}
+      <div className="h2h-prior-header">
+        <span className="h2h-prior-title">NCAA Tournament Path</span>
+        <span className="h2h-prior-hint">
+          Add opponents beaten on the way to this matchup to adjust the win probability
+        </span>
+      </div>
+
+      {/* Selected opponent chips */}
+      {opponents.length > 0 && (
+        <div className="h2h-prior-chips">
+          {opponents.map(opp => {
+            const t = teamList.find(t => t.name === opp);
+            return (
+              <span key={opp} className="h2h-prior-chip">
+                {t ? `#${t.seed} ` : ''}{opp}
+                <button
+                  className="h2h-prior-chip-remove"
+                  onClick={() => removeOpponent(opp)}
+                  aria-label={`Remove ${opp}`}
+                >
+                  ✕
+                </button>
+              </span>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Add-opponent button + inline dropdown */}
+      <div className="h2h-prior-picker" ref={containerRef}>
+        <button
+          className="h2h-prior-add-btn"
+          onClick={() => setIsOpen(prev => !prev)}
+        >
+          + Add beaten opponent
+        </button>
+
+        {isOpen && (
+          <div className="h2h-prior-dropdown-wrap">
+            <input
+              type="text"
+              className="h2h-prior-search"
+              placeholder="Search teams…"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              autoFocus
+            />
+            {filtered.length > 0 ? (
+              <ul className="h2h-prior-dropdown">
+                {filtered.map(t => (
+                  <li
+                    key={t.name}
+                    className="h2h-prior-option"
+                    onMouseDown={() => addOpponent(t.name)}
+                  >
+                    <span className="picker-seed">#{t.seed}</span>
+                    {t.name}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="picker-no-results">No teams available</div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

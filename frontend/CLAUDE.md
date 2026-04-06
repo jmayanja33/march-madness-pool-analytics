@@ -109,7 +109,7 @@ the team they would play in the round of 64 if they won their first four game an
 The Head to Head page helps users determine who would win in a matchup between any two teams in the tournament field.
 The page is split vertically into two equal halves. The left half is titled "Team 1" and the right half "Team 2".
 Each half has a searchable dropdown (same as the Analyze page) for selecting a team. Once selected, that team's full
-TeamCard fills the half.
+TeamCard fills the half, followed by a "Prior Path" section.
 
 When both teams are selected, a win probability meter appears at the top of the page above the two team cards. The meter
 is titled "Win Probability" and consists of a horizontal bar flanked by each team's logo at full size (matching the
@@ -119,7 +119,42 @@ label appears inside each fill near the center divider. When the probabilities l
 transition. Probabilities are fetched via GET /head-to-head?team1=&team2=, which looks them up from
 data/predictions/h2h-predictions.json.
 
-Clicking the ✕ on a TeamCard resets that side back to the empty dropdown state.
+Clicking the ✕ on a TeamCard resets that side back to the empty dropdown state and clears that team's prior path.
+
+### Prior Path (Path-Difficulty Adjustment)
+
+Below each TeamCard is a "Prior Path" section. This is optional — it allows users to add opponents that a team has
+already beaten on the way to this matchup. When prior opponents are entered, the win probability meter shows a
+**path-adjusted** probability instead of the base pre-season probability, and the meter title gains a
+"· Path Adjusted" badge.
+
+**How the adjustment works (Bayesian log-odds update):**
+
+For each beaten opponent Oᵢ, the pre-calculated H2H prediction gives us P(Oᵢ beats team) — how likely that opponent
+was to win against this specific team. Beating a heavily-favored opponent contributes more than beating an underdog.
+
+The path score for each team is:
+```
+path_score = Σ P(opponent_i beats team)  for all beaten opponents
+```
+
+The adjustment is applied in log-odds space (the natural space for Bayesian probability updates):
+```
+prior_log_odds    = log( P(A beats B) / P(B beats A) )
+adjusted_log_odds = prior_log_odds + (path_score_A - path_score_B)
+adjusted_P(A)     = sigmoid(adjusted_log_odds) = 1 / (1 + e^(-adjusted_log_odds))
+```
+
+Equal path difficulties cancel out. Only the **net difference** between the two teams' paths shifts the probability.
+The base `win_probability` is always preserved in the response alongside `path_adjusted_probability`.
+
+**Example:** A 7-seed that beat a 76%-favored opponent and a 71%-favored opponent (path_score = 1.47) vs a 7-seed
+that beat two underdogs (path_score = 0.80). Starting from an even 50/50 matchup:
+```
+adjusted_log_odds = 0 + (1.47 - 0.80) = 0.67
+adjusted_P        = sigmoid(0.67) ≈ 66.1%
+```
+The team with the harder path is rewarded with a higher win probability.
 
 
 ## Info Page

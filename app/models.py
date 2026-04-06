@@ -250,7 +250,10 @@ class H2HTeamResult(BaseModel):
     """Win probability for one team in a head-to-head matchup prediction."""
 
     name: str              # Team display name
-    win_probability: float  # Predicted win probability (0–1)
+    win_probability: float  # Pre-season base win probability (0–1)
+    # Log-odds Bayesian update applied using prior opponent win probabilities.
+    # None when no prior opponents are provided (no adjustment applied).
+    path_adjusted_probability: Optional[float] = None
 
 
 class H2HResponse(BaseModel):
@@ -259,6 +262,8 @@ class H2HResponse(BaseModel):
 
     Contains the predicted win probability for each team in the requested
     matchup, sourced from the pre-calculated h2h-predictions.json file.
+    When prior opponents are supplied, path_adjusted_probability reflects
+    a Bayesian update based on each team's path difficulty.
     """
 
     team1: H2HTeamResult  # Left-side team with its win probability
@@ -292,16 +297,22 @@ class ResultsGame(BaseModel):
     Result for a single tournament game.
 
     Contains both teams' info, the winner's name, whether the model's
-    prediction for this matchup was correct, and the model's confidence
-    (the predicted winner's win probability, always >= 0.5).
+    prediction was correct, and the path-adjusted model confidence.
+    ``predicted_probability`` is the Bayesian path-difficulty adjusted
+    confidence (always >= 0.5); it equals the base H2H probability when
+    neither team has any prior tournament games.
+    ``team1_path`` and ``team2_path`` list the opponents each team beat
+    before this game, enabling verification of the path used for adjustment.
     """
 
     team1: ResultsTeamEntry   # First team (left side of display)
     team2: ResultsTeamEntry   # Second team (right side of display)
     winner: str               # Display name of the winning team
     correct: bool             # True if the model correctly predicted the winner
-    # Model's confidence for the predicted winner (0.5–1.0); None if not found.
+    # Path-adjusted model confidence (0.5–1.0); None if matchup not found.
     predicted_probability: Optional[float] = None
+    team1_path: list[str] = []  # Opponents team1 beat before this game
+    team2_path: list[str] = []  # Opponents team2 beat before this game
 
 
 class ResultsRound(BaseModel):

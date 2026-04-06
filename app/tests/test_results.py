@@ -15,7 +15,12 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 
 from app.main import app
-from app.services import _get_game_predicted_probability, get_results, load_results_data
+from app.services import (
+    _get_game_path_adjusted_probability,
+    build_team_prior_paths_for_tournament,
+    get_results,
+    load_results_data,
+)
 
 # ---------------------------------------------------------------------------
 # Shared test fixtures
@@ -253,8 +258,54 @@ def test_get_results_predicted_probability_populated() -> None:
          patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
         response = get_results()
     game = response.tournaments[0].rounds[0].games[0]  # UMBC vs Howard
+    # First Four game — both teams have empty prior paths, no adjustment applied.
     # Howard has 0.58, UMBC has 0.42 — max is 0.58.
     assert game.predicted_probability == pytest.approx(0.58)
+
+
+def test_get_results_game_paths_empty_for_first_four() -> None:
+    """First Four games have empty team paths (no prior opponents)."""
+    with patch("app.services.load_results_data", return_value=_MOCK_TOURNAMENT), \
+         patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
+        response = get_results()
+    game = response.tournaments[0].rounds[0].games[0]
+    assert game.team1_path == []
+    assert game.team2_path == []
+
+
+def test_get_results_game_paths_populated_after_first_round() -> None:
+    """A team that won the First Four carries that opponent in their R64 path."""
+    tournament_with_r64 = [
+        {
+            "year": 2026,
+            "tournament_name": "2026 Tournament",
+            "rounds": [
+                {
+                    "name": "First Four",
+                    "games": [_FIRST_FOUR_GAME],  # Howard beats UMBC
+                },
+                {
+                    "name": "Round of 64",
+                    "games": [
+                        {
+                            "team1": {"name": "Michigan", "seed": 1, "score": 101},
+                            "team2": {"name": "Howard",   "seed": 16, "score": 80},
+                            "winner": "Michigan",
+                            "correct": True,
+                        }
+                    ],
+                },
+            ],
+        }
+    ]
+    with patch("app.services.load_results_data", return_value=tournament_with_r64), \
+         patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
+        response = get_results()
+    r64_game = response.tournaments[0].rounds[1].games[0]
+    # Michigan had no prior games — empty path.
+    assert r64_game.team1_path == []
+    # Howard beat UMBC in First Four — path carries forward.
+    assert r64_game.team2_path == ["UMBC"]
 
 
 def test_get_results_predicted_probability_none_when_not_found() -> None:
@@ -267,55 +318,199 @@ def test_get_results_predicted_probability_none_when_not_found() -> None:
 
 
 # ---------------------------------------------------------------------------
-# _get_game_predicted_probability — unit tests
+# _get_game_path_adjusted_probability — unit tests
 # ---------------------------------------------------------------------------
+# With empty prior paths the function behaves identically to the old
+# _get_game_predicted_probability: returns max(p1, p2) from the H2H data.
 
 
-def test_get_game_predicted_probability_match_in_order() -> None:
-    """Returns max probability when teams match stored order."""
+def test_get_game_path_adjusted_probability_match_in_order() -> None:
+    """Returns max probability when teams match stored order (no priors)."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        result = _get_game_predicted_probability("UMBC", "Howard")
+        result = _get_game_path_adjusted_probability("UMBC", "Howard", [], [])
     assert result == pytest.approx(0.58)
 
 
-def test_get_game_predicted_probability_match_reversed() -> None:
+def test_get_game_path_adjusted_probability_match_reversed() -> None:
     """Returns max probability when teams are in reverse of stored order."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        result = _get_game_predicted_probability("Howard", "UMBC")
+        result = _get_game_path_adjusted_probability("Howard", "UMBC", [], [])
     assert result == pytest.approx(0.58)
 
 
-def test_get_game_predicted_probability_case_insensitive() -> None:
+def test_get_game_path_adjusted_probability_case_insensitive() -> None:
     """Lookup is case-insensitive."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        result = _get_game_predicted_probability("umbc", "howard")
+        result = _get_game_path_adjusted_probability("umbc", "howard", [], [])
     assert result == pytest.approx(0.58)
 
 
-def test_get_game_predicted_probability_returns_none_when_not_found() -> None:
+def test_get_game_path_adjusted_probability_returns_none_when_not_found() -> None:
     """Returns None when no matching h2h entry exists."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        result = _get_game_predicted_probability("Duke", "Kentucky")
+        result = _get_game_path_adjusted_probability("Duke", "Kentucky", [], [])
     assert result is None
 
 
-def test_get_game_predicted_probability_returns_none_when_file_missing() -> None:
+def test_get_game_path_adjusted_probability_returns_none_when_file_missing() -> None:
     """Returns None gracefully when load_h2h_predictions raises FileNotFoundError."""
     with patch(
         "app.services.load_h2h_predictions",
         side_effect=FileNotFoundError("missing"),
     ):
-        result = _get_game_predicted_probability("UMBC", "Howard")
+        result = _get_game_path_adjusted_probability("UMBC", "Howard", [], [])
     assert result is None
 
 
-def test_get_game_predicted_probability_always_returns_max() -> None:
+def test_get_game_path_adjusted_probability_always_returns_max() -> None:
     """The returned probability is always the higher of the two (>= 0.5)."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
-        result = _get_game_predicted_probability("Wisconsin", "High Point")
-    # Wisconsin 0.71, High Point 0.29 — max is 0.71.
+        result = _get_game_path_adjusted_probability(
+            "Wisconsin", "High Point", [], []
+        )
     assert result == pytest.approx(0.71)
     assert result >= 0.5
+
+
+def test_get_game_path_adjusted_probability_with_prior_shifts_result() -> None:
+    """Providing prior opponents applies a Bayesian adjustment to the result."""
+    # Wisconsin (0.71) vs High Point (0.29) base.
+    # Give Wisconsin a hard prior: a team that had 0.8 win probability vs Wisconsin.
+    hard_prior_h2h = _MOCK_H2H + [
+        {
+            "team1": {"name": "HardTeam", "win_probability": 0.80},
+            "team2": {"name": "Wisconsin", "win_probability": 0.20},
+            "year": 2026,
+        }
+    ]
+    with patch("app.services.load_h2h_predictions", return_value=hard_prior_h2h):
+        base = _get_game_path_adjusted_probability(
+            "Wisconsin", "High Point", [], []
+        )
+        adjusted = _get_game_path_adjusted_probability(
+            "Wisconsin", "High Point", ["HardTeam"], []
+        )
+    # Wisconsin's hard path should raise its adjusted probability above the base.
+    assert adjusted > base
+
+
+# ---------------------------------------------------------------------------
+# build_team_prior_paths_for_tournament — unit tests
+# ---------------------------------------------------------------------------
+
+# Minimal tournament with three rounds to test path accumulation.
+_PATH_TOURNAMENT = {
+    "year": 2026,
+    "tournament_name": "Test",
+    "rounds": [
+        {
+            "name": "First Four",
+            "games": [
+                {
+                    "team1": {"name": "Bubble", "seed": 16},
+                    "team2": {"name": "Cinderella", "seed": 16},
+                    "winner": "Cinderella",
+                },
+            ],
+        },
+        {
+            "name": "Round of 64",
+            "games": [
+                # Cinderella plays a top seed after winning First Four
+                {
+                    "team1": {"name": "TopSeed", "seed": 1},
+                    "team2": {"name": "Cinderella", "seed": 16},
+                    "winner": "TopSeed",
+                },
+                # A second game with two fresh teams
+                {
+                    "team1": {"name": "Alpha", "seed": 2},
+                    "team2": {"name": "Beta", "seed": 15},
+                    "winner": "Alpha",
+                },
+            ],
+        },
+        {
+            "name": "Round of 32",
+            "games": [
+                {
+                    "team1": {"name": "TopSeed", "seed": 1},
+                    "team2": {"name": "Alpha", "seed": 2},
+                    "winner": "TopSeed",
+                },
+            ],
+        },
+    ],
+}
+
+
+def test_path_builder_first_four_teams_start_empty() -> None:
+    """Both teams have empty prior paths when entering the First Four."""
+    paths = build_team_prior_paths_for_tournament(_PATH_TOURNAMENT)
+    first_four_paths = paths["First Four"]
+    # No team has played yet — paths should be absent (empty).
+    assert first_four_paths.get("Bubble", []) == []
+    assert first_four_paths.get("Cinderella", []) == []
+
+
+def test_path_builder_fresh_teams_empty_in_r64() -> None:
+    """A team that did not play First Four has an empty path in Round of 64."""
+    paths = build_team_prior_paths_for_tournament(_PATH_TOURNAMENT)
+    r64_paths = paths["Round of 64"]
+    assert r64_paths.get("Alpha", []) == []
+    assert r64_paths.get("Beta", []) == []
+
+
+def test_path_builder_first_four_winner_carries_path_into_r64() -> None:
+    """A First Four winner's path contains their beaten opponent in Round of 64."""
+    paths = build_team_prior_paths_for_tournament(_PATH_TOURNAMENT)
+    r64_paths = paths["Round of 64"]
+    assert r64_paths.get("Cinderella", []) == ["Bubble"]
+
+
+def test_path_builder_r32_paths_include_r64_opponent() -> None:
+    """A team's Round of 32 path includes their Round of 64 opponent."""
+    paths = build_team_prior_paths_for_tournament(_PATH_TOURNAMENT)
+    r32_paths = paths["Round of 32"]
+    # TopSeed beat Cinderella in R64; path at R32 = [Cinderella].
+    assert r32_paths.get("TopSeed", []) == ["Cinderella"]
+    # Alpha beat Beta in R64; path at R32 = [Beta].
+    assert r32_paths.get("Alpha", []) == ["Beta"]
+
+
+def test_path_builder_first_four_winner_has_two_opponents_in_r32() -> None:
+    """A First Four winner who also won R64 has two opponents in their R32 path."""
+    # Use a tournament where Cinderella wins R64 too.
+    tournament = {
+        **_PATH_TOURNAMENT,
+        "rounds": [
+            _PATH_TOURNAMENT["rounds"][0],  # First Four: Cinderella beats Bubble
+            {
+                "name": "Round of 64",
+                "games": [
+                    {
+                        "team1": {"name": "TopSeed", "seed": 1},
+                        "team2": {"name": "Cinderella", "seed": 16},
+                        "winner": "Cinderella",  # upset
+                    },
+                ],
+            },
+            {
+                "name": "Round of 32",
+                "games": [],
+            },
+        ],
+    }
+    paths = build_team_prior_paths_for_tournament(tournament)
+    r32_paths = paths["Round of 32"]
+    # Cinderella beat Bubble (First Four) then TopSeed (R64).
+    assert r32_paths.get("Cinderella", []) == ["Bubble", "TopSeed"]
+
+
+def test_path_builder_returns_empty_dict_for_unknown_round() -> None:
+    """Querying a round not in the data returns an empty dict."""
+    paths = build_team_prior_paths_for_tournament(_PATH_TOURNAMENT)
+    assert paths.get("Elite Eight", {}) == {}
 
 
 # ---------------------------------------------------------------------------

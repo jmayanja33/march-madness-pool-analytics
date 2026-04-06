@@ -66,20 +66,28 @@ export async function fetchProjections() {
 }
 
 // Fetches the head-to-head win probability prediction for two tournament teams.
-// Accepts the display names of both teams and returns an H2HResponse with
-// win_probability values for team1 and team2.
+// Accepts the display names of both teams and optional arrays of prior beaten
+// opponent names for each team. When opponents are provided, the response also
+// includes path_adjusted_probability (a Bayesian update on win_probability
+// based on each team's path difficulty). Without opponents, those fields are null.
 // Throws if the network request fails or the pair is not found (404).
-export async function fetchH2H(team1Name, team2Name) {
+export async function fetchH2H(team1Name, team2Name, team1Opponents = [], team2Opponents = []) {
   const params = new URLSearchParams({ team1: team1Name, team2: team2Name });
+  if (team1Opponents.length) params.append('team1_opponents', team1Opponents.join(','));
+  if (team2Opponents.length) params.append('team2_opponents', team2Opponents.join(','));
   const res = await fetch(`${API_BASE}/head-to-head?${params.toString()}`);
   if (!res.ok) {
     console.error(`[API] fetchH2H failed — ${team1Name} vs ${team2Name}: HTTP ${res.status}`);
     throw new Error(`Failed to fetch H2H data: ${res.status}`);
   }
   const data = await res.json();
+  const adj1 = data.team1.path_adjusted_probability;
+  const adj2 = data.team2.path_adjusted_probability;
   console.log(
-    `[API] fetchH2H — ${team1Name} (${data.team1.win_probability}) ` +
-    `vs ${team2Name} (${data.team2.win_probability})`
+    `[API] fetchH2H — ${team1Name} (base: ${data.team1.win_probability}` +
+    `${adj1 != null ? `, adj: ${adj1}` : ''}) ` +
+    `vs ${team2Name} (base: ${data.team2.win_probability}` +
+    `${adj2 != null ? `, adj: ${adj2}` : ''})`
   );
   return data;
 }

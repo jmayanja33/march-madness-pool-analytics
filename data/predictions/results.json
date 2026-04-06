@@ -105,7 +105,7 @@
             "team1": { "name": "BYU",              "seed": 6,  "score": 71 },
             "team2": { "name": "Texas",            "seed": 11, "score": 79 },
             "winner": "Texas",
-            "correct": false
+            "correct": true
           },
           {
             "team1": { "name": "Illinois",         "seed": 3,  "score": 105 },
@@ -396,7 +396,7 @@
             "team1": { "name": "Arizona",          "seed": 1,  "score":  79},
             "team2": { "name": "Purdue",      "seed": 2,  "score":  64},
             "winner": "Arizona",
-            "correct": false
+            "correct": true
           },
           {
             "team1": { "name": "Michigan",          "seed": 1,  "score":  95},

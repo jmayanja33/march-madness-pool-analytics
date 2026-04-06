@@ -211,11 +211,152 @@
   width: 100%;
 }
 
-/* ── Card wrapper — allows the TeamCard to fill and scroll within its half ── */
+/* ── Card wrapper — TeamCard sized by its content; the h2h-side handles scrolling ── */
 .h2h-card-wrap {
-  flex: 1;
-  min-height: 0;
+  width: 100%;
+}
+
+/* ── Prior path section — appears below the TeamCard when a team is selected ── */
+.h2h-prior-section {
+  padding: 14px 0 8px;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+
+/* Header row: title + hint text stacked */
+.h2h-prior-header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 10px;
+}
+
+.h2h-prior-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--dark-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.h2h-prior-hint {
+  font-size: 0.73rem;
+  color: var(--silver);
+  line-height: 1.3;
+}
+
+/* Removable chips for selected opponents */
+.h2h-prior-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.h2h-prior-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #e8f0fe;
+  color: var(--dark-blue);
+  border-radius: 12px;
+  padding: 3px 8px 3px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.h2h-prior-chip-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--dark-blue);
+  font-size: 0.7rem;
+  padding: 0 2px;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+  line-height: 1;
+}
+
+.h2h-prior-chip-remove:hover {
+  opacity: 1;
+}
+
+/* Button that opens the opponent dropdown */
+.h2h-prior-picker {
+  position: relative;
+  display: inline-block;
+}
+
+.h2h-prior-add-btn {
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  color: var(--dark-blue);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.h2h-prior-add-btn:hover {
+  border-color: var(--dark-blue);
+  background: var(--bg);
+}
+
+/* Dropdown panel */
+.h2h-prior-dropdown-wrap {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 200;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  min-width: 240px;
+}
+
+.h2h-prior-search {
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+  font-size: 0.85rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.h2h-prior-dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  max-height: 200px;
   overflow-y: auto;
+}
+
+.h2h-prior-option {
+  padding: 7px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.h2h-prior-option:hover {
+  background: var(--bg);
+}
+
+/* Badge shown next to "Win Probability" when path adjustment is active */
+.h2h-path-adjusted-badge {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--silver);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-family: sans-serif;
 }
 
 /* ── Mobile — stack the two team halves vertically ── */
@@ -236,14 +377,9 @@
     padding: 16px;
   }
 
-  /* flex: none stops the wrap from growing beyond max-height via flex-grow.
-     overflow-y: auto creates the scroll region once the card exceeds the cap. */
+  /* Card and prior section scroll together within the side pane. */
   .h2h-card-wrap {
-    flex: none;
     width: 100%;
-    max-height: 60vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
   .h2h-meter-wrap {

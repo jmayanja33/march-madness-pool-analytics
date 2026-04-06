@@ -10,6 +10,7 @@ Provides helpers for:
 
 import json
 import logging
+import math
 from functools import lru_cache
 from typing import Optional
 
@@ -505,6 +506,66 @@ def get_h2h_prediction(team1_name: str, team2_name: str) -> Optional[H2HResponse
     return None
 
 
+def compute_path_score(team_name: str, opponent_names: list[str]) -> float:
+    """Sum P(opponent_i beats team) for every opponent beaten by the team.
+
+    Each beaten opponent contributes its pre-season win probability *against
+    this specific team* to the path score.  Beating a heavily favored opponent
+    (high p_i) contributes more than beating an underdog, correctly encoding
+    path difficulty.
+
+    Opponents not found in the H2H predictions file are silently skipped
+    (contribute 0) to handle missing data gracefully.
+
+    Args:
+        team_name: Display name of the team whose path is being scored.
+        opponent_names: Ordered list of display names of beaten opponents.
+
+    Returns:
+        Non-negative float representing cumulative path difficulty.
+    """
+    total = 0.0
+    for opp in opponent_names:
+        # Look up the matchup with the opponent listed first so that
+        # result.team1 = opp → result.team1.win_probability = P(opp beats team).
+        result = get_h2h_prediction(opp, team_name)
+        if result is not None:
+            total += result.team1.win_probability
+    return total
+
+
+def apply_path_adjustment(
+    base_p1: float, path_score_1: float, path_score_2: float
+) -> tuple[float, float]:
+    """Apply a log-odds Bayesian update to a base H2H win probability.
+
+    The update shifts the prior log-odds by the net path difficulty advantage
+    (path_score_1 - path_score_2).  A team that beat harder opponents receives
+    a positive adjustment; one that beat easier opponents receives a negative
+    one.  Equal path difficulties cancel out, leaving the probability unchanged.
+
+    Formula:
+        adjusted_log_odds = log(p1 / (1-p1)) + (path_score_1 - path_score_2)
+        adjusted_p1 = sigmoid(adjusted_log_odds)
+
+    Args:
+        base_p1: Pre-season win probability for team 1 (0–1).
+        path_score_1: Sum of P(opponent beats team1) for team 1's beaten opponents.
+        path_score_2: Sum of P(opponent beats team2) for team 2's beaten opponents.
+
+    Returns:
+        Tuple (adjusted_p1, adjusted_p2) where adjusted_p2 = 1 - adjusted_p1.
+        Both values are rounded to six decimal places.
+    """
+    # Clip to (0, 1) open interval to prevent log(0) — logistic regression
+    # outputs are never exactly 0 or 1 in practice.
+    p1 = max(1e-9, min(1.0 - 1e-9, base_p1))
+    prior_log_odds = math.log(p1 / (1.0 - p1))
+    adjusted_log_odds = prior_log_odds + (path_score_1 - path_score_2)
+    p1_adj = 1.0 / (1.0 + math.exp(-adjusted_log_odds))
+    return round(p1_adj, 6), round(1.0 - p1_adj, 6)
+
+
 # ---------------------------------------------------------------------------
 # ChromaDB — similar team lookup
 # ---------------------------------------------------------------------------
@@ -618,6 +679,17 @@ def get_similar_teams(team_name: str) -> list[SimilarTeam]:
 # Path to the pre-calculated tournament results JSON file.
 RESULTS_FILE = PREDICTIONS_DIR / "results.json"
 
+# Canonical round order used when accumulating per-team tournament paths.
+ROUND_ORDER: list[str] = [
+    "First Four",
+    "Round of 64",
+    "Round of 32",
+    "Sweet Sixteen",
+    "Elite Eight",
+    "Final Four",
+    "National Championship",
+]
+
 
 def load_results_data() -> list[dict]:
     """Load the tournament results JSON from disk on every call.
@@ -638,22 +710,79 @@ def load_results_data() -> list[dict]:
     return json.loads(RESULTS_FILE.read_text(encoding="utf-8"))
 
 
-def _get_game_predicted_probability(
-    team1_name: str, team2_name: str
-) -> Optional[float]:
-    """Return the model's confidence for a game matchup.
+def build_team_prior_paths_for_tournament(
+    tournament: dict,
+) -> dict[str, dict[str, list[str]]]:
+    """Build each team's cumulative prior path at the start of every round.
 
-    Looks up the pre-calculated h2h prediction for the two teams and returns
-    the higher of the two win probabilities.  This represents the model's
-    confidence in whichever team it predicted to win (always >= 0.5).
+    Processes rounds in canonical ROUND_ORDER.  Before each round begins, a
+    snapshot of every team's accumulated beaten-opponents list is stored.
+    After each round the winners' paths are extended with the loser's name.
+
+    First Four winners carry their beaten opponent into the Round of 64, so
+    a First Four winner's path is non-empty when the R64 game is evaluated.
+
+    Args:
+        tournament: Raw tournament dict from results.json (single tournament).
+
+    Returns:
+        Dict mapping round_name -> {team_name -> [beaten_opponents_before_round]}.
+        A team not yet in the structure has an implicitly empty path.
+    """
+    # Index rounds by name for O(1) lookup.
+    rounds_by_name: dict[str, dict] = {
+        r["name"]: r for r in tournament.get("rounds", [])
+    }
+
+    # team_path accumulates opponents beaten across all completed rounds.
+    team_path: dict[str, list[str]] = {}
+    # Snapshot of team_path taken BEFORE each round starts.
+    paths_at_round: dict[str, dict[str, list[str]]] = {}
+
+    for round_name in ROUND_ORDER:
+        if round_name not in rounds_by_name:
+            continue
+
+        # Record path state before this round so it can be used when evaluating
+        # each game in this round.
+        paths_at_round[round_name] = {k: list(v) for k, v in team_path.items()}
+
+        # Extend each winner's accumulated path with the opponent they beat.
+        for game in rounds_by_name[round_name].get("games", []):
+            winner = game["winner"]
+            t1 = game["team1"]["name"]
+            t2 = game["team2"]["name"]
+            loser = t2 if t1 == winner else t1
+            team_path[winner] = team_path.get(winner, []) + [loser]
+
+    return paths_at_round
+
+
+def _get_game_path_adjusted_probability(
+    team1_name: str,
+    team2_name: str,
+    team1_prior: list[str],
+    team2_prior: list[str],
+) -> Optional[float]:
+    """Return the path-adjusted model confidence for a game.
+
+    Looks up the base H2H probability, applies the Bayesian log-odds
+    path-difficulty adjustment using each team's prior beaten opponents,
+    and returns the higher of the two adjusted probabilities (always >= 0.5).
+    This represents the model's confidence in whichever team it favors.
+
+    When both prior lists are empty (e.g. First Four games), no adjustment
+    is applied and the result equals the base H2H max probability.
 
     Args:
         team1_name: Display name of the first team.
         team2_name: Display name of the second team.
+        team1_prior: Opponents team1 beat before this game.
+        team2_prior: Opponents team2 beat before this game.
 
     Returns:
-        The predicted winner's win probability (0.5–1.0), or ``None`` if the
-        matchup is not found in h2h-predictions.json.
+        Path-adjusted confidence (0.5–1.0), or ``None`` if the matchup is
+        not found in h2h-predictions.json.
     """
     needle1 = team1_name.casefold()
     needle2 = team2_name.casefold()
@@ -663,59 +792,81 @@ def _get_game_predicted_probability(
     except FileNotFoundError:
         return None
 
+    # Find team1's base win probability (direction-agnostic lookup).
+    base_p1: Optional[float] = None
     for entry in predictions:
         stored1 = entry["team1"]["name"].casefold()
         stored2 = entry["team2"]["name"].casefold()
+        if stored1 == needle1 and stored2 == needle2:
+            base_p1 = entry["team1"]["win_probability"]
+            break
+        if stored1 == needle2 and stored2 == needle1:
+            # Stored in reverse — team1's probability is the team2 slot.
+            base_p1 = entry["team2"]["win_probability"]
+            break
 
-        # Match in either direction — return the higher probability.
-        if (stored1 == needle1 and stored2 == needle2) or \
-           (stored1 == needle2 and stored2 == needle1):
-            p1 = entry["team1"]["win_probability"]
-            p2 = entry["team2"]["win_probability"]
-            return max(p1, p2)
+    if base_p1 is None:
+        return None
 
-    return None
+    # Apply path-difficulty Bayesian adjustment when prior data is available.
+    if team1_prior or team2_prior:
+        path_score_1 = compute_path_score(team1_name, team1_prior)
+        path_score_2 = compute_path_score(team2_name, team2_prior)
+        adj_p1, adj_p2 = apply_path_adjustment(base_p1, path_score_1, path_score_2)
+        return max(adj_p1, adj_p2)
+
+    return max(base_p1, 1.0 - base_p1)
 
 
 def get_results() -> ResultsResponse:
     """Build a ResultsResponse from the raw results JSON data.
 
     Parses all tournament years and their round game data into Pydantic models.
-    Each game is enriched with the model's predicted probability (confidence)
-    looked up from h2h-predictions.json.  Rounds with no games are still
-    included so the frontend can display them as "No games yet".
+    Each game is enriched with a path-adjusted model confidence: the base H2H
+    probability updated via a Bayesian log-odds adjustment using each team's
+    prior tournament path (opponents beaten before this game).  Teams with no
+    prior games (e.g. both sides of a First Four matchup) receive the unmodified
+    base probability.  The prior path for each game is included in the response
+    so the frontend can display it for verification.
 
     Returns:
-        Populated :class:`~app.models.ResultsResponse` instance with all
-        tracked tournament years and their game results.
+        Populated :class:`~app.models.ResultsResponse` instance.
     """
     raw_tournaments = load_results_data()
     tournaments: list[ResultsTournament] = []
 
     for raw_t in raw_tournaments:
+        # Build prior-path snapshots for every round.
+        # paths_at_round[round_name][team_name] = opponents beaten before that round.
+        paths_at_round = build_team_prior_paths_for_tournament(raw_t)
         rounds: list[ResultsRound] = []
 
-        # Parse each round and its games.
         for raw_r in raw_t.get("rounds", []):
+            round_name = raw_r["name"]
+            # Path state each team had BEFORE entering this round.
+            round_paths = paths_at_round.get(round_name, {})
             games: list[ResultsGame] = []
 
             for raw_g in raw_r.get("games", []):
-                # Build each team's entry from the raw game dict.
+                t1_name = raw_g["team1"]["name"]
+                t2_name = raw_g["team2"]["name"]
+                t1_prior = round_paths.get(t1_name, [])
+                t2_prior = round_paths.get(t2_name, [])
+
                 team1 = ResultsTeamEntry(
-                    name=raw_g["team1"]["name"],
+                    name=t1_name,
                     seed=raw_g["team1"]["seed"],
                     score=raw_g["team1"].get("score"),
                 )
                 team2 = ResultsTeamEntry(
-                    name=raw_g["team2"]["name"],
+                    name=t2_name,
                     seed=raw_g["team2"]["seed"],
                     score=raw_g["team2"].get("score"),
                 )
 
-                # Look up the model's confidence (max win probability) for this game.
-                predicted_prob = _get_game_predicted_probability(
-                    raw_g["team1"]["name"],
-                    raw_g["team2"]["name"],
+                # Path-adjusted confidence for the model's predicted winner.
+                predicted_prob = _get_game_path_adjusted_probability(
+                    t1_name, t2_name, t1_prior, t2_prior
                 )
 
                 games.append(ResultsGame(
@@ -724,9 +875,11 @@ def get_results() -> ResultsResponse:
                     winner=raw_g["winner"],
                     correct=raw_g["correct"],
                     predicted_probability=predicted_prob,
+                    team1_path=t1_prior,
+                    team2_path=t2_prior,
                 ))
 
-            rounds.append(ResultsRound(name=raw_r["name"], games=games))
+            rounds.append(ResultsRound(name=round_name, games=games))
 
         tournaments.append(ResultsTournament(
             year=raw_t["year"],
