@@ -431,7 +431,14 @@
       },
       {
         "name": "National Championship",
-        "games": []
+        "games": [
+          {
+            "team1": { "name": "Michigan",          "seed": 1,  "score":  69},
+            "team2": { "name": "UConn",      "seed": 2,  "score":  63},
+            "winner": "Michigan",
+            "correct": false
+          }
+        ]
       }
     ]
   }
