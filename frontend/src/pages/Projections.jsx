@@ -98,6 +98,20 @@ const SECTIONS = [
 
 const FIRST_ROUND_PAIRS = [[1,16],[8,9],[5,12],[4,13],[6,11],[3,14],[7,10],[2,15]];
 
+// ---------------------------------------------------------------------------
+// First Four priors — maps each First Four team to their opponent.
+//
+// Any First Four team that reaches R64 has already beaten their First Four
+// opponent, so that opponent is always a valid prior for the path adjustment.
+// ---------------------------------------------------------------------------
+
+// Build { teamName: [firstFourOpponentName] } from the static bracket data.
+const FIRST_FOUR_PRIORS = {};
+for (const ff of FIRST_FOUR_2026) {
+  FIRST_FOUR_PRIORS[ff.teamA.name] = [ff.teamB.name];
+  FIRST_FOUR_PRIORS[ff.teamB.name] = [ff.teamA.name];
+}
+
 // Build the list of all potential upset candidates.
 //
 // For each region, pair teams by the standard first-round bracket matchups and
@@ -222,6 +236,8 @@ export default function Projections() {
   }, []);
 
   // Once rankings load, identify potential upsets via h2h probabilities.
+  // First Four teams always have their R64 probability path-adjusted using their
+  // First Four opponent as a prior — they must beat that opponent to reach R64.
   useEffect(() => {
     if (!rankings) return;
 
@@ -236,16 +252,21 @@ export default function Projections() {
     const candidates = buildUpsetCandidates(teamMap);
 
     // Fetch h2h win probabilities for all candidates in parallel.
-    // fetchH2H(team1, team2) always returns team1 = the first argument.
+    // For First Four teams, pass their First Four opponent as a prior so the
+    // displayed probability is path-adjusted to reflect that prior game.
     Promise.allSettled(
-      candidates.map(c =>
-        fetchH2H(c.teamName, c.opponentName).then(data => ({
+      candidates.map(c => {
+        const priorOpponents = FIRST_FOUR_PRIORS[c.teamName] ?? [];
+        return fetchH2H(c.teamName, c.opponentName, priorOpponents).then(data => ({
           team: teamMap[c.teamName],
           opponentName: c.opponentName,
           region: c.region,
-          winProb: data.team1.win_probability,
-        }))
-      )
+          // Use path-adjusted probability for First Four teams, base otherwise.
+          winProb: priorOpponents.length > 0
+            ? (data.team1.path_adjusted_probability ?? data.team1.win_probability)
+            : data.team1.win_probability,
+        }));
+      })
     ).then(results => {
       // Keep only teams with >= 40% win probability, sorted descending.
       const upsetList = results
