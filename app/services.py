@@ -691,6 +691,7 @@ ROUND_ORDER: list[str] = [
 ]
 
 
+
 def load_results_data() -> list[dict]:
     """Load the tournament results JSON from disk on every call.
 
@@ -784,29 +785,17 @@ def _get_game_path_adjusted_probability(
         Path-adjusted confidence (0.5–1.0), or ``None`` if the matchup is
         not found in h2h-predictions.json.
     """
-    needle1 = team1_name.casefold()
-    needle2 = team2_name.casefold()
-
+    # Look up the base H2H probability via the shared service.
+    # Catch FileNotFoundError in case the h2h-predictions file is missing so
+    # that the results page degrades gracefully rather than raising a 500.
     try:
-        predictions = load_h2h_predictions()
+        result = get_h2h_prediction(team1_name, team2_name)
     except FileNotFoundError:
         return None
-
-    # Find team1's base win probability (direction-agnostic lookup).
-    base_p1: Optional[float] = None
-    for entry in predictions:
-        stored1 = entry["team1"]["name"].casefold()
-        stored2 = entry["team2"]["name"].casefold()
-        if stored1 == needle1 and stored2 == needle2:
-            base_p1 = entry["team1"]["win_probability"]
-            break
-        if stored1 == needle2 and stored2 == needle1:
-            # Stored in reverse — team1's probability is the team2 slot.
-            base_p1 = entry["team2"]["win_probability"]
-            break
-
-    if base_p1 is None:
+    if result is None:
         return None
+
+    base_p1 = result.team1.win_probability
 
     # Apply path-difficulty Bayesian adjustment when prior data is available.
     if team1_prior or team2_prior:

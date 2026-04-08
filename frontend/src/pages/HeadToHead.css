@@ -246,14 +246,7 @@
   line-height: 1.3;
 }
 
-/* Removable chips for selected opponents */
-.h2h-prior-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-
+/* Removable chip for a selected opponent inside a path table slot */
 .h2h-prior-chip {
   display: inline-flex;
   align-items: center;
@@ -261,9 +254,22 @@
   background: #e8f0fe;
   color: var(--dark-blue);
   border-radius: 12px;
-  padding: 3px 8px 3px 10px;
+  padding: 3px 8px 3px 8px;
   font-size: 0.78rem;
   font-weight: 600;
+}
+
+/* Short round abbreviation badge (R64, R32, S16, …) inside each chip */
+.h2h-prior-chip-round {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--dark-blue);
+  border-radius: 8px;
+  padding: 1px 5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 .h2h-prior-chip-remove {
@@ -282,30 +288,90 @@
   opacity: 1;
 }
 
-/* Button that opens the opponent dropdown */
-.h2h-prior-picker {
+/* ── NCAA Tournament Path table ── */
+
+/* Flex column holding one row per round */
+.h2h-path-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* One row: [label col] [value col] */
+.h2h-path-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 32px;
+}
+
+/* Dimmed row when the slot is not yet reachable (previous round not filled) */
+.h2h-path-row-disabled {
+  opacity: 0.45;
+}
+
+/* Fixed-width left column: holds the round badge + optional "(opt)" label */
+.h2h-path-label-col {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  width: 80px;
+}
+
+/* Right column: expands to fill remaining space; holds chip or picker */
+.h2h-path-value-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Small "(opt)" hint next to the PLAY badge */
+.h2h-path-optional {
+  font-size: 0.65rem;
+  color: var(--silver);
+  font-style: italic;
+}
+
+/* Modifier applied to the round badge when the row is disabled — grey out */
+.h2h-path-badge-dim {
+  background: var(--silver) !important;
+  opacity: 0.6;
+}
+
+/* Em-dash placeholder shown when the row is locked */
+.h2h-path-disabled {
+  font-size: 0.85rem;
+  color: var(--silver);
+}
+
+/* Relative wrapper so the absolute dropdown is positioned correctly */
+.h2h-path-picker {
   position: relative;
   display: inline-block;
 }
 
-.h2h-prior-add-btn {
+/* Dashed "Select opponent" button */
+.h2h-path-add-btn {
   background: none;
   border: 1px dashed var(--border);
   border-radius: 6px;
-  padding: 5px 12px;
+  padding: 4px 10px;
   font-size: 0.78rem;
   color: var(--dark-blue);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
+  white-space: nowrap;
 }
 
-.h2h-prior-add-btn:hover {
+.h2h-path-add-btn:hover {
   border-color: var(--dark-blue);
   background: var(--bg);
 }
 
-/* Dropdown panel */
-.h2h-prior-dropdown-wrap {
+/* Absolute dropdown panel below the add button */
+.h2h-path-dropdown {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
@@ -314,10 +380,11 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  min-width: 240px;
+  min-width: 220px;
 }
 
-.h2h-prior-search {
+/* Search input at the top of the dropdown */
+.h2h-path-search {
   width: 100%;
   padding: 8px 10px;
   border: none;
@@ -328,15 +395,17 @@
   box-sizing: border-box;
 }
 
-.h2h-prior-dropdown {
+/* List of matching teams inside the dropdown */
+.h2h-path-dropdown-list {
   list-style: none;
   margin: 0;
   padding: 4px 0;
-  max-height: 200px;
+  max-height: 180px;
   overflow-y: auto;
 }
 
-.h2h-prior-option {
+/* Individual team row in the dropdown */
+.h2h-path-option {
   padding: 7px 12px;
   font-size: 0.85rem;
   cursor: pointer;
@@ -345,7 +414,7 @@
   gap: 6px;
 }
 
-.h2h-prior-option:hover {
+.h2h-path-option:hover {
   background: var(--bg);
 }
 

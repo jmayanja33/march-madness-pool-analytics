@@ -2,19 +2,74 @@
 //
 // Layout: the page is split vertically into two equal halves (Team 1 | Team 2).
 // Each half has a searchable team picker.  When a team is selected its full
-// TeamCard fills that half, and a "Prior Path" section appears below allowing
-// the user to add opponents that team beat on the way to this matchup.
+// TeamCard fills that half, and a "Prior Path" table appears below.
+//
+// The prior path table has one row per tournament round (First Four through
+// Final Four).  A round can only be filled once the previous round is filled,
+// enforcing chronological order.  The First Four row is optional and
+// independent — it does not gate the Round of 64 row.
+//
+// Each filled slot shows a round-labeled chip.  Removing an opponent from
+// a slot also cascades-clears all later slots so the path stays sequential.
 //
 // When both sides are populated a win-probability meter appears at the top.
-// If prior opponents are supplied the meter shows the path-adjusted probability
-// (Bayesian log-odds update); otherwise it shows the base pre-season probability.
-// The meter segments use each team's primary color extracted from their logo.
+// If any prior opponents are set the meter shows the path-adjusted probability
+// (Bayesian log-odds update); otherwise it shows the base pre-season value.
+// Meter segments use each team's primary color extracted from their logo.
 import { useState, useEffect, useRef } from 'react';
 import NavBar from '../components/NavBar';
 import TeamCard from '../components/TeamCard';
 import { fetchTeams, fetchTeamData, fetchH2H } from '../api/teamApi';
 import './Analyze.css';   /* reuse picker component styles */
 import './HeadToHead.css';
+
+// ---------------------------------------------------------------------------
+// Round configuration
+// ---------------------------------------------------------------------------
+
+// Ordered list of rounds that appear as rows in the path table.
+// "optional" marks the First Four as not requiring the previous slot.
+const ROUND_CONFIG = [
+  { key: 'firstFour', label: 'First Four', short: 'PLAY IN', optional: true },
+  { key: 'r64',       label: 'Round of 64', short: 'R64',  optional: false },
+  { key: 'r32',       label: 'Round of 32', short: 'R32',  optional: false },
+  { key: 's16',       label: 'Sweet Sixteen', short: 'S16', optional: false },
+  { key: 'e8',        label: 'Elite Eight', short: 'E8',   optional: false },
+  { key: 'ff',        label: 'Final Four', short: 'FF',    optional: false },
+];
+
+// Keys of rounds that follow each other sequentially (excluding firstFour).
+// Used to cascade-clear dependent slots when an earlier slot is removed.
+const SEQUENTIAL_KEYS = ['r64', 'r32', 's16', 'e8', 'ff'];
+
+// Empty path state — all slots null.
+const EMPTY_PATH = { firstFour: null, r64: null, r32: null, s16: null, e8: null, ff: null };
+
+// ---------------------------------------------------------------------------
+// Path helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Convert a path object into the ordered opponents array expected by the
+ * backend.  Null slots are omitted.  The First Four opponent comes first,
+ * followed by R64 through FF in order.
+ *
+ * @param {Object} path - Path object with keys firstFour, r64, r32, s16, e8, ff.
+ * @returns {string[]} Ordered array of beaten opponent names.
+ */
+function buildFullPath(path) {
+  return ROUND_CONFIG.map(r => path[r.key]).filter(Boolean);
+}
+
+/**
+ * Returns true when at least one slot in the path is filled.
+ *
+ * @param {Object} path - Path object.
+ * @returns {boolean}
+ */
+function hasPathData(path) {
+  return Object.values(path).some(Boolean);
+}
 
 // ---------------------------------------------------------------------------
 // Logo color extraction
@@ -26,8 +81,7 @@ const FALLBACK_COLOR_2 = '#4a6fa5';
 
 /**
  * Extracts the average primary color from a logo image using canvas.
- * Considers only non-transparent pixels that are not near-white, so that
- * background or padding pixels do not wash out the result.
+ * Considers only non-transparent, non-near-white pixels.
  *
  * @param {string} src - Image URL to sample.
  * @returns {Promise<string|null>} RGB color string, or null on failure.
@@ -38,7 +92,6 @@ function extractLogoColor(src) {
     img.crossOrigin = 'anonymous';
 
     img.onload = () => {
-      // Downsample to 32×32 for performance.
       const canvas = document.createElement('canvas');
       canvas.width = 32;
       canvas.height = 32;
@@ -50,7 +103,6 @@ function extractLogoColor(src) {
       for (let i = 0; i < data.length; i += 4) {
         const alpha = data[i + 3];
         const pr = data[i], pg = data[i + 1], pb = data[i + 2];
-        // Skip transparent pixels and near-white pixels (avoid logo padding).
         if (alpha < 128) continue;
         if (pr > 220 && pg > 220 && pb > 220) continue;
         r += pr; g += pg; b += pb;
@@ -88,16 +140,17 @@ export default function HeadToHead() {
   const [error1, setError1]             = useState(null);
   const [error2, setError2]             = useState(null);
 
-  // Prior beaten opponents for each team (array of display name strings).
-  const [opponents1, setOpponents1]     = useState([]);
-  const [opponents2, setOpponents2]     = useState([]);
+  // Path objects — one per side.  Each key is a round slot (firstFour, r64,
+  // r32, s16, e8, ff) holding either null or a beaten opponent's display name.
+  const [path1, setPath1]               = useState({ ...EMPTY_PATH });
+  const [path2, setPath2]               = useState({ ...EMPTY_PATH });
 
   // Head-to-head win probabilities from the backend, or null.
   const [h2hData, setH2hData]           = useState(null);
   const [h2hLoading, setH2hLoading]     = useState(false);
   const [h2hError, setH2hError]         = useState(null);
 
-  // Controls the CSS transition on the meter fill — true once h2hData is ready.
+  // Controls the CSS transition on the meter fill.
   const [meterAnimated, setMeterAnimated] = useState(false);
 
   // Team logo primary colors, used to fill the meter segments.
@@ -112,7 +165,7 @@ export default function HeadToHead() {
       .finally(() => setListLoading(false));
   }, []);
 
-  // Fetch H2H prediction whenever both sides are populated or opponents change.
+  // Fetch H2H prediction whenever both sides are populated or any path changes.
   useEffect(() => {
     if (!team1 || !team2) {
       setH2hData(null);
@@ -123,15 +176,15 @@ export default function HeadToHead() {
     setMeterAnimated(false);
     setH2hLoading(true);
     setH2hError(null);
-    fetchH2H(team1.name, team2.name, opponents1, opponents2)
+
+    fetchH2H(team1.name, team2.name, buildFullPath(path1), buildFullPath(path2))
       .then(data => {
         setH2hData(data);
-        // Small delay so the browser renders the 0-width bar before animating.
         setTimeout(() => setMeterAnimated(true), 40);
       })
       .catch(() => setH2hError('Could not load head-to-head prediction.'))
       .finally(() => setH2hLoading(false));
-  }, [team1, team2, opponents1, opponents2]);
+  }, [team1, team2, path1, path2]);
 
   // Extract team logo colors whenever teams change.
   useEffect(() => {
@@ -146,16 +199,16 @@ export default function HeadToHead() {
       .then(c => setColor2(c ?? FALLBACK_COLOR_2));
   }, [team2]);
 
-  // Load a team by name into the specified side and reset that side's opponents.
+  // Load a team by name into the specified side and reset that side's path.
   async function loadTeam(name, side) {
     const setLoading = side === 1 ? setLoading1 : setLoading2;
     const setError   = side === 1 ? setError1   : setError2;
     const setTeam    = side === 1 ? setTeam1    : setTeam2;
-    const setOpps    = side === 1 ? setOpponents1 : setOpponents2;
+    const setPath    = side === 1 ? setPath1    : setPath2;
 
     setLoading(true);
     setError(null);
-    setOpps([]);  // Clear prior opponents when a new team is selected.
+    setPath({ ...EMPTY_PATH });
     try {
       const data = await fetchTeamData(name);
       setTeam(data);
@@ -166,14 +219,17 @@ export default function HeadToHead() {
     }
   }
 
-  // Clear a side back to the empty/picker state and remove its prior opponents.
+  // Clear a side back to the empty/picker state and remove its path.
   function clearTeam(side) {
-    if (side === 1) { setTeam1(null); setError1(null); setOpponents1([]); }
-    else             { setTeam2(null); setError2(null); setOpponents2([]); }
+    if (side === 1) { setTeam1(null); setError1(null); setPath1({ ...EMPTY_PATH }); }
+    else             { setTeam2(null); setError2(null); setPath2({ ...EMPTY_PATH }); }
   }
 
   // Names already chosen on either main side — excluded from all pickers.
   const addedNames = new Set([team1?.name, team2?.name].filter(Boolean));
+
+  // True when any path slot is filled on either side — drives "Path Adjusted" badge.
+  const hasPath = hasPathData(path1) || hasPathData(path2);
 
   // Display probabilities: use path-adjusted when available, else base.
   const pct1 = h2hData
@@ -187,14 +243,17 @@ export default function HeadToHead() {
     <div className="h2h-page">
       <NavBar />
 
-      {/* ── Win probability meter (shown once both teams are loaded) ── */}
+      {/* ── Win probability meter ── */}
       {(team1 && team2) && (
         <div className="h2h-meter-wrap fade-in">
-          {/* Section title */}
-          <h2 className="h2h-meter-title">Win Probability</h2>
+          <h2 className="h2h-meter-title">
+            Win Probability
+            {hasPath && (
+              <span className="h2h-path-adjusted-badge"> · Path Adjusted</span>
+            )}
+          </h2>
 
           <div className="h2h-meter-row">
-            {/* Team 1 logo — left of the bar */}
             <img
               src={`/logos/${team1.name}.png`}
               alt={`${team1.name} logo`}
@@ -202,28 +261,18 @@ export default function HeadToHead() {
               onError={e => { e.currentTarget.style.display = 'none'; }}
             />
 
-            {/* The probability bar */}
             <div className="h2h-meter-bar">
-              {/* Left fill — team 1's win probability in their primary color */}
               <div
                 className="h2h-meter-fill h2h-meter-fill-left"
-                style={{
-                  width: meterAnimated ? `${pct1}%` : '50%',
-                  background: color1,
-                }}
+                style={{ width: meterAnimated ? `${pct1}%` : '50%', background: color1 }}
               >
                 {meterAnimated && (
                   <span className="h2h-meter-label">{pct1.toFixed(1)}%</span>
                 )}
               </div>
-
-              {/* Right fill — team 2's win probability in their primary color */}
               <div
                 className="h2h-meter-fill h2h-meter-fill-right"
-                style={{
-                  width: meterAnimated ? `${pct2}%` : '50%',
-                  background: color2,
-                }}
+                style={{ width: meterAnimated ? `${pct2}%` : '50%', background: color2 }}
               >
                 {meterAnimated && (
                   <span className="h2h-meter-label">{pct2.toFixed(1)}%</span>
@@ -231,7 +280,6 @@ export default function HeadToHead() {
               </div>
             </div>
 
-            {/* Team 2 logo — right of the bar */}
             <img
               src={`/logos/${team2.name}.png`}
               alt={`${team2.name} logo`}
@@ -240,18 +288,12 @@ export default function HeadToHead() {
             />
           </div>
 
-          {/* Team name labels below the bar */}
           <div className="h2h-meter-names">
-            <span className="h2h-meter-team-name" style={{ color: color1 }}>
-              {team1.name}
-            </span>
+            <span className="h2h-meter-team-name" style={{ color: color1 }}>{team1.name}</span>
             <span className="h2h-meter-vs">vs</span>
-            <span className="h2h-meter-team-name" style={{ color: color2 }}>
-              {team2.name}
-            </span>
+            <span className="h2h-meter-team-name" style={{ color: color2 }}>{team2.name}</span>
           </div>
 
-          {/* Loading / error states for the H2H fetch */}
           {h2hLoading && <p className="h2h-meter-status">Loading prediction…</p>}
           {h2hError   && <p className="h2h-meter-error">{h2hError}</p>}
         </div>
@@ -265,7 +307,6 @@ export default function HeadToHead() {
           <h2 className="h2h-side-title">Team 1</h2>
 
           {!team1 ? (
-            /* Empty state: show the team picker */
             <div className="h2h-picker-wrap">
               <TeamPicker
                 teamList={teamList}
@@ -276,22 +317,21 @@ export default function HeadToHead() {
               />
             </div>
           ) : (
-            /* Team loaded: card then prior path section */
             <>
               <div className="h2h-card-wrap fade-in">
                 <TeamCard team={team1} onRemove={() => clearTeam(1)} />
               </div>
-              <PriorGamesPicker
+              <PathTable
                 teamList={teamList}
-                excludeNames={new Set([...addedNames, ...opponents1])}
-                opponents={opponents1}
-                onChange={setOpponents1}
+                addedNames={addedNames}
+                path={path1}
+                onPathChange={setPath1}
               />
             </>
           )}
         </div>
 
-        {/* ── Vertical divider — subtitle shown only when no team cards are rendered ── */}
+        {/* ── Vertical divider ── */}
         <div className="h2h-divider">
           {!(team1 || team2) ? (
             <>
@@ -322,11 +362,11 @@ export default function HeadToHead() {
               <div className="h2h-card-wrap fade-in">
                 <TeamCard team={team2} onRemove={() => clearTeam(2)} />
               </div>
-              <PriorGamesPicker
+              <PathTable
                 teamList={teamList}
-                excludeNames={new Set([...addedNames, ...opponents2])}
-                opponents={opponents2}
-                onChange={setOpponents2}
+                addedNames={addedNames}
+                path={path2}
+                onPathChange={setPath2}
               />
             </>
           )}
@@ -338,23 +378,19 @@ export default function HeadToHead() {
 }
 
 // ---------------------------------------------------------------------------
-// TeamPicker — searchable combobox (mirrors the Analyze page picker)
+// TeamPicker — searchable combobox
 // ---------------------------------------------------------------------------
-// Typing filters the list in real time; clicking a row calls onSelect.
-// Teams already chosen on either side are excluded from the dropdown.
 
 function TeamPicker({ teamList, loading, error, addedNames, onSelect }) {
   const [query, setQuery]   = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const containerRef        = useRef(null);
 
-  // Filter out already-added teams, then apply the search query.
   const available = teamList.filter(t => !addedNames.has(t.name));
   const filtered  = query.trim()
     ? available.filter(t => t.name.toLowerCase().includes(query.toLowerCase()))
     : available;
 
-  // Close dropdown when the user clicks outside.
   useEffect(() => {
     function handleClickOutside(e) {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
@@ -365,21 +401,14 @@ function TeamPicker({ teamList, loading, error, addedNames, onSelect }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Select a team from the dropdown.
   function choose(team) {
     setQuery(team.name);
     setIsOpen(false);
     onSelect(team.name);
   }
 
-  function handleInputChange(e) {
-    setQuery(e.target.value);
-    setIsOpen(true);
-  }
-
   return (
     <div className="team-picker">
-      {/* Combobox: text input + chevron toggle */}
       <div className="picker-combobox" ref={containerRef}>
         <input
           type="text"
@@ -387,11 +416,10 @@ function TeamPicker({ teamList, loading, error, addedNames, onSelect }) {
           placeholder={loading ? 'Loading teams…' : 'Select or search a team…'}
           value={query}
           disabled={loading}
-          onChange={handleInputChange}
+          onChange={e => { setQuery(e.target.value); setIsOpen(true); }}
           onFocus={() => setIsOpen(true)}
           autoComplete="off"
         />
-        {/* Chevron toggles the full list */}
         <button
           type="button"
           className={`picker-chevron ${isOpen ? 'open' : ''}`}
@@ -403,15 +431,10 @@ function TeamPicker({ teamList, loading, error, addedNames, onSelect }) {
           ▾
         </button>
 
-        {/* Filtered dropdown list */}
         {isOpen && !loading && filtered.length > 0 && (
           <ul className="picker-dropdown">
             {filtered.map(t => (
-              <li
-                key={t.name}
-                className="picker-option"
-                onMouseDown={() => choose(t)}
-              >
+              <li key={t.name} className="picker-option" onMouseDown={() => choose(t)}>
                 <span className="picker-seed">#{t.seed}</span>
                 {t.name}
               </li>
@@ -419,66 +442,59 @@ function TeamPicker({ teamList, loading, error, addedNames, onSelect }) {
           </ul>
         )}
 
-        {/* No-results message */}
         {isOpen && !loading && query.trim() && filtered.length === 0 && (
           <div className="picker-no-results">No teams match "{query}"</div>
         )}
       </div>
-
       {error && <p className="picker-error">{error}</p>}
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// PriorGamesPicker — select opponents beaten before this matchup
+// PathTable — round-by-round opponent table
 // ---------------------------------------------------------------------------
-// Renders a "Prior Path" section with removable chips for each selected opponent
-// and a searchable add-opponent button. Selected opponents drive the path-difficulty
-// Bayesian adjustment applied to the win probability meter.
+// Renders one row per tournament round.  Each row has a round badge on the
+// left and either a filled chip or an interactive slot picker on the right.
+//
+// Sequential constraint: a slot is enabled only when the preceding slot is
+// filled (except First Four, which is always enabled and optional).
+// Removing an opponent from a slot cascades-clears all dependent later slots.
 //
 // Props:
 //   teamList    — full { name, seed } list from the API
-//   excludeNames — Set of names to hide (the two main teams + already-chosen opponents)
-//   opponents   — current array of selected opponent display names
-//   onChange    — callback(newOpponentsArray) called on add/remove
+//   addedNames  — Set of the two main team names (always excluded)
+//   path        — path object { firstFour, r64, r32, s16, e8, ff }
+//   onPathChange — callback(newPath) called on any slot change
 
-function PriorGamesPicker({ teamList, excludeNames, opponents, onChange }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [query, setQuery]   = useState('');
-  const containerRef        = useRef(null);
+function PathTable({ teamList, addedNames, path, onPathChange }) {
+  // All names currently filled across all slots — prevent using the same team twice.
+  const filledNames = new Set(Object.values(path).filter(Boolean));
+  // Full exclusion set: the two main teams plus all filled opponents.
+  const excludeNames = new Set([...addedNames, ...filledNames]);
 
-  // Teams available to add: not already selected, not the two main teams.
-  const available = teamList.filter(t => !excludeNames.has(t.name));
-  const filtered  = query.trim()
-    ? available.filter(t => t.name.toLowerCase().includes(query.toLowerCase()))
-    : available;
-
-  // Close the dropdown when clicking outside.
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setIsOpen(false);
-        setQuery('');
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  function addOpponent(name) {
-    onChange([...opponents, name]);
-    setIsOpen(false);
-    setQuery('');
+  // Returns true when the given round slot is available to interact with.
+  function isEnabled(key) {
+    if (key === 'firstFour' || key === 'r64') return true;
+    const prereq = { r32: 'r64', s16: 'r32', e8: 's16', ff: 'e8' };
+    return !!path[prereq[key]];
   }
 
-  function removeOpponent(name) {
-    onChange(opponents.filter(o => o !== name));
+  // Update a single slot, cascading-clear any dependent sequential slots.
+  function setSlot(key, name) {
+    const newPath = { ...path, [key]: name };
+    // When clearing a non-firstFour slot, clear all slots that come after it.
+    if (!name && key !== 'firstFour') {
+      const idx = SEQUENTIAL_KEYS.indexOf(key);
+      for (let i = idx + 1; i < SEQUENTIAL_KEYS.length; i++) {
+        newPath[SEQUENTIAL_KEYS[i]] = null;
+      }
+    }
+    onPathChange(newPath);
   }
 
   return (
     <div className="h2h-prior-section">
-      {/* Section header */}
       <div className="h2h-prior-header">
         <span className="h2h-prior-title">NCAA Tournament Path</span>
         <span className="h2h-prior-hint">
@@ -486,65 +502,131 @@ function PriorGamesPicker({ teamList, excludeNames, opponents, onChange }) {
         </span>
       </div>
 
-      {/* Selected opponent chips */}
-      {opponents.length > 0 && (
-        <div className="h2h-prior-chips">
-          {opponents.map(opp => {
-            const t = teamList.find(t => t.name === opp);
-            return (
-              <span key={opp} className="h2h-prior-chip">
-                {t ? `#${t.seed} ` : ''}{opp}
-                <button
-                  className="h2h-prior-chip-remove"
-                  onClick={() => removeOpponent(opp)}
-                  aria-label={`Remove ${opp}`}
+      {/* One row per round */}
+      <div className="h2h-path-table">
+        {ROUND_CONFIG.map(({ key, short, optional }) => {
+          const enabled = isEnabled(key);
+          const selected = path[key];
+          return (
+            <div key={key} className={`h2h-path-row${enabled ? '' : ' h2h-path-row-disabled'}`}>
+              {/* Left column — round badge */}
+              <div className="h2h-path-label-col">
+                <span className={`h2h-prior-chip-round${enabled ? '' : ' h2h-path-badge-dim'}`}>
+                  {short}
+                </span>
+                {optional && (
+                  <span className="h2h-path-optional">opt</span>
+                )}
+              </div>
+
+              {/* Right column — slot picker or filled chip */}
+              <div className="h2h-path-value-col">
+                <SlotPicker
+                  teamList={teamList}
+                  excludeNames={excludeNames}
+                  selected={selected}
+                  onSelect={name => setSlot(key, name)}
+                  enabled={enabled}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// SlotPicker — single round slot in the path table
+// ---------------------------------------------------------------------------
+// Shows one of three states:
+//   filled   — a chip with the selected team name and a remove button
+//   enabled  — a button that opens an inline searchable dropdown
+//   disabled — a grey dash indicating this round is not yet reachable
+
+function SlotPicker({ teamList, excludeNames, selected, onSelect, enabled }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery]   = useState('');
+  const ref                 = useRef(null);
+
+  // Close dropdown on outside click.
+  useEffect(() => {
+    function handleOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+        setQuery('');
+      }
+    }
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, []);
+
+  // Filled state — show chip with remove button.
+  if (selected) {
+    const t = teamList.find(t => t.name === selected);
+    return (
+      <span className="h2h-prior-chip">
+        {t ? `#${t.seed} ` : ''}{selected}
+        <button
+          className="h2h-prior-chip-remove"
+          onClick={() => onSelect(null)}
+          aria-label={`Remove ${selected}`}
+        >
+          ✕
+        </button>
+      </span>
+    );
+  }
+
+  // Disabled state — show a dash.
+  if (!enabled) {
+    return <span className="h2h-path-disabled">—</span>;
+  }
+
+  // Enabled and empty — show the picker button and inline dropdown.
+  const available = teamList.filter(t => !excludeNames.has(t.name));
+  const filtered  = query.trim()
+    ? available.filter(t => t.name.toLowerCase().includes(query.toLowerCase()))
+    : available;
+
+  return (
+    <div className="h2h-path-picker" ref={ref}>
+      <button
+        className="h2h-path-add-btn"
+        onClick={() => setIsOpen(prev => !prev)}
+      >
+        + Select opponent
+      </button>
+
+      {isOpen && (
+        <div className="h2h-path-dropdown">
+          <input
+            type="text"
+            className="h2h-path-search"
+            placeholder="Search teams…"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            autoFocus
+          />
+          {filtered.length > 0 ? (
+            <ul className="h2h-path-dropdown-list">
+              {filtered.map(t => (
+                <li
+                  key={t.name}
+                  className="h2h-path-option"
+                  onMouseDown={() => { onSelect(t.name); setIsOpen(false); setQuery(''); }}
                 >
-                  ✕
-                </button>
-              </span>
-            );
-          })}
+                  <span className="picker-seed">#{t.seed}</span>
+                  {t.name}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="picker-no-results">No teams available</div>
+          )}
         </div>
       )}
-
-      {/* Add-opponent button + inline dropdown */}
-      <div className="h2h-prior-picker" ref={containerRef}>
-        <button
-          className="h2h-prior-add-btn"
-          onClick={() => setIsOpen(prev => !prev)}
-        >
-          + Add beaten opponent
-        </button>
-
-        {isOpen && (
-          <div className="h2h-prior-dropdown-wrap">
-            <input
-              type="text"
-              className="h2h-prior-search"
-              placeholder="Search teams…"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              autoFocus
-            />
-            {filtered.length > 0 ? (
-              <ul className="h2h-prior-dropdown">
-                {filtered.map(t => (
-                  <li
-                    key={t.name}
-                    className="h2h-prior-option"
-                    onMouseDown={() => addOpponent(t.name)}
-                  >
-                    <span className="picker-seed">#{t.seed}</span>
-                    {t.name}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="picker-no-results">No teams available</div>
-            )}
-          </div>
-        )}
-      </div>
     </div>
   );
 }

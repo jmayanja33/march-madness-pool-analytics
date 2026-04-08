@@ -24,12 +24,12 @@ _MOCK_H2H = [
     {
         "team1": {"name": "Duke", "win_probability": 0.72},
         "team2": {"name": "Kentucky", "win_probability": 0.28},
-        "year": 2025,
+        "year": 2026,
     },
     {
         "team1": {"name": "North Carolina", "win_probability": 0.60},
         "team2": {"name": "Kansas", "win_probability": 0.40},
-        "year": 2025,
+        "year": 2026,
     },
 ]
 
@@ -168,22 +168,35 @@ def test_path_score_skips_unknown_opponent() -> None:
 
 def test_path_score_accumulates_multiple_opponents() -> None:
     """Multiple opponents contribute cumulatively to the path score."""
-    # Duke (0.72 vs Kentucky) + North Carolina (0.60 vs Kansas)
-    # We need an opponent of Duke; reuse stored pairs where Duke is team2.
-    # Kentucky's path score after beating Duke: P(Duke beats Kentucky) = 0.72.
-    # Add a second beaten opponent — North Carolina vs Kansas → not relevant.
-    # Instead: test with two opponents both in the mock that beat the same target.
+    # Kentucky beats Duke (0.72) then North Carolina (0.55).
     extended_mock = _MOCK_H2H + [
         {
             "team1": {"name": "North Carolina", "win_probability": 0.55},
             "team2": {"name": "Kentucky", "win_probability": 0.45},
-            "year": 2025,
+            "year": 2026,
         },
     ]
     with patch("app.services.load_h2h_predictions", return_value=extended_mock):
         score = compute_path_score("Kentucky", ["Duke", "North Carolina"])
     # P(Duke beats Kentucky) = 0.72 + P(North Carolina beats Kentucky) = 0.55
     assert score == pytest.approx(0.72 + 0.55)
+
+
+def test_path_score_includes_first_four_opponent() -> None:
+    """A First Four opponent prepended to the path contributes to the score."""
+    # Simulates a team that won a First Four play-in game before R64.
+    extended_mock = _MOCK_H2H + [
+        {
+            "team1": {"name": "UMBC", "win_probability": 0.35},
+            "team2": {"name": "Kentucky", "win_probability": 0.65},
+            "year": 2026,
+        },
+    ]
+    with patch("app.services.load_h2h_predictions", return_value=extended_mock):
+        # UMBC is the First Four opponent beaten before Round of 64 (Duke).
+        score = compute_path_score("Kentucky", ["UMBC", "Duke"])
+    # P(UMBC beats Kentucky)=0.35 + P(Duke beats Kentucky)=0.72
+    assert score == pytest.approx(0.35 + 0.72)
 
 
 # ---------------------------------------------------------------------------
@@ -258,7 +271,8 @@ async def test_h2h_with_opponents_returns_adjusted_probability(
     # Duke beats 1 opponent (North Carolina); Kentucky has no prior opponents.
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
         response = await client.get(
-            "/api/head-to-head?team1=Duke&team2=Kentucky&team1_opponents=North+Carolina"
+            "/api/head-to-head?team1=Duke&team2=Kentucky"
+            "&team1_opponents=North+Carolina"
         )
     assert response.status_code == 200
     data = response.json()
@@ -277,7 +291,8 @@ async def test_h2h_empty_opponents_no_adjustment(client: AsyncClient) -> None:
     """Passing empty opponent strings is equivalent to providing no opponents."""
     with patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
         response = await client.get(
-            "/api/head-to-head?team1=Duke&team2=Kentucky&team1_opponents=&team2_opponents="
+            "/api/head-to-head?team1=Duke&team2=Kentucky"
+            "&team1_opponents=&team2_opponents="
         )
     data = response.json()
     assert data["team1"].get("path_adjusted_probability") is None
