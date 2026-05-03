@@ -332,12 +332,20 @@ class ResultsTournament(BaseModel):
 
     Contains computed aggregate totals (games, correct predictions) for the
     entire tournament derived from the individual round game lists.
+    ``brier_score`` is the mean squared error of the model's probability
+    predictions across all games that have H2H probability data (lower is
+    better; 0.25 is the baseline for a model that always predicts 50/50).
+    ``brier_score_by_round`` breaks the same metric down per round name.
     """
 
     year: int                      # Tournament year, e.g. 2026
     tournament_name: str           # Display title, e.g. "2026 Tournament"
     # Ordered list of rounds from First Four to National Championship.
     rounds: list[ResultsRound]
+    # Overall Brier score across all games with probability data; None if no data.
+    brier_score: Optional[float] = None
+    # Per-round Brier scores keyed by round name; omitted rounds have no data.
+    brier_score_by_round: dict[str, float] = {}
 
 
 class ResultsResponse(BaseModel):

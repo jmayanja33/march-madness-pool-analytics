@@ -807,6 +807,71 @@ def _get_game_path_adjusted_probability(
     return max(base_p1, 1.0 - base_p1)
 
 
+def compute_brier_score(
+    rounds: list[ResultsRound],
+) -> tuple[Optional[float], dict[str, float]]:
+    """Compute the Brier score for a set of tournament rounds.
+
+    The Brier score measures probabilistic forecast accuracy.  For each game
+    that has a ``predicted_probability`` value, the per-game contribution is:
+
+    * Correct prediction:   ``(1 - predicted_probability) ** 2``
+    * Incorrect prediction: ``predicted_probability ** 2``
+
+    This is equivalent to the standard binary Brier score formula
+    ``(f_t - o_t)^2`` because ``predicted_probability`` always stores the
+    higher of the two teams' probabilities (≥ 0.5), and ``correct`` records
+    whether that favoured team actually won.
+
+    Games without probability data (``predicted_probability is None``) are
+    excluded from both the numerator and the count.
+
+    Args:
+        rounds: The list of :class:`~app.models.ResultsRound` objects for one
+            tournament year, already populated with game results and
+            ``predicted_probability`` values.
+
+    Returns:
+        A tuple ``(overall_score, by_round)`` where:
+
+        * ``overall_score`` is the mean Brier score across all scored games,
+          or ``None`` when no games have probability data.
+        * ``by_round`` maps each round name to its mean Brier score; rounds
+          with no scored games are omitted from the dict.
+    """
+    # Accumulate squared errors for the overall score.
+    all_errors: list[float] = []
+    # Per-round squared errors keyed by round name.
+    round_errors: dict[str, list[float]] = {}
+
+    for rnd in rounds:
+        errors_in_round: list[float] = []
+
+        for game in rnd.games:
+            # Skip games that have no H2H probability data.
+            if game.predicted_probability is None:
+                continue
+
+            c = game.predicted_probability
+            # Contribution is (1-c)^2 when the favoured team won, c^2 when they lost.
+            error = (1.0 - c) ** 2 if game.correct else c ** 2
+            errors_in_round.append(error)
+            all_errors.append(error)
+
+        # Only store rounds that had at least one scored game.
+        if errors_in_round:
+            round_errors[rnd.name] = errors_in_round
+
+    overall: Optional[float] = (
+        round(sum(all_errors) / len(all_errors), 4) if all_errors else None
+    )
+    by_round: dict[str, float] = {
+        name: round(sum(errs) / len(errs), 4)
+        for name, errs in round_errors.items()
+    }
+    return overall, by_round
+
+
 def get_results() -> ResultsResponse:
     """Build a ResultsResponse from the raw results JSON data.
 
@@ -870,10 +935,15 @@ def get_results() -> ResultsResponse:
 
             rounds.append(ResultsRound(name=round_name, games=games))
 
+        # Compute Brier score using the already-built rounds with probabilities.
+        brier_overall, brier_by_round = compute_brier_score(rounds)
+
         tournaments.append(ResultsTournament(
             year=raw_t["year"],
             tournament_name=raw_t["tournament_name"],
             rounds=rounds,
+            brier_score=brier_overall,
+            brier_score_by_round=brier_by_round,
         ))
 
     logger.info("get_results: loaded %d tournament year(s)", len(tournaments))

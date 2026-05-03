@@ -43,6 +43,22 @@ This endpoint routes users to the head to head matchup page.
 ### /results
 This endpoint routes users to the results page.
 
+### /api/results
+This endpoint returns all tracked tournament results grouped by year and round. Each
+tournament entry includes every round from First Four through National Championship,
+with each game recording both teams (name, seed, score), the winner, whether the model
+predicted correctly, the path-adjusted H2H probability, and each team's prior path.
+
+Each tournament entry also includes:
+- `brier_score` — the mean Brier score across all games with H2H probability data.
+  Computed as the average of `(1 − p)²` for correct predictions and `p²` for incorrect
+  ones, where `p` is the path-adjusted `predicted_probability` (always ≥ 0.5). A score
+  of 0.25 equals the random-guess baseline; lower is better.
+- `brier_score_by_round` — a dict mapping each round name to its own mean Brier score.
+
+Results are read fresh on every request so scores update automatically as games are
+added to results.json.
+
 ### /api/wins-evaluation
 This endpoint returns the wins model evaluation. For each tournament team it computes
 the expected wins (probability-weighted average of the win probability distribution) and

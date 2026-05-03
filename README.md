@@ -11,8 +11,9 @@ Teams are auctioned off to each player, with the end goal of having the collecti
 
 The goal of this project is to predict how a team will perform in the tournament. A probability distribution is
 calculated to determine the likelihood of any team in the field winning 0, 1, 2, 3, 4, 5, or 6 games. In addition,
-the 3 most similar historical teams (since 2009–10) are identified via ChromaDB cosine similarity, and live wins
-model evaluation tracks predicted vs. actual wins as the tournament progresses.
+the 3 most similar historical teams (since 2009–10) are identified via ChromaDB cosine similarity, and live model
+evaluation tracks predicted vs. actual performance as the tournament progresses — including accuracy, wins model
+MAE/bias, and the Brier score for the head-to-head model's probability calibration.
 
 For more information on the data collection and model training methodologies, contact Josh Mayanja (joshmayanja30@gmail.com).
 
@@ -77,7 +78,7 @@ march-madness-pool-analytics/
 │   │   │   ├── CreateTeam.jsx / .css
 │   │   │   ├── PowerRankings.jsx / .css
 │   │   │   ├── HeadToHead.jsx / .css
-│   │   │   ├── Results.jsx / .css      # H2H accuracy + wins evaluation
+│   │   │   ├── Results.jsx / .css      # H2H accuracy + Brier score + wins evaluation
 │   │   │   └── Info.jsx / .css
 │   │   ├── data/
 │   │   │   └── bracketData.js          # 2026 tournament bracket structure

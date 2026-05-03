@@ -235,9 +235,16 @@ These sections should have a slightly darker box to differentiate them. The head
 tournament as nested sections.
 
 In parentheses next to each section title, the accuracy of the section should be listed. The accuracy
-will follow the color threshold for probabilities. In each section, the number of games, correct predictions, and accuracy
-will be listed. If no games have been played yet for a section display this, and do not include accuracy in the section
-title. 
+will follow the color threshold for probabilities. In each section, the number of games, correct predictions, accuracy,
+and Brier score will be listed. If no games have been played yet for a section display this, and do not include accuracy in
+the section title.
+
+The Brier score measures how well-calibrated the model's win probabilities are — not just whether it picked the right
+winner, but how confident it was. It is computed as the mean of `(1 − p)²` for correct picks and `p²` for incorrect
+ones, where `p` is the path-adjusted predicted probability (always ≥ 0.5). A score of 0.25 equals the random-guess
+baseline; lower is better. The score uses a smooth red-to-green gradient (green < 0.15, yellow around 0.20, red ≥ 0.25).
+A hover tooltip on the label gives a plain-language definition. The Brier score is sourced from the `brier_score` field
+returned by `GET /api/results` and updates in real time as game results are added.
 
 Below the accuracy reporting, each game will be listed with a score. The two teams will be listed with their logos.
 The format should be seed 1 logo 1 team 1 score 1 vs. seed 2 logo 2 team 2 score 2. If the prediction was correct, the winning team name

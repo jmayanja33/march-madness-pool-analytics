@@ -9,15 +9,18 @@ with the results-data loader mocked so no real JSON file is required.
 import json
 import tempfile
 from pathlib import Path
+from typing import Optional
 from unittest.mock import patch
 
 import pytest
 from httpx import ASGITransport, AsyncClient
 
 from app.main import app
+from app.models import ResultsGame, ResultsRound, ResultsTeamEntry
 from app.services import (
     _get_game_path_adjusted_probability,
     build_team_prior_paths_for_tournament,
+    compute_brier_score,
     get_results,
     load_results_data,
 )
@@ -566,3 +569,153 @@ async def test_results_returns_503_when_file_missing(client: AsyncClient) -> Non
     ):
         response = await client.get("/api/results")
     assert response.status_code == 503
+
+
+# ---------------------------------------------------------------------------
+# compute_brier_score — unit tests
+# ---------------------------------------------------------------------------
+# Helpers to build lightweight ResultsGame / ResultsRound objects without
+# needing real H2H data or file I/O.
+
+
+def _make_game(
+    correct: bool,
+    predicted_probability: Optional[float],
+) -> ResultsGame:
+    """Return a minimal ResultsGame with the given correctness and probability."""
+    return ResultsGame(
+        team1=ResultsTeamEntry(name="TeamA", seed=1, score=None),
+        team2=ResultsTeamEntry(name="TeamB", seed=2, score=None),
+        winner="TeamA" if correct else "TeamB",
+        correct=correct,
+        predicted_probability=predicted_probability,
+    )
+
+
+def _make_round(name: str, games: list) -> ResultsRound:
+    """Return a ResultsRound with the given name and games list."""
+    return ResultsRound(name=name, games=games)
+
+
+def test_compute_brier_score_returns_none_when_no_games() -> None:
+    """Returns (None, {}) when there are no games at all."""
+    overall, by_round = compute_brier_score([])
+    assert overall is None
+    assert by_round == {}
+
+
+def test_compute_brier_score_returns_none_when_no_probability_data() -> None:
+    """Returns (None, {}) when every game has predicted_probability=None."""
+    rounds = [_make_round("Round of 64", [
+        _make_game(True, None), _make_game(False, None),
+    ])]
+    overall, by_round = compute_brier_score(rounds)
+    assert overall is None
+    assert by_round == {}
+
+
+def test_compute_brier_score_perfect_confidence_correct() -> None:
+    """A perfectly confident correct prediction contributes 0 to the score."""
+    rounds = [_make_round("Round of 64", [_make_game(True, 1.0)])]
+    overall, _ = compute_brier_score(rounds)
+    assert overall == pytest.approx(0.0)
+
+
+def test_compute_brier_score_perfect_confidence_incorrect() -> None:
+    """A perfectly confident but wrong prediction contributes 1.0 (worst case)."""
+    rounds = [_make_round("Round of 64", [_make_game(False, 1.0)])]
+    overall, _ = compute_brier_score(rounds)
+    assert overall == pytest.approx(1.0)
+
+
+def test_compute_brier_score_fifty_fifty() -> None:
+    """A 50/50 prediction contributes 0.25 regardless of outcome."""
+    rounds = [_make_round("Round of 64", [_make_game(True, 0.5)])]
+    overall, _ = compute_brier_score(rounds)
+    assert overall == pytest.approx(0.25)
+
+
+def test_compute_brier_score_correct_prediction_formula() -> None:
+    """Correct prediction with probability 0.7 → (1-0.7)^2 = 0.09."""
+    rounds = [_make_round("Round of 64", [_make_game(True, 0.7)])]
+    overall, _ = compute_brier_score(rounds)
+    assert overall == pytest.approx(0.09)
+
+
+def test_compute_brier_score_incorrect_prediction_formula() -> None:
+    """Incorrect prediction with probability 0.7 → 0.7^2 = 0.49."""
+    rounds = [_make_round("Round of 64", [_make_game(False, 0.7)])]
+    overall, _ = compute_brier_score(rounds)
+    assert overall == pytest.approx(0.49)
+
+
+def test_compute_brier_score_averages_multiple_games() -> None:
+    """Overall score is the mean across all scored games."""
+    # (1-0.8)^2 = 0.04  and  0.6^2 = 0.36  → mean = 0.20
+    games = [_make_game(True, 0.8), _make_game(False, 0.6)]
+    rounds = [_make_round("Round of 64", games)]
+    overall, _ = compute_brier_score(rounds)
+    assert overall == pytest.approx(0.20)
+
+
+def test_compute_brier_score_excludes_games_without_probability() -> None:
+    """Games with predicted_probability=None are excluded from the average."""
+    # Only the scored game contributes: (1-0.8)^2 = 0.04
+    games = [_make_game(True, 0.8), _make_game(True, None)]
+    rounds = [_make_round("Round of 64", games)]
+    overall, _ = compute_brier_score(rounds)
+    assert overall == pytest.approx(0.04)
+
+
+def test_compute_brier_score_by_round_keys_match_round_names() -> None:
+    """by_round dict contains exactly the round names that had scored games."""
+    rounds = [
+        _make_round("First Four", [_make_game(True, 0.6)]),
+        _make_round("Round of 64", [_make_game(True, None)]),  # no data
+        _make_round("Round of 32", [_make_game(False, 0.75)]),
+    ]
+    _, by_round = compute_brier_score(rounds)
+    assert set(by_round.keys()) == {"First Four", "Round of 32"}
+
+
+def test_compute_brier_score_by_round_values_correct() -> None:
+    """Per-round Brier scores are computed independently per round."""
+    # First Four: (1-0.9)^2 = 0.01
+    # Round of 64: 0.8^2 = 0.64
+    rounds = [
+        _make_round("First Four", [_make_game(True, 0.9)]),
+        _make_round("Round of 64", [_make_game(False, 0.8)]),
+    ]
+    _, by_round = compute_brier_score(rounds)
+    assert by_round["First Four"] == pytest.approx(0.01)
+    assert by_round["Round of 64"] == pytest.approx(0.64)
+
+
+def test_compute_brier_score_overall_spans_all_rounds() -> None:
+    """Overall score is the mean across games from all rounds combined."""
+    # First Four: (1-0.9)^2 = 0.01
+    # Round of 64: 0.8^2 = 0.64
+    # Overall mean = (0.01 + 0.64) / 2 = 0.325
+    rounds = [
+        _make_round("First Four", [_make_game(True, 0.9)]),
+        _make_round("Round of 64", [_make_game(False, 0.8)]),
+    ]
+    overall, _ = compute_brier_score(rounds)
+    assert overall == pytest.approx(0.325)
+
+
+def test_get_results_brier_score_populated() -> None:
+    """get_results populates brier_score on the tournament when h2h data exists."""
+    with patch("app.services.load_results_data", return_value=_MOCK_TOURNAMENT), \
+         patch("app.services.load_h2h_predictions", return_value=_MOCK_H2H):
+        response = get_results()
+    # UMBC vs Howard: Howard wins (correct=True), prob=0.58 → (1-0.58)^2
+    assert response.tournaments[0].brier_score is not None
+
+
+def test_get_results_brier_score_none_when_no_h2h() -> None:
+    """get_results sets brier_score to None when no h2h predictions are available."""
+    with patch("app.services.load_results_data", return_value=_MOCK_TOURNAMENT), \
+         patch("app.services.load_h2h_predictions", return_value=[]):
+        response = get_results()
+    assert response.tournaments[0].brier_score is None

@@ -23,6 +23,37 @@ function diffColor(diff) {
   return '#e05252';
 }
 
+// Return a smoothly interpolated HSL color for a Brier score (0–1, lower is better).
+// Gradient anchor points:
+//   0.00 → green        hsl(145, 46%, 42%)
+//   0.15 → yellow-green hsl( 81, 67%, 44%)
+//   0.20 → yellow       hsl( 43, 80%, 46%)
+//   0.25+ → red         hsl(  0, 72%, 60%)  (clamped — at or worse than random baseline)
+function brierColor(score) {
+  const s = Math.min(0.25, Math.max(0, score));
+  let h, sat, l;
+  if (s <= 0.15) {
+    // Interpolate green → yellow-green as score goes from 0 to 0.15.
+    const t = s / 0.15;
+    h   = 145 + t * (81  - 145);
+    sat = 46  + t * (67  - 46);
+    l   = 42  + t * (44  - 42);
+  } else if (s <= 0.20) {
+    // Interpolate yellow-green → yellow as score goes from 0.15 to 0.20.
+    const t = (s - 0.15) / 0.05;
+    h   = 81 + t * (43  - 81);
+    sat = 67 + t * (80  - 67);
+    l   = 44 + t * (46  - 44);
+  } else {
+    // Interpolate yellow → red as score goes from 0.20 to 0.25 (clamped).
+    const t = (s - 0.20) / 0.05;
+    h   = 43 + t * (0   - 43);
+    sat = 80 + t * (72  - 80);
+    l   = 46 + t * (60  - 46);
+  }
+  return `hsl(${h.toFixed(1)}, ${sat.toFixed(1)}%, ${l.toFixed(1)}%)`;
+}
+
 // Return a CSS color for a "within one win" percentage (0–100).
 // Higher is better: ≥70%: green; 50–70%: yellow; <50%: red.
 function withinOneColor(pct) {
@@ -313,6 +344,23 @@ function H2HModelBox({ tournament, h2hStats, modelCollapsed, roundCollapsed, onT
                     {(h2hStats.accuracy * 100).toFixed(2)}%
                   </strong>
                 </span>
+                {tournament.brier_score != null && (
+                  <span>
+                    {/* Brier Score label with hover tooltip */}
+                    <span className="results-metric-label">
+                      Brier Score
+                      <span className="results-metric-tooltip">
+                        Measures how accurate the model&apos;s confidence was, not just whether it picked the right winner.
+                        It penalises overconfident wrong predictions more heavily than cautious ones.
+                        Scores range from 0 (perfect) to 1 (worst). A model that always predicts 50/50 scores 0.25 — anything below that means the probabilities are adding real value.
+                      </span>
+                    </span>
+                    {': '}
+                    <strong style={{ color: brierColor(tournament.brier_score) }}>
+                      {tournament.brier_score.toFixed(4)}
+                    </strong>
+                  </span>
+                )}
               </div>
 
               {/* Calibration and confidence breakdown */}
